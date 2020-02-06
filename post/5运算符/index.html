@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="2、变量" />
-    <meta property="og:title" content="2、变量" />
-    <meta property="twitter:title" content="2、变量" />
+    <meta name="title" content="5、运算符" />
+    <meta property="og:title" content="5、运算符" />
+    <meta property="twitter:title" content="5、运算符" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>2、变量-yiguan1573</title>
+    <title>5、运算符-yiguan1573</title>
 
-    <link rel="canonical" href="/post/2%E5%8F%98%E9%87%8F/">
+    <link rel="canonical" href="/post/5%E8%BF%90%E7%AE%97%E7%AC%A6/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -178,7 +178,7 @@
                         </a>
                         
                     </div>
-                    <h1>2、变量</h1>
+                    <h1>5、运算符</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by 
@@ -186,7 +186,7 @@
                                  &#34;亿观&#34;
                          
                         on 
-                        Tuesday, February 4, 2020
+                        Thursday, February 6, 2020
                         
                         
                         
@@ -216,34 +216,87 @@
                 </header>
                 <nav id="TableOfContents"></nav>
                 
-                <h1 id="字面量和变量">字面量和变量</h1>
+                <h1 id="算数运算符">算数运算符</h1>
 <ul>
-<li><strong>字面量  都是一些不可改变的量，比如：1 2 3，字面量可以直接使用字面量</strong></li>
-<li><strong>变量  可以保存字面量，一般使用变量保存字面量</strong></li>
-<li><strong>声明变量 在JS中使用var关键字声明一个变量</strong></li>
+<li><strong>字符串相加相当于将两个字符串拼接为一个字符串，与Java相同</strong></li>
+<li><strong>任何值与字符串做加法运算都会被转换为字符串后再拼串</strong></li>
 </ul>
-<pre><code>	var a = 123;
-	document.write(a);
+<pre><code>var a = &quot;123&quot; + 1;//结果为1231
+</code></pre><ul>
+<li><strong>任何值做 - * /运算时都会自动转换为Number</strong></li>
+</ul>
+<pre><code>var a = &quot;123&quot; - 1;//结果为122
 </code></pre><hr>
-<h1 id="标识符">标识符</h1>
+<h1 id="一元运算符">一元运算符</h1>
 <ul>
-<li><strong>在JS中所有可以由我们自主命名的都可以称为标识符，如变量名、函数名、属性名</strong></li>
-<li><strong>命名标识符的规则：</strong>
+<li><strong>+ 和 -都是一元运算符</strong></li>
+<li><strong>对于非Number类型的值，都会先转换为Number再运算</strong></li>
+</ul>
+<pre><code>var a = &quot;123&quot;;
+a = +a;//转换为数字123
+var b = 1 + +&quot;2&quot; +3;//结果为6
+</code></pre><hr>
+<h1 id="自增和自减">自增和自减</h1>
+<ul>
+<li><strong>a++的值等于原变量的值（自增前的值）,++a的值等于原变量新值（自增后的值），自减同理</strong></li>
+</ul>
+<pre><code>var a=1;
+document.write(a++);//结果为1
+document.write(a);//结果为2
+</code></pre><hr>
+<h1 id="逻辑运算符">逻辑运算符</h1>
+<ul>
+<li><strong>非（!）：可以利用!来将其他的数据类型转换为布尔值</strong></li>
+<li><strong>与（&amp;&amp;）：对于非布尔值进行与或运算时，都会先将其转换为布尔值，在运算，最后返回原值</strong>
 <ol>
-<li>标识符可以含有字母、数字、_、$</li>
-<li>标识符不可以以数字开头</li>
-<li>标识符不能是ES中的关键字或保留字
-<del>var var = 123;</del>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gblykeckt4j30kg0dtdkc.jpg" alt="QQ截图20200205223156.png"></li>
-<li>标识符一般都采用驼峰命名法，首字母小写，每个单词的开头字母大写，其余字母小写，如
-<!-- raw HTML omitted -->helloWorld<!-- raw HTML omitted --></li>
+<li>如果第一个值为false，则返回第一个值</li>
+<li>如果第一个值为true，则返回第二个值</li>
 </ol>
 </li>
-<li><strong>JS底层保存标识符实际上是采用Unicode编码，所以理论上所有utf-8中的内容都可以作为标识符</strong></li>
 </ul>
-<pre><code>var 变量 = 123;
-document.write(变量);
-//可以这样用，但实际项目中千万不能
+<pre><code>var a = 2 &amp;&amp; 1;//都为ture返回后面的，即1
+var a = 0 &amp;&amp; NaN;//都为false返回前面的，即0
+</code></pre><ul>
+<li><strong>或(||)：对于非布尔值，它会将其转换为布尔值然后做运算，并返回原值</strong>
+<ol>
+<li>如果第一个值为true，则返回第一个值</li>
+<li>如果第一个值为false，则返回第二个值</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="赋值运算符">赋值运算符</h1>
+<ul>
+<li>*<em>有=、-=、<em>=、+=、/=、%=</em></em></li>
+</ul>
+<hr>
+<h1 id="关系运算符">关系运算符</h1>
+<ul>
+<li><strong>有&gt;、&lt;、&lt;=、&gt;=</strong></li>
+<li><strong>如果比较的两个值是非数值，会将其转换为Number然后再比较</strong></li>
+<li><strong>如果比较的两个值都是字符串，此时会比较字符串的Unicode编码，而不会转换为Number</strong></li>
+<li><strong>比较字符编码时是一位一位进行比较，如果两位一样则比较下一位</strong></li>
+</ul>
+<pre><code>console.log(&quot;abc&quot;&lt;&quot;b&quot;);//true
+</code></pre><hr>
+<h1 id="相等运算符">相等运算符</h1>
+<ul>
+<li><strong>==  相等会自动对两个值进行类型转换，如果对不同的类型进行比较，会将其转换为相同的类型然后再比较</strong></li>
+<li><strong>undefine衍生自null，所以这两个值做相等判断时会返回true</strong></li>
+<li><strong>NaN不和任何值相等，包括他本身，可以通过isNaN()函数判断一个值是否是NaN</strong></li>
+<li><strong>!=  不等也会做自动的类型转换</strong></li>
+<li><strong>===  全等，判断左右两个值是否全等，它和相等类似，只不过它不会进行自动的类型转换，如果两个值的类型不同，则直接返回false</strong></li>
+<li><strong>!==  不全等，和不等类似，但是它不会进行自动的类型转换，如果两个值的类型不同，它会直接返回true</strong></li>
+</ul>
+<hr>
+<h1 id="条件运算符又名三元运算符">条件运算符（又名三元运算符）</h1>
+<ul>
+<li><strong>语法：条件表达式?语句一:语句二;</strong></li>
+<li><strong>执行流程：如果判断结果为true，则执行语句1，并返回执行结果；如果判断结果为false，则执行语句2，并返回执行结果</strong></li>
+</ul>
+<pre><code>var a = 30;
+var b = 20;
+var max = a &gt; b ? a : b;
 </code></pre>
 
                 
@@ -252,13 +305,13 @@ document.write(变量);
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/1js%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/" data-toggle="tooltip" data-placement="top" title="1、JS语法基础">&larr;
+                        <a href="/post/6unicode%E7%BC%96%E7%A0%81%E8%A1%A8/" data-toggle="tooltip" data-placement="top" title="6、Unicode编码表">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/post/3%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" data-toggle="tooltip" data-placement="top" title="3、基本数据类型">Next
+                        <a href="/post/4%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" data-toggle="tooltip" data-placement="top" title="4、强制类型转换">Next
                             Post &rarr;</a>
                     </li>
                     

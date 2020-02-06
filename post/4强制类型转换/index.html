@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="2、变量" />
-    <meta property="og:title" content="2、变量" />
-    <meta property="twitter:title" content="2、变量" />
+    <meta name="title" content="4、强制类型转换" />
+    <meta property="og:title" content="4、强制类型转换" />
+    <meta property="twitter:title" content="4、强制类型转换" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>2、变量-yiguan1573</title>
+    <title>4、强制类型转换-yiguan1573</title>
 
-    <link rel="canonical" href="/post/2%E5%8F%98%E9%87%8F/">
+    <link rel="canonical" href="/post/4%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -178,7 +178,7 @@
                         </a>
                         
                     </div>
-                    <h1>2、变量</h1>
+                    <h1>4、强制类型转换</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by 
@@ -186,7 +186,7 @@
                                  &#34;亿观&#34;
                          
                         on 
-                        Tuesday, February 4, 2020
+                        Thursday, February 6, 2020
                         
                         
                         
@@ -216,34 +216,66 @@
                 </header>
                 <nav id="TableOfContents"></nav>
                 
-                <h1 id="字面量和变量">字面量和变量</h1>
+                <h1 id="将其他的数据类型转换为strig">将其他的数据类型转换为Strig</h1>
 <ul>
-<li><strong>字面量  都是一些不可改变的量，比如：1 2 3，字面量可以直接使用字面量</strong></li>
-<li><strong>变量  可以保存字面量，一般使用变量保存字面量</strong></li>
-<li><strong>声明变量 在JS中使用var关键字声明一个变量</strong></li>
+<li><strong>调用被转换数据类型的toString()方法，该方法不会影响到原变量，它会将转换的结果返回；但是null和undefine这两值没有toString()方法</strong></li>
 </ul>
-<pre><code>	var a = 123;
-	document.write(a);
+<pre><code>var a = 123;
+a = a.toString();
+</code></pre><ul>
+<li><strong>调用String()函数，可以将null和undefine转换为String类型，</strong></li>
+</ul>
+<pre><code>var a = 123;
+a = String(a);
 </code></pre><hr>
-<h1 id="标识符">标识符</h1>
+<h1 id="将其他的数据类型转换为number">将其他的数据类型转换为Number</h1>
 <ul>
-<li><strong>在JS中所有可以由我们自主命名的都可以称为标识符，如变量名、函数名、属性名</strong></li>
-<li><strong>命名标识符的规则：</strong>
+<li><strong>使用Number()函数</strong>
 <ol>
-<li>标识符可以含有字母、数字、_、$</li>
-<li>标识符不可以以数字开头</li>
-<li>标识符不能是ES中的关键字或保留字
-<del>var var = 123;</del>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gblykeckt4j30kg0dtdkc.jpg" alt="QQ截图20200205223156.png"></li>
-<li>标识符一般都采用驼峰命名法，首字母小写，每个单词的开头字母大写，其余字母小写，如
-<!-- raw HTML omitted -->helloWorld<!-- raw HTML omitted --></li>
+<li>如果字符串中有非数字的内容，则转换为NaN；</li>
+<li>如果字符串是空串或空格则转换为0；</li>
+<li>布尔值转化为数字：true&ndash;&gt;1  false&ndash;&gt;0；</li>
+<li>null&ndash;&gt;0；</li>
+<li>undefine&ndash;&gt;NaN</li>
 </ol>
 </li>
-<li><strong>JS底层保存标识符实际上是采用Unicode编码，所以理论上所有utf-8中的内容都可以作为标识符</strong></li>
 </ul>
-<pre><code>var 变量 = 123;
-document.write(变量);
-//可以这样用，但实际项目中千万不能
+<pre><code>var a = &quot;123&quot;;
+a = Number(a);
+</code></pre><ul>
+<li><strong>该方式专用于字符串，parseInt()把一个字符串转换为一个整数，parseFloat()把一个字符串转换为一个浮点数</strong></li>
+</ul>
+<pre><code>var a = &quot;123px&quot;;
+a = parseInt(a);
+//可以将一个字符串中的有效整数内容取出
+</code></pre><hr>
+<h1 id="将其他的数据类型转换为布尔值">将其他的数据类型转换为布尔值</h1>
+<ul>
+<li><strong>使用Boolean()函数</strong></li>
+<li><strong>数字&mdash;&gt;布尔值 除了0和NaN都是true</strong></li>
+<li><strong>字符串&mdash;&gt;布尔值 除了空串都是true</strong></li>
+<li><strong>null和undefine都会转换为false</strong></li>
+<li><strong>对象也会转换为ture</strong></li>
+</ul>
+<hr>
+<h1 id="js中其他进制数的表示方法">JS中其他进制数的表示方法</h1>
+<ul>
+<li><strong>16进制需要以0x开头</strong></li>
+</ul>
+<pre><code>a = 0xff;
+</code></pre><ul>
+<li><strong>8进制需要以0开头</strong></li>
+</ul>
+<pre><code>a = 070;//结果为56
+</code></pre><ul>
+<li><strong>2进制需要以0b开头，但不是所有浏览器都支持</strong></li>
+</ul>
+<pre><code>a = 0b10;
+</code></pre><ul>
+<li><strong>类似&quot;070&quot;这种字符串有些浏览器会将其当成8进制，有些则当成10进制，所以可以用以下方法指定进制</strong></li>
+</ul>
+<pre><code>a = &quot;070&quot;;
+a = parseInt(a,10);
 </code></pre>
 
                 
@@ -252,15 +284,10 @@ document.write(变量);
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/1js%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/" data-toggle="tooltip" data-placement="top" title="1、JS语法基础">&larr;
+                        <a href="/post/5%E8%BF%90%E7%AE%97%E7%AC%A6/" data-toggle="tooltip" data-placement="top" title="5、运算符">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/post/3%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" data-toggle="tooltip" data-placement="top" title="3、基本数据类型">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
