@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="" />
-    <meta property="og:title" content="" />
-    <meta property="twitter:title" content="" />
+    <meta name="title" content="9、函数(JS)" />
+    <meta property="og:title" content="9、函数(JS)" />
+    <meta property="twitter:title" content="9、函数(JS)" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Tags-yiguan1573</title>
+    <title>9、函数(JS)-yiguan1573</title>
 
-    <link rel="canonical" href="/tags/">
+    <link rel="canonical" href="/post/9%E5%87%BD%E6%95%B0/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -160,14 +160,37 @@
 
 
 
-<header class="intro-header" style="background-image: url('/img/01.jpg')">
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>亿观的博客 </h1>
-                    
-		    <span class="subheading">石可破也，而不可夺坚;丹可磨也，而不可夺赤。</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/javascript" title="JavaScript">
+                            JavaScript
+                        </a>
+                        
+                    </div>
+                    <h1>9、函数(JS)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Sunday, February 9, 2020
+                        
+                        
+                        
+                    </span>
                 </div>
             </div>
         </div>
@@ -180,13 +203,181 @@
 <article>
     <div class="container">
         <div class="row">
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
                 post-container">
 
-         	
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <h1 id="函数function的简介">函数（function）的简介</h1>
+<ul>
+<li><strong>函数也是对象，函数中可以封装一些功能（代码）</strong></li>
+<li><strong>创建并调用一个函数对象</strong></li>
+</ul>
+<pre><code>var fun = new Function(&quot;console.log('函数');&quot;);
+fun();
+//实际开发中很少使用构造函数来创建一个函数对象
+</code></pre><ul>
+<li><strong>使用函数声明来创建一个函数</strong></li>
+</ul>
+<pre><code>function fun2(){
+	console.log(&quot;函数声明创建函数&quot;);
+}
+fun2();
+</code></pre><ul>
+<li><strong>使用函数表达式来创建一个函数</strong></li>
+</ul>
+<pre><code>var fun3 = function(){
+	console.log(&quot;函数声明创建函数&quot;);
+};
+</code></pre><hr>
+<h1 id="函数的参数">函数的参数</h1>
+<ul>
+<li><strong>示例如下</strong></li>
+</ul>
+<pre><code>function sum(a,b){
+	console.log(a+b);
+}
+sum(2,3);
+</code></pre><ul>
+<li><strong>调用函数时JS解析器不会检查实参的类型和个数，可以传递任意数据类型的值，如果实参的数量大于形参，多余实参将不会赋值，如果实参的数量小于形参，则没有对应实参的形参将会赋值undefined</strong></li>
+</ul>
+<pre><code>sum(&quot;hello&quot;,123);
+//结果为hello123
+</code></pre><hr>
+<h1 id="函数的返回值">函数的返回值</h1>
+<ul>
+<li><strong>使用return来设置函数的返回值，语法如下</strong></li>
+</ul>
+<pre><code>function sum(a,b,c){
+	var d = a + b +c;
+	return d;
+}
+var result = sum(3,4,5);
+</code></pre><ul>
+<li><strong>return后边的代码都不会执行，一旦执行到return语句时，函数将会立刻退出</strong></li>
+<li><strong>return后可以跟任意类型的值，可以是基本数据类型，也可以是一个对象，如果return后不跟值，或者是不写return则函数默认返回undefined</strong></li>
+</ul>
+<hr>
+<h1 id="立即执行函数">立即执行函数</h1>
+<ul>
+<li><strong>只会执行一次且立即执行，示例如下</strong></li>
+</ul>
+<pre><code>(function(){
+	alert(&quot;匿名函数&quot;)；
+})();
+</code></pre><hr>
+<h1 id="方法">方法</h1>
+<ul>
+<li><strong>对象的属性值可以是任何的数据类型，也可以是函数</strong></li>
+</ul>
+<pre><code>var obj=new Object();
+obj.age=18;
+obj.sayName=function(){
+	console.log(obj.age);
+};
+obj.sayName();
+</code></pre><ul>
+<li><strong>当一个对象的属性是一个函数时，我们称这个函数是该对象的方法</strong></li>
+<li><strong>枚举对象中的属性，使用for&hellip;in语句</strong></li>
+</ul>
+<pre><code>var obj = {
+			name:&quot;猪八戒&quot;,
+			age:28,
+			gender:&quot;男&quot;
+		};
+for(var n in obj){
+	console.log(&quot;Hello&quot;);
+}	
+</code></pre><ul>
+<li><strong>每次执行时，都将对象中的一个属性赋值给变量，n就是属性的名字</strong></li>
+</ul>
+<hr>
+<h1 id="作用域">作用域</h1>
+<ul>
+<li>
+<p><strong>全局作用域</strong></p>
+<ol>
+<li>直接在script标签中编写的代码都运行在全局作用域中</li>
+<li>全局作用域在打开页面时创建，在页面关闭时销毁。</li>
+<li>全局作用域中有一个全局对象window，window对象由浏览器提供，
+以在页面中直接使用，它代表的是整个的浏览器的窗口。</li>
+<li>在全局作用域中创建的变量都会作为window对象的属性保存
+在全局作用域中创建的函数都会作为window对象的方法保存</li>
+<li>在全局作用域中创建的变量和函数可以在页面的任意位置访问。
+在函数作用域中也可以访问到全局作用域的变量。</li>
+<li>尽量不要在全局中创建变量</li>
+</ol>
+</li>
+<li>
+<p><strong>变量的声明提前</strong></p>
+<ol>
+<li>在全局作用域中，使用var关键字声明的变量会在所有的代码执行之前被声明，但是不会赋值。
+所以我们可以在变量声明前使用变量。但是不使用var关键字声明的变量不会被声明提前。</li>
+<li>在函数作用域中，也具有该特性，使用var关键字声明的变量会在函数所有的代码执行前被声明，
+如果没有使用var关键字声明变量，则变量会变成全局变量</li>
+</ol>
+</li>
+</ul>
+<pre><code>console.log(&quot;a =&quot; + a);
+var a = 123;//不会报错，结果为undefine
+</code></pre><ul>
+<li><strong>函数的声明提前</strong>
+<ol>
+<li>在全局作用域中，使用函数声明创建的函数（function fun(){}）,会在所有的代码执行之前被创建，
+也就是我们可以在函数声明前去调用函数，但是使用函数表达式(var fun = function(){})创建的函数没有该特性</li>
+<li>在函数作用域中，使用函数声明创建的函数，会在所有的函数中的代码执行之前就被创建好了</li>
+</ol>
+</li>
+</ul>
+<pre><code>fun3();//可以成功执行
+fun4();//报错
+function fun3(){
+	console.log(&quot;函数声明创建函数&quot;);
+};
+var fun4 = function(){
+	console.log(&quot;函数声明创建函数&quot;);
+};
+</code></pre><ul>
+<li><strong>函数作用域</strong>
+<ol>
+<li>函数作用域是函数执行时创建的作用域，每次调用函数都会创建一个新的函数作用域</li>
+<li>函数作用域在函数执行时创建，在函数执行结束时销毁</li>
+<li>在函数作用域中创建的变量，不能在全局中访问</li>
+<li>在函数作用域中可以访问到全局作用域中的变量；在全局作用域中无法访问到函数作用域的变量</li>
+<li>当在函数作用域中使用一个变量时，它会先在自身作用域中寻找，
+如果找到了则直接使用，如果没有找到则到上一级作用域中寻找，
+如果找到了则使用，找不到则继续向上找</li>
+</ol>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/7%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5/" data-toggle="tooltip" data-placement="top" title="7、流程控制语句(JS)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/101%E8%BF%9C%E7%A8%8B%E6%93%8D%E4%BD%9C/" data-toggle="tooltip" data-placement="top" title="2、远程操作(Linux)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
                 
 <div id="disqus-comment"></div>
 
@@ -209,13 +400,13 @@
                         
                         
                         <a href="/tags/javascript" title="javascript">
-                        javascript
+                            javascript
                         </a>
                         
                         
                         
                         <a href="/tags/linux" title="linux">
-                        linux
+                            linux
                         </a>
                         
                         
