@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.github.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.github.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="19、Shell编程(Linux)" />
+    <meta property="og:title" content="19、Shell编程(Linux)" />
+    <meta property="twitter:title" content="19、Shell编程(Linux)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>19、Shell编程(Linux)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/119shell%E7%BC%96%E7%A8%8B/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gbrsfbcufcj30zk1r41kx.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/linux" title="Linux">
+                            Linux
+                        </a>
+                        
+                    </div>
+                    <h1>19、Shell编程(Linux)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Saturday, March 7, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <h1 id="介绍">介绍</h1>
+<ul>
+<li><strong>Linux 运维工程师在进行服务器集群管理时，需要编写 Shell 程序来进行服务器管理。</strong></li>
+<li><strong>对于 JavaEE 和 Python 程序员来说，工作的需要，你的老大会要求你编写一些 Shell 脚本进行程序或者是服务器的维护，比如编写一个定时备份数据库的脚本。</strong></li>
+<li><strong>对于大数据程序员来说，需要编写 Shell 程序来管理集群。</strong></li>
+<li><strong>Shell 是一个命令行解释器，它为用户提供了一个向 Linux 内核发送请求以便运行程序的界面系统级程序，用户可以用 Shell 来启动、挂起、停止甚至是编写一些程序</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmvkr8cfhj30bq08zdgm.jpg" alt="QQ截图20200308221120.png"></li>
+</ul>
+<hr>
+<h1 id="shell-脚本的执行方式">Shell 脚本的执行方式</h1>
+<ul>
+<li><strong>脚本格式要求</strong>
+<ol>
+<li>脚本以#!/bin/bash 开头</li>
+<li>脚本需要有可执行权限</li>
+</ol>
+</li>
+<li><strong>编写第一个 Shell 脚本</strong>
+<ul>
+<li>创建一个 Shell 脚本，输出 hello world!
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmvrcmlc7j30q3039t8r.jpg" alt="QQ截图20200308221704.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmvrpfq8nj30f807xgli.jpg" alt="QQ截图20200308221742.png"></li>
+</ul>
+</li>
+<li><strong>脚本的常用执行方式</strong>
+<ul>
+<li>方式一：输入脚本的绝对路径或相对路径<br>
+1)首先要赋予 helloworld.sh  脚本的+x 权限<br>
+2)执行脚本
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmw68duezj30sr03ct8t.jpg" alt="QQ截图20200308223204.png"></li>
+<li>方式二：(sh+脚本)，不推荐<br>
+说明：不用赋予脚本+x 权限，直接执行即可
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmw8jma2ej30r5039aa3.jpg" alt="QQ截图20200308223417.png"></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="shell的变量">Shell的变量</h1>
+<ul>
+<li><strong>Shell 的变量的介绍</strong>
+<ul>
+<li>Linux Shell 中的变量分为，系统变量和用户自定义变量。</li>
+<li>系统变量：$HOME、$PWD、$SHELL、$USER等等，比如：  echo $HOME	等等
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmwgy2ijyj30e60743yi.jpg" alt="QQ截图20200308224133.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmwh4rncsj310z05vglv.jpg" alt="QQ截图20200308224119.png"></li>
+<li>显示当前 shell 中所有变量：set</li>
+</ul>
+</li>
+<li><strong>shell 变量的定义</strong>
+<ul>
+<li>定义变量：变量=值</li>
+<li>撤销变量：unset 变量</li>
+<li>声明静态变量：readonly 变量，注意：不能 unset
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmwrmn6r6j30bp05mwee.jpg" alt="QQ截图20200308225237.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmwrx3o7mj30on037jrb.jpg" alt="QQ截图20200308225227.png"></li>
+</ul>
+</li>
+<li><strong>定义变量的规则</strong>
+<ol>
+<li>变量名称可以由字母、数字和下划线组成，但是不能以数字开头</li>
+<li>等号两侧不能有空格</li>
+<li>变量名称一般习惯为大写</li>
+</ol>
+</li>
+<li><strong>将命令的返回值赋给变量</strong>
+<ol>
+<li>A=<code>ls -la</code> 反引号，运行里面的命令，并把结果返回给变量 A
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmx6aifkuj30d204sa9y.jpg" alt="QQ截图20200308230640.png"></li>
+<li>A=$(ls -la) 等价于反引号</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="设置环境变量">设置环境变量</h1>
+<ul>
+<li><strong>基本语法</strong>
+<ol>
+<li>export 变量名=变量值 （功能描述：将 shell 变量输出为环境变量）</li>
+<li>source 配置文件 （功能描述：让修改后的配置信息立即生效）</li>
+<li>echo $变量名 （功能描述：查询环境变量的值）
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmx9almz4j30on0fdgpm.jpg" alt="QQ截图20200308230936.png"></li>
+</ol>
+</li>
+<li><strong>快速入门</strong>
+<ol>
+<li>在/etc/profile 文件中定义 TOMCAT_HOME 环境变量
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmxnqtmndj30ot062gp6.jpg" alt="QQ截图20200308232325.png"></li>
+<li>查看环境变量 TOMCAT_HOME 的值</li>
+<li>在另外一个 shell 程序中使用 TOMCAT_HOME
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcmxps9dfvj30ie0dmdlj.jpg" alt="QQ截图20200308232527.png"></li>
+<li>注意：在输出 TOMCAT_HOME 环境变量前，需要让其生效<br>
+source /etc/profile</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="位置参数变量">位置参数变量</h1>
+<ul>
+<li><strong>介绍</strong>
+<ul>
+<li>当我们执行一个 shell 脚本时，如果希望获取到命令行的参数信息，就可以使用到位置参数变量，比如 ： ./myshell.sh 100 200 ,  这个就是一个执行 shell 的命令行，可以在 myshell 脚本中获取到参数信息</li>
+</ul>
+</li>
+<li><strong>基本语法</strong></li>
+</ul>
+<pre><code>$n （功能描述：n 为数字，$0 代表命令本身，$1-$9 代表第一到第九个参数，十以上的参数，十以上的参数需要用大括号包含，如${10})
+$* （功能描述：这个变量代表命令行中所有的参数，$*把所有的参数看成一个整体）
+$@（功能描述：这个变量也代表命令行中所有的参数，不过$@把每个参数区分对待）
+$#（功能描述：这个变量代表命令行中所有参数的个数）
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrh0labq9j30bx07wgls.jpg" alt="QQ截图20200312213505.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrh0tp65rj30uh04vaa7.jpg" alt="QQ截图20200312213450.png"></p>
+<hr>
+<h1 id="预定义变量">预定义变量</h1>
+<ul>
+<li><strong>基本介绍</strong>
+<ul>
+<li>就是 shell 设计者事先已经定义好的变量，可以直接在 shell 脚本中使用</li>
+</ul>
+</li>
+<li><strong>基本语法</strong></li>
+</ul>
+<pre><code>$$ （功能描述：当前进程的进程号（PID））
+$!	（功能描述：后台运行的最后一个进程的进程号（PID））
+$？ （功能描述：最后一次执行的命令的返回状态。如果这个变量的值为 0，证明上一个命令正确执行；如果这个变量的值为非 0（具体是哪个数，由命令自己来决定），则证明上一个命令执行不正确了。）
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrhd0pl5cj30dc072mxg.jpg" alt="QQ截图20200312214725.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrhdc89wqj30s8079mxp.jpg" alt="QQ截图20200312214708.png"></p>
+<hr>
+<h1 id="运算符">运算符</h1>
+<ul>
+<li><strong>基本语法</strong></li>
+</ul>
+<pre><code>“$((运算式))”或“$[运算式]”
+expr m + n  //注意 expr 运算符间要有空格
+expr m - n
+expr	\*, /, %	乘，除，取余
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcri0jres7j30e10dzq3m.jpg" alt="QQ截图20200312220958.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcri0r50jmj30of03sweh.jpg" alt="QQ截图20200312220949.png"></p>
+<hr>
+<h1 id="条件判断">条件判断</h1>
+<ul>
+<li><strong>基本语法</strong></li>
+</ul>
+<pre><code>[ condition ]（注意 condition 前后要有空格）    //非空返回 true，可使用$?验证（0 为 true，&gt;1 为 false）
+</code></pre><ul>
+<li><strong>案例</strong>
+<ol>
+<li>[ atguigu ] 返回 true</li>
+<li>[] 返回 false</li>
+<li>[condition] &amp;&amp; echo OK || echo notok	条件满足，执行后面的语句</li>
+</ol>
+</li>
+<li><strong>常用判断条件</strong>
+<ul>
+<li><strong>两个整数的比较</strong></li>
+</ul>
+<pre><code>= 字符串比较
+-lt 小 于
+-le 小于等于
+-eq 等 于
+-gt 大 于
+-ge 大于等于
+-ne 不等于
+</code></pre><ul>
+<li><strong>按照文件权限进行判断</strong></li>
+</ul>
+<pre><code>-r 有读的权限  [ -r  文件  ]
+-w 有写的权限
+-x 有执行的权限
+</code></pre><ul>
+<li><strong>按照文件类型进行判断</strong></li>
+</ul>
+<pre><code>-f 文件存在并且是一个常规的文件
+-e 文件存在
+-d 文件存在并是一个目录
+</code></pre></li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcris7aok9j30la0j0dgj.jpg" alt="QQ截图20200312223632.png"></p>
+<hr>
+<h1 id="流程控制">流程控制</h1>
+<ul>
+<li><strong>if判断</strong>
+<ul>
+<li>基本语法</li>
+</ul>
+<pre><code>if [ 条件判断式 ];then
+程序
+fi
+或者
+if [ 条件判断式 ]
+then
+    程序
+elif [条件判断式] 
+then
+    程序
+fi
+注意事项：（1）[ 条件判断式 ]，中括号和条件判断式之间必须有空格 (2) 推荐使用第二种方式
+</code></pre></li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrj428b31j30sq0cr3z1.jpg" alt="QQ截图20200312224801.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrj4hab0ij30qi022747.jpg" alt="QQ截图20200312224750.png"></p>
+<ul>
+<li><strong>case语句</strong>
+<ul>
+<li>基本语法</li>
+</ul>
+<pre><code>case $变量名 in
+&quot;值 1&quot;）
+如果变量的值等于值 1，则执行程序 1
+;;
+&quot;值 2&quot;）
+如果变量的值等于值 2，则执行程序 2
+;;
+…省略其他分支…
+*）
+如果变量的值都不是以上的值，则执行此程序 
+;;
+esac
+</code></pre></li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrjlmkjolj310m0ge74x.jpg" alt="QQ截图20200312230433.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrjm1ervxj30re06xwet.jpg" alt="QQ截图20200312230454.png"></p>
+<ul>
+<li><strong>for循环</strong>
+<ul>
+<li>基本语法1</li>
+</ul>
+<pre><code>for 变量 in 值1 值2 值3…
+do
+程序
+done
+</code></pre></li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrjwsouemj30pb0fkaaq.jpg" alt="QQ截图20200312231527.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrjx1vg2vj30u505m74f.jpg" alt="QQ截图20200312231512.png">
+- 基本语法 2
+<code>for (( 初始值;循环控制条件;变量变化 )) do 程序 done</code>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrk35ay0tj30ju0ayt8z.jpg" alt="QQ截图20200312232141.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrk3d4yikj30sd02v0sr.jpg" alt="QQ截图20200312232127.png"></p>
+<ul>
+<li><strong>while循环</strong>
+<ul>
+<li>基本语法</li>
+</ul>
+<pre><code>while [ 条件判断式 ]
+do
+程序
+done
+</code></pre></li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrkbjtaogj30ty0ckgm1.jpg" alt="QQ截图20200312232946.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrkbruj5nj30ra033jrf.jpg" alt="QQ截图20200312232934.png"></p>
+<hr>
+<h1 id="read-读取控制台输入">read 读取控制台输入</h1>
+<ul>
+<li><strong>基本语法</strong></li>
+</ul>
+<pre><code>read(选项)(参数)
+选项：
+-p：指定读取值时的提示符；
+-t：指定读取值时等待的时间（秒），如果没有在指定的时间内输入，就不再等待了
+变量：指定读取值的变量名
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrlv7g8spj30pk0as3zi.jpg" alt="QQ截图20200313002227.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrlvepgdvj30pi052gm0.jpg" alt="QQ截图20200313002317.png"></p>
+<hr>
+<h1 id="函数">函数</h1>
+<ul>
+<li><strong>系统函数</strong>
+<ul>
+<li><strong>basename 基本语法</strong><br>
+功能：返回完整路径最后 / 的部分，常用于获取文件名</li>
+</ul>
+<pre><code>basename [pathname] [suffix]
+basename [string] [suffix]	（功能描述：basename 命令会删掉所有的前缀包括最后一个（‘/’）字符，然后将字符串显示出来。
+选项：
+suffix 为后缀，如果 suffix 被指定了，basename 会将 pathname 或 string 中的 suffix 去掉。
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrm4x6setj30z8053mxi.jpg" alt="QQ截图20200313003238.png"></p>
+<ul>
+<li><strong>dirname 基本语法</strong><br>
+功能：返回完整路径最后 / 的前面的部分，常用于返回路径部分</li>
+</ul>
+<pre><code>dirname 文件绝对路径 （功能描述：从给定的包含绝对路径的文件名中去除文件名（非目录的部分），然后返回剩下的路径（目录的部分））
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcrm8bts1vj30yg03eaa4.jpg" alt="QQ截图20200313003555.png"></p>
+</li>
+<li><strong>自定义函数</strong>
+<ul>
+<li><strong>基本语法</strong></li>
+</ul>
+<pre><code>function funname()
+{
+  
+Action; 
+[return int;]
+}
+调用直接写函数名：funname	[值]
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcronfgqt0j30np0d4gmc.jpg" alt="QQ截图20200313015916.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcronmw5ffj30qx05gglv.jpg" alt="QQ截图20200313015935.png"></p>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/118javaee-%E5%AE%9A%E5%88%B6%E7%AF%87-%E6%90%AD%E5%BB%BA-javaee-%E7%8E%AF%E5%A2%83/" data-toggle="tooltip" data-placement="top" title="18、JavaEE定制篇搭建JavaEE环境(Linux)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="10、搜索查找类(Linux)" />
-    <meta property="og:title" content="10、搜索查找类(Linux)" />
-    <meta property="twitter:title" content="10、搜索查找类(Linux)" />
+    <meta name="title" content="16、进程管理(Linux)" />
+    <meta property="og:title" content="16、进程管理(Linux)" />
+    <meta property="twitter:title" content="16、进程管理(Linux)" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>10、搜索查找类(Linux)-yiguan1573</title>
+    <title>16、进程管理(Linux)-yiguan1573</title>
 
-    <link rel="canonical" href="/post/110%E6%90%9C%E7%B4%A2%E6%9F%A5%E6%89%BE%E7%B1%BB/">
+    <link rel="canonical" href="/post/116%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -178,7 +178,7 @@
                         </a>
                         
                     </div>
-                    <h1>10、搜索查找类(Linux)</h1>
+                    <h1>16、进程管理(Linux)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by 
@@ -186,7 +186,7 @@
                                  &#34;亿观&#34;
                          
                         on 
-                        Monday, February 17, 2020
+                        Thursday, February 27, 2020
                         
                         
                         
@@ -216,60 +216,201 @@
                 </header>
                 <nav id="TableOfContents"></nav>
                 
-                <h1 id="find指令">find指令</h1>
+                <h1 id="进程的基本介绍">进程的基本介绍</h1>
 <ul>
-<li><strong>find 指令将从指定目录向下递归地遍历其各个子目录，将满足条件的文件或者目录显示在终端</strong></li>
+<li><strong>在 LINUX 中，每个执行的程序（代码）都称为一个进程。每一个进程都分配一个ID号</strong></li>
+<li><strong>每一个进程，都会对应一个父进程，而这个父进程可以复制多个子进程。例如www服务器</strong></li>
+<li><strong>每个进程都可能以两种方式存在的。前台与后台，所谓前台进程就是用户目前的屏幕上可以进行操作的。后台进程则是实际在操作，但由于屏幕上无法看到的进程，通常使用后台方式执行</strong></li>
+<li><strong>一般系统的服务都是以后台进程的方式存在，而且都会常驻在系统中。直到关机才才结束</strong></li>
+</ul>
+<hr>
+<h1 id="显示系统执行的进程">显示系统执行的进程</h1>
+<ul>
+<li><strong>说明：查看进行使用的指令是ps ,一般来说使用的参数是 ps -aux</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayaylg22j30mj0avdhz.jpg" alt="QQ截图20200227143846.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaycwc0xzj30tf0a5tnv.jpg" alt="QQ截图20200227144052.png"></li>
+<li><strong>ps指令详解</strong>
+<ul>
+<li>指令：ps –aux|grep xxx ，比如看看有没有 sshd 服务，ps –aux|grep sshd</li>
+<li>指令说明</li>
+</ul>
+</li>
+</ul>
+<pre><code>•	VSZ：进程占用的虚拟内存大小（单位：KB）
+•	RSS：进程占用的物理内存大小（单位：KB）
+•	TT：终端名称,缩写 .
+•	STAT：进程状态，其中 S-睡眠，s-表示该进程是会话的先导进程，N-表示进程拥有比普通优先级更低的优先级，R-正在运行，D-短期等待，Z-僵死进程，T-被跟踪或者被停止等等
+•	STARTED：进程的启动时间
+•	TIME：CPU 时间，即进程使用 CPU 的总时间
+•	COMMAND：启动进程所用的命令和参数，如果过长会被截断显示
+</code></pre><ul>
+<li><strong>以全格式显示当前所有的进程，查看进程的父进程</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaykxyghjj30ox08mgtp.jpg" alt="QQ截图20200227144837.png"></li>
+</ul>
+<pre><code>•	UID：用户 ID
+•	PID：进程 ID
+•	PPID：父进程 ID
+•	C：CPU 用于计算执行优先级的因子。数值越大，表明进程是 CPU 密集型运算，执行优先级会降低；数值越小，表明进程是 I/O 密集型运算，执行优先级会提高
+•	STIME：进程启动的时间
+•	TTY：完整的终端名称
+•	TIME：CPU 时间
+•	CMD：启动进程所用的命令和参数
+</code></pre><hr>
+<h1 id="终止进程-kill-和-killall">终止进程 kill 和 killall</h1>
+<ul>
+<li><strong>介绍：若是某个进程执行一半需要停止时，或是已消了很大的系统资源时，此时可以考虑停止该进程。使用 kill 命令来完成此项任务</strong></li>
 <li><strong>基本语法</strong></li>
 </ul>
-<pre><code>find	[搜索范围]	[选项]
+<pre><code>kill	[选项] 进程号（功能描述：通过进程号杀死进程）
+killall 进程名称（功能描述：通过进程名称杀死进程，也支持通配符，这在系统因负载过大而变得很慢时很有用）
+</code></pre><ul>
+<li><strong>常用选项：-9 :表示强迫进程立即停止</strong></li>
+<li><strong>案例</strong>
+<ol>
+<li>踢掉某个非法登录用户
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaypipfpdj30ov07jq7a.jpg" alt="QQ截图20200227145301.png"></li>
+<li>终止远程登录服务 sshd, 在适当时候再次重启 sshd 服务
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayrivd6uj30ql0enn6q.jpg" alt="QQ截图20200227145412.png"></li>
+<li>终止多个 gedit编辑【killall , 通过进程名称来终止进程】
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaysih325j30gn054abx.jpg" alt="QQ截图20200227145554.png"></li>
+<li>强制杀掉一个终端
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayuc8mq2j30r7092wlh.jpg" alt="QQ截图20200227145736.png"></li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="查看进程树-pstree">查看进程树 pstree</h1>
+<ul>
+<li><strong>基本语法</strong></li>
+</ul>
+<pre><code>pstree [选项] ,可以更加直观的来看进程信息
+</code></pre><ul>
+<li><strong>常用选项</strong></li>
+</ul>
+<pre><code>-p :显示进程的 PID
+-u :显示进程的所属用户
+</code></pre><ul>
+<li><strong>案例</strong>
+<ol>
+<li>树状的形式显示进程的 pid
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayx1e3icj30jm06ymze.jpg" alt="QQ截图20200227150011.png"></li>
+<li>请你树状的形式进程的用户 id，pstree -u 即可</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="服务service管理">服务(Service)管理</h1>
+<ul>
+<li><strong>介绍：服务(service) 本质就是进程，但是是运行在后台的，通常都会监听某个端口，等待其它程序的请求，比(mysql , sshd 防火墙等)，因此我们又称为守护进程，是 Linux 中非常重要的知识点，在 CentOS7.0 后 不再使用 service ,而是 systemctl，服务名在最后面</strong></li>
+<li><strong>service 管理指令</strong></li>
+</ul>
+<pre><code>service	服务名 [start | stop |restart | reload | status]
+</code></pre><ul>
+<li>
+<p><strong>案例</strong></p>
+<ul>
+<li>查看当前防火墙的状况，关闭防火墙和重启防火墙
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaz5f8zijj30po09aaen.jpg" alt="QQ截图20200227150502.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaz5pzk9ej30qq073q7s.jpg" alt="QQ截图20200227150816.png"></li>
+</ul>
+</li>
+<li>
+<p><strong>细节讨论</strong></p>
+<ol>
+<li>关闭或者启用防火墙后，立即生效。[telnet 测试	某个端口即可]</li>
+<li>这种方式只是临时生效，当重启系统后，还是回归以前对服务的设置。
+如果希望设置某个服务自启动或关闭永久生效，要使用 chkconfig 指令</li>
+</ol>
+</li>
+<li>
+<p><strong>查看服务名</strong></p>
+<ol>
+<li>使用 setup -&gt; 系统服务 就可以看到,cenos7中使用nmtui</li>
+<li>systemctl list-unit-files  //centos7使用此命令</li>
+<li>/etc/init.d/服务名称
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazauupd8j30lj05jjuz.jpg" alt="QQ截图20200227151331.png"></li>
+</ol>
+</li>
+<li>
+<p><strong>开机的流程说明</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazc9vlv5j30te02z40x.jpg" alt="QQ截图20200227151452.png"></p>
+</li>
+<li>
+<p><strong>chkconfig 指令</strong></p>
+<ul>
+<li>通过 chkconfig 命令可以给每个服务的各个运行级别设置自启动/关闭</li>
+<li>案例：将 sshd 服务在运行级别为	5 的情况下，不要自启动
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazgv74a3j30nw03976f.jpg" alt="QQ截图20200227151918.png"></li>
+<li>基本语法</li>
+</ul>
+</li>
+</ul>
+<pre><code>chkconfig --list|grep	xxx
+chkconfig	服务名	--list
+chkconfig	--level	5 服务名 on/off
+说明：chkconfig 重新设置服务后自启动或关闭，需要重启机器 reboot 才能生效
+</code></pre><ul>
+<li><strong>应用实例</strong></li>
+</ul>
+<pre><code>1)	案例 1： 请显示当前系统所有服务的各个运行级别的运行状态
+bash&gt; chkconfig --list
+2)	案例 2 ：请查看 sshd 服务的运行状态 
+bash&gt; service sshd status
+3)	案例 3： 将 sshd 服务在运行级别 5 下设置为不自动启动，看看有什么效果？
+bash&gt; chkconfig --level 5 sshd off
+4)	案例 4： 当运行级别为 5 时，关闭防火墙。
+bash&gt; chkconfig	--level 5	iptables off
+5)	案例 5： 在所有运行级别下，关闭防火墙
+bash&gt; chkconfig	iptables off
+6) 案例 6： 在所有运行级别下，开启防火墙
+bash&gt; chkconfig	iptables	on
+</code></pre><hr>
+<h1 id="动态监控进程">动态监控进程</h1>
+<ul>
+<li><strong>介绍：top 与 ps 命令很相似。它们都用来显示正在执行的进程。top 与 ps 最大的不同之处，在于 top 在执行一段时间可以更新正在运行的的进程</strong></li>
+<li><strong>基本语法</strong></li>
+</ul>
+<pre><code>top [选项]
 </code></pre><ul>
 <li><strong>选项说明</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gbzewl3n38j30r005j0wm.jpg" alt="QQ截图20200217150632.png"></li>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazmo30w7j30to0jyk0e.jpg" alt="QQ截图20200227152444.png"></li>
 <li><strong>案例</strong>
 <ul>
-<li>按文件名：根据名称查找/home 目录下的 hello.txt 文件
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gbzf2gjjfuj30t203fgln.jpg" alt="QQ截图20200217151216.png"></li>
-<li>按拥有者：查找/opt 目录下，用户名称为 root 的文件
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gbzf5manzxj30qj01gdfp.jpg" alt="QQ截图20200217151516.png"></li>
-<li>查找整个 linux 系统下大于 20m 的文件（+n  大于	-n 小于	n 等于）
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gbzf891q02j30uz0bomy5.jpg" alt="QQ截图20200217151752.png"></li>
-<li>查询	/ 目录下，所有 .txt 的文件
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gbzfbpf2i9j30vi0jotag.jpg" alt="QQ截图20200217152110.png"></li>
+<li>监视特定用户</li>
 </ul>
-</li>
+<pre><code>top：输入此命令，按回车键，查看执行的进程。
+u：然后输入“u”回车，再输入用户名，即可
+</code></pre><ul>
+<li>终止指定的进程</li>
+</ul>
+<pre><code>top：输入此命令，按回车键，查看执行的进程。
+k：然后输入“k”回车，再输入要结束的进程 ID 号
+</code></pre><ul>
+<li>指定系统状态更新的时间(每隔 10 秒自动更新， 默认是 3 秒)</li>
+</ul>
+<pre><code>bash&gt; top -d 10
+</code></pre></li>
 </ul>
 <hr>
-<h1 id="locate指令">locate指令</h1>
+<h1 id="查看网络情况netstat">查看网络情况netstat</h1>
 <ul>
-<li><strong>locaate 指令可以快速定位文件路径。locate 指令利用事先建立的系统中所有文件名称及路径的locate 数据库实现快速定位给定的文件。Locate 指令无需遍历整个文件系统，查询速度较快。为了保证查询结果的准确度，管理员必须定期更新 locate 时刻</strong></li>
 <li><strong>基本语法</strong></li>
 </ul>
-<pre><code>locate 搜索文件
+<pre><code>netstat [选项]
+netstat -anp
 </code></pre><ul>
-<li><strong>由于 locate 指令基于数据库进行查询，所以第一次运行前，必须使用 updatedb 指令创建 locate 数据库</strong></li>
-<li><strong>centos7 没有locate和updatedb命令，需要事先运行yum install mlocate命令</strong></li>
-<li><strong>案例</strong>
-<ul>
-<li>使用 locate 指令快速定位 hello.txt 文件所在目录
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gbzfjw5s9hj30uq033t8r.jpg" alt="QQ截图20200217152903.png"></li>
+<li><strong>选项说明</strong></li>
 </ul>
-</li>
-</ul>
-<hr>
-<h1 id="grep指令和管道符号">grep指令和管道符号</h1>
-<ul>
-<li><strong>grep 过滤查找 ， 管道符，“|”，表示将前一个命令的处理结果输出传递给后面的命令处理</strong></li>
-<li><strong>基本语法</strong></li>
-</ul>
-<pre><code>grep [选项] 查找内容 源文件
+<pre><code>-an	按一定顺序排列输出
+-p	显示哪个进程在调用
 </code></pre><ul>
-<li><strong>常用选项</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gbzfo8mfeqj30mw03vmxx.jpg" alt="QQ截图20200217153311.png"></li>
-<li><strong>案例</strong>
-<ul>
-<li>在  hello.txt  文件中，查找&quot;hello&quot;所在行，并且显示行号
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gbzfv2mbksj30vo047q2z.jpg" alt="QQ截图20200217153945.png"></li>
-</ul>
+<li>应用案例
+<ol>
+<li>查看系统所有的网络服务
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcj43tw9xvj310z0io0u2.jpg" alt="QQ截图20200305160342.png"></li>
+<li>查看服务名为 sshd 的服务的信息
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcj45s386lj311a08s74v.jpg" alt="QQ截图20200305160607.png"></li>
+</ol>
 </li>
 </ul>
 
@@ -280,13 +421,13 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/111%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B%E7%BC%A9/" data-toggle="tooltip" data-placement="top" title="11、压缩和解压缩(Linux)">&larr;
+                        <a href="/post/115%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/" data-toggle="tooltip" data-placement="top" title="15、网络配置(Linux)">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/post/114%E7%A3%81%E7%9B%98%E5%92%8C%E5%88%86%E5%8C%BA/" data-toggle="tooltip" data-placement="top" title="14、磁盘和分区(Linux)">Next
+                        <a href="/post/117rpm%E5%92%8Cyum/" data-toggle="tooltip" data-placement="top" title="17、RPM和YUM(Linux)">Next
                             Post &rarr;</a>
                     </li>
                     
