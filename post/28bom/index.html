@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="3、基本数据类型(JS)" />
-    <meta property="og:title" content="3、基本数据类型(JS)" />
-    <meta property="twitter:title" content="3、基本数据类型(JS)" />
+    <meta name="title" content="28、BOM(JS)" />
+    <meta property="og:title" content="28、BOM(JS)" />
+    <meta property="twitter:title" content="28、BOM(JS)" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>3、基本数据类型(JS)-yiguan1573</title>
+    <title>28、BOM(JS)-yiguan1573</title>
 
-    <link rel="canonical" href="/post/3%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+    <link rel="canonical" href="/post/28bom/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -178,7 +178,7 @@
                         </a>
                         
                     </div>
-                    <h1>3、基本数据类型(JS)</h1>
+                    <h1>28、BOM(JS)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by 
@@ -186,7 +186,7 @@
                                  &#34;亿观&#34;
                          
                         on 
-                        Wednesday, February 5, 2020
+                        Monday, March 30, 2020
                         
                         
                         
@@ -216,65 +216,77 @@
                 </header>
                 <nav id="TableOfContents"></nav>
                 
-                <h1 id="数据类型">数据类型</h1>
+                <h1 id="bom浏览器对象模型">BOM（浏览器对象模型）</h1>
 <ul>
-<li><strong>数据类型指的就是字面量的类型</strong></li>
-<li><strong>在JS中一共六种数据类型</strong>
-<ol>
-<li>Number 数值</li>
-<li>Boolean 布尔值</li>
-<li>Null 空值</li>
-<li>Undefined 未定义</li>
-<li>Object 对象</li>
-<li>String 字符串</li>
-</ol>
+<li><strong>BOM可以使我们通过JS来操作浏览器</strong></li>
+<li><strong>在BOM中为我们提供了一组对象，用来完成对浏览器的操作</strong></li>
+<li><strong>BOM对象</strong>
+<ul>
+<li>Window——代表的是整个浏览器的窗口，同时window也是网页中的全局对象</li>
+<li>Navigator——代表的当前浏览器的信息，通过该对象可以来识别不同的浏览器</li>
+<li>Location——代表当前浏览器的地址栏信息，通过Location可以获取地址栏信息，或者操作浏览器跳转页面</li>
+<li>History——代表浏览器的历史记录，可以通过该对象来操作浏览器的历史记录，由于隐私原因，该对象不能获取到具体的历史记录，只能操作浏览器向前或向后翻页，而且该操作只在当次访问时有效</li>
+<li>Screen——代表用户的屏幕的信息，通过该对象可以获取到用户的显示器的相关的信息</li>
+</ul>
 </li>
-<li><strong>其中String、Number、Boolean、Null、Undefined属于基本数据类型，而Object属于引用数据类型</strong></li>
+<li><strong>这些BOM对象在浏览器中都是作为window对象的属性保存的，可以通过window对象来使用，也可以直接使用</strong></li>
 </ul>
-<hr>
-<h1 id="字符串">字符串</h1>
-<ul>
-<li><strong>单引号双引号都可以引字符串</strong></li>
-</ul>
-<pre><code>var str = &quot;hello&quot;;
-document.write(str);
-</code></pre><ul>
-<li><strong>在字符串中可以使用\作为转义字符，\n表示换行</strong></li>
-</ul>
-<pre><code>var str = &quot;我说：\&quot;今天天气不错！\&quot;&quot;;
-document.write(str);
+<pre><code>console.log(navigator);
+console.log(window.navigator);
 </code></pre><hr>
-<h1 id="number">Number</h1>
+<h1 id="navigator">Navigator</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gdd9p0dm4bj30si0ftabe.jpg" alt="QQ截图20200331180425.png"></p>
 <ul>
-<li><strong>包括整数和浮点数</strong></li>
-<li><strong>可以使用typeof检查变量的类型</strong></li>
+<li><strong>由于历史原因，Navigator对象中的大部分属性都已经不能帮助识别浏览器了，一般我们只会使用userAgent来判断浏览器的信息</strong></li>
+<li><strong>userAgent是一个字符串， 这个字符串中包含有用来描述浏览器信息的内容，不同的浏览器会有不同的userAgent</strong>
+<ul>
+<li>火狐的userAgent——Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0</li>
+<li>谷歌的userAgent——Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gddeuxsjv2j30ho084whl.jpg" alt="QQ截图20200331210313.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gddeynn6awj30o506qq5z.jpg" alt="QQ截图20200331210643.png"></li>
 </ul>
-<pre><code>var a = 123;
-var b = &quot;123&quot;;
-console.log(typeof a);
-console.log(typeof b);
-</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gblyllzc7rj30v704gmxa.jpg" alt="QQ截图20200205231512.png"></p>
-<ul>
-<li><strong>JS中可以表示的最大值Number.MAX_VALUE，如果数字大于最大值，则会返回Infinity，字符串与字
-符串相乘结果为NaN，即Not a Number</strong></li>
-</ul>
-<pre><code>console.log(Number.MAX_VALUE);
-</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gblymlatspj30v503l0su.jpg" alt="QQ截图20200205231814.png"></p>
-<ul>
-<li><strong>JS中最大精确度Number.MIN_VALUE</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gblymxls8aj30vi043aa6.jpg" alt="QQ截图20200205232715.png"></li>
-<li><strong>如果使用JS进行浮点数运算。可能得到一个不精确的结果</strong></li>
+</li>
 </ul>
 <hr>
-<h1 id="布尔值">布尔值</h1>
+<h1 id="history">History</h1>
 <ul>
-<li><strong>用来表示逻辑判断，有true和false</strong></li>
+<li><strong>对象可以用来操作浏览器向前或向后翻页</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gddf2xjfgaj30st0bzq3e.jpg" alt="QQ截图20200331211047.png"></li>
+<li><strong>length属性可以获取到当前访问的连接数量</strong></li>
 </ul>
-<hr>
-<h1 id="null和undefined">Null和Undefined</h1>
+<pre><code>alert(history.length);
+</code></pre><ul>
+<li><strong>back()方法可以用来回退到上一个页面，作用和浏览器的回退按钮一样</strong></li>
+</ul>
+<pre><code>history.back();
+</code></pre><ul>
+<li><strong>forward()方法可以跳转下一一个页面，作用和浏览器的前进按钮一样</strong></li>
+<li><strong>go()可以用来跳转到指定的页面它需要一个整数作为参数</strong>
 <ul>
-<li><strong>Null类型的值只有null,null专门用来表示一个空对象，用typeof检查null值时返回object</strong></li>
-<li><strong>Undefined类型的值只有undefined,表示声明了一个变量但未赋值</strong></li>
+<li>1:表示向前跳转-个页面相当于forward()</li>
+<li>2:表示向前跳转两个页面</li>
+<li>-1:表示向后跳转一一个页 面</li>
+<li>-2:表示向后跳转两个页面</li>
+</ul>
+</li>
+</ul>
+<pre><code>history.go(-1);
+</code></pre><hr>
+<h1 id="location">Location</h1>
+<ul>
+<li><strong>该对象中封装了浏览器的地址栏的信息</strong></li>
+<li><strong>如果直接打印location,则可以获取到地址栏的信息(当前页面的完整路径)</strong></li>
+</ul>
+<pre><code>alert(location) ;
+</code></pre><ul>
+<li><strong>如果直接将location属性修改为一个完整的路径，或相对路径，则我们页面会自动跳转到该路径，并且会生成相应的历史记录</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gddfl8kov1j30sy0j7jsk.jpg" alt="QQ截图20200331212833.png"></li>
+<li><strong>assign()，用来跳转到其他的页面，作用和直接修改location一样</strong></li>
+</ul>
+<pre><code>location. assign(&quot;http://www.baidu.com&quot;) ;
+</code></pre><ul>
+<li><strong>reload(),用于重新加载当前页面，作用和刷新按钮一样,如果在方法中传递一个true作为参数，则会强制清空缓存刷新页面</strong></li>
+<li><strong>replace()，可以使用一个新的页面替换当前页面，调用完毕也会跳转页面，不会生成历史记录，不能使用回退按钮回退</strong></li>
 </ul>
 
 
@@ -284,13 +296,13 @@ console.log(typeof b);
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/2%E5%8F%98%E9%87%8F/" data-toggle="tooltip" data-placement="top" title="2、变量(JS)">&larr;
+                        <a href="/post/27%E9%94%AE%E7%9B%98%E7%9A%84%E4%BA%8B%E4%BB%B6/" data-toggle="tooltip" data-placement="top" title="27、键盘的事件(JS)">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/post/6unicode%E7%BC%96%E7%A0%81%E8%A1%A8/" data-toggle="tooltip" data-placement="top" title="6、Unicode编码表(JS)">Next
+                        <a href="/post/29%E5%AE%9A%E6%97%B6%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="29、定时器(JS)">Next
                             Post &rarr;</a>
                     </li>
                     

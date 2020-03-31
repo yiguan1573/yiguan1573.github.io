@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="3、基本数据类型(JS)" />
-    <meta property="og:title" content="3、基本数据类型(JS)" />
-    <meta property="twitter:title" content="3、基本数据类型(JS)" />
+    <meta name="title" content="24、事件(JS)" />
+    <meta property="og:title" content="24、事件(JS)" />
+    <meta property="twitter:title" content="24、事件(JS)" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>3、基本数据类型(JS)-yiguan1573</title>
+    <title>24、事件(JS)-yiguan1573</title>
 
-    <link rel="canonical" href="/post/3%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+    <link rel="canonical" href="/post/24%E4%BA%8B%E4%BB%B6/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -178,7 +178,7 @@
                         </a>
                         
                     </div>
-                    <h1>3、基本数据类型(JS)</h1>
+                    <h1>24、事件(JS)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by 
@@ -186,7 +186,7 @@
                                  &#34;亿观&#34;
                          
                         on 
-                        Wednesday, February 5, 2020
+                        Thursday, March 26, 2020
                         
                         
                         
@@ -216,65 +216,73 @@
                 </header>
                 <nav id="TableOfContents"></nav>
                 
-                <h1 id="数据类型">数据类型</h1>
+                <h1 id="事件对象">事件对象</h1>
 <ul>
-<li><strong>数据类型指的就是字面量的类型</strong></li>
-<li><strong>在JS中一共六种数据类型</strong>
+<li><strong>当响应函数被调用时，浏览器每次都会将一个事件对象作为实参传递进响应函数中，这个事件对象中封装了当前事件的相关信息，比如：鼠标的坐标，键盘的按键，鼠标的按键，滚轮的方向</strong></li>
+<li><strong>可以在响应函数中定义一个形参，来使用事件对象，但是在IE8以下浏览器中事件对象没有做完实参传递，而是作为window对象的属性保存</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gdc1p3hgfwj30r20mbwf8.jpg" alt="QQ截图20200330164213.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gdc1sp7zqpj30ra0cpgm3.jpg" alt="QQ截图20200330164548.png"></li>
+</ul>
+<pre><code>元素.事件 = function(event){
+    event = event || window.event;  
+};//同时兼容所有浏览器
+			
+元素.事件 = function(event){
+    var x=event.clientX;
+};
+元素.事件 = function(event){
+    var x=window.event.clientX;
+};//IE8及以下
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gdc1xpzqgqj31010jmtk3.jpg" alt="QQ截图20200330165035.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gdc2iay9c1j30p70b8th7.jpg" alt="QQ截图20200330171024.png"></p>
+<hr>
+<h1 id="事件的冒泡bubble">事件的冒泡（Bubble）</h1>
+<ul>
+<li><strong>事件的冒泡指的是事件向上传导，当后代元素上的事件被触发时，将会导致其祖先元素上的同类事件也会触发</strong></li>
+<li><strong>事件的冒泡大部分情况下都是有益的，如果需要取消冒泡，则需要使用事件对象来取消</strong></li>
+<li><strong>可以将事件对象的cancelBubble设置为true，即可取消冒泡</strong></li>
+</ul>
+<pre><code>元素.事件 = function(event){
+    event = event || window.event;
+    event.cancelBubble = true;
+};//取消冒泡
+</code></pre><hr>
+<h1 id="事件的委派">事件的委派</h1>
+<ul>
+<li><strong>将事件统一绑定给元素共同的祖先元素，当后代元素的事件触发时，会一直冒泡到祖先元素。从而通过祖先元素的响应函数来处理事件</strong></li>
+<li><strong>事件委派是利用了冒泡，利用委派可以减少事件绑定的次数，提高程序的性能</strong></li>
+<li><strong>target——event中的target表示的触发事件的对象</strong></li>
+</ul>
+<hr>
+<h1 id="事件的绑定">事件的绑定</h1>
+<ul>
+<li><strong>使用对象.事件=函数的形式绑定响应函数，它只能同时为一-个元素的一一个事件绑定一一个响应函数，不能绑定多个，如果绑定了多个，则后边会覆盖掉前边的</strong></li>
+<li><strong>addEventListener()</strong>
+<ul>
+<li>可以通过过此方法绑定相应元素</li>
+<li>参数：1.事件的字符串，不要on，2.回调函数，当事件触发时该函数被调用，3.是否在捕获阶段触发事件，需要一个布尔值，一般传false
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gdc5478yt4j31080b0n4u.jpg" alt="QQ截图20200330184031.png"></li>
+</ul>
+</li>
+<li><strong>使用addEventListener( )可以同时为一个元素的相同事件同时绑定多个响应函数，这样当事件被触发时，响应函数将会按照函数的绑定顺序执行，这个方法不支持IE8以下的浏览器</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gdc5baafquj30t60cnqb7.jpg" alt="QQ截图20200330184726.png"></li>
+</ul>
+<hr>
+<h1 id="事件的传播">事件的传播</h1>
+<ul>
+<li><strong>关于事件的传播网景公司和微软公司有不同的理解</strong></li>
+<li><strong>微软公司认为事件应该是由内向外传播，也就是当事件触发时，应该先触发当前元素上的事件，然后再向当前元素的祖先元素上传播，也就说事件应该在冒泡阶段执行</strong></li>
+<li><strong>网景公司认为事件应该是由外向内传播的，也就是当前事件触发时，应该先触发当前元素的最外层的祖先元素的事件，然后在向内传播给后代元素</strong></li>
+<li><strong>W3C综合了两个公司的方案，将事件传播分成了三个阶段</strong>
 <ol>
-<li>Number 数值</li>
-<li>Boolean 布尔值</li>
-<li>Null 空值</li>
-<li>Undefined 未定义</li>
-<li>Object 对象</li>
-<li>String 字符串</li>
+<li>捕获阶段:在捕获阶段时从最外层的祖先元素，向目标元素进行事件的捕获，但是默认此时不会触发事件</li>
+<li>目标阶段:事件捕获到目标元素，捕获结束开始在目标元素上触发事件</li>
+<li>冒泡阶段:事件从目标元素向他的祖先元素传递，依次触发祖先元素上的事件</li>
 </ol>
 </li>
-<li><strong>其中String、Number、Boolean、Null、Undefined属于基本数据类型，而Object属于引用数据类型</strong></li>
-</ul>
-<hr>
-<h1 id="字符串">字符串</h1>
-<ul>
-<li><strong>单引号双引号都可以引字符串</strong></li>
-</ul>
-<pre><code>var str = &quot;hello&quot;;
-document.write(str);
-</code></pre><ul>
-<li><strong>在字符串中可以使用\作为转义字符，\n表示换行</strong></li>
-</ul>
-<pre><code>var str = &quot;我说：\&quot;今天天气不错！\&quot;&quot;;
-document.write(str);
-</code></pre><hr>
-<h1 id="number">Number</h1>
-<ul>
-<li><strong>包括整数和浮点数</strong></li>
-<li><strong>可以使用typeof检查变量的类型</strong></li>
-</ul>
-<pre><code>var a = 123;
-var b = &quot;123&quot;;
-console.log(typeof a);
-console.log(typeof b);
-</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gblyllzc7rj30v704gmxa.jpg" alt="QQ截图20200205231512.png"></p>
-<ul>
-<li><strong>JS中可以表示的最大值Number.MAX_VALUE，如果数字大于最大值，则会返回Infinity，字符串与字
-符串相乘结果为NaN，即Not a Number</strong></li>
-</ul>
-<pre><code>console.log(Number.MAX_VALUE);
-</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gblymlatspj30v503l0su.jpg" alt="QQ截图20200205231814.png"></p>
-<ul>
-<li><strong>JS中最大精确度Number.MIN_VALUE</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gblymxls8aj30vi043aa6.jpg" alt="QQ截图20200205232715.png"></li>
-<li><strong>如果使用JS进行浮点数运算。可能得到一个不精确的结果</strong></li>
-</ul>
-<hr>
-<h1 id="布尔值">布尔值</h1>
-<ul>
-<li><strong>用来表示逻辑判断，有true和false</strong></li>
-</ul>
-<hr>
-<h1 id="null和undefined">Null和Undefined</h1>
-<ul>
-<li><strong>Null类型的值只有null,null专门用来表示一个空对象，用typeof检查null值时返回object</strong></li>
-<li><strong>Undefined类型的值只有undefined,表示声明了一个变量但未赋值</strong></li>
+<li><strong>如果希望在捕获阶段就触发事件，可以将addEventListener( )的第三个参数设置为true,一般情况下我们不会希望在捕获阶段触发事件， 所以这个参数一般都是false</strong></li>
+<li><strong>IE8及以下的浏览器没有捕获阶段</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gdc6899b0sj30lh0bydgh.jpg" alt="事件的传播.png"></li>
 </ul>
 
 
@@ -284,13 +292,13 @@ console.log(typeof b);
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/2%E5%8F%98%E9%87%8F/" data-toggle="tooltip" data-placement="top" title="2、变量(JS)">&larr;
+                        <a href="/post/23dom%E5%AF%B9css%E7%9A%84%E6%93%8D%E4%BD%9C/" data-toggle="tooltip" data-placement="top" title="23、DOM对CSS的操作(JS)">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/post/6unicode%E7%BC%96%E7%A0%81%E8%A1%A8/" data-toggle="tooltip" data-placement="top" title="6、Unicode编码表(JS)">Next
+                        <a href="/post/25%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%BB%83%E4%B9%A0%E6%8B%96%E6%8B%BD/" data-toggle="tooltip" data-placement="top" title="25、事件的练习：拖拽(JS)">Next
                             Post &rarr;</a>
                     </li>
                     
