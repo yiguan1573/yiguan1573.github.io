@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.github.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.github.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="10、jQuery事件机制(jQuery)" />
+    <meta property="og:title" content="10、jQuery事件机制(jQuery)" />
+    <meta property="twitter:title" content="10、jQuery事件机制(jQuery)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>10、jQuery事件机制(jQuery)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/210jquery%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1ge764e6fmjj31hc0u0nio.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/jquery" title="jQuery">
+                            jQuery
+                        </a>
+                        
+                    </div>
+                    <h1>10、jQuery事件机制(jQuery)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Saturday, April 25, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <h1 id="on注册事件">on注册事件</h1>
+<ul>
+<li><strong>jQuery1.7之后, jQuery用on统一了 所有事件的处理方法</strong></li>
+<li><strong>on注册简单事件，不支持动态注册</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gecc3bvjqlj30ed01vt9f.jpg" alt="QQ截图20200501020215.png"></li>
+<li><strong>on注册事件委托，支持动态注册</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gecc5k94svj30kr027wfn.jpg" alt="QQ截图20200501020424.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gecc7xan7fj30cf03vdgx.jpg" alt="QQ截图20200501020645.png"></li>
+</ul>
+<hr>
+<h1 id="事件解绑">事件解绑</h1>
+<ul>
+<li><strong>unbind方式（不用）</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geeffudol9j30ct025755.jpg" alt="QQ截图20200502212912.png"></li>
+<li><strong>undelegate方式（不用）</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geefg76z06j30fy024q40.jpg" alt="QQ截图20200502212936.png"></li>
+<li><strong>off方式（推荐）</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geefgmopcoj30aw0393zl.jpg" alt="QQ截图20200502213001.png"></li>
+</ul>
+<hr>
+<h1 id="触发事件">触发事件</h1>
+<ul>
+<li><strong>触发事件</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geehlaj1x2j30al029q3j.jpg" alt="QQ截图20200502224341.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geehvr9cgsj30g70dutd5.jpg" alt="QQ截图20200502225345.png"></li>
+<li><strong>注册自定义事件</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geei40f1l8j30jl09gadu.jpg" alt="QQ截图20200502230142.png"></li>
+</ul>
+<hr>
+<h1 id="jquery的事件对象">jQuery的事件对象</h1>
+<ul>
+<li><strong>注册一个事件， 系统就会帮我们生成一个对象记录这个事件触发时候的一些信息</strong></li>
+<li><strong>jQuery事件对象其实就是js事件对象的一个封装,处理了兼容性</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geei60c646j30nq06t42j.jpg" alt="QQ截图20200502230337.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geeibmbgl1j30cq02iaam.jpg" alt="QQ截图20200502230900.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geeiawv8n6j30mr0520tz.jpg" alt="QQ截图20200502230820.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geeig7y24mj30gt072ad1.jpg" alt="QQ截图20200502231325.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geeiiqmm7gj30dm03pjsv.jpg" alt="QQ截图20200502231551.png"></li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/209jquery%E5%B0%BA%E5%AF%B8%E5%92%8C%E4%BD%8D%E7%BD%AE%E6%93%8D%E4%BD%9C/" data-toggle="tooltip" data-placement="top" title="9、jQuery尺寸和位置操作(jQuery)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/211jquery%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86%E7%82%B9/" data-toggle="tooltip" data-placement="top" title="11、jQuery补充知识点(jQuery)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
