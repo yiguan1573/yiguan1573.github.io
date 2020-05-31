@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.github.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.github.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="3、使用PreparedStatement实现CRUD操作(JDBC)" />
+    <meta property="og:title" content="3、使用PreparedStatement实现CRUD操作(JDBC)" />
+    <meta property="twitter:title" content="3、使用PreparedStatement实现CRUD操作(JDBC)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>3、使用PreparedStatement实现CRUD操作(JDBC)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/503%E4%BD%BF%E7%94%A8preparedstatement%E5%AE%9E%E7%8E%B0crud%E6%93%8D%E4%BD%9C/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/jdbc" title="JDBC">
+                            JDBC
+                        </a>
+                        
+                    </div>
+                    <h1>3、使用PreparedStatement实现CRUD操作(JDBC)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Tuesday, May 19, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <h1 id="操作和访问数据库">操作和访问数据库</h1>
+<ul>
+<li>
+<p>数据库连接被用于向数据库服务器发送命令和 SQL 语句，并接受数据库服务器返回的结果。其实一个数据库连接就是一个Socket连接。</p>
+</li>
+<li>
+<p>在 java.sql 包中有 3 个接口分别定义了对数据库的调用的不同方式：</p>
+<ul>
+<li>Statement：用于执行静态 SQL 语句并返回它所生成结果的对象。</li>
+<li>PrepatedStatement：SQL 语句被预编译并存储在此对象中，可以使用此对象多次高效地执行该语句。</li>
+<li>CallableStatement：用于执行 SQL 存储过程
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gezce0o0khj30ph0c4td9.jpg" alt="QQ截图20200520234031.png"></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="使用statement操作数据表的弊端">使用Statement操作数据表的弊端</h1>
+<ul>
+<li>
+<p>通过调用 Connection 对象的 createStatement() 方法创建该对象。该对象用于执行静态的 SQL 语句，并且返回执行结果。</p>
+</li>
+<li>
+<p>Statement 接口中定义了下列方法用于执行 SQL 语句：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">int excuteUpdate(String <span style="color:#66d9ef">sql</span>)<span style="color:#960050;background-color:#1e0010">：</span><span style="color:#960050;background-color:#1e0010">执</span><span style="color:#960050;background-color:#1e0010">行</span><span style="color:#960050;background-color:#1e0010">更</span><span style="color:#960050;background-color:#1e0010">新</span><span style="color:#960050;background-color:#1e0010">操</span><span style="color:#960050;background-color:#1e0010">作</span><span style="color:#66d9ef">INSERT</span><span style="color:#960050;background-color:#1e0010">、</span><span style="color:#66d9ef">UPDATE</span><span style="color:#960050;background-color:#1e0010">、</span><span style="color:#66d9ef">DELETE</span>
+ResultSet executeQuery(String <span style="color:#66d9ef">sql</span>)<span style="color:#960050;background-color:#1e0010">：</span><span style="color:#960050;background-color:#1e0010">执</span><span style="color:#960050;background-color:#1e0010">行</span><span style="color:#960050;background-color:#1e0010">查</span><span style="color:#960050;background-color:#1e0010">询</span><span style="color:#960050;background-color:#1e0010">操</span><span style="color:#960050;background-color:#1e0010">作</span><span style="color:#66d9ef">SELECT</span>
+</code></pre></div></li>
+<li>
+<p>但是使用Statement操作数据表存在弊端：</p>
+<ul>
+<li><strong>问题一：存在拼串操作，繁琐</strong></li>
+<li><strong>问题二：存在SQL注入问题</strong></li>
+</ul>
+</li>
+<li>
+<p>SQL 注入是利用某些系统没有对用户输入的数据进行充分的检查，而在用户输入数据中注入非法的 SQL 语句段或命令(如：SELECT user, password FROM user_table WHERE user='a&rsquo; OR 1 = ' AND password = ' OR &lsquo;1&rsquo; = &lsquo;1&rsquo;) ，从而利用系统的 SQL 引擎完成恶意行为的做法。</p>
+</li>
+<li>
+<p>对于 Java 而言，要防范 SQL 注入，只要用 PreparedStatement(从Statement扩展而来) 取代 Statement 就可以了。</p>
+</li>
+<li>
+<p>代码演示：</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StatementTest</span> <span style="color:#f92672">{</span>
+
+	<span style="color:#75715e">// 使用Statement的弊端：需要拼写sql语句，并且存在SQL注入的问题
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">@Test</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testLogin</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		Scanner scan <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Scanner<span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">in</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+		System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;用户名：&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		String userName <span style="color:#f92672">=</span> scan<span style="color:#f92672">.</span><span style="color:#a6e22e">nextLine</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;密   码：&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		String password <span style="color:#f92672">=</span> scan<span style="color:#f92672">.</span><span style="color:#a6e22e">nextLine</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+		<span style="color:#75715e">// SELECT user,password FROM user_table WHERE USER = &#39;1&#39; or &#39; AND PASSWORD = &#39;=&#39;1&#39; or &#39;1&#39; = &#39;1&#39;;
+</span><span style="color:#75715e"></span>		String sql <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;SELECT user,password FROM user_table WHERE USER = &#39;&#34;</span> <span style="color:#f92672">+</span> userName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39; AND PASSWORD = &#39;&#34;</span> <span style="color:#f92672">+</span> password
+				<span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">;</span>
+		User user <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span>sql<span style="color:#f92672">,</span> User<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>user <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+			System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;登陆成功!&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		<span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+			System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;用户名或密码错误！&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		<span style="color:#f92672">}</span>
+	<span style="color:#f92672">}</span>
+
+	<span style="color:#75715e">// 使用Statement实现对数据表的查询操作
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>String sql<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> clazz<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		T t <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+
+		Connection conn <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+		Statement st <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+		ResultSet rs <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+			<span style="color:#75715e">// 1.加载配置文件
+</span><span style="color:#75715e"></span>			InputStream is <span style="color:#f92672">=</span> StatementTest<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceAsStream</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;jdbc.properties&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			Properties pros <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			pros<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span>is<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			<span style="color:#75715e">// 2.读取配置信息
+</span><span style="color:#75715e"></span>			String user <span style="color:#f92672">=</span> pros<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;user&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			String password <span style="color:#f92672">=</span> pros<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			String url <span style="color:#f92672">=</span> pros<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;url&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			String driverClass <span style="color:#f92672">=</span> pros<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;driverClass&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			<span style="color:#75715e">// 3.加载驱动
+</span><span style="color:#75715e"></span>			Class<span style="color:#f92672">.</span><span style="color:#a6e22e">forName</span><span style="color:#f92672">(</span>driverClass<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			<span style="color:#75715e">// 4.获取连接
+</span><span style="color:#75715e"></span>			conn <span style="color:#f92672">=</span> DriverManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection</span><span style="color:#f92672">(</span>url<span style="color:#f92672">,</span> user<span style="color:#f92672">,</span> password<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			st <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span><span style="color:#a6e22e">createStatement</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			rs <span style="color:#f92672">=</span> st<span style="color:#f92672">.</span><span style="color:#a6e22e">executeQuery</span><span style="color:#f92672">(</span>sql<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			<span style="color:#75715e">// 获取结果集的元数据
+</span><span style="color:#75715e"></span>			ResultSetMetaData rsmd <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getMetaData</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			<span style="color:#75715e">// 获取结果集的列数
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">int</span> columnCount <span style="color:#f92672">=</span> rsmd<span style="color:#f92672">.</span><span style="color:#a6e22e">getColumnCount</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>rs<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+				t <span style="color:#f92672">=</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+				<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> columnCount<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+					<span style="color:#75715e">// //1. 获取列的名称
+</span><span style="color:#75715e"></span>					<span style="color:#75715e">// String columnName = rsmd.getColumnName(i+1);
+</span><span style="color:#75715e"></span>
+					<span style="color:#75715e">// 1. 获取列的别名
+</span><span style="color:#75715e"></span>					String columnName <span style="color:#f92672">=</span> rsmd<span style="color:#f92672">.</span><span style="color:#a6e22e">getColumnLabel</span><span style="color:#f92672">(</span>i <span style="color:#f92672">+</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+					<span style="color:#75715e">// 2. 根据列名获取对应数据表中的数据
+</span><span style="color:#75715e"></span>					Object columnVal <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getObject</span><span style="color:#f92672">(</span>columnName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+					<span style="color:#75715e">// 3. 将数据表中得到的数据，封装进对象
+</span><span style="color:#75715e"></span>					Field field <span style="color:#f92672">=</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">getDeclaredField</span><span style="color:#f92672">(</span>columnName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+					field<span style="color:#f92672">.</span><span style="color:#a6e22e">setAccessible</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+					field<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>t<span style="color:#f92672">,</span> columnVal<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				<span style="color:#f92672">}</span>
+				<span style="color:#66d9ef">return</span> t<span style="color:#f92672">;</span>
+			<span style="color:#f92672">}</span>
+		<span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+			e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		<span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+			<span style="color:#75715e">// 关闭资源
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>rs <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+				<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+					rs<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				<span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>SQLException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+					e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				<span style="color:#f92672">}</span>
+			<span style="color:#f92672">}</span>
+			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>st <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+				<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+					st<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				<span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>SQLException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+					e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				<span style="color:#f92672">}</span>
+			<span style="color:#f92672">}</span>
+
+			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>conn <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+				<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+					conn<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				<span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>SQLException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+					e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				<span style="color:#f92672">}</span>
+			<span style="color:#f92672">}</span>
+		<span style="color:#f92672">}</span>
+
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>综上：
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gezcgjdfmej30st0dagns.jpg" alt="QQ截图20200520234259.png"></p>
+<hr>
+<h1 id="preparedstatement的使用">PreparedStatement的使用</h1>
+<ul>
+<li><strong>PreparedStatement介绍</strong>
+<ul>
+<li>
+<p>可以通过调用 Connection 对象的 <strong>preparedStatement(String sql)</strong> 方法获取 PreparedStatement 对象</p>
+</li>
+<li>
+<p><strong>PreparedStatement 接口是 Statement 的子接口，它表示一条预编译过的 SQL 语句</strong></p>
+</li>
+<li>
+<p>PreparedStatement 对象所代表的 SQL 语句中的参数用问号(?)来表示，调用 PreparedStatement 对象的 setXxx() 方法来设置这些参数. setXxx() 方法有两个参数，第一个参数是要设置的 SQL 语句中的参数的索引(从 1 开始)，第二个是设置的 SQL 语句中的参数的值</p>
+</li>
+</ul>
+</li>
+<li><strong>PreparedStatement vs Statement</strong>
+<ul>
+<li>
+<p>代码的可读性和可维护性。</p>
+</li>
+<li>
+<p><strong>PreparedStatement 能最大可能提高性能：</strong></p>
+<ul>
+<li>DBServer会对<strong>预编译</strong>语句提供性能优化。因为预编译语句有可能被重复调用，所以<!-- raw HTML omitted -->语句在被DBServer的编译器编译后的执行代码被缓存下来，那么下次调用时只要是相同的预编译语句就不需要编译，只要将参数直接传入编译过的语句执行代码中就会得到执行。<!-- raw HTML omitted --></li>
+<li>在statement语句中,即使是相同操作但因为数据内容不一样,所以整个语句本身不能匹配,没有缓存语句的意义.事实是没有数据库会对普通语句编译后的执行代码缓存。这样<!-- raw HTML omitted -->每执行一次都要对传入的语句编译一次。<!-- raw HTML omitted --></li>
+<li>(语法检查，语义检查，翻译成二进制命令，缓存)</li>
+</ul>
+</li>
+<li>
+<p>PreparedStatement 可以防止 SQL 注入</p>
+</li>
+</ul>
+</li>
+<li><strong>Java与SQL对应数据类型转换表</strong>
+| Java类型           | SQL类型                  |
+| &mdash;&mdash;&mdash;&mdash;&mdash;&mdash; | &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; |
+| boolean            | BIT                      |
+| byte               | TINYINT                  |
+| short              | SMALLINT                 |
+| int                | INTEGER                  |
+| long               | BIGINT                   |
+| String             | CHAR,VARCHAR,LONGVARCHAR |
+| byte   array       | BINARY  ,    VAR BINARY  |
+| java.sql.Date      | DATE                     |
+| java.sql.Time      | TIME                     |
+| java.sql.Timestamp | TIMESTAMP                |</li>
+<li><strong>使用PreparedStatement实现增、删、改操作</strong></li>
+</ul>
+<blockquote>
+<p>将数据库连接资源的关闭封装起来</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gf0592lgtvj30yl0gj17c.jpg" alt="QQ截图20200521161819.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gf05ahezexj30z70i3tms.jpg" alt="QQ截图20200521162034.png"></p>
+<blockquote>
+<p>增删改示例</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gf05cqfahkj30q00hfgwd.jpg" alt="QQ截图20200521162244.png"></p>
+<blockquote>
+<p>增删改通用方法</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#75715e">//通用的增、删、改操作（体现一：增、删、改 ； 体现二：针对于不同的表）
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>String sql<span style="color:#f92672">,</span>Object <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span><span style="color:#f92672">{</span><span style="color:#75715e">//sql语句中的占位符的个数与可变形参的长度相同！
+</span><span style="color:#75715e"></span>		Connection conn <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+		PreparedStatement ps <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+			<span style="color:#75715e">//1.获取数据库的连接
+</span><span style="color:#75715e"></span>			conn <span style="color:#f92672">=</span> JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			
+			<span style="color:#75715e">//2.获取PreparedStatement的实例 (或：预编译sql语句)
+</span><span style="color:#75715e"></span>			ps <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span><span style="color:#a6e22e">prepareStatement</span><span style="color:#f92672">(</span>sql<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			<span style="color:#75715e">//3.填充占位符
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>i <span style="color:#f92672">&lt;</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+				ps<span style="color:#f92672">.</span><span style="color:#a6e22e">setObject</span><span style="color:#f92672">(</span>i <span style="color:#f92672">+</span> 1<span style="color:#f92672">,</span> args<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			<span style="color:#f92672">}</span>
+			
+			<span style="color:#75715e">//4.执行sql语句
+</span><span style="color:#75715e"></span>			ps<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		<span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+			
+			e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		<span style="color:#f92672">}</span><span style="color:#66d9ef">finally</span><span style="color:#f92672">{</span>
+			<span style="color:#75715e">//5.关闭资源
+</span><span style="color:#75715e"></span>			JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">closeResource</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> ps<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			
+		<span style="color:#f92672">}</span>
+	<span style="color:#f92672">}</span>
+</code></pre></div><blockquote>
+<p>使用增删改</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gf05ryxoxjj30oj05gwhi.jpg" alt="QQ截图20200521163721.png"></p>
+<ul>
+<li><strong>使用PreparedStatement实现查询操作</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#75715e">// 通用的针对于不同表的查询:返回一个对象 (version 1.0)
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> clazz<span style="color:#f92672">,</span> String sql<span style="color:#f92672">,</span> Object<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+		Connection conn <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+		PreparedStatement ps <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+		ResultSet rs <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+			<span style="color:#75715e">// 1.获取数据库连接
+</span><span style="color:#75715e"></span>			conn <span style="color:#f92672">=</span> JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			<span style="color:#75715e">// 2.预编译sql语句，得到PreparedStatement对象
+</span><span style="color:#75715e"></span>			ps <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span><span style="color:#a6e22e">prepareStatement</span><span style="color:#f92672">(</span>sql<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			<span style="color:#75715e">// 3.填充占位符
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+				ps<span style="color:#f92672">.</span><span style="color:#a6e22e">setObject</span><span style="color:#f92672">(</span>i <span style="color:#f92672">+</span> 1<span style="color:#f92672">,</span> args<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			<span style="color:#f92672">}</span>
+
+			<span style="color:#75715e">// 4.执行executeQuery(),得到结果集：ResultSet
+</span><span style="color:#75715e"></span>			rs <span style="color:#f92672">=</span> ps<span style="color:#f92672">.</span><span style="color:#a6e22e">executeQuery</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			<span style="color:#75715e">// 5.得到结果集的元数据：ResultSetMetaData
+</span><span style="color:#75715e"></span>			ResultSetMetaData rsmd <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getMetaData</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+			<span style="color:#75715e">// 6.1通过ResultSetMetaData得到columnCount,columnLabel；通过ResultSet得到列值
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">int</span> columnCount <span style="color:#f92672">=</span> rsmd<span style="color:#f92672">.</span><span style="color:#a6e22e">getColumnCount</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>rs<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+				T t <span style="color:#f92672">=</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> columnCount<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#75715e">// 遍历每一个列
+</span><span style="color:#75715e"></span>
+					<span style="color:#75715e">// 获取列值
+</span><span style="color:#75715e"></span>					Object columnVal <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getObject</span><span style="color:#f92672">(</span>i <span style="color:#f92672">+</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+					<span style="color:#75715e">// 获取列的别名:列的别名，使用类的属性名充当
+</span><span style="color:#75715e"></span>					String columnLabel <span style="color:#f92672">=</span> rsmd<span style="color:#f92672">.</span><span style="color:#a6e22e">getColumnLabel</span><span style="color:#f92672">(</span>i <span style="color:#f92672">+</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+					<span style="color:#75715e">// 6.2使用反射，给对象的相应属性赋值
+</span><span style="color:#75715e"></span>					Field field <span style="color:#f92672">=</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">getDeclaredField</span><span style="color:#f92672">(</span>columnLabel<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+					field<span style="color:#f92672">.</span><span style="color:#a6e22e">setAccessible</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+					field<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>t<span style="color:#f92672">,</span> columnVal<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+				<span style="color:#f92672">}</span>
+
+				<span style="color:#66d9ef">return</span> t<span style="color:#f92672">;</span>
+
+			<span style="color:#f92672">}</span>
+		<span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+			e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		<span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+			<span style="color:#75715e">// 7.关闭资源
+</span><span style="color:#75715e"></span>			JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">closeResource</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> ps<span style="color:#f92672">,</span> rs<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		<span style="color:#f92672">}</span>
+
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+
+	<span style="color:#f92672">}</span>
+</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gf08z0skh9j30pr06zn2w.jpg" alt="QQ截图20200521182755.png"></p>
+<blockquote>
+<p>说明：使用PreparedStatement实现的查询操作可以替换Statement实现的查询操作，解决Statement拼串和SQL注入问题。</p>
+</blockquote>
+<hr>
+<h1 id="resultset与resultsetmetadata">ResultSet与ResultSetMetaData</h1>
+<ul>
+<li>
+<p><strong>ResultSet</strong></p>
+<ul>
+<li>
+<p>查询需要调用PreparedStatement 的 executeQuery() 方法，查询结果是一个ResultSet 对象</p>
+</li>
+<li>
+<p>ResultSet 对象以逻辑表格的形式封装了执行数据库操作的结果集，ResultSet 接口由数据库厂商提供实现</p>
+</li>
+<li>
+<p>ResultSet 返回的实际上就是一张数据表。有一个指针指向数据表的第一条记录的前面。</p>
+</li>
+<li>
+<p>ResultSet 对象维护了一个指向当前数据行的<strong>游标</strong>，初始的时候，游标在第一行之前，可以通过 ResultSet 对象的 next() 方法移动到下一行。调用 next()方法检测下一行是否有效。若有效，该方法返回 true，且指针下移。相当于Iterator对象的 hasNext() 和 next() 方法的结合体。</p>
+</li>
+<li>
+<p>当指针指向一行时, 可以通过调用 getXxx(int index) 或 getXxx(int columnName) 获取每一列的值。</p>
+<ul>
+<li>例如: getInt(1), getString(&ldquo;name&rdquo;)</li>
+<li><strong>注意：Java与数据库交互涉及到的相关Java API中的索引都从1开始。</strong></li>
+</ul>
+</li>
+<li>
+<p>ResultSet 接口的常用方法：</p>
+<ul>
+<li>
+<p>boolean next()</p>
+</li>
+<li>
+<p>getString()</p>
+</li>
+<li>
+<p>…
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gezcpe3dlij30s90ee0vo.jpg" alt="QQ截图20200520235130.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>ResultSetMetaData</strong></p>
+<ul>
+<li>
+<p>可用于获取关于 ResultSet 对象中列的类型和属性信息的对象</p>
+</li>
+<li>
+<p>ResultSetMetaData meta = rs.getMetaData();</p>
+<ul>
+<li>
+<p><strong>getColumnName</strong>(int column)：获取指定列的名称</p>
+</li>
+<li>
+<p><strong>getColumnLabel</strong>(int column)：获取指定列的别名</p>
+</li>
+<li>
+<p><strong>getColumnCount</strong>()：返回当前 ResultSet 对象中的列数。</p>
+</li>
+<li>
+<p>getColumnTypeName(int column)：检索指定列的数据库特定的类型名称。</p>
+</li>
+<li>
+<p>getColumnDisplaySize(int column)：指示指定列的最大标准宽度，以字符为单位。</p>
+</li>
+<li>
+<p><strong>isNullable</strong>(int column)：指示指定列中的值是否可以为 null。</p>
+</li>
+<li>
+<p>isAutoIncrement(int column)：指示是否自动为指定列进行编号，这样这些列仍然是只读的。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gezcsb0zzaj30ik0iggmv.jpg" alt="QQ截图20200520235418.png"></p>
+<p><strong>问题1：得到结果集后, 如何知道该结果集中有哪些列 ？ 列名是什么？</strong></p>
+<p>​     需要使用一个描述 ResultSet 的对象， 即 ResultSetMetaData</p>
+<p><strong>问题2：关于ResultSetMetaData</strong></p>
+<ol>
+<li><strong>如何获取 ResultSetMetaData</strong>： 调用 ResultSet 的 getMetaData() 方法即可</li>
+<li><strong>获取 ResultSet 中有多少列</strong>：调用 ResultSetMetaData 的 getColumnCount() 方法</li>
+<li><strong>获取 ResultSet 每一列的列的别名是什么</strong>：调用 ResultSetMetaData 的getColumnLabel() 方法
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gezctlkagdj30t40esq6g.jpg" alt="QQ截图20200520235531.png"></li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="资源的释放">资源的释放</h1>
+<ul>
+<li>释放ResultSet, Statement,Connection。</li>
+<li>数据库连接（Connection）是非常稀有的资源，用完后必须马上释放，如果Connection不能及时正确的关闭将导致系统宕机。Connection的使用原则是<strong>尽量晚创建，尽量早的释放。</strong></li>
+<li>可以在finally中关闭，保证及时其他代码出现异常，资源也一定能被关闭。</li>
+</ul>
+<hr>
+<h1 id="jdbc-api小结">JDBC API小结</h1>
+<ul>
+<li>
+<p>两种思想</p>
+<ul>
+<li>
+<p>面向接口编程的思想</p>
+</li>
+<li>
+<p>ORM思想(object relational mapping)</p>
+<ul>
+<li>一个数据表对应一个java类</li>
+<li>表中的一条记录对应java类的一个对象</li>
+<li>表中的一个字段对应java类的一个属性</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>sql是需要结合列名和表的属性名来写。注意起别名。</p>
+</blockquote>
+</li>
+<li>
+<p>两种技术</p>
+<ul>
+<li>JDBC结果集的元数据：ResultSetMetaData
+<ul>
+<li>获取列数：getColumnCount()</li>
+<li>获取列的别名：getColumnLabel()</li>
+</ul>
+</li>
+<li>通过反射，创建指定类的对象，获取指定的属性并赋值</li>
+</ul>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/502%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5/" data-toggle="tooltip" data-placement="top" title="2、获取数据库连接(JDBC)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/504%E6%93%8D%E4%BD%9Cblob%E7%B1%BB%E5%9E%8B%E5%AD%97%E6%AE%B5/" data-toggle="tooltip" data-placement="top" title="4、操作BLOB类型字段(JDBC)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
