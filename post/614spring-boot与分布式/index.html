@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.github.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.github.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="14、Spring boot与分布式(SpringBoot)" />
+    <meta property="og:title" content="14、Spring boot与分布式(SpringBoot)" />
+    <meta property="twitter:title" content="14、Spring boot与分布式(SpringBoot)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>14、Spring boot与分布式(SpringBoot)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/614spring-boot%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/springboot" title="SpringBoot">
+                            SpringBoot
+                        </a>
+                        
+                    </div>
+                    <h1>14、Spring boot与分布式(SpringBoot)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Sunday, July 5, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-概述">1. 概述</a></li>
+    <li><a href="#2-整合springboot">2. 整合springboot</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#1-概述-1">1. 概述</a></li>
+    <li><a href="#2-入门">2. 入门</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="分布式应用">分布式应用</h1>
+<p>分布式应用（distributed application）指的是应用程序分布在不同计算机上，通过网络来共同完成一项任务的工作方式。
+<strong>为什么需要分布式？</strong></p>
+<ul>
+<li><strong>单一应用架构</strong><br>
+当网站流量很小时，只需一个应用，将所有功能都部署在一起，以减少部署节点和成本。此时，用于简化增删改查工作量的数据访问框架(ORM)是关键。</li>
+<li><strong>垂直应用架构</strong><br>
+当访问量逐渐增大，单一应用增加机器带来的加速度越来越小，将应用拆成互不相干的几个应用，以提升效率。此时，用于加速前端页面开发的Web框架(MVC)是关键。</li>
+<li><strong>分布式服务架构</strong><br>
+当垂直应用越来越多，应用之间交互不可避免，将核心业务抽取出来，作为独立的服务，逐渐形成稳定的服务中心，使前端应用能更快速的响应多变的市场需求。此时，用于提高业务复用及整合的分布式服务框架(RPC)是关键。
+<ul>
+<li><strong>流动计算架构</strong><br>
+当服务越来越多，容量的评估，小服务资源的浪费等问题逐渐显现，此时需增加一个调度中心基于访问压力实时管理集群容量，提高集群利用率。此时，用于提高机器利用率的资源调度和治理中心(SOA)是关键。</li>
+</ul>
+</li>
+</ul>
+<p>在分布式系统中，国内常用zookeeper+dubbo组合，而Spring Boot推荐使用全栈的Spring，Spring Boot+Spring Cloud。</p>
+<h1 id="zookeeper和dubbo">Zookeeper和Dubbo</h1>
+<h2 id="1-概述">1. 概述</h2>
+<p><strong>ZooKeeper</strong><br>
+ZooKeeper 是一个分布式的，开放源码的分布式应用程序协调服务。它是一个为分布式应用提供一致性服务的软件，提供的功能包括：配置维护、域名服务、分布式同步、组服务等。<br>
+<strong>Dubbo</strong><br>
+Dubbo是Alibaba开源的分布式服务框架，它最大的特点是按照分层的方式来架构，使用这种方式可以使各个层之间解耦合（或者最大限度地松耦合）。从服务模型的角度来看，Dubbo采用的是一种非常简单的模型，要么是提供方提供服务，要么是消费方消费服务，所以基于这一点可以抽象出服务提供方（Provider）和服务消费方（Consumer）两个角色。</p>
+<h2 id="2-整合springboot">2. 整合springboot</h2>
+<p><strong>环境搭建</strong><br>
+分别创建provider和consumer模块并分别导入依赖</p>
+<pre><code>&lt;dependencies&gt;
+       &lt;!-- 导入dubbo与springboot整合启动器 --&gt;
+       &lt;dependency&gt;
+           &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+           &lt;artifactId&gt;dubbo-spring-boot-starter&lt;/artifactId&gt;
+           &lt;version&gt;2.7.6&lt;/version&gt;
+       &lt;/dependency&gt;
+
+       &lt;!-- 导入zookeeper客户端 --&gt;
+       &lt;dependency&gt;
+           &lt;groupId&gt;com.github.sgroschupf&lt;/groupId&gt;
+           &lt;artifactId&gt;zkclient&lt;/artifactId&gt;
+           &lt;version&gt;0.1&lt;/version&gt;
+           &lt;exclusions&gt;
+               &lt;exclusion&gt;
+                   &lt;groupId&gt;org.apache.zookeeper&lt;/groupId&gt;
+                   &lt;artifactId&gt;zookeeper&lt;/artifactId&gt;
+               &lt;/exclusion&gt;
+           &lt;/exclusions&gt;
+       &lt;/dependency&gt;
+       &lt;!-- 导入zookeeper客户端所需依赖：curator框架 --&gt;
+       &lt;dependency&gt;
+           &lt;groupId&gt;org.apache.curator&lt;/groupId&gt;
+           &lt;artifactId&gt;curator-framework&lt;/artifactId&gt;
+           &lt;version&gt;4.3.0&lt;/version&gt;
+       &lt;/dependency&gt;
+       &lt;dependency&gt;
+           &lt;groupId&gt;org.apache.curator&lt;/groupId&gt;
+           &lt;artifactId&gt;curator-recipes&lt;/artifactId&gt;
+           &lt;version&gt;4.3.0&lt;/version&gt;
+       &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre><p>provider配置文件</p>
+<pre><code># 应用项目名
+dubbo.application.name=provider-ticket
+# zookeeper地址
+dubbo.registry.address=zookeeper://192.168.31.162:2181
+# dubbo扫描包路径        
+dubbo.scan.base-packages=cn.edu.ustc.service
+</code></pre><p>consumer配置文件</p>
+<pre><code>dubbo.application.name=consumer-user
+dubbo.registry.address=zookeeper://192.168.31.162:2181
+</code></pre><p><strong>生产者服务</strong><br>
+@EnableDubbo ：<br>
+以在指定的包名下（通过scanBasePackages），或者指定的类中（通过 scanBasePackageClasses）扫描 Dubbo 的服务提供者（以 @Service 标注）以及 Dubbo 的服务消费者（以 Reference 标注）。<br>
+@Service：<br>
+示服务的具体实现，被注解的类会被dubbo扫描</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.apache.dubbo.config.annotation.Service<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.dubbo.config.spring.context.annotation.EnableDubbo<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.stereotype.Component<span style="color:#f92672">;</span>
+
+
+<span style="color:#a6e22e">@EnableDubbo</span> <span style="color:#75715e">//开启对dubbo支持
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Component</span>
+<span style="color:#a6e22e">@Service</span> <span style="color:#75715e">//标记此类，表示服务的具体实现
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TicketServiceImpl</span> <span style="color:#66d9ef">implements</span> TicketService<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getTicket</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Gxx:合肥-北京&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><strong>消费者服务</strong><br>
+编写与分布式服务类相同的接口(不必实现)，并保证包结构相同</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">TicketService</span> <span style="color:#f92672">{</span>
+    String <span style="color:#a6e22e">getTicket</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>@Reference 可以定义在类中的一个字段、方法上，表示一个服务的引用。通常 @Reference 定义在一个字段上</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserService</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Reference</span>
+    TicketService ticketService<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String ticket <span style="color:#f92672">=</span> ticketService<span style="color:#f92672">.</span><span style="color:#a6e22e">getTicket</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;买到票了:&#34;</span><span style="color:#f92672">+</span>ticket<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>此时若调用hello(),控制台将打印</p>
+<pre><code>买到票了:Gxx:合肥-北京
+
+</code></pre><p>有关dubbo更多<br>
+<a href="http://dubbo.apache.org/zh-cn/blog/dubbo-annotation.html">dubbo注解详细解释</a><br>
+<a href="http://dubbo.apache.org/zh-cn/blog/dubbo-zk.html">dubbo与zookeeper官方整合案例</a></p>
+<hr>
+<h1 id="spring-cloud">Spring Cloud</h1>
+<h2 id="1-概述-1">1. 概述</h2>
+<p>Spring Cloud是一个分布式的整体解决方案。Spring Cloud 为开发者提供了在分布式系统（配置管理，服务发现，熔断，路由，微代理，控制总线，一次性token，全局琐，leader选举，分布式session，集群状态）中快速构建的工具，使用Spring Cloud的开发者可以快速的启动服务或构建应用、同时能够快速和云平台资源进行对接。</p>
+<p>SpringCloud分布式开发五大常用组件</p>
+<ul>
+<li>服务发现——Netflix Eureka</li>
+<li>客服端负载均衡——Netflix Ribbon</li>
+<li>断路器——Netflix Hystrix</li>
+<li>服务网关——Netflix Zuul</li>
+<li>分布式配置——Spring Cloud Config</li>
+</ul>
+<h2 id="2-入门">2. 入门</h2>
+<p><strong>Eureka注册中心</strong></p>
+<p>创建工程导入eureka-server模块</p>
+<pre><code>&lt;dependencies&gt;
+       &lt;dependency&gt;
+           &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+           &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+       &lt;/dependency&gt;
+       ...
+   &lt;/dependencies&gt;
+
+   &lt;dependencyManagement&gt;
+       &lt;dependencies&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+               &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+               &lt;version&gt;${spring-cloud.version}&lt;/version&gt;
+               &lt;type&gt;pom&lt;/type&gt;
+               &lt;scope&gt;import&lt;/scope&gt;
+           &lt;/dependency&gt;
+       &lt;/dependencies&gt;
+   &lt;/dependencyManagement&gt;
+</code></pre><p>配置文件</p>
+<pre><code>server:
+  port: 8761
+eureka:
+  instance:
+    hostname: eureka-server  # eureka实例的主机名
+  client:
+    register-with-eureka: false #不把自己注册到eureka上
+    fetch-registry: false #不从eureka上来获取服务的注册信息
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+</code></pre><p><strong>生产者模块</strong><br>
+创建工程导入eureka-client和web模块</p>
+<pre><code>&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    ...
+&lt;/dependencies&gt;
+
+&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+            &lt;version&gt;${spring-cloud.version}&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+</code></pre><p>配置文件</p>
+<pre><code>server:
+  port: 8002
+spring:
+  application:
+    name: provider-ticket
+
+
+eureka:
+  instance:
+    prefer-ip-address: true # 注册服务的时候使用服务的ip地址
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+</code></pre><p>编写controller层和service层demo</p>
+<pre><code>@Service
+public class TicketService {
+    public String getTicket(){
+        System.out.println(&quot;8002&quot;);
+        return &quot;《厉害了，我的国》&quot;;
+    }
+}
+
+@RestController
+public class TicketController {
+    @Autowired
+    TicketService ticketService;
+
+    @GetMapping(&quot;/ticket&quot;)
+    public String getTicket(){
+        return ticketService.getTicket();
+    }
+}
+</code></pre><p><strong>消费者模块</strong></p>
+<p>创建工程导入eureka-client和web模块</p>
+<p>配置文件</p>
+<pre><code>spring:
+  application:
+    name: consumer-user
+server:
+  port: 8200
+
+eureka:
+  instance:
+    prefer-ip-address: true # 注册服务的时候使用服务的ip地址
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+</code></pre><p>向容器中注入RestTemplate, 并使用@EnableDiscoveryClient开启发现服务功能</p>
+<pre><code>@EnableDiscoveryClient //开启发现服务功能
+@SpringBootApplication
+public class ConsumerUserApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ConsumerUserApplication.class, args);
+    }
+
+    @LoadBalanced //使用负载均衡机制
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+}
+</code></pre><p>编写controller并使用RestTemplate发现服务</p>
+<pre><code>@RestController
+public class UserController {
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    @GetMapping(&quot;/buy&quot;)
+    public String buyTicket(String name){
+        String s = restTemplate.getForObject(&quot;http://PROVIDER-TICKET/ticket&quot;, String.class);
+        return name+&quot;购买了&quot;+s;
+    }
+}
+</code></pre><p>向http://localhost:8200/buy?username=zhangsan发请求，则会响应</p>
+<pre><code>zhangsan购买了《厉害了，我的国》
+</code></pre><p>并且在使用了@LoadBalanced之后实现了负载均衡，如果创建不同端口的provider应用，则访问会被均衡到各个应用</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/613spring-boot%E4%B8%8E%E5%AE%89%E5%85%A8/" data-toggle="tooltip" data-placement="top" title="13、Spring boot与安全(SpringBoot)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/615spring-boot%E4%B8%8E%E7%83%AD%E9%83%A8%E7%BD%B2/" data-toggle="tooltip" data-placement="top" title="15、Spring boot与热部署(SpringBoot)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

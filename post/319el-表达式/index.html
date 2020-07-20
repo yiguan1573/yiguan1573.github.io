@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.github.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.github.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="19、EL 表达式器(JavaWeb)" />
+    <meta property="og:title" content="19、EL 表达式器(JavaWeb)" />
+    <meta property="twitter:title" content="19、EL 表达式器(JavaWeb)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>19、EL 表达式器(JavaWeb)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/319el-%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/javaweb" title="JavaWeb">
+                            JavaWeb
+                        </a>
+                        
+                        <a class="tag" href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                    </div>
+                    <h1>19、EL 表达式器(JavaWeb)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Wednesday, May 20, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <h1 id="简介">简介</h1>
+<ul>
+<li><strong>EL 表达式的全称是：Expression Language，是表达式语言</strong></li>
+<li><strong>EL 表达式的什么作用：EL 表达式主要是代替 jsp 页面中的表达式脚本在 jsp 页面中进行数据的输出</strong></li>
+<li><strong>因为 EL 表达式在输出数据的时候，要比 jsp 的表达式脚本要简洁很多</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gfeya8ufu1j30nc0580sw.jpg" alt="QQ截图20200603114136.jpg"></li>
+<li><strong>EL 表达式的格式是：${表达式}</strong></li>
+<li><strong>EL 表达式在输出 null 值的时候，输出的是空串。jsp 表达式脚本输出 null 值的时候，输出的是 null 字符串</strong></li>
+</ul>
+<hr>
+<h1 id="el-表达式搜索域数据的顺序">EL 表达式搜索域数据的顺序</h1>
+<ul>
+<li><strong>EL 表达式主要是在 jsp 页面中输出数据，主要是输出域对象中的数据</strong></li>
+<li><strong>当四个域中都有相同的 key 的数据的时候，EL 表达式会按照四个域的从小到大的顺序去进行搜索，找到就输出</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gfeyca70b0j30nt0axwew.jpg" alt="QQ截图20200603114335.jpg"></li>
+</ul>
+<hr>
+<h1 id="el-表达式输出各种属性">EL 表达式输出各种属性</h1>
+<ul>
+<li><strong>需求——输出 Person 类中普通属性，数组属性。list 集合属性和 map 集合属性</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gfeydql4ewj30nw07adg0.jpg" alt="QQ截图20200603114458.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gfeyeexybzj30lp0n9gmq.jpg" alt="QQ截图20200603114536.jpg"></li>
+</ul>
+<hr>
+<h1 id="el-表达式运算">EL 表达式——运算</h1>
+<ul>
+<li>
+<p><strong>语法：${ 运算表达式 } ， EL 表达式支持如下运算符：</strong></p>
+</li>
+<li>
+<p><strong>关系运算</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gfeyjm6kn6j30iz04pdg6.jpg" alt="QQ截图20200603115026.jpg"></p>
+</li>
+<li>
+<p><strong>逻辑运算</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gfeyjui8wej30is02v74g.jpg" alt="QQ截图20200603115032.jpg"></p>
+</li>
+<li>
+<p><strong>算数运算</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gfeykjxlozj30iz06xaad.jpg" alt="QQ截图20200603115130.jpg"></p>
+</li>
+<li>
+<p><strong>empty运算</strong></p>
+<ul>
+<li><strong>empty 运算可以判断一个数据是否为空，如果为空，则输出 true,不为空输出 false</strong></li>
+<li><strong>以下几种情况为空：</strong>
+<ol>
+<li>值为 null 值的时候，为空</li>
+<li>值为空串的时候，为空</li>
+<li>值是 Object 类型数组，长度为零的时候</li>
+<li>list 集合，元素个数为零</li>
+<li>map 集合，元素个数为零
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gfeymy1hxkj30ld0dm0ti.jpg" alt="QQ截图20200603115348.jpg"></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>三元运算</strong></p>
+<ul>
+<li><strong>表达式 1？表达式 2：表达式 3</strong></li>
+<li><strong>如果表达式 1 的值为真，返回表达式 2 的值，如果表达式 1 的值为假，返回表达式 3 的值</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gfeyo2w5mzj30ef01v3yd.jpg" alt="QQ截图20200603115454.jpg"></li>
+</ul>
+</li>
+<li>
+<p><strong>“.”点运算 和 [] 中括号运算符</strong></p>
+<ul>
+<li><strong>.点运算，可以输出 Bean 对象中某个属性的值</strong></li>
+<li><strong>[]中括号运算，可以输出有序集合中某个元素的值</strong></li>
+<li><strong>并且[]中括号运算，还可以输出 map 集合中 key 里含有特殊字符的 key 的值</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gfeypwrx6xj30ld0913ys.jpg" alt="QQ截图20200603115640.jpg"></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="el-表达式的-11-个隐含对象">EL 表达式的 11 个隐含对象</h1>
+<ul>
+<li><strong>EL 个达式中 11 个隐含对象，是 EL 表达式中自己定义的，可以直接使用</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gff6umgj38j30jz0cy3zc.jpg" alt="QQ截图20200603163754.jpg"></li>
+<li><strong>EL 获取四个特定域中的属性</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gff6vm78npj30lq09z3yy.jpg" alt="QQ截图20200603163855.jpg"></li>
+<li><strong>pageContext 对象的使用</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gff6wbi46vj30lt0l5jsm.jpg" alt="QQ截图20200603163937.jpg"></li>
+<li><strong>EL 表达式其他隐含对象的使用</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gff6x6jgqwj30lh0jq3zy.jpg" alt="QQ截图20200603164026.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gff6xo80bnj30li0c90ta.jpg" alt="QQ截图20200603164055.jpg"></li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/504%E6%93%8D%E4%BD%9Cblob%E7%B1%BB%E5%9E%8B%E5%AD%97%E6%AE%B5/" data-toggle="tooltip" data-placement="top" title="4、操作BLOB类型字段(JDBC)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/505%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5/" data-toggle="tooltip" data-placement="top" title="5、批量插入(JDBC)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

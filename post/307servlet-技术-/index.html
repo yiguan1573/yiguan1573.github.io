@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.github.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.github.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="7、Servlet技术(JavaWeb)" />
+    <meta property="og:title" content="7、Servlet技术(JavaWeb)" />
+    <meta property="twitter:title" content="7、Servlet技术(JavaWeb)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>7、Servlet技术(JavaWeb)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/307servlet-%E6%8A%80%E6%9C%AF-/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/javaweb" title="JavaWeb">
+                            JavaWeb
+                        </a>
+                        
+                        <a class="tag" href="/tags/servlet" title="Servlet">
+                            Servlet
+                        </a>
+                        
+                    </div>
+                    <h1>7、Servlet技术(JavaWeb)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Saturday, May 9, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <h1 id="servlet简介">Servlet简介</h1>
+<ul>
+<li><strong>Servlet 是 JavaEE 规范之一。规范就是接口</strong></li>
+<li><strong>Servlet 就 JavaWeb 三大组件之一。三大组件分别是：Servlet 程序、Filter 过滤器、Listener 监听器</strong></li>
+<li><strong>Servlet 是运行在服务器上的一个 java 小程序，它可以接收客户端发送过来的请求，并响应数据给客户端</strong></li>
+</ul>
+<hr>
+<h1 id="手动实现-servlet-程序">手动实现 Servlet 程序</h1>
+<ul>
+<li><strong>编写一个类去实现 Servlet 接口</strong></li>
+<li><strong>实现 service 方法，处理请求，并响应数据</strong></li>
+<li><strong>到 web.xml 中去配置 servlet 程序的访问地址</strong></li>
+<li><strong>Servlet 程序的示例代码：</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemdyv2ei8j30zw0enq59.jpg" alt="QQ截图20200509184249.png"></li>
+<li><strong>web.xml 中的配置</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemdzkoj5zj30zq0nlagl.jpg" alt="QQ截图20200509184331.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemhgf071ij30nq0elq6n.jpg" alt="QQ截图20200509204326.png"></li>
+<li><strong>常见的错误 1：url-pattern 中配置的路径没有以斜杠打头</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geme06ji3cj30yt05an5l.jpg" alt="QQ截图20200509184406.png"></li>
+<li><strong>常见错误 2：servlet-name 配置的值不存在</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geme0t2n7tj30yw06zqfl.jpg" alt="QQ截图20200509184441.png"></li>
+<li><strong>常见错误 3：servlet-class 标签的全类名配置错误</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1geme1eybkzj30r80830yi.jpg" alt="QQ截图20200509184517.png"></li>
+</ul>
+<hr>
+<h1 id="url-地址到-servlet-程序的访问">url 地址到 Servlet 程序的访问</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemf8ximu1j31010gegyn.jpg" alt="QQ截图20200509192701.png"></p>
+<hr>
+<h1 id="servlet-的生命周期">Servlet 的生命周期</h1>
+<ol>
+<li><strong>执行 Servlet 构造器方法</strong></li>
+<li><strong>执行 init 初始化方法,第一、二步，是在第一次访问的时候创建 Servlet 程序会调用</strong></li>
+<li><strong>执行 service 方法。第三步，每次访问都会调用</strong></li>
+<li><strong>执行 destroy 销毁方法 第四步，在 web 工程停止的时候调用</strong></li>
+</ol>
+<hr>
+<h1 id="get-和-post-请求的分发处理">GET 和 POST 请求的分发处理</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemncic52wj30p30apgqq.jpg" alt="QQ截图20200510000717.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemmwbum48j30zt15jq95.jpg" alt="QQ截图20200509235143.png"></p>
+<hr>
+<h1 id="通过继承-httpservlet-实现-servlet-程序">通过继承 HttpServlet 实现 Servlet 程序</h1>
+<ul>
+<li><strong>一般在实际项目开发中，都是使用继承 HttpServlet 类的方式去实现 Servlet 程序</strong>
+<ol>
+<li>编写一个类去继承 HttpServlet 类</li>
+<li>根据业务需要重写 doGet 或 doPost 方法</li>
+<li>到 web.xml 中的配置 Servlet 程序的访问地址
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemnf7lppnj30zs0pkjvm.jpg" alt="QQ截图20200510000922.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemnfgdtqoj30yr07vq4i.jpg" alt="QQ截图20200510000953.png"></li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="使用-idea-创建-servlet-程序">使用 IDEA 创建 Servlet 程序</h1>
+<ul>
+<li><strong>菜单：new-&gt;Servlet 程序</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemnnj54gij30ys0o1qo5.jpg" alt="QQ截图20200510001750.png"></li>
+<li><strong>配置 Servlet 的信息：</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemnocmq6cj30gj0ayq8j.jpg" alt="QQ截图20200510001841.png"></li>
+</ul>
+<hr>
+<h1 id="servlet-类的继承体系">Servlet 类的继承体系</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gemnp8xndpj30zf0iigy3.jpg" alt="QQ截图20200510001931.png"></p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/303xml%E8%A7%A3%E6%9E%90%E6%8A%80%E6%9C%AF/" data-toggle="tooltip" data-placement="top" title="3、xml解析技术(JavaWeb)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/306idea%E4%B8%AD%E5%8A%A8%E6%80%81web%E5%B7%A5%E7%A8%8B%E7%9A%84%E6%93%8D%E4%BD%9C/" data-toggle="tooltip" data-placement="top" title="6、IDEA中动态web工程的操作 (JavaWeb)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

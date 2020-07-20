@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.github.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.github.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="9、Apache-DBUtils实现CRUD操作(JDBC)" />
+    <meta property="og:title" content="9、Apache-DBUtils实现CRUD操作(JDBC)" />
+    <meta property="twitter:title" content="9、Apache-DBUtils实现CRUD操作(JDBC)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>9、Apache-DBUtils实现CRUD操作(JDBC)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/509apache-dbutils%E5%AE%9E%E7%8E%B0crud%E6%93%8D%E4%BD%9C/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/jdbc" title="JDBC">
+                            JDBC
+                        </a>
+                        
+                    </div>
+                    <h1>9、Apache-DBUtils实现CRUD操作(JDBC)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Monday, May 25, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <h1 id="apache-dbutils简介">Apache-DBUtils简介</h1>
+<ul>
+<li>
+<p>commons-dbutils 是 Apache 组织提供的一个开源 JDBC工具类库，它是对JDBC的简单封装，学习成本极低，并且使用dbutils能极大简化jdbc编码的工作量，同时也不会影响程序的性能。</p>
+</li>
+<li>
+<p>API介绍：</p>
+<ul>
+<li>org.apache.commons.dbutils.QueryRunner</li>
+<li>org.apache.commons.dbutils.ResultSetHandler</li>
+<li>工具类：org.apache.commons.dbutils.DbUtils</li>
+</ul>
+</li>
+<li>
+<p>API包说明：
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gf1m6xu9d7j30ue0aw77w.jpg" alt="QQ截图20200522225048.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gf1m753yocj30vo0ndah3.jpg" alt="QQ截图20200522225054.png"></p>
+</li>
+</ul>
+<hr>
+<h1 id="dbutils">DbUtils</h1>
+<ul>
+<li>DbUtils ：提供如关闭连接、装载JDBC驱动程序等常规工作的工具类，里面的所有方法都是静态的。主要方法如下：
+<ul>
+<li><strong>public static void close(…) throws java.sql.SQLException</strong>：　DbUtils类提供了三个重载的关闭方法。这些方法检查所提供的参数是不是NULL，如果不是的话，它们就关闭Connection、Statement和ResultSet。</li>
+<li>public static void closeQuietly(…): 这一类方法不仅能在Connection、Statement和ResultSet为NULL情况下避免关闭，还能隐藏一些在程序中抛出的SQLEeception。</li>
+<li>public static void commitAndClose(Connection conn)throws SQLException： 用来提交连接的事务，然后关闭连接</li>
+<li>public static void commitAndCloseQuietly(Connection conn)： 用来提交连接，然后关闭连接，并且在关闭连接时不抛出SQL异常。</li>
+<li>public static void rollback(Connection conn)throws SQLException：允许conn为null，因为方法内部做了判断</li>
+<li>public static void rollbackAndClose(Connection conn)throws SQLException</li>
+<li>rollbackAndCloseQuietly(Connection)</li>
+<li>public static boolean loadDriver(java.lang.String driverClassName)：这一方装载并注册JDBC驱动程序，如果成功就返回true。使用该方法，你不需要捕捉这个异常ClassNotFoundException。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="queryrunner类">QueryRunner类</h1>
+<ul>
+<li>
+<p><strong>该类简单化了SQL查询，它与ResultSetHandler组合在一起使用可以完成大部分的数据库操作，能够大大减少编码量。</strong></p>
+</li>
+<li>
+<p>QueryRunner类提供了两个构造器：</p>
+<ul>
+<li>默认的构造器</li>
+<li>需要一个 javax.sql.DataSource 来作参数的构造器</li>
+</ul>
+</li>
+<li>
+<p>QueryRunner类的主要方法：</p>
+<ul>
+<li><strong>更新</strong>
+<ul>
+<li>public int update(Connection conn, String sql, Object&hellip; params) throws SQLException:用来执行一个更新（插入、更新或删除）操作。</li>
+<li>&hellip;&hellip;</li>
+</ul>
+</li>
+<li><strong>插入</strong>
+<ul>
+<li>public <!-- raw HTML omitted --> T insert(Connection conn,String sql,ResultSetHandler<!-- raw HTML omitted --> rsh, Object&hellip; params) throws SQLException：只支持INSERT语句，其中 rsh - The handler used to create the result object from the ResultSet of auto-generated keys.  返回值: An object generated by the handler.即自动生成的键值</li>
+<li>&hellip;.</li>
+</ul>
+</li>
+<li><strong>批处理</strong>
+<ul>
+<li>public int[] batch(Connection conn,String sql,Object[][] params)throws SQLException： INSERT, UPDATE, or DELETE语句</li>
+<li>public <!-- raw HTML omitted --> T insertBatch(Connection conn,String sql,ResultSetHandler<!-- raw HTML omitted --> rsh,Object[][] params)throws SQLException：只支持INSERT语句</li>
+<li>&hellip;..</li>
+</ul>
+</li>
+<li><strong>查询</strong>
+<ul>
+<li>public Object query(Connection conn, String sql, ResultSetHandler rsh,Object&hellip; params) throws SQLException：执行一个查询操作，在这个查询中，对象数组中的每个元素值被用来作为查询语句的置换参数。该方法会自行处理 PreparedStatement 和 ResultSet 的创建和关闭。</li>
+<li>&hellip;&hellip;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>测试</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 测试添加
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testInsert</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+	QueryRunner runner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueryRunner<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	Connection conn <span style="color:#f92672">=</span> JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection3</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	String sql <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;insert into customers(name,email,birth)values(?,?,?)&#34;</span><span style="color:#f92672">;</span>
+	<span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> runner<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> sql<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;何成飞&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;he@qq.com&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;1992-09-08&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;添加了&#34;</span> <span style="color:#f92672">+</span> count <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;条记录&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		
+	JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">closeResource</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 测试删除
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDelete</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+	QueryRunner runner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueryRunner<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	Connection conn <span style="color:#f92672">=</span> JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection3</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	String sql <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;delete from customers where id &lt; ?&#34;</span><span style="color:#f92672">;</span>
+	<span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> runner<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> sql<span style="color:#f92672">,</span>3<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;删除了&#34;</span> <span style="color:#f92672">+</span> count <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;条记录&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		
+	JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">closeResource</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><hr>
+<h1 id="resultsethandler接口及实现类">ResultSetHandler接口及实现类</h1>
+<ul>
+<li>
+<p>该接口用于处理 java.sql.ResultSet，将数据按要求转换为另一种形式。</p>
+</li>
+<li>
+<p>ResultSetHandler 接口提供了一个单独的方法：Object handle (java.sql.ResultSet .rs)。</p>
+</li>
+<li>
+<p>接口的主要实现类：</p>
+<ul>
+<li>ArrayHandler：把结果集中的第一行数据转成对象数组。</li>
+<li>ArrayListHandler：把结果集中的每一行数据都转成一个数组，再存放到List中。</li>
+<li>**BeanHandler：**将结果集中的第一行数据封装到一个对应的JavaBean实例中。</li>
+<li>**BeanListHandler：**将结果集中的每一行数据都封装到一个对应的JavaBean实例中，存放到List里。</li>
+<li>ColumnListHandler：将结果集中某一列的数据存放到List中。</li>
+<li>KeyedHandler(name)：将结果集中的每一行数据都封装到一个Map里，再把这些map再存到一个map里，其key为指定的key。</li>
+<li>**MapHandler：**将结果集中的第一行数据封装到一个Map里，key是列名，value就是对应的值。</li>
+<li>**MapListHandler：**将结果集中的每一行数据都封装到一个Map里，然后再存放到List</li>
+<li>**ScalarHandler：**查询单个值对象</li>
+</ul>
+</li>
+<li>
+<p>测试</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
+</span><span style="color:#75715e"> * 测试查询:查询一条记录
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * 使用ResultSetHandler的实现类：BeanHandler
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testQueryInstance</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
+	QueryRunner runner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueryRunner<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+	Connection conn <span style="color:#f92672">=</span> JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection3</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		
+	String sql <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;select id,name,email,birth from customers where id = ?&#34;</span><span style="color:#f92672">;</span>
+		
+	<span style="color:#75715e">//
+</span><span style="color:#75715e"></span>	BeanHandler<span style="color:#f92672">&lt;</span>Customer<span style="color:#f92672">&gt;</span> handler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BeanHandler<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>Customer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	Customer customer <span style="color:#f92672">=</span> runner<span style="color:#f92672">.</span><span style="color:#a6e22e">query</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> sql<span style="color:#f92672">,</span> handler<span style="color:#f92672">,</span> 23<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">)</span><span style="color:#f92672">;</span>	
+	JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">closeResource</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
+</span><span style="color:#75715e"> * 测试查询:查询多条记录构成的集合
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * 使用ResultSetHandler的实现类：BeanListHandler
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testQueryList</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
+	QueryRunner runner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueryRunner<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+	Connection conn <span style="color:#f92672">=</span> JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection3</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		
+	String sql <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;select id,name,email,birth from customers where id &lt; ?&#34;</span><span style="color:#f92672">;</span>
+		
+	<span style="color:#75715e">//
+</span><span style="color:#75715e"></span>	BeanListHandler<span style="color:#f92672">&lt;</span>Customer<span style="color:#f92672">&gt;</span> handler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BeanListHandler<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>Customer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	List<span style="color:#f92672">&lt;</span>Customer<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> runner<span style="color:#f92672">.</span><span style="color:#a6e22e">query</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> sql<span style="color:#f92672">,</span> handler<span style="color:#f92672">,</span> 23<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	list<span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">:</span><span style="color:#f92672">:</span>println<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		
+	JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">closeResource</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
+</span><span style="color:#75715e"> * 自定义ResultSetHandler的实现类
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testQueryInstance1</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
+	QueryRunner runner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueryRunner<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+	Connection conn <span style="color:#f92672">=</span> JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection3</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		
+	String sql <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;select id,name,email,birth from customers where id = ?&#34;</span><span style="color:#f92672">;</span>
+		
+	ResultSetHandler<span style="color:#f92672">&lt;</span>Customer<span style="color:#f92672">&gt;</span> handler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResultSetHandler<span style="color:#f92672">&lt;</span>Customer<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+		<span style="color:#a6e22e">@Override</span>
+		<span style="color:#66d9ef">public</span> Customer <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>ResultSet rs<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> SQLException <span style="color:#f92672">{</span>
+			System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;handle&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#75715e">//			return new Customer(1,&#34;Tom&#34;,&#34;tom@126.com&#34;,new Date(123323432L));
+</span><span style="color:#75715e"></span>				
+			<span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>rs<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+				<span style="color:#66d9ef">int</span> id <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				String name <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				String email <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;email&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+				Date birth <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getDate</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;birth&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+					
+				<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Customer<span style="color:#f92672">(</span>id<span style="color:#f92672">,</span> name<span style="color:#f92672">,</span> email<span style="color:#f92672">,</span> birth<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			<span style="color:#f92672">}</span>
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+				
+		<span style="color:#f92672">}</span>
+	<span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+		
+	Customer customer <span style="color:#f92672">=</span> runner<span style="color:#f92672">.</span><span style="color:#a6e22e">query</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> sql<span style="color:#f92672">,</span> handler<span style="color:#f92672">,</span> 23<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		
+	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		
+	JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">closeResource</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
+</span><span style="color:#75715e"> * 如何查询类似于最大的，最小的，平均的，总和，个数相关的数据，
+</span><span style="color:#75715e"> * 使用ScalarHandler
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testQueryValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
+	QueryRunner runner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueryRunner<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+	Connection conn <span style="color:#f92672">=</span> JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection3</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		
+	<span style="color:#75715e">//测试一：
+</span><span style="color:#75715e"></span><span style="color:#75715e">//	String sql = &#34;select count(*) from customers where id &lt; ?&#34;;
+</span><span style="color:#75715e"></span><span style="color:#75715e">//	ScalarHandler handler = new ScalarHandler();
+</span><span style="color:#75715e"></span><span style="color:#75715e">//	long count = (long) runner.query(conn, sql, handler, 20);
+</span><span style="color:#75715e"></span><span style="color:#75715e">//	System.out.println(count);
+</span><span style="color:#75715e"></span>		
+	<span style="color:#75715e">//测试二：
+</span><span style="color:#75715e"></span>	String sql <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;select max(birth) from customers&#34;</span><span style="color:#f92672">;</span>
+	ScalarHandler handler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ScalarHandler<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	Date birth <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Date<span style="color:#f92672">)</span> runner<span style="color:#f92672">.</span><span style="color:#a6e22e">query</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> sql<span style="color:#f92672">,</span> handler<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>birth<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		
+	JDBCUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">closeResource</span><span style="color:#f92672">(</span>conn<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/323cookie1/" data-toggle="tooltip" data-placement="top" title="23、Cookie(1)(JavaWeb)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/326%E9%AA%8C%E8%AF%81%E7%A0%81/" data-toggle="tooltip" data-placement="top" title="26、验证码(JavaWeb)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.github.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.github.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="5、Docker(SpringBoot)" />
+    <meta property="og:title" content="5、Docker(SpringBoot)" />
+    <meta property="twitter:title" content="5、Docker(SpringBoot)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>5、Docker(SpringBoot)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/605docker/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/springboot" title="SpringBoot">
+                            SpringBoot
+                        </a>
+                        
+                    </div>
+                    <h1>5、Docker(SpringBoot)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Friday, June 26, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1简介">1、简介</a></li>
+    <li><a href="#2核心概念">2、核心概念</a></li>
+    <li><a href="#3安装docker">3、安装Docker</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#4docker常用命令操作">4、Docker常用命令&操作</a>
+      <ul>
+        <li><a href="#1镜像操作">1）、镜像操作</a></li>
+        <li><a href="#2容器操作">2）、容器操作</a></li>
+        <li><a href="#3安装mysql示例">3）、安装MySQL示例</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="1简介">1、简介</h2>
+<p><strong>Docker</strong>是一个开源的应用容器引擎；是一个轻量级容器技术；</p>
+<p>Docker支持将软件编译成一个镜像；然后在镜像中各种软件做好配置，将镜像发布出去，其他使用者可以直接使用这个镜像；</p>
+<p>运行中的这个镜像称为容器，容器启动是非常快速的。</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggpqqudszqj308a07q3zb.jpg" alt="QQ截图20200713230205.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggpqr0pbz5j30qy0fotar.jpg" alt="QQ截图20200713230216.png"></p>
+<h2 id="2核心概念">2、核心概念</h2>
+<p>docker主机(Host)：安装了Docker程序的机器（Docker直接安装在操作系统之上）；</p>
+<p>docker客户端(Client)：连接docker主机进行操作；</p>
+<p>docker仓库(Registry)：用来保存各种打包好的软件镜像；</p>
+<p>docker镜像(Images)：软件打包好的镜像；放在docker仓库中；</p>
+<p>docker容器(Container)：镜像启动后的实例称为一个容器；容器是独立运行的一个或一组应用</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggpqrd8qoaj30q60j5dkv.jpg" alt="QQ截图20200713230249.png"></p>
+<p>使用Docker的步骤：</p>
+<p>1）、安装Docker</p>
+<p>2）、去Docker仓库找到这个软件对应的镜像；</p>
+<p>3）、使用Docker运行这个镜像，这个镜像就会生成一个Docker容器；</p>
+<p>4）、对容器的启动停止就是对软件的启动停止；</p>
+<h2 id="3安装docker">3、安装Docker</h2>
+<h4 id="1安装linux虚拟机">1）、安装linux虚拟机</h4>
+<p>​	1）、VMWare、VirtualBox（安装）；</p>
+<p>​	2）、导入虚拟机文件centos7-atguigu.ova；</p>
+<p>​	3）、双击启动linux虚拟机;使用  root/ 123456登陆</p>
+<p>​	4）、使用客户端连接linux服务器进行命令操作；</p>
+<p>​	5）、设置虚拟机网络；</p>
+<p>​		桥接网络===选好网卡====接入网线；</p>
+<p>​	6）、设置好网络以后使用命令重启虚拟机的网络</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">service network restart
+</code></pre></div><p>​	7）、查看linux的ip地址</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip addr
+</code></pre></div><p>​	8）、使用客户端连接linux；</p>
+<h4 id="2在linux虚拟机上安装docker">2）、在linux虚拟机上安装docker</h4>
+<p>步骤：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">1、检查内核版本，必须是3.10及以上
+uname -r
+2、安装docker
+yum install docker
+3、输入y确认安装
+4、启动docker
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start docker</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker -v</span>
+Docker version 1.12.6, build 3e8e77d/1.12.6
+5、开机启动docker
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable docker</span>
+Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
+6、停止docker
+systemctl stop docker
+</code></pre></div><h2 id="4docker常用命令操作">4、Docker常用命令&amp;操作</h2>
+<h3 id="1镜像操作">1）、镜像操作</h3>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>检索</td>
+<td>docker  search 关键字  eg：docker  search redis</td>
+<td>我们经常去docker  hub上检索镜像的详细信息，如镜像的TAG。</td>
+</tr>
+<tr>
+<td>拉取</td>
+<td>docker pull 镜像名:tag</td>
+<td>:tag是可选的，tag表示标签，多为软件的版本，默认是latest</td>
+</tr>
+<tr>
+<td>列表</td>
+<td>docker images</td>
+<td>查看所有本地镜像</td>
+</tr>
+<tr>
+<td>删除</td>
+<td>docker rmi image-id</td>
+<td>删除指定的本地镜像</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://hub.docker.com/">https://hub.docker.com/</a></p>
+<h3 id="2容器操作">2）、容器操作</h3>
+<p>软件镜像（QQ安装程序）&mdash;-运行镜像&mdash;-产生一个容器（正在运行的软件，运行的QQ）；</p>
+<p>步骤：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">1、搜索镜像
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker search tomcat</span>
+2、拉取镜像
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker pull tomcat</span>
+3、根据镜像启动容器
+docker run --name mytomcat -d tomcat:latest
+4、docker ps  
+查看运行中的容器
+5、 停止运行中的容器
+docker stop  容器的id
+6、查看所有的容器
+docker ps -a
+7、启动容器
+docker start 容器id
+8、删除一个容器
+ docker rm 容器id
+9、启动一个做了端口映射的tomcat
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker run -d -p 8888:8080 tomcat</span>
+-d：后台运行
+-p: 将主机的端口映射到容器的一个端口    主机端口:容器内部的端口
+
+10、为了演示简单关闭了linux的防火墙
+service firewalld status ；查看防火墙状态
+service firewalld stop：关闭防火墙
+11、查看容器的日志
+docker logs container-name/container-id
+
+更多命令参看
+https://docs.docker.com/engine/reference/commandline/docker/
+可以参考每一个镜像的文档
+
+</code></pre></div><h3 id="3安装mysql示例">3）、安装MySQL示例</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker pull mysql
+</code></pre></div><p>错误的启动</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker run --name mysql01 -d mysql</span>
+42f09819908bb72dd99ae19e792e0a5d03c48638421fa64cce5f8ba0f40f5846
+
+mysql退出了
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker ps -a</span>
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                           PORTS               NAMES
+42f09819908b        mysql               <span style="color:#e6db74">&#34;docker-entrypoint.sh&#34;</span>   <span style="color:#ae81ff">34</span> seconds ago      Exited <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> <span style="color:#ae81ff">33</span> seconds ago                            mysql01
+538bde63e500        tomcat              <span style="color:#e6db74">&#34;catalina.sh run&#34;</span>        About an hour ago   Exited <span style="color:#f92672">(</span>143<span style="color:#f92672">)</span> About an hour ago                       compassionate_
+goldstine
+c4f1ac60b3fc        tomcat              <span style="color:#e6db74">&#34;catalina.sh run&#34;</span>        About an hour ago   Exited <span style="color:#f92672">(</span>143<span style="color:#f92672">)</span> About an hour ago                       lonely_fermi
+81ec743a5271        tomcat              <span style="color:#e6db74">&#34;catalina.sh run&#34;</span>        About an hour ago   Exited <span style="color:#f92672">(</span>143<span style="color:#f92672">)</span> About an hour ago                       sick_ramanujan
+
+
+//错误日志
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker logs 42f09819908b</span>
+error: database is uninitialized and password option is not specified 
+  You need to specify one of MYSQL_ROOT_PASSWORD, MYSQL_ALLOW_EMPTY_PASSWORD and MYSQL_RANDOM_ROOT_PASSWORD；这个三个参数必须指定一个
+</code></pre></div><p>正确的启动</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker run --name mysql01 -e MYSQL_ROOT_PASSWORD=123456 -d mysql</span>
+b874c56bec49fb43024b3805ab51e9097da779f2f572c22c695305dedd684c5f
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker ps</span>
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+b874c56bec49        mysql               <span style="color:#e6db74">&#34;docker-entrypoint.sh&#34;</span>   <span style="color:#ae81ff">4</span> seconds ago       Up <span style="color:#ae81ff">3</span> seconds        3306/tcp            mysql01
+</code></pre></div><p>做了端口映射</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker run -p 3306:3306 --name mysql02 -e MYSQL_ROOT_PASSWORD=123456 -d mysql</span>
+ad10e4bc5c6a0f61cbad43898de71d366117d120e39db651844c0e73863b9434
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># docker ps</span>
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+ad10e4bc5c6a        mysql               <span style="color:#e6db74">&#34;docker-entrypoint.sh&#34;</span>   <span style="color:#ae81ff">4</span> seconds ago       Up <span style="color:#ae81ff">2</span> seconds        0.0.0.0:3306-&gt;3306/tcp   mysql02
+</code></pre></div><p>几个其他的高级操作</p>
+<pre><code>docker run --name mysql03 -v /conf/mysql:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+把主机的/conf/mysql文件夹挂载到 mysqldocker容器的/etc/mysql/conf.d文件夹里面
+改mysql的配置文件就只需要把mysql配置文件放在自定义的文件夹下（/conf/mysql）
+
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+指定mysql的一些配置参数
+</code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/521%E7%BB%A7%E6%89%BF/" data-toggle="tooltip" data-placement="top" title="11、继承(Maven)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/522%E8%81%9A%E5%90%88/" data-toggle="tooltip" data-placement="top" title="12、聚合(Maven)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
