@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="8、适配器模式(设计模式)" />
+    <meta property="og:title" content="8、适配器模式(设计模式)" />
+    <meta property="twitter:title" content="8、适配器模式(设计模式)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>8、适配器模式(设计模式)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/708%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                    </div>
+                    <h1>8、适配器模式(设计模式)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Saturday, August 22, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#基本介绍-1">基本介绍</a></li>
+    <li><a href="#应用实例说明">应用实例说明</a></li>
+    <li><a href="#类适配器模式注意事项和细节">类适配器模式注意事项和细节</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#对象适配器模式介绍">对象适配器模式介绍</a></li>
+    <li><a href="#对象适配器模式应用实例">对象适配器模式应用实例</a></li>
+    <li><a href="#对象适配器模式注意事项和细节">对象适配器模式注意事项和细节</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#接口适配器模式介绍">接口适配器模式介绍</a></li>
+    <li><a href="#案例">案例</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="现实生活中的适配器例子">现实生活中的适配器例子</h1>
+<ul>
+<li>泰国插座用的是两孔的（欧标），可以买个多功能转换插头 (适配器) ，这样就可以使用了
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8ozhf440j30pv086dkn.jpg" alt="QQ截图20200830114730.png"></li>
+</ul>
+<h1 id="基本介绍">基本介绍</h1>
+<ul>
+<li>适配器模式(Adapter Pattern)将某个类的接口转换成客户端期望的另一个接口表示，主的目的是兼容性，让原本因接口不匹配不能一起工作的两个类可以协同工作。其别名为包装器(Wrapper)</li>
+<li>适配器模式属于结构型模式</li>
+<li>主要分为三类：类适配器模式、对象适配器模式、接口适配器模式</li>
+</ul>
+<h1 id="工作原理">工作原理</h1>
+<ul>
+<li>适配器模式：将一个类的接口转换成另一种接口.让原本接口不兼容的类可以兼容</li>
+<li>从用户的角度看不到被适配者，是解耦的</li>
+<li>用户调用适配器转化出来的目标接口方法，适配器再调用被适配者的相关接口方法</li>
+<li>用户收到反馈结果，感觉只是和目标接口交互，如图
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8p0mmh8fj30o206gafc.jpg" alt="QQ截图20200830114838.png"></li>
+</ul>
+<h1 id="类适配器模式">类适配器模式</h1>
+<h2 id="基本介绍-1">基本介绍</h2>
+<ul>
+<li>Adapter 类，通过继承 src 类，实现 dst  类接口，完成 src-&gt;dst 的适配</li>
+</ul>
+<h2 id="应用实例说明">应用实例说明</h2>
+<ul>
+<li>
+<p>以生活中充电器的例子来讲解适配器，充电器本身相当于 Adapter，220V 交流电相当于 src (即被适配者)，我们的目 dst(即 目标)是 5V 直流电</p>
+</li>
+<li>
+<p>思路分析(类图)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8p1r3xsdj30o607f77g.jpg" alt="QQ截图20200830114942.png"></p>
+</li>
+<li>
+<p>代码实现</p>
+</li>
+</ul>
+<pre><code>package com.atguigu.adapter.classadapter;
+public class Client {
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub 
+        System.out.println(&quot; === 类适配器模式 ====&quot;); 
+        Phone phone = new Phone();
+        phone.charging(new VoltageAdapter());
+    }
+}
+</code></pre><pre><code>package com.atguigu.adapter.classadapter;
+
+//适配接口
+public interface IVoltage5V {   
+    public int output5V();
+}
+</code></pre><pre><code>package com.atguigu.adapter.classadapter;
+
+public class Phone {
+    //充电
+    public void charging(IVoltage5V iVoltage5V) 
+    { 
+        if(iVoltage5V.output5V() == 5) {
+        System.out.println(&quot;电压为 5V, 可以充电~~&quot;);
+        } else if (iVoltage5V.output5V() &gt; 5) {
+        System.out.println(&quot;电压大于 5V, 不能充电~~&quot;);
+        }
+    }
+}
+</code></pre><pre><code>package com.atguigu.adapter.classadapter;
+
+//被适配的类
+public class Voltage220V {
+    //输出 220V 的电压
+    public int output220V() { 
+        int src = 220;
+        System.out.println(&quot;电压=&quot; + src + &quot;伏&quot;);
+        return src;
+    }
+}
+</code></pre><pre><code>package com.atguigu.adapter.classadapter;
+
+//适配器类
+public class VoltageAdapter extends Voltage220V implements IVoltage5V {
+    @Override
+    public int output5V() {
+        // TODO Auto-generated method stub
+        //获取到 220V 电压
+        int srcV = output220V();
+        int dstV = srcV / 44 ; //转成 5v return dstV;
+    }
+}
+</code></pre><h2 id="类适配器模式注意事项和细节">类适配器模式注意事项和细节</h2>
+<ul>
+<li>Java 是单继承机制，所以类适配器需要继承 src 类这一点算是一个缺点, 因为这要求 dst 必须是接口，有一定局限性;</li>
+<li>src 类的方法在 Adapter 中都会暴露出来，也增加了使用的成本。</li>
+<li>由于其继承了 src 类，所以它可以根据需求重写 src 类的方法，使得 Adapter 的灵活性增强了</li>
+</ul>
+<h1 id="对象适配器模式">对象适配器模式</h1>
+<h2 id="对象适配器模式介绍">对象适配器模式介绍</h2>
+<ul>
+<li>
+<p>基本思路和类的适配器模式相同，只是将 Adapter 类作修改，不是继承 src 类，而是持有 src 类的实例，以解决兼容性的问题。 即：持有 src 类，实现 dst  类接口，完成 src-&gt;dst 的适配</p>
+</li>
+<li>
+<p>根据“合成复用原则”，在系统中尽量使用关联关系（聚合）来替代继承关系。</p>
+</li>
+<li>
+<p>对象适配器模式是适配器模式常用的一种</p>
+</li>
+</ul>
+<h2 id="对象适配器模式应用实例">对象适配器模式应用实例</h2>
+<ul>
+<li>应用实例说明
+<ul>
+<li>以生活中充电器的例子来讲解适配器，充电器本身相当于 Adapter，220V 交流电相当于 src (即被适配者)，我们的目 dst(即目标)是 5V 直流电，使用对象适配器模式完成。</li>
+</ul>
+</li>
+<li>思路分析(类图)：只需修改适配器即可, 如下:
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pay82nzj30qc08hn0s.jpg" alt="QQ截图20200830115833.png"></li>
+<li>代码实现</li>
+</ul>
+<pre><code>public class Client {
+
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub 
+        System.out.println(&quot; === 对象适配器模式 ====&quot;); 
+        Phone phone = new Phone();
+        phone.charging(new VoltageAdapter(new Voltage220V()));
+    }
+}
+</code></pre><pre><code>package com.atguigu.adapter.classadapter;
+
+//适配接口
+public interface IVoltage5V {   
+    public int output5V();
+}
+</code></pre><pre><code>package com.atguigu.adapter.classadapter;
+
+public class Phone {
+    //充电
+    public void charging(IVoltage5V iVoltage5V) 
+    { 
+        if(iVoltage5V.output5V() == 5) {
+        System.out.println(&quot;电压为 5V, 可以充电~~&quot;);
+        } else if (iVoltage5V.output5V() &gt; 5) {
+        System.out.println(&quot;电压大于 5V, 不能充电~~&quot;);
+        }
+    }
+}
+</code></pre><pre><code>package com.atguigu.adapter.objectadapter;
+
+//被适配的类
+public class Voltage220V {
+    //输出 220V 的电压，不变
+    public int output220V() { 
+    int src = 220;
+    System.out.println(&quot;电压=&quot; + src + &quot;伏&quot;);
+    return src;
+    }
+}
+</code></pre><pre><code>package com.atguigu.adapter.objectadapter;
+
+//适配器类
+public class VoltageAdapter	implements IVoltage5V {
+
+    private Voltage220V voltage220V; // 关联关系-聚合
+
+    //通过构造器，传入一个 Voltage220V 实例
+    public VoltageAdapter(Voltage220V voltage220v) {
+        this.voltage220V = voltage220v;
+    }
+
+    @Override
+    public int output5V() {
+        int dst = 0;
+        if(null != voltage220V) {
+        int src = voltage220V.output220V();//获取 220V 电压
+        System.out.println(&quot;使用对象适配器，进行适配~~&quot;); 
+        dst = src / 44;
+        System.out.println(&quot;适配完成，输出的电压为=&quot; + dst);
+        }
+
+        return dst;
+    }
+}
+</code></pre><h2 id="对象适配器模式注意事项和细节">对象适配器模式注意事项和细节</h2>
+<ul>
+<li>对象适配器和类适配器其实算是同一种思想，只不过实现方式不同。</li>
+<li>根据合成复用原则，使用组合替代继承， 所以它解决了类适配器必须继承 src 的局限性问题，也不再要求 dst
+必须是接口。</li>
+<li>使用成本更低，更灵活</li>
+</ul>
+<h1 id="接口适配器模式">接口适配器模式</h1>
+<h2 id="接口适配器模式介绍">接口适配器模式介绍</h2>
+<ul>
+<li>一些书籍称为：适配器模式(Default Adapter Pattern)或缺省适配器模式。</li>
+<li>核心思路：当不需要全部实现接口提供的方法时，可先设计一个抽象类实现接口，并为该接口中每个方法提供一个默认实现（空方法），那么该抽象类的子类可有选择地覆盖父类的某些方法来实现需求</li>
+<li>适用于一个接口不想使用其所有的方法的情况</li>
+</ul>
+<h2 id="案例">案例</h2>
+<ul>
+<li>思路分析(类图)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pimt6e1j30hm06zabh.jpg" alt="QQ截图20200830120523.png"></li>
+<li>代码</li>
+</ul>
+<pre><code>package com.atguigu.adapter.interfaceadapter;
+
+public interface Interface4 {   
+    public void m1(); 
+    public void m2(); 
+    public void m3(); 
+    public void m4();
+}
+</code></pre><pre><code>package com.atguigu.adapter.interfaceadapter;
+//在 AbsAdapter 我们将 Interface4 的方法进行默认实现
+public abstract class AbsAdapter implements Interface4 {
+    //默认实现
+    public void m1() {
+    }
+    public void m2() {
+    }
+    public void m3() {
+    }
+    public void m4() {
+    }
+}
+</code></pre><pre><code>package com.atguigu.adapter.interfaceadapter;
+public class Client {
+    public static void main(String[] args) {
+        AbsAdapter absAdapter = new AbsAdapter() {
+        //只需要去覆盖我们 需要使用 接口方法
+        @Override
+        public void m1() {
+            // TODO Auto-generated method stub
+            System.out.println(&quot;使用了 m1 的方法&quot;);
+            }
+        };
+        absAdapter.m1();
+    }
+}
+</code></pre><h1 id="适配器模式在-springmvc-框架应用的源码剖析">适配器模式在 SpringMVC 框架应用的源码剖析</h1>
+<ul>
+<li>SpringMvc 中的 HandlerAdapter, 就使用了适配器模式</li>
+<li>SpringMVC 处理请求的流程回顾</li>
+<li>使用 HandlerAdapter 的原因分析:
+可以看到处理器的类型不同，有多重实现方式，那么调用方式就不是确定的，如果需要直接调用 Controller 方法，需要调用的时候就得不断是使用 if else 来进行判断是哪一种子类然后执行。那么如果后面要扩展 Controller， 就得修改原来的代码，这样违背了 OCP 原则。</li>
+<li>代码分析+Debug 源码</li>
+<li>动手写 SpringMVC 通过适配器设计模式获取到对应的 Controller 的源码
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pmzvkecj30q003ytd0.jpg" alt="QQ截图20200830121007.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pnb2i1mj30pz0ckafb.jpg" alt="QQ截图20200830121025.png"></li>
+</ul>
+<h1 id="适配器模式的注意事项和细节">适配器模式的注意事项和细节</h1>
+<ul>
+<li>三种命名方式，是根据 src 是以怎样的形式给到 Adapter（在 Adapter 里的形式）来命名的。</li>
+<li>类适配器：以类给到，在 Adapter 里，就是将 src 当做类，继承</li>
+<li>对象适配器：以对象给到，在 Adapter 里，将 src 作为一个对象，持有</li>
+<li>接口适配器：以接口给到，在 Adapter 里，将 src 作为一个接口，实现</li>
+<li>Adapter 模式最大的作用还是将原本不兼容的接口融合在一起工作。</li>
+<li>实际开发中，实现起来不拘泥于我们讲解的三种经典形式</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/739%E6%A0%91%E7%BB%93%E6%9E%84%E7%9A%84%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" data-toggle="tooltip" data-placement="top" title="9、树结构的基础部分(数据结构与算法)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/709%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/" data-toggle="tooltip" data-placement="top" title="9、桥接模式(设计模式)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

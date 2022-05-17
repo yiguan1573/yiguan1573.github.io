@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="5、HBase优化（HBase）" />
+    <meta property="og:title" content="5、HBase优化（HBase）" />
+    <meta property="twitter:title" content="5、HBase优化（HBase）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>5、HBase优化（HBase）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/1015hbase%E4%BC%98%E5%8C%96/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/hbase" title="HBase">
+                            HBase
+                        </a>
+                        
+                    </div>
+                    <h1>5、HBase优化（HBase）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Wednesday, March 9, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#高可用">高可用</a></li>
+    <li><a href="#预分区">预分区</a></li>
+    <li><a href="#rowkey-设计">RowKey 设计</a></li>
+    <li><a href="#内存优化">内存优化</a></li>
+    <li><a href="#基础优化">基础优化</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="高可用">高可用</h2>
+<p>​		在HBase中HMaster负责监控HRegionServer的生命周期，均衡RegionServer的负载，如果HMaster挂掉了，那么整个HBase集群将陷入不健康的状态，并且此时的工作状态并不会维持太久。所以HBase支持对HMaster的高可用配置。</p>
+<p>1 ．关闭HBase集群（如果没有开启则跳过此步）</p>
+<pre><code>[atguigu@hadoop102 hbase]$ bin/stop-hbase.sh
+</code></pre><p>2 ．在conf目录下创建backup-masters文件</p>
+<pre><code>[atguigu@hadoop102 hbase]$ touch conf/backup-masters
+</code></pre><p>3 ．在backup-masters文件中配置高可用HMaster节点</p>
+<pre><code>[atguigu@hadoop102 hbase]$ echo hadoop103 &gt; conf/backup-masters
+</code></pre><p>4 ．将整个conf目录scp到其他节点</p>
+<pre><code>[atguigu@hadoop102 hbase]$ scp -r conf/hadoop103:/opt/module/hbase/
+[atguigu@hadoop102 hbase]$ scp -r conf/hadoop104:/opt/module/hbase/
+</code></pre><p>5 ．打开页面测试查看</p>
+<p><a href="http://hadooo102:16010">http://hadooo102:16010</a></p>
+<h2 id="预分区">预分区</h2>
+<p>​		每一个region维护着StartRow与EndRow，如果加入的数据符合某个Region维护的RowKey范围，则该数据交给这个Region维护。那么依照这个原则，我们可以将数据所要投放的分区提前大致的规划好，以提高HBase性能。</p>
+<p>1 ．手动设定预分区</p>
+<pre><code>Hbase&gt; create 'staff 1 ','info','partition1',SPLITS =&gt;['1000','2000','3000','4000']
+</code></pre><p>2 ．生成 16 进制序列预分区</p>
+<pre><code>create 'staff2','info','partition2',{NUMREGIONS =&gt; 15, SPLITALGO =&gt;'HexStringSplit'}
+</code></pre><p>3 ．按照文件中设置的规则预分区</p>
+<p>创建splits.txt文件内容如下：</p>
+<pre><code>aaaa
+bbbb
+cccc
+dddd
+</code></pre><p>然后执行：</p>
+<pre><code>create 'staff3','partition3',SPLITS_FILE =&gt; 'splits.txt'
+</code></pre><p>4 ．使用JavaAPI创建预分区</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//自定义算法，产生一系列hash散列值存储在二维数组中
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> splitKeys <span style="color:#f92672">=</span> 某个散列值函数
+<span style="color:#75715e">//创建HbaseAdmin实例
+</span><span style="color:#75715e"></span>    
+HBaseAdmin hAdmin <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HBaseAdmin<span style="color:#f92672">(</span>HbaseConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#75715e">//创建HTableDescriptor实例
+</span><span style="color:#75715e"></span>
+HTableDescriptor tableDesc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HTableDescriptor<span style="color:#f92672">(</span>tableName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#75715e">//通过HTableDescriptor实例和散列值二维数组创建带有预分区的Hbase表
+</span><span style="color:#75715e"></span>
+hAdmin<span style="color:#f92672">.</span><span style="color:#a6e22e">createTable</span><span style="color:#f92672">(</span>tableDesc<span style="color:#f92672">,</span> splitKeys<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><h2 id="rowkey-设计">RowKey 设计</h2>
+<p>​		一条数据的唯一标识就是RowKey，那么这条数据存储于哪个分区，取决于RowKey处于哪个一个预分区的区间内，设计RowKey的主要目的 ，就是让数据均匀的分布于所有的region中，在一定程度上防止数据倾斜。接下来我们就谈一谈RowKey常用的设计方案。</p>
+<p>1 ．生成随机数、hash、散列值</p>
+<pre><code>比如：
+原本rowKey 为 1001 的，SHA1 后 变 成 ：
+dd01903921ea24941c26a48f2cec24e0bb0e8cc7
+原本rowKey 为 3001 的，SHA1 后 变 成 ：
+49042c54de64a1e9bf0b33e00245660ef92dc7bd
+原本rowKey 为 5001 的 ， SHA1 后 变 成 ：
+7b61dec07e02c188790670af43e717f0f46e8913
+在做此操作之前，一般我们会选择从数据集中抽取样本，来决定什么样的rowKey来Hash后作为每个分区的临界值。
+</code></pre><p>2 ．字符串反转</p>
+<pre><code>20170524000001 转成 10000042507102
+20170524000002 转成 20000042507102
+</code></pre><p>这样也可以在一定程度上散列逐步put进来的数据。</p>
+<p>3 ．字符串拼接</p>
+<pre><code>20170524000001_a12e
+20170524000001_93i7
+</code></pre><h2 id="内存优化">内存优化</h2>
+<p>​		HBase操作过程中需要大量的内存开销，毕竟Table是可以缓存在内存中的，一般会分配整个可用内存的70%给HBase的Java堆。但是不建议分配非常大的堆内存，因为GC过程持续太久会导致RegionServer处于长期不可用状态，一般16~48G内存就可以了，如果因为框架占用内存过高导致系统内存不足，框架一样会被系统服务拖死。</p>
+<h2 id="基础优化">基础优化</h2>
+<p>1 ．允许在HDFS的文件中追加内容</p>
+<p>hdfs-site.xml、hbase-site.xml</p>
+<pre><code>属性：dfs.support.append
+解释：开启HDFS追加同步，可以优秀的配合HBase的数据同步和持久化。默认值为true。
+</code></pre><p>2 ．优化DataNode允许的最大文件打开数</p>
+<p>hdfs-site.xml</p>
+<pre><code>属性：dfs.datanode.max.transfer.threads
+解释：HBase一般都会同一时间操作大量的文件，根据集群的数量和规模以及数据动作，
+设置为 4096 或者更高。默认值： 4096
+</code></pre><p>3 ．优化延迟高的数据操作的等待时间</p>
+<p>hdfs-site.xml</p>
+<pre><code>属性：dfs.image.transfer.timeout
+解释：如果对于某一次数据操作来讲，延迟非常高，socket需要等待更长的时间，建议把
+该值设置为更大的值（默认 60000 毫秒），以确保socket不会被timeout掉。
+</code></pre><p>4 ．优化数据的写入效率</p>
+<p>mapred-site.xml</p>
+<pre><code>属性：
+mapreduce.map.output.compress
+mapreduce.map.output.compress.codec
+解释：开启这两个数据可以大大提高文件的写入效率，减少写入时间。第一个属性值修改为
+true，第二个属性值修改为：org.apache.hadoop.io.compress.GzipCodec或者其
+他压缩方式。
+</code></pre><p>5 ．设置RPC监听数量</p>
+<p>hbase-site.xml</p>
+<pre><code>属性：Hbase.regionserver.handler.count
+解释：默认值为 30 ，用于指定RPC监听的数量，可以根据客户端的请求数进行调整，读写
+请求较多时，增加此值。
+</code></pre><p>6 ．优化HStore文件大小</p>
+<p>hbase-site.xml</p>
+<pre><code>属性：hbase.hregion.max.filesize
+解释：默认值 10737418240 （ 10 GB），如果需要运行HBase的MR任务，可以减小此值，
+因为一个region对应一个map任务，如果单个region过大，会导致map任务执行时间
+过长。该值的意思就是，如果HFile的大小达到这个数值，则这个region会被切分为两
+个Hfile。
+</code></pre><p>7 ．优化HBase客户端缓存</p>
+<p>hbase-site.xml</p>
+<pre><code>属性：hbase.client.write.buffer
+解释：用于指定Hbase客户端缓存，增大该值可以减少RPC调用次数，但是会消耗更多内
+存，反之则反之。一般我们需要设定一定的缓存大小，以达到减少RPC次数的目的。
+</code></pre><p>8 ．指定scan.next扫描HBase所获取的行数</p>
+<p>hbase-site.xml</p>
+<pre><code>属性：hbase.client.scanner.caching
+解释：用于指定scan.next方法获取的默认行数，值越大，消耗内存越大。
+</code></pre><p>9 ．flush、compact、split机制</p>
+<p>当MemStore达到阈值，将Memstore中的数据Flush进Storefile；compact机制则是把flush出来的小文件合并成大的Storefile文件。split则是当Region达到阈值，会把过大的Region一分为二。</p>
+<p><strong>涉及属性：</strong></p>
+<p>即：128M就是Memstore的默认阈值</p>
+<pre><code>hbase.hregion.memstore.flush.size： 134217728
+</code></pre><p>即：这个参数的作用是当单个HRegion内所有的Memstore大小总和超过指定值时，flush该HRegion的所有memstore。RegionServer的flush是通过将请求添加一个队列，模拟生产消费模型来异步处理的。那这里就有一个问题，当队列来不及消费，产生大量积压请求时，可能会导致内存陡增，最坏的情况是触发OOM。</p>
+<pre><code>hbase.regionserver.global.memstore.upperLimit：0.4
+hbase.regionserver.global.memstore.lowerLimit：0.38
+</code></pre><p>即：当MemStore使用内存总量达到hbase.regionserver.global.memstore.upperLimit指定值时，将会有多个MemStores flush到文件中，MemStore flush 顺序是按照大小降序执行的，直到刷新到MemStore使用内存略小于lowerLimit</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1008%E5%87%BD%E6%95%B0/" data-toggle="tooltip" data-placement="top" title="8、函数（Hive）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1016hbase-%E5%AE%9E%E6%88%98%E4%B9%8B%E8%B0%B7%E7%B2%92%E5%BE%AE%E5%8D%9A/" data-toggle="tooltip" data-placement="top" title="6、HBase 实战之谷粒微博（HBase）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

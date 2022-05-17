@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="7、建造者模式(设计模式)" />
+    <meta property="og:title" content="7、建造者模式(设计模式)" />
+    <meta property="twitter:title" content="7、建造者模式(设计模式)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>7、建造者模式(设计模式)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/707%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                    </div>
+                    <h1>7、建造者模式(设计模式)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Friday, August 21, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <h1 id="盖房项目需求">盖房项目需求</h1>
+<ul>
+<li>需要建房子：这一过程为打桩、砌墙、封顶</li>
+<li>房子有各种各样的，比如普通房，高楼，别墅，各种房子的过程虽然一样，但是要求不要相同的.</li>
+</ul>
+<h1 id="传统方式">传统方式</h1>
+<ul>
+<li>思路分析(图解)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi7qnhzgdaj30cq07habc.jpg" alt="QQ截图20200829155938.png"></li>
+<li>代码</li>
+</ul>
+<pre><code>package com.atguigu.builder;
+
+public abstract class AbstractHouse {
+
+    //打地基
+    public abstract void buildBasic();
+    //砌墙
+    public abstract void buildWalls();
+    //封顶
+    public abstract void roofed();
+
+    public void build() {       
+        buildBasic(); 
+        buildWalls(); 
+        roofed();
+    }
+}
+</code></pre><pre><code>package com.atguigu.builder;
+
+public class CommonHouse extends AbstractHouse {
+
+    @Override
+    public void buildBasic() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 普通房子打地基 &quot;);
+    }
+
+
+    @Override
+    public void buildWalls() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 普通房子砌墙 &quot;);
+    }
+
+
+    @Override
+    public void roofed() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 普通房子封顶 &quot;);
+    }
+}
+</code></pre><pre><code>package com.atguigu.builder;
+
+public class Client {
+
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        CommonHouse commonHouse = new CommonHouse(); 
+        commonHouse.build();
+    }
+}
+</code></pre><h1 id="传统方式的问题分析">传统方式的问题分析</h1>
+<ul>
+<li>
+<p>优点是比较好理解，简单易操作。</p>
+</li>
+<li>
+<p>设计的程序结构，过于简单，没有设计缓存层对象，程序的扩展和维护不好. 也就是说，这种设计方案，把产品(即：房子) 和 创建产品的过程(即：建房子流程) 封装在一起，耦合性增强了。</p>
+</li>
+<li>
+<p>解决方案：将产品和产品建造过程解耦  =&gt;	建造者模式</p>
+</li>
+</ul>
+<h1 id="建造者模式基本介绍">建造者模式基本介绍</h1>
+<ul>
+<li>建造者模式（Builder Pattern） 又叫生成器模式，是一种对象构建模式。它可以将复杂对象的建造过程抽象出来（抽象类别），使这个抽象过程的不同实现方法可以构造出不同表现（属性）的对象。</li>
+<li>建造者模式 是一步一步创建一个复杂的对象，它允许用户只通过指定复杂对象的类型和内容就可以构建它们， 用户不需要知道内部的具体构建细节</li>
+</ul>
+<h1 id="建造者模式的四个角色">建造者模式的四个角色</h1>
+<ul>
+<li>
+<p><strong>Product（产品角色）：</strong> 一个具体的产品对象。</p>
+</li>
+<li>
+<p><strong>Builder（抽象建造者）：</strong> 创建一个 Product 对象的各个部件指定的 接口/抽象类。</p>
+</li>
+<li>
+<p><strong>ConcreteBuilder（具体建造者）：</strong> 实现接口，构建和装配各个部件。</p>
+</li>
+<li>
+<p><strong>Director（指挥者）：</strong> 构建一个使用 Builder 接口的对象。它主要是用于创建一个复杂的对象。它主要有两个作用，一是：隔离了客户与对象的生产过程，二是：负责控制产品对象的生产过程</p>
+</li>
+</ul>
+<h1 id="建造者模式原理类图">建造者模式原理类图</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi7qu2cu98j30oi0beaey.jpg" alt="QQ截图20200829160557.png"></p>
+<h1 id="建造者模式解决盖房需求">建造者模式解决盖房需求</h1>
+<ul>
+<li>需要建房子：这一过程为打桩、砌墙、封顶。不管是普通房子也好，别墅也好都需要经历这些过程，下面我们使用建造者模式(Builder Pattern)来完成</li>
+<li>思路分析图解(类图)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi7qutj775j30lo09d77h.jpg" alt="QQ截图20200829160640.png"></li>
+<li>代码</li>
+</ul>
+<pre><code>package com.atguigu.builder.improve;
+
+public class Client {
+    public static void main(String[] args) {
+
+        //盖普通房子
+        CommonHouse commonHouse = new CommonHouse();
+        //准备创建房子的指挥者
+        HouseDirector houseDirector = new HouseDirector(commonHouse);
+
+        //完成盖房子，返回产品(普通房子)
+        House house = houseDirector.constructHouse(); 
+        System.out.println(&quot;--------------------------&quot;);
+        //盖高楼
+        HighBuilding highBuilding = new HighBuilding();
+        //重置建造者
+        houseDirector.setHouseBuilder(highBuilding);
+        //完成盖房子，返回产品(高楼) houseDirector.constructHouse();
+    }
+}
+</code></pre><pre><code>package com.atguigu.builder.improve;
+
+
+public class CommonHouse extends HouseBuilder {
+
+
+    @Override
+    public void buildBasic() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 普通房子打地基 5 米 &quot;);
+    }
+
+
+    @Override
+    public void buildWalls() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 普通房子砌墙 10cm &quot;);
+    }
+
+
+    @Override
+    public void roofed() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 普通房子屋顶 &quot;);
+    }
+}
+</code></pre><pre><code>package com.atguigu.builder.improve;
+
+
+public class HighBuilding extends HouseBuilder {
+
+
+    @Override
+    public void buildBasic() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 高楼的打地基 100 米 &quot;);
+    }
+
+
+    @Override
+    public void buildWalls() {
+        // TODO Auto-generated method stub 
+        System.out.println(&quot; 高楼的砌墙 20cm &quot;);
+    }
+
+
+    @Override
+    public void roofed() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 高楼的透明屋顶 &quot;);
+    }
+}
+</code></pre><pre><code>package com.atguigu.builder.improve;
+
+// 产 品 -&gt;Product public class House {
+    private String baise; 
+    private String wall; 
+    private String roofed; 
+    public String getBaise() {
+        return baise;
+    }
+    public void setBaise(String baise) { this.baise = baise;
+    }
+    public String getWall() { return wall;
+    }
+    public void setWall(String wall) { this.wall = wall;
+    }
+    public String getRoofed() { return roofed;
+    }
+    public void setRoofed(String roofed) { this.roofed = roofed;
+    }
+}
+</code></pre><pre><code>package com.atguigu.builder.improve;
+
+// 抽象的建造者
+public abstract class HouseBuilder {
+
+    protected House house = new House();
+
+    //将建造的流程写好, 抽象的方法
+    public abstract void buildBasic(); 
+    public abstract void buildWalls(); 
+    public abstract void roofed();
+
+    //建造房子好， 将产品(房子) 返回
+    public House buildHouse() {     return house;
+    }
+}
+</code></pre><pre><code>package com.atguigu.builder.improve;
+
+//指挥者，这里去指定制作流程，返回产品
+public class HouseDirector {
+
+    HouseBuilder houseBuilder = null;
+
+    //构造器传入 houseBuilder
+    public HouseDirector(HouseBuilder houseBuilder) {   this.houseBuilder = houseBuilder;
+    }
+
+    //通过 setter 传入 houseBuilder
+    public void setHouseBuilder(   
+    HouseBuilder houseBuilder) {    this.houseBuilder = houseBuilder;
+    }
+
+    //如何处理建造房子的流程，交给指挥者 
+    public House constructHouse() {
+        houseBuilder.buildBasic(); houseBuilder.buildWalls(); houseBuilder.roofed();
+        return houseBuilder.buildHouse();
+    }
+}
+</code></pre><h1 id="建造者模式在-jdk-的应用和源码分析">建造者模式在 JDK 的应用和源码分析</h1>
+<ul>
+<li>java.lang.StringBuilder 中的建造者模式</li>
+<li>代码说明+Debug 源码
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi7rgvaniqj30si08cn4t.jpg" alt="QQ截图20200829162752.png"></li>
+<li>源码中建造者模式角色分析
+<ul>
+<li>Appendable 接口定义了多个 append 方法(抽象方法), 即 Appendable 为抽象建造者, 定义了抽象方法</li>
+<li>AbstractStringBuilder  实现了  Appendable  接口方法，这里的  AbstractStringBuilder	已经是建造者，只是不能实例化</li>
+<li>StringBuilder 即充当了指挥者角色，同时充当了具体的建造者，建造方法的实现是由 AbstractStringBuilder 完成 , 而 StringBuilder	继承了 AbstractStringBuilder</li>
+</ul>
+</li>
+</ul>
+<h1 id="建造者模式的注意事项和细节">建造者模式的注意事项和细节</h1>
+<ul>
+<li>客户端(使用程序)不必知道产品内部组成的细节，将产品本身与产品的创建过程解耦，使得相同的创建过程可以创建不同的产品对象</li>
+<li>每一个具体建造者都相对独立，而与其他的具体建造者无关，因此可以很方便地替换具体建造者或增加新的具体建造者， 用户使用不同的具体建造者即可得到不同的产品对象</li>
+<li>可以更加精细地控制产品的创建过程 。将复杂产品的创建步骤分解在不同的方法中，使得创建过程更加清晰， 也更方便使用程序来控制创建过程</li>
+<li>增加新的具体建造者无须修改原有类库的代码，指挥者类针对抽象建造者类编程，系统扩展方便，符合“开闭原则”</li>
+<li>建造者模式所创建的产品一般具有较多的共同点，其组成部分相似，如果产品之间的差异性很大，则不适合使用建造者模式，因此其使用范围受到一定的限制。</li>
+<li>如果产品的内部变化复杂，可能会导致需要定义很多具体建造者类来实现这种变化，导致系统变得很庞大，因此在这种情况下，要考虑是否选择建造者模式</li>
+<li><strong>抽象工厂模式 VS 建造者模式:</strong>  抽象工厂模式实现对产品家族的创建，一个产品家族是这样的一系列产品：具有不同分类维度的产品组合，采用抽象工厂模式不需要关心构建过程，只关心什么产品由什么工厂生产即可。而建造者模式则是要求按照指定的蓝图建造产品，它的主要目的是通过组装零配件而产生一个新产品</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/738%E5%93%88%E5%B8%8C%E8%A1%A8/" data-toggle="tooltip" data-placement="top" title="8、哈希表(数据结构与算法)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/739%E6%A0%91%E7%BB%93%E6%9E%84%E7%9A%84%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" data-toggle="tooltip" data-placement="top" title="9、树结构的基础部分(数据结构与算法)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

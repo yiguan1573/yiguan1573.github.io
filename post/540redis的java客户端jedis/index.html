@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="10、Redis的Java客户端Jedis(Redis)" />
+    <meta property="og:title" content="10、Redis的Java客户端Jedis(Redis)" />
+    <meta property="twitter:title" content="10、Redis的Java客户端Jedis(Redis)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>10、Redis的Java客户端Jedis(Redis)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/540redis%E7%9A%84java%E5%AE%A2%E6%88%B7%E7%AB%AFjedis/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                    </div>
+                    <h1>10、Redis的Java客户端Jedis(Redis)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Friday, July 17, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#日常">日常</a></li>
+    <li><a href="#加锁">加锁</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#jedispoolutil">JedisPoolUtil</a></li>
+    <li><a href="#配置总结">配置总结</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="jedis_测试联通">Jedis_测试联通</h1>
+<ul>
+<li>在Eclipse创建普通Maven工程</li>
+<li>pom.xml引入下面关键依赖</li>
+</ul>
+<pre><code>&lt;dependency&gt;
+	&lt;groupId&gt;redis.clients&lt;/groupId&gt;
+	&lt;artifactId&gt;jedis&lt;/artifactId&gt;
+	&lt;version&gt;2.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre><ul>
+<li>创建新类，测试连通，源码如下：</li>
+</ul>
+<pre><code>package com.lun.shang;
+
+import redis.clients.jedis.Jedis;
+
+public class TestPing {
+	public static void main(String[] args) 
+	{
+		Jedis jedis = new Jedis(&quot;127.0.0.1&quot;,6379);
+		//输出PONG，redis连通成功
+		System.out.println(jedis.ping());
+	}
+}
+</code></pre><h1 id="jedis_常用api">Jedis_常用API</h1>
+<pre><code>import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import redis.clients.jedis.Jedis;
+
+public class TestAPI {
+	public static void main(String[] args) {
+
+		Jedis jedis = new Jedis(&quot;127.0.0.1&quot;, 6379);
+		// key
+		Set&lt;String&gt; keys = jedis.keys(&quot;*&quot;);
+		for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
+			String key = (String) iterator.next();
+			System.out.println(key);
+		}
+		System.out.println(&quot;jedis.exists====&gt;&quot; + jedis.exists(&quot;k2&quot;));
+		System.out.println(jedis.ttl(&quot;k1&quot;));
+		
+		// String
+		// jedis.append(&quot;k1&quot;,&quot;myreids&quot;);
+		System.out.println(jedis.get(&quot;k1&quot;));
+		jedis.set(&quot;k4&quot;, &quot;k4_redis&quot;);
+		System.out.println(&quot;----------------------------------------&quot;);
+		jedis.mset(&quot;str1&quot;, &quot;v1&quot;, &quot;str2&quot;, &quot;v2&quot;, &quot;str3&quot;, &quot;v3&quot;);
+		System.out.println(jedis.mget(&quot;str1&quot;, &quot;str2&quot;, &quot;str3&quot;));
+		
+		
+		// list
+		System.out.println(&quot;----------------------------------------&quot;);
+		// jedis.lpush(&quot;mylist&quot;,&quot;v1&quot;,&quot;v2&quot;,&quot;v3&quot;,&quot;v4&quot;,&quot;v5&quot;);
+		List&lt;String&gt; list = jedis.lrange(&quot;mylist&quot;, 0, -1);
+		for (String element : list) {
+			System.out.println(element);
+		}
+		
+		// set
+		jedis.sadd(&quot;orders&quot;, &quot;jd001&quot;);
+		jedis.sadd(&quot;orders&quot;, &quot;jd002&quot;);
+		jedis.sadd(&quot;orders&quot;, &quot;jd003&quot;);
+		Set&lt;String&gt; set1 = jedis.smembers(&quot;orders&quot;);
+		for (Iterator iterator = set1.iterator(); iterator.hasNext();) {
+			String string = (String) iterator.next();
+			System.out.println(string);
+		}
+		jedis.srem(&quot;orders&quot;, &quot;jd002&quot;);
+		System.out.println(jedis.smembers(&quot;orders&quot;).size());
+		
+		// hash
+		jedis.hset(&quot;hash1&quot;, &quot;userName&quot;, &quot;lisi&quot;);
+		System.out.println(jedis.hget(&quot;hash1&quot;, &quot;userName&quot;));
+		Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
+		map.put(&quot;telphone&quot;, &quot;13811814763&quot;);
+		map.put(&quot;address&quot;, &quot;atguigu&quot;);
+		map.put(&quot;email&quot;, &quot;abc@163.com&quot;);
+		jedis.hmset(&quot;hash2&quot;, map);
+		List&lt;String&gt; result = jedis.hmget(&quot;hash2&quot;, &quot;telphone&quot;, &quot;email&quot;);
+		for (String element : result) {
+			System.out.println(element);
+		}
+		
+		// zset
+		jedis.zadd(&quot;zset01&quot;, 60d, &quot;v1&quot;);
+		jedis.zadd(&quot;zset01&quot;, 70d, &quot;v2&quot;);
+		jedis.zadd(&quot;zset01&quot;, 80d, &quot;v3&quot;);
+		jedis.zadd(&quot;zset01&quot;, 90d, &quot;v4&quot;);
+
+		Set&lt;String&gt; s1 = jedis.zrange(&quot;zset01&quot;, 0, -1);
+		for (Iterator iterator = s1.iterator(); iterator.hasNext();) {
+			String string = (String) iterator.next();
+			System.out.println(string);
+		}
+
+	}
+}
+</code></pre><h1 id="jedis_事务">Jedis_事务</h1>
+<h2 id="日常">日常</h2>
+<pre><code>import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Response;
+import redis.clients.jedis.Transaction;
+
+public class Test03 {
+	public static void main(String[] args) {
+		Jedis jedis = new Jedis(&quot;127.0.0.1&quot;, 6379);
+
+		// 监控key，如果该动了事务就被放弃
+		/*
+		 * 3 jedis.watch(&quot;serialNum&quot;); jedis.set(&quot;serialNum&quot;,&quot;s#####################&quot;);
+		 * jedis.unwatch();
+		 */
+
+		Transaction transaction = jedis.multi();// 被当作一个命令进行执行
+		Response&lt;String&gt; response = transaction.get(&quot;serialNum&quot;);
+		transaction.set(&quot;serialNum&quot;, &quot;s002&quot;);
+		response = transaction.get(&quot;serialNum&quot;);
+		transaction.lpush(&quot;list3&quot;, &quot;a&quot;);
+		transaction.lpush(&quot;list3&quot;, &quot;b&quot;);
+		transaction.lpush(&quot;list3&quot;, &quot;c&quot;);
+
+		transaction.exec();
+		// 2 transaction.discard();
+		System.out.println(&quot;serialNum***********&quot; + response.get());
+
+	}
+}
+</code></pre><h2 id="加锁">加锁</h2>
+<pre><code>import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Transaction;
+
+public class TestTX {
+	public boolean transMethod() throws InterruptedException {
+		Jedis jedis = new Jedis(&quot;127.0.0.1&quot;, 6379);
+		int balance;// 可用余额
+		int debt;// 欠额
+		int amtToSubtract = 10;// 实刷额度
+
+		jedis.watch(&quot;balance&quot;);
+		// jedis.set(&quot;balance&quot;,&quot;5&quot;);//此句不该出现，讲课方便。模拟其他程序已经修改了该条目
+		Thread.sleep(7000);
+		balance = Integer.parseInt(jedis.get(&quot;balance&quot;));
+		if (balance &lt; amtToSubtract) {
+			jedis.unwatch();
+			System.out.println(&quot;modify&quot;);
+			return false;
+		} else {
+			System.out.println(&quot;***********transaction&quot;);
+			Transaction transaction = jedis.multi();
+			transaction.decrBy(&quot;balance&quot;, amtToSubtract);
+			transaction.incrBy(&quot;debt&quot;, amtToSubtract);
+			transaction.exec();
+			balance = Integer.parseInt(jedis.get(&quot;balance&quot;));
+			debt = Integer.parseInt(jedis.get(&quot;debt&quot;));
+
+			System.out.println(&quot;*******&quot; + balance);
+			System.out.println(&quot;*******&quot; + debt);
+			return true;
+		}
+	}
+
+	/**
+	 * 通俗点讲，watch命令就是标记一个键，如果标记了一个键， 在提交事务前如果该键被别人修改过，那事务就会失败，这种情况通常可以在程序中 重新再尝试一次。
+	 * 首先标记了键balance，然后检查余额是否足够，不足就取消标记，并不做扣减； 足够的话，就启动事务进行更新操作，
+	 * 如果在此期间键balance被其它人修改， 那在提交事务（执行exec）时就会报错， 程序中通常可以捕获这类错误再重新执行一次，直到成功。
+	 * 
+	 * @throws InterruptedException
+	 */
+	public static void main(String[] args) throws InterruptedException {
+		TestTX test = new TestTX();
+		boolean retValue = test.transMethod();
+		System.out.println(&quot;main retValue-------: &quot; + retValue);
+	}
+}
+</code></pre><h1 id="jedis_主从复制">Jedis_主从复制</h1>
+<ol>
+<li>6379,6380启动，先各自先独立</li>
+<li>主写，从读</li>
+</ol>
+<pre><code>import redis.clients.jedis.Jedis;
+
+public class TestMS {
+	public static void main(String[] args) {
+		Jedis jedis_M = new Jedis(&quot;127.0.0.1&quot;, 6379);
+		Jedis jedis_S = new Jedis(&quot;127.0.0.1&quot;, 6380);
+
+		jedis_S.slaveof(&quot;127.0.0.1&quot;, 6379);
+
+		jedis_M.set(&quot;class&quot;, &quot;1122V2&quot;);
+
+		String result = jedis_S.get(&quot;class&quot;);//可能有延迟，需再次启动才能使用
+		System.out.println(result);
+	}
+}
+</code></pre><h1 id="jedis_jedispool">Jedis_JedisPool</h1>
+<h2 id="jedispoolutil">JedisPoolUtil</h2>
+<ol>
+<li>获取Jedis实例需要从JedisPool中获取</li>
+<li>用完Jedis实例需要返还给JedisPool</li>
+<li>如果Jedis在使用过程中出错，则也需要还给JedisPool</li>
+</ol>
+<pre><code>import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
+public class JedisPoolUtil {
+	private static volatile JedisPool jedisPool = null;
+
+	private JedisPoolUtil() {
+	}
+
+	public static JedisPool getJedisPoolInstance() {
+		if (null == jedisPool) {
+			synchronized (JedisPoolUtil.class) {
+				if (null == jedisPool) {
+					JedisPoolConfig poolConfig = new JedisPoolConfig();
+					poolConfig.setMaxActive(1000);
+					poolConfig.setMaxIdle(32);
+					poolConfig.setMaxWait(100 * 1000);
+					poolConfig.setTestOnBorrow(true);
+
+					jedisPool = new JedisPool(poolConfig, &quot;127.0.0.1&quot;, 6379);
+				}
+			}
+		}
+		return jedisPool;
+	}
+
+	public static void release(JedisPool jedisPool, Jedis jedis) {
+		if (null != jedis) {
+			jedisPool.returnResourceObject(jedis);
+		}
+	}
+
+}
+</code></pre><pre><code>import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+
+public class TestPool {
+
+	public static void main(String[] args) {
+		JedisPool jedisPool = JedisPoolUtil.getJedisPoolInstance();
+		JedisPool jedisPool2 = JedisPoolUtil.getJedisPoolInstance();
+
+		System.out.println(jedisPool == jedisPool2);
+
+		Jedis jedis = null;
+		try {
+			jedis = jedisPool.getResource();
+			jedis.set(&quot;aa&quot;, &quot;bb&quot;);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JedisPoolUtil.release(jedisPool, jedis);
+		}
+	}
+}
+</code></pre><h2 id="配置总结">配置总结</h2>
+<p>JedisPool的配置参数大部分是由JedisPoolConfig的对应项来赋值的。</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/539redis%E7%9A%84%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" data-toggle="tooltip" data-placement="top" title="9、Redis的主从复制(Redis)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/621spring%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/" data-toggle="tooltip" data-placement="top" title="1、Spring框架概述(Spring)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

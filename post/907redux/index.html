@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="7、redux（React）" />
+    <meta property="og:title" content="7、redux（React）" />
+    <meta property="twitter:title" content="7、redux（React）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>7、redux（React）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/907redux/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/react" title="React">
+                            React
+                        </a>
+                        
+                    </div>
+                    <h1>7、redux（React）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Monday, July 19, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#redux的核心api">redux的核心API</a></li>
+    <li><a href="#redux异步编程">redux异步编程</a></li>
+    <li><a href="#react-redux">react-redux</a></li>
+    <li><a href="#使用redux调试工具">使用redux调试工具</a></li>
+    <li><a href="#纯函数和高阶函数">纯函数和高阶函数</a></li>
+    <li><a href="#案例解析">案例解析</a>
+      <ul>
+        <li><a href="#1求和案例_redux精简版">1.求和案例_redux精简版</a></li>
+        <li><a href="#2求和案例_redux完整版">2.求和案例_redux完整版</a></li>
+        <li><a href="#3求和案例_redux异步action版">3.求和案例_redux异步action版</a></li>
+        <li><a href="#4求和案例_react-redux基本使用">4.求和案例_react-redux基本使用</a></li>
+        <li><a href="#5求和案例_react-redux优化">5.求和案例_react-redux优化</a></li>
+        <li><a href="#6求和案例_react-redux数据共享版">6.求和案例_react-redux数据共享版</a></li>
+        <li><a href="#7求和案例_react-redux开发者工具的使用">7.求和案例_react-redux开发者工具的使用</a></li>
+        <li><a href="#8求和案例_react-redux最终版">8.求和案例_react-redux最终版</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="简介">简介</h2>
+<ul>
+<li>redux是一个专门用于做状态管理的JS库(不是react插件库)，它可以用在react, angular, vue等项目中, 但基本与react配合使用，作用: 集中式管理react应用中多个组件共享的状态。</li>
+<li>redux工作流程
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj6ljxn3oj30hp09v764.jpg" alt="QQ截图20210716225541.png"></li>
+<li><strong>action</strong>
+<ol>
+<li>动作的对象</li>
+<li>包含2个属性:</li>
+</ol>
+<ul>
+<li>type：标识属性, 值为字符串, 唯一, 必要属性</li>
+<li>data：数据属性, 值类型任意, 可选属性</li>
+</ul>
+<ol start="3">
+<li>例子：{ type: &lsquo;ADD_STUDENT&rsquo;,data:{name: &lsquo;tom&rsquo;,age:18} }</li>
+</ol>
+</li>
+<li><strong>reducer</strong>
+<ol>
+<li>用于初始化状态、加工状态</li>
+<li>加工时，根据旧的state和action， 产生新的state的纯函数</li>
+</ol>
+</li>
+<li><strong>store</strong>
+<ol>
+<li>将state、action、reducer联系在一起的对象</li>
+<li>如何得到此对象
+<ol>
+<li>import {createStore} from &lsquo;redux&rsquo;</li>
+<li>import reducer from &lsquo;./reducers&rsquo;</li>
+<li>const store = createStore(reducer)</li>
+</ol>
+</li>
+<li>此对象的功能?
+<ol>
+<li>getState(): 得到state</li>
+<li>dispatch(action): 分发action, 触发reducer调用, 产生新的state</li>
+<li>subscribe(listener): 注册监听, 当产生了新的state时, 自动调用</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="redux的核心api">redux的核心API</h2>
+<ul>
+<li><strong>createstore()</strong>
+<ul>
+<li>作用：创建包含指定reducer的store对象</li>
+</ul>
+</li>
+<li><strong>store对象</strong>
+<ul>
+<li>作用: redux库最核心的管理对象</li>
+<li>内部维护着:state、reducer</li>
+<li>核心方法:getState()、dispatch(action)、subscribe(listener)</li>
+</ul>
+</li>
+<li><strong>applyMiddleware()</strong>
+<ul>
+<li>作用：应用上基于redux的中间件(插件库)</li>
+</ul>
+</li>
+<li><strong>combineReducers()</strong>
+<ul>
+<li>作用：合并多个reducer函数</li>
+</ul>
+</li>
+</ul>
+<h2 id="redux异步编程">redux异步编程</h2>
+<ul>
+<li><strong>redux默认是不能进行异步处理的，某些时候应用中需要在redux中执行异步任务(ajax, 定时器)</strong></li>
+<li><strong>使用异步中间件：npm install &ndash;save redux-thunk</strong></li>
+</ul>
+<h2 id="react-redux">react-redux</h2>
+<ul>
+<li><strong>一个react插件库,专门用来简化react应用中使用redux</strong></li>
+<li><strong>react-Redux将所有组件分成两大类</strong></li>
+<li><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj74lot80j30wi0krq9p.jpg" alt="QQ截图20210716231410.png"></li>
+<li>相关API
+<ul>
+<li>Provider：让所有组件都可以得到state数据</li>
+</ul>
+<pre><code>&lt;Provider store={store}&gt;
+  &lt;App /&gt;
+&lt;/Provider&gt;
+</code></pre><ul>
+<li>connect：用于包装 UI 组件生成容器组件</li>
+<li>mapStateToprops：将外部的数据（即state对象）转换为UI组件的标签属性</li>
+<li>mapDispatchToProps：将分发action的函数转换为UI组件的标签属性</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用redux调试工具">使用redux调试工具</h2>
+<ul>
+<li><strong>安装chrome浏览器插件</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj795rlpvj30dv045jsf.jpg" alt="QQ截图20210716231833.png"></li>
+<li><strong>下载工具依赖包</strong></li>
+</ul>
+<pre><code>npm install --save-dev redux-devtools-extension
+</code></pre><ul>
+<li>在store.js中引入 redux-devtools-extension
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7hwk1h0j30jt0ad0ww.jpg" alt="QQ截图20210716232656.png"></li>
+</ul>
+<h2 id="纯函数和高阶函数">纯函数和高阶函数</h2>
+<ul>
+<li><strong>纯函数</strong>
+<ul>
+<li>只要是同样的输入(实参)，必定得到同样的输出(返回)</li>
+<li>必须遵守以下一些约束:不得改写参数数据;不会产生任何副作用，例如网络请求，输入和输出设备;不能调用Date.now()或者Math.random()等不纯的方法</li>
+<li>redux的reducer函数必须是一个纯函数</li>
+</ul>
+</li>
+<li><strong>高阶函数</strong>
+<ul>
+<li>参数是函数或者返回值是函数</li>
+<li>定时器设置函数、数组的forEach()/map()/filter()/reduce()/find()/bind()、promise、react-redux中的connect函数</li>
+</ul>
+</li>
+</ul>
+<h2 id="案例解析">案例解析</h2>
+<h3 id="1求和案例_redux精简版">1.求和案例_redux精简版</h3>
+<pre><code>    (1).去除Count组件自身的状态
+    (2).src下建立:
+                    -redux
+                        -store.js
+                        -count_reducer.js
+
+    (3).store.js：
+                1).引入redux中的createStore函数，创建一个store
+                2).createStore调用时要传入一个为其服务的reducer
+                3).记得暴露store对象
+
+    (4).count_reducer.js：
+                1).reducer的本质是一个函数，接收：preState,action，返回加工后的状态
+                2).reducer有两个作用：初始化状态，加工状态
+                3).reducer被第一次调用时，是store自动触发的，
+                                传递的preState是undefined,
+                                传递的action是:{type:'@@REDUX/INIT_a.2.b.4}
+
+    (5).在index.js中监测store中状态的改变，一旦发生改变重新渲染&lt;App/&gt;
+            备注：redux只负责管理状态，至于状态的改变驱动着页面的展示，要靠我们自己写。
+</code></pre>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7srtktlj30qj0npn9w.jpg" alt="QQ截图20210716233554.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7sxtr91j30t40djn43.jpg" alt="QQ截图20210716233604.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7t61f0ij30pc0i8th4.jpg" alt="QQ截图20210716233625.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7thj5slj30lr0i144b.jpg" alt="QQ截图20210716233635.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7tn8nq8j30ie0i4wjp.jpg" alt="QQ截图20210716233643.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7tsn0urj30lw0ijtf1.jpg" alt="QQ截图20210716233651.png"></p>
+<h3 id="2求和案例_redux完整版">2.求和案例_redux完整版</h3>
+<pre><code>    新增文件：
+        1.count_action.js 专门用于创建action对象
+        2.constant.js 放置容易写错的type值
+</code></pre>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7x6khdwj60vt0jjwjp02.jpg" alt="QQ截图20210716234127.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7xh25oxj30o10k0q95.jpg" alt="QQ截图20210716234139.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7z9ea8dj30r30k0dri.jpg" alt="QQ截图20210716234339.png"></p>
+<h3 id="3求和案例_redux异步action版">3.求和案例_redux异步action版</h3>
+<pre><code>     (1).明确：延迟的动作不想交给组件自身，想交给action
+     (2).何时需要异步action：想要对状态进行操作，但是具体的数据靠异步任务返回。
+     (3).具体编码：
+                1).yarn add redux-thunk，并配置在store中
+                2).创建action的函数不再返回一般对象，而是一个函数，该函数中写异步任务。
+                3).异步任务有结果后，分发一个同步的action去真正操作数据。
+     (4).备注：异步action不是必须要写的，完全可以自己等待异步任务的结果了再去分发同步action。
+</code></pre>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj810hkgrj30pl0lpthn.jpg" alt="QQ截图20210716234459.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj817my0kj30nb0ltdny.jpg" alt="QQ截图20210716234520.png"></p>
+<h3 id="4求和案例_react-redux基本使用">4.求和案例_react-redux基本使用</h3>
+<pre><code>        (1).明确两个概念：
+                    1).UI组件:不能使用任何redux的api，只负责页面的呈现、交互等。
+                    2).容器组件：负责和redux通信，将结果交给UI组件。
+        (2).如何创建一个容器组件————靠react-redux 的 connect函数
+                        connect(mapStateToProps,mapDispatchToProps)(UI组件)
+                            -mapStateToProps:映射状态，返回值是一个对象
+                            -mapDispatchToProps:映射操作状态的方法，返回值是一个对象
+        (3).备注1：容器组件中的store是靠props传进去的，而不是在容器组件中直接引入
+        (4).备注2：mapDispatchToProps，也可以是一个对象
+</code></pre>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8jpjjx2j30rx0krn7b.jpg" alt="QQ截图20210717000134.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8jw47eyj30p60k8n6x.jpg" alt="QQ截图20210717000143.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8k27btlj30qj0mbwrp.jpg" alt="QQ截图20210717000157.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8k7732zj30nd0moafw.jpg" alt="QQ截图20210717000222.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kda5h0j30qg0mnwnx.jpg" alt="QQ截图20210717000228.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kjciv9j30p00m8gus.jpg" alt="QQ截图20210717000235.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kq6hrwj30pa0mkqaq.jpg" alt="QQ截图20210717000241.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kve0vdj30k70mmq9m.jpg" alt="QQ截图20210717000249.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8l0udmhj60nq0mg45v02.jpg" alt="QQ截图20210717000257.png"></p>
+<h3 id="5求和案例_react-redux优化">5.求和案例_react-redux优化</h3>
+<pre><code>        (1).容器组件和UI组件整合一个文件
+        (2).无需自己给容器组件传递store，给&lt;App/&gt;包裹一个&lt;Provider store={store}&gt;即可。
+        (3).使用了react-redux后也不用再自己检测redux中状态的改变了，容器组件可以自动完成这个工作。
+        (4).mapDispatchToProps也可以简单的写成一个对象
+        (5).一个组件要和redux“打交道”要经过哪几步？
+                        (1).定义好UI组件---不暴露
+                        (2).引入connect生成一个容器组件，并暴露，写法如下：
+                                connect(
+                                    state =&gt; ({key:value}), //映射状态
+                                    {key:xxxxxAction} //映射操作状态的方法
+                                )(UI组件)
+                        (4).在UI组件中通过this.props.xxxxxxx读取和操作状态
+</code></pre>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj89tzx2yj30od0qeqft.jpg" alt="QQ截图20210716234652.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8bgeqakj60qx0n616002.jpg" alt="QQ截图20210716234704.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8af89wmj30lw0lrdla.jpg" alt="QQ截图20210716234722.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ajbc54j30t00lvaj5.jpg" alt="QQ截图20210716234731.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ao2hdgj30p20m0gv3.jpg" alt="QQ截图20210716234742.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8at4ilaj30mu0lfjyz.jpg" alt="QQ截图20210716234750.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8azkkmej30l40lhn2v.jpg" alt="QQ截图20210716234803.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8b4n04mj30jl0lr44v.jpg" alt="QQ截图20210716234812.png"></p>
+<h3 id="6求和案例_react-redux数据共享版">6.求和案例_react-redux数据共享版</h3>
+<pre><code>        (1).定义一个Pserson组件，和Count组件通过redux共享数据。
+        (2).为Person组件编写：reducer、action，配置constant常量。
+        (3).重点：Person的reducer和Count的Reducer要使用combineReducers进行合并，
+                合并后的总状态是一个对象！！！
+        (4).交给store的是总reducer，最后注意在组件中取出状态的时候，记得“取到位”。
+</code></pre>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8tj02s9j30rs0o44c2.jpg" alt="QQ截图20210717000812.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8toxskjj30rx0pfjxv.jpg" alt="QQ截图20210717000828.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ttus1zj30n50ph46f.jpg" alt="QQ截图20210717000857.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8tzi20wj30nc0modp7.jpg" alt="QQ截图20210717000923.png"></p>
+<h3 id="7求和案例_react-redux开发者工具的使用">7.求和案例_react-redux开发者工具的使用</h3>
+<pre><code>        (1).yarn add redux-devtools-extension
+        (2).store中进行配置
+                import {composeWithDevTools} from 'redux-devtools-extension'
+                const store = createStore(allReducer,composeWithDevTools(applyMiddleware(thunk)))
+</code></pre>
+<h3 id="8求和案例_react-redux最终版">8.求和案例_react-redux最终版</h3>
+<pre><code>        (1).所有变量名字要规范，尽量触发对象的简写形式。
+        (2).reducers文件夹中，编写index.js专门用于汇总并暴露所有的reducer
+</code></pre>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8xsrffnj30pd0pf14o.jpg" alt="QQ截图20210717001357.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8xytq9oj60se0len9002.jpg" alt="QQ截图20210717001407.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8y3xabgj30s60qaqh6.jpg" alt="QQ截图20210717001416.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8y9s90cj30pe0m4qb1.jpg" alt="QQ截图20210717001439.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yefl0hj30of0mpgrd.jpg" alt="QQ截图20210717001449.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yk6l2vj30pv0m6n6e.jpg" alt="QQ截图20210717001510.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yop62jj30jg0nmjz4.jpg" alt="QQ截图20210717001548.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ytl81hj60wt0nggua02.jpg" alt="QQ截图20210717001558.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yzpsmlj30tr0lhwke.jpg" alt="QQ截图20210717001606.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8z86akmj30sx0lmqc1.jpg" alt="QQ截图20210717001614.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8zdxihej30n30l4tf8.jpg" alt="QQ截图20210717001621.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8zit48mj30r40lqqae.jpg" alt="QQ截图20210717001628.png"></p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/906react-ui%E7%BB%84%E4%BB%B6%E5%BA%93/" data-toggle="tooltip" data-placement="top" title="6、React UI组件库（React）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/908%E6%89%A9%E5%B1%95/" data-toggle="tooltip" data-placement="top" title="8、React扩展（React）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

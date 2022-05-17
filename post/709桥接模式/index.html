@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="9、桥接模式(设计模式)" />
+    <meta property="og:title" content="9、桥接模式(设计模式)" />
+    <meta property="twitter:title" content="9、桥接模式(设计模式)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>9、桥接模式(设计模式)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/709%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                    </div>
+                    <h1>9、桥接模式(设计模式)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Sunday, August 23, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <h1 id="手机操作问题">手机操作问题</h1>
+<ul>
+<li>现在对不同手机类型的不同品牌实现操作编程(比如:开机、关机、上网，打电话等)，如图
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8sctypfdj30gw0aotc6.jpg" alt="QQ截图20200830134409.png"></li>
+</ul>
+<h1 id="传统方案解决手机操作问题">传统方案解决手机操作问题</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8sdbexvhj30qn093jwe.jpg" alt="QQ截图20200830134437.png"></p>
+<h1 id="传统方案解决手机操作问题分析">传统方案解决手机操作问题分析</h1>
+<ul>
+<li>扩展性问题(类爆炸)，如果我们再增加手机的样式(旋转式)，就需要增加各个品牌手机的类，同样如果我们增加一个手机品牌，也要在各个手机样式类下增加。</li>
+<li>违反了单一职责原则，当我们增加手机样式时，要同时增加所有品牌的手机，这样增加了代码维护成本.</li>
+<li>解决方案-使用桥接模式</li>
+</ul>
+<h1 id="桥接模式bridge-基本介绍">桥接模式(Bridge)-基本介绍</h1>
+<ul>
+<li>桥接模式(Bridge 模式)是指：将实现与抽象放在两个不同的类层次中，使两个层次可以独立改变。</li>
+<li>是一种结构型设计模式</li>
+<li>Bridge 模式基于类的最小设计原则，通过使用封装、聚合及继承等行为让不同的类承担不同的职责。它的主要特点是把抽象(Abstraction)与行为实现(Implementation)分离开来，从而可以保持各部分的独立性以及应对他们的功能扩展</li>
+</ul>
+<h1 id="桥接模式bridge-原理类图">桥接模式(Bridge)-原理类图</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8sew5y22j30lj09etci.jpg" alt="QQ截图20200830134609.png"></p>
+<ul>
+<li>Client 类：桥接模式的调用者</li>
+<li>抽象类(Abstraction) :维护了 Implementor / 即它的实现类 ConcreteImplementorA.., 二者是聚合关系, Abstraction充当桥接类</li>
+<li>RefinedAbstraction :是Abstraction抽象类的子类</li>
+<li>Implementor :  行为实现类的接口</li>
+<li>ConcreteImplementorA /B ：行为的具体实现类</li>
+<li>从 UML 图：这里的抽象类和接口是聚合的关系，其实调用和被调用关系</li>
+</ul>
+<h1 id="桥接模式解决手机操作问题">桥接模式解决手机操作问题</h1>
+<ul>
+<li>使用桥接模式改进传统方式，让程序具有搞好的扩展性，利用程序维护</li>
+<li>使用桥接模式对应的类图
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8sgjgaevj30jz0b8mzr.jpg" alt="QQ截图20200830134743.png"></li>
+<li>代码</li>
+</ul>
+<pre><code>//接口
+public interface Brand { 
+    void open();
+    void close(); 
+    void call();
+}
+</code></pre><pre><code>package com.atguigu.bridge;
+
+public class Client {
+
+    public static void main(String[] args) {
+    //获取折叠式手机 (样式 + 品牌 )
+    Phone phone1 = new FoldedPhone(new XiaoMi());
+
+    phone1.open(); 
+    phone1.call(); 
+    phone1.close();
+
+    System.out.println(&quot;=======================&quot;);
+
+    Phone phone2 = new FoldedPhone(new Vivo());
+
+    phone2.open();
+    phone2.call(); 
+    phone2.close();
+
+    System.out.println(&quot;==============&quot;);
+
+    UpRightPhone phone3 = new UpRightPhone(new XiaoMi());
+
+    phone3.open(); 
+    phone3.call(); 
+    phone3.close();
+
+    System.out.println(&quot;==============&quot;);
+
+    UpRightPhone phone4 = new UpRightPhone(new Vivo());
+
+    phone4.open(); 
+    phone4.call(); 
+    phone4.close();
+    }
+}
+</code></pre><pre><code>package com.atguigu.bridge;
+
+//折叠式手机类，继承 抽象类 Phone
+public class FoldedPhone extends Phone {
+
+    //构造器
+    public FoldedPhone(Brand brand) { super(brand);
+    }
+
+    public void open() { 
+        super.open();
+        System.out.println(&quot; 折叠样式手机 &quot;);
+    }
+
+    public void close() { 
+        super.close();
+        System.out.println(&quot; 折叠样式手机 &quot;);
+    }
+
+    public void call() { 
+        super.call();
+        System.out.println(&quot; 折叠样式手机 &quot;);
+    }
+}
+</code></pre><pre><code>package com.atguigu.bridge;
+
+public abstract class Phone {
+    //组合品牌
+    private Brand brand;
+
+    //构造器
+    public Phone(Brand brand) {     super();
+        this.brand = brand;
+    }
+
+    protected void open() { 
+        this.brand.open();
+    }
+    protected void close() { 
+        brand.close();
+    }
+    protected void call() { 
+        brand.call();
+    }
+}
+</code></pre><pre><code>package com.atguigu.bridge;
+
+
+public class UpRightPhone extends Phone {
+    //构造器
+    public UpRightPhone(Brand brand) { super(brand);
+    }
+
+    public void open() { 
+        super.open();
+        System.out.println(&quot; 直立样式手机 &quot;);
+    }
+
+    public void close() { 
+        super.close();
+        System.out.println(&quot; 直立样式手机 &quot;);
+    }
+
+    public void call() { 
+        super.call();
+        System.out.println(&quot; 直立样式手机 &quot;);
+    }
+}
+</code></pre><pre><code>package com.atguigu.bridge;
+
+public class Vivo implements Brand {
+
+    @Override
+    public void open() {
+        // TODO Auto-generated method stub 
+        System.out.println(&quot; Vivo 手机开机 &quot;);
+    }
+
+    @Override
+    public void close() {
+        // TODO Auto-generated method stub 
+        System.out.println(&quot; Vivo 手机关机 &quot;);
+    }
+
+    @Override
+    public void call() {
+        // TODO Auto-generated method stub 
+        System.out.println(&quot; Vivo 手机打电话 &quot;);
+    }
+}
+</code></pre><pre><code>package com.atguigu.bridge;
+
+public class XiaoMi implements Brand {
+
+    @Override
+    public void open() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 小米手机开机 &quot;);
+    }
+
+    @Override
+    public void close() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 小米手机关机 &quot;);
+    }
+
+    @Override
+    public void call() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot; 小米手机打电话 &quot;);
+    }
+}
+</code></pre><h1 id="桥接模式在-jdbc-的源码剖析">桥接模式在 JDBC 的源码剖析</h1>
+<ul>
+<li>Jdbc 的 Driver 接口，如果从桥接模式来看，Driver 就是一个接口，下面可以有 MySQL 的 Driver，Oracle 的
+Driver，这些就可以当做实现接口类</li>
+<li>代码分析+Debug 源码
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8soerwcqj30q409zjuj.jpg" alt="QQ截图20200830135513.png"></li>
+</ul>
+<h1 id="桥接模式的注意事项和细节">桥接模式的注意事项和细节</h1>
+<ul>
+<li>实现了抽象和实现部分的分离，从而极大的提供了系统的灵活性，让抽象部分和实现部分独立开来，这有助于系统进行分层设计，从而产生更好的结构化系统。</li>
+<li>对于系统的高层部分，只需要知道抽象部分和实现部分的接口就可以了，其它的部分由具体业务来完成。</li>
+<li>桥接模式替代多层继承方案，可以减少子类的个数，降低系统的管理和维护成本</li>
+<li>桥接模式的引入增加了系统的理解和设计难度，由于聚合关联关系建立在抽象层，要求开发者针对抽象进行设计和编程</li>
+<li>桥接模式要求正确识别出系统中两个独立变化的维度(抽象、和实现)，因此其使用范围有一定的局限性，即需要有这样的应用场景</li>
+<li>对于那些不希望使用继承或因为多层次继承导致系统类的个数急剧增加的系统，桥接模式尤为适用</li>
+</ul>
+<h1 id="常见的应用场景">常见的应用场景</h1>
+<ul>
+<li>JDBC 驱动程序</li>
+<li>银行转账系统
+<ul>
+<li>转账分类: 网上转账，柜台转账，AMT 转账</li>
+<li>转账用户类型：普通用户，银卡用户，金卡用户..</li>
+</ul>
+</li>
+<li>消息管理
+<ul>
+<li>消息类型：即时消息，延时消息</li>
+<li>消息分类：手机短信，邮件消息，QQ 消息&hellip;</li>
+</ul>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/708%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" data-toggle="tooltip" data-placement="top" title="8、适配器模式(设计模式)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/740%E6%A0%91%E7%BB%93%E6%9E%84%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8/" data-toggle="tooltip" data-placement="top" title="10、树结构实际应用(数据结构与算法)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="9、Spring Boot与缓存(SpringBoot)" />
+    <meta property="og:title" content="9、Spring Boot与缓存(SpringBoot)" />
+    <meta property="twitter:title" content="9、Spring Boot与缓存(SpringBoot)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>9、Spring Boot与缓存(SpringBoot)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/609spring-boot%E4%B8%8E%E7%BC%93%E5%AD%98/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/springboot" title="SpringBoot">
+                            SpringBoot
+                        </a>
+                        
+                    </div>
+                    <h1>9、Spring Boot与缓存(SpringBoot)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Tuesday, June 30, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-基本使用步骤">1. 基本使用步骤</a></li>
+    <li><a href="#2-搭建实验环境">2. 搭建实验环境</a></li>
+    <li><a href="#3-快速体验缓存">3. 快速体验缓存</a></li>
+    <li><a href="#4-工作原理">4. 工作原理</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#基本步骤">基本步骤</a></li>
+    <li><a href="#环境搭建">环境搭建</a></li>
+    <li><a href="#redistemplate">RedisTemplate</a></li>
+    <li><a href="#redis缓存使用">Redis缓存使用</a></li>
+    <li><a href="#redis缓存原理">Redis缓存原理</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="jsr107">JSR107</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggrz1qmfi2j30xx0c87ei.jpg" alt="QQ截图20200715212011.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggrz1wfvryj30uh0fptaw.jpg" alt="QQ截图20200715212023.png"></p>
+<hr>
+<h1 id="spring缓存抽象">Spring缓存抽象</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggrz2szcrtj30y80dzdrq.jpg" alt="QQ截图20200715212126.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggrz30rkjwj30tn0fmjsw.jpg" alt="QQ截图20200715212133.png"></p>
+<hr>
+<h1 id="几个重要概念缓存注解">几个重要概念&amp;缓存注解</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggrz46us5vj30vq0e6afp.jpg" alt="QQ截图20200715212240.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggrz4bta86j30wq0gek39.jpg" alt="QQ截图20200715212252.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggrz4gsxw5j30z30g47c2.jpg" alt="QQ截图20200715212259.png"></p>
+<hr>
+<h1 id="缓存使用">缓存使用</h1>
+<h2 id="1-基本使用步骤">1. 基本使用步骤</h2>
+<pre><code>1. 引入spring-boot-starter-cache模块
+2. @EnableCaching开启缓存
+3. 使用缓存注解
+4. 切换为其他缓存
+</code></pre>
+<h2 id="2-搭建实验环境">2. 搭建实验环境</h2>
+<ol>
+<li>导入数据库文件 创建出department和employee表</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#75715e">-- ----------------------------
+</span><span style="color:#75715e"></span><span style="color:#75715e">-- Table structure for department
+</span><span style="color:#75715e"></span><span style="color:#75715e">-- ----------------------------
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> <span style="color:#f92672">`</span>department<span style="color:#f92672">`</span>;
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>department<span style="color:#f92672">`</span> (
+  <span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> AUTO_INCREMENT,
+  <span style="color:#f92672">`</span>departmentName<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>)
+) ENGINE<span style="color:#f92672">=</span>InnoDB <span style="color:#66d9ef">DEFAULT</span> CHARSET<span style="color:#f92672">=</span>utf8;
+
+<span style="color:#75715e">-- ----------------------------
+</span><span style="color:#75715e"></span><span style="color:#75715e">-- Table structure for employee
+</span><span style="color:#75715e"></span><span style="color:#75715e">-- ----------------------------
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> <span style="color:#f92672">`</span>employee<span style="color:#f92672">`</span>;
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>employee<span style="color:#f92672">`</span> (
+  <span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> AUTO_INCREMENT,
+  <span style="color:#f92672">`</span>lastName<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>email<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>gender<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>d_id<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>)
+) ENGINE<span style="color:#f92672">=</span>InnoDB <span style="color:#66d9ef">DEFAULT</span> CHARSET<span style="color:#f92672">=</span>utf8;
+</code></pre></div><ol start="2">
+<li>创建javaBean封装数据</li>
+<li>整合MyBatis操作数据库
+<ul>
+<li>配置数据源信息</li>
+</ul>
+<pre><code class="language-properties" data-lang="properties">spring.datasource.username=root
+spring.datasource.password=123
+spring.datasource.url=jdbc:mysql://localhost:3306/springboot?serverTimezone=GMT
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# 开启驼峰命名法(否则部分字段封装不了,springboot2.x自动配置好了)
+mybatis.configuration.map-underscore-to-camel-case=true
+#打印sql
+logging.level.cn.edu.ustc.springboot.mapper=debug
+
+debug=true
+</code></pre><ul>
+<li>使用注解版的MyBatis；</li>
+<li>@MapperScan指定需要扫描的mapper接口所在的包</li>
+</ul>
+</li>
+<li>主配置类开启@EnableCaching</li>
+</ol>
+<h2 id="3-快速体验缓存">3. 快速体验缓存</h2>
+<ul>
+<li><strong>@Cacheable、@CachePut、@CacheEvict的使用</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
+</span><span style="color:#75715e">*   几个属性：
+</span><span style="color:#75715e">*      cacheNames/value：指定缓存组件的名字;将方法的返回结果放在哪个缓存中，是数组的方式，可以指定多个缓存；
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">*      key：缓存数据使用的key；可以用它来指定。默认是使用方法参数的值  1-方法的返回值
+</span><span style="color:#75715e">*              编写SpEL； #i d;参数id的值   #a0  #p0  #root.args[0]
+</span><span style="color:#75715e">*              getEmp[2]
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">*      keyGenerator：key的生成器；可以自己指定key的生成器的组件id
+</span><span style="color:#75715e">*              key/keyGenerator：二选一使用;
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">*      cacheManager：指定缓存管理器；或者cacheResolver指定获取解析器
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">*      condition：指定符合条件的情况下才缓存；
+</span><span style="color:#75715e">*              ,condition = &#34;#id&gt;0&#34;
+</span><span style="color:#75715e">*          condition = &#34;#a0&gt;1&#34;：第一个参数的值》1的时候才进行缓存
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">*      unless:否定缓存；当unless指定的条件为true，方法的返回值就不会被缓存；可以获取到结果进行判断
+</span><span style="color:#75715e">*              unless = &#34;#result == null&#34;
+</span><span style="color:#75715e">*              unless = &#34;#a0==2&#34;:如果第一个参数的值是2，结果不缓存；
+</span><span style="color:#75715e">*      sync：是否使用异步模式
+</span><span style="color:#75715e">*/</span>
+<span style="color:#a6e22e">@Service</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EmployeeService</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Autowired</span>
+    <span style="color:#66d9ef">private</span> EmployeeMapper employeeMapper<span style="color:#f92672">;</span>
+
+   <span style="color:#a6e22e">@Cacheable</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;emp&#34;</span><span style="color:#f92672">}</span><span style="color:#75715e">/*,keyGenerator = &#34;myKeyGenerator&#34;,condition = &#34;#a0&gt;1&#34;,unless = &#34;#a0==2&#34;*/</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> Employee <span style="color:#a6e22e">getEmp</span><span style="color:#f92672">(</span>Integer id<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;查询&#34;</span><span style="color:#f92672">+</span>id<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;号员工&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Employee emp <span style="color:#f92672">=</span> employeeMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">getEmpById</span><span style="color:#f92672">(</span>id<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> emp<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * @CachePut：既调用方法，又更新缓存数据；同步更新缓存
+</span><span style="color:#75715e">     * 修改了数据库的某个数据，同时更新缓存；
+</span><span style="color:#75715e">     * 运行时机：
+</span><span style="color:#75715e">     *  1、先调用目标方法
+</span><span style="color:#75715e">     *  2、将目标方法的结果缓存起来
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * 测试步骤：
+</span><span style="color:#75715e">     *  1、查询1号员工；查到的结果会放在缓存中；
+</span><span style="color:#75715e">     *          key：1  value：lastName：张三
+</span><span style="color:#75715e">     *  2、以后查询还是之前的结果
+</span><span style="color:#75715e">     *  3、更新1号员工；【lastName:zhangsan；gender:0】
+</span><span style="color:#75715e">     *          将方法的返回值也放进缓存了；
+</span><span style="color:#75715e">     *          key：传入的employee对象  值：返回的employee对象；
+</span><span style="color:#75715e">     *  4、查询1号员工？
+</span><span style="color:#75715e">     *      应该是更新后的员工；
+</span><span style="color:#75715e">     *          key = &#34;#employee.id&#34;:使用传入的参数的员工id；
+</span><span style="color:#75715e">     *          key = &#34;#result.id&#34;：使用返回后的id
+</span><span style="color:#75715e">     *             @Cacheable的key是不能用#result
+</span><span style="color:#75715e">     *      为什么是没更新前的？【1号员工没有在缓存中更新】
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#a6e22e">@CachePut</span><span style="color:#f92672">(</span><span style="color:#75715e">/*value = &#34;emp&#34;,*/</span>key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#result.id&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> Employee <span style="color:#a6e22e">updateEmp</span><span style="color:#f92672">(</span>Employee employee<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;updateEmp:&#34;</span><span style="color:#f92672">+</span>employee<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        employeeMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">updateEmp</span><span style="color:#f92672">(</span>employee<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> employee<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * @CacheEvict：缓存清除
+</span><span style="color:#75715e">     *  key：指定要清除的数据
+</span><span style="color:#75715e">     *  allEntries = true：指定清除这个缓存中所有的数据
+</span><span style="color:#75715e">     *  beforeInvocation = false：缓存的清除是否在方法之前执行
+</span><span style="color:#75715e">     *      默认代表缓存清除操作是在方法执行之后执行;如果出现异常缓存就不会清除
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     *  beforeInvocation = true：
+</span><span style="color:#75715e">     *      代表清除缓存操作是在方法运行之前执行，无论方法是否出现异常，缓存都清除
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#a6e22e">@CacheEvict</span><span style="color:#f92672">(</span>value<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;emp&#34;</span><span style="color:#f92672">,</span>beforeInvocation <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#75715e">/*key = &#34;#id&#34;,*/</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteEmp</span><span style="color:#f92672">(</span>Integer id<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;deleteEmp:&#34;</span><span style="color:#f92672">+</span>id<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">//employeeMapper.deleteEmpById(id);
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 10<span style="color:#f92672">/</span>0<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li><strong>自定义KeyGenerator</strong>
+<ul>
+<li>使用时在注解属性内指定KeyGenerator=“myKeyGenerator”</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyCacheConfig</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Bean</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;myKeyGenerator&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> KeyGenerator <span style="color:#a6e22e">myKeyGenerator</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> KeyGenerator<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">generate</span><span style="color:#f92672">(</span>Object target<span style="color:#f92672">,</span> Method method<span style="color:#f92672">,</span> Object<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> params<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;[&#34;</span><span style="color:#f92672">+</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>params<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">+</span>target<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li><strong>@CacheConfig</strong>
+<ul>
+<li>标注在类上，用于抽取@Cacheable的公共属性</li>
+<li>由于一个类中可能会使用多次@Cacheable等注解，所以各项属性可以抽取到@CacheConfig</li>
+</ul>
+</li>
+<li><strong>@Caching</strong>
+<ul>
+<li>组合使用@Cacheable、@CachePut、@CacheEvict</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Caching</span><span style="color:#f92672">(</span>
+       cacheable <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+           <span style="color:#a6e22e">@Cacheable</span><span style="color:#f92672">(</span><span style="color:#75715e">/*value=&#34;emp&#34;,*/</span>key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#lastName&#34;</span><span style="color:#f92672">)</span>
+       <span style="color:#f92672">}</span><span style="color:#f92672">,</span>
+       put <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+           <span style="color:#a6e22e">@CachePut</span><span style="color:#f92672">(</span><span style="color:#75715e">/*value=&#34;emp&#34;,*/</span>key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#result.id&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>
+           <span style="color:#a6e22e">@CachePut</span><span style="color:#f92672">(</span><span style="color:#75715e">/*value=&#34;emp&#34;,*/</span>key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#result.email&#34;</span><span style="color:#f92672">)</span>
+       <span style="color:#f92672">}</span>
+  <span style="color:#f92672">)</span>
+  <span style="color:#66d9ef">public</span> Employee <span style="color:#a6e22e">getEmpByLastName</span><span style="color:#f92672">(</span>String lastName<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">return</span> employeeMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">getEmpByLastName</span><span style="color:#f92672">(</span>lastName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+</code></pre></div><h2 id="4-工作原理">4. 工作原理</h2>
+<ul>
+<li>缓存的自动配置类CacheAutoConfiguration向容器中导入了CacheConfigurationImportSelector，此类的selectImports()方法添加了许多配置类，其中SimpleCacheConfiguration默认生效</li>
+<li>GenericCacheConfiguration
+​ JCacheCacheConfiguration
+​ EhCacheCacheConfiguration
+​ HazelcastCacheConfiguration
+​ InfinispanCacheConfiguration
+​ CouchbaseCacheConfiguration
+​ RedisCacheConfiguration
+​ CaffeineCacheConfiguration
+​ GuavaCacheConfiguration
+​ SimpleCacheConfiguration【默认】
+​ NoOpCacheConfiguration</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Import</span><span style="color:#f92672">(</span><span style="color:#f92672">{</span> CacheConfigurationImportSelector<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> CacheManagerEntityManagerFactoryDependsOnPostProcessor<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CacheAutoConfiguration</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CacheConfigurationImportSelector</span> <span style="color:#66d9ef">implements</span> ImportSelector <span style="color:#f92672">{</span>
+
+		<span style="color:#a6e22e">@Override</span>
+		<span style="color:#66d9ef">public</span> String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#a6e22e">selectImports</span><span style="color:#f92672">(</span>AnnotationMetadata importingClassMetadata<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+			CacheType<span style="color:#f92672">[</span><span style="color:#f92672">]</span> types <span style="color:#f92672">=</span> CacheType<span style="color:#f92672">.</span><span style="color:#a6e22e">values</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> imports <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">[</span>types<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+			<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> types<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">//将即将导入的各配置类存入字符数组内
+</span><span style="color:#75715e"></span>				imports<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> CacheConfigurations<span style="color:#f92672">.</span><span style="color:#a6e22e">getConfigurationClass</span><span style="color:#f92672">(</span>types<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			<span style="color:#f92672">}</span>
+			<span style="color:#66d9ef">return</span> imports<span style="color:#f92672">;</span>
+		<span style="color:#f92672">}</span>
+
+	<span style="color:#f92672">}</span>   
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>SimpleCacheConfiguration向容器中导入了ConcurrentMapCacheManager</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span><span style="color:#f92672">(</span>proxyBeanMethods <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@ConditionalOnMissingBean</span><span style="color:#f92672">(</span>CacheManager<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Conditional</span><span style="color:#f92672">(</span>CacheCondition<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleCacheConfiguration</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">//向容器中导入ConcurrentMapCacheManager
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">@Bean</span>
+	ConcurrentMapCacheManager <span style="color:#a6e22e">cacheManager</span><span style="color:#f92672">(</span>CacheProperties cacheProperties<span style="color:#f92672">,</span>
+			CacheManagerCustomizers cacheManagerCustomizers<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		ConcurrentMapCacheManager cacheManager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcurrentMapCacheManager<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> cacheNames <span style="color:#f92672">=</span> cacheProperties<span style="color:#f92672">.</span><span style="color:#a6e22e">getCacheNames</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>cacheNames<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+			cacheManager<span style="color:#f92672">.</span><span style="color:#a6e22e">setCacheNames</span><span style="color:#f92672">(</span>cacheNames<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+		<span style="color:#f92672">}</span>
+		<span style="color:#66d9ef">return</span> cacheManagerCustomizers<span style="color:#f92672">.</span><span style="color:#a6e22e">customize</span><span style="color:#f92672">(</span>cacheManager<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>
+<p>ConcurrentMapCacheManager使用ConcurrentMap以k-v的方式存储缓存缓存，下面以@Cacheable的运行流程为例说明ConcurrentMapCacheManager的作用。</p>
+</li>
+<li>
+<p><strong>@Cacheable的运行流程</strong></p>
+<ol>
+<li>方法运行之前，先去查询Cache（缓存组件），按照cacheNames指定的名字获取；CacheManager先获取相应的缓存），第一次获取缓存如果没有Cache组件会自动创建,并以cacheNames-cache对放入ConcurrentMap。</li>
+<li>去Cache中查找缓存的内容，使用一个key，默认就是方法的参数；
+key是按照某种策略生成的；默认是使用keyGenerator生成的，默认使用SimpleKeyGenerator生成key；<br>
+SimpleKeyGenerator生成key的默认策略；<br>
+如果没有参数；key=new SimpleKey()；<br>
+如果有一个参数：key=参数的值<br>
+如果有多个参数：key=new SimpleKey(params)；</li>
+<li>没有查到缓存就调用目标方法；</li>
+<li>将目标方法返回的结果，放进缓存中</li>
+</ol>
+</li>
+<li>
+<p>@Cacheable标注的方法执行之前先来检查缓存中有没有这个数据，默认按照参数的值作为key去查询缓存，
+如果没有就运行方法并将结果放入缓存；以后再来调用就可以直接使用缓存中的数据；<br>
+<strong>核心：</strong><br>
+1）、使用CacheManager【ConcurrentMapCacheManager】按照名字得到Cache【ConcurrentMapCache】组件<br>
+2）、key使用keyGenerator生成的，默认是SimpleKeyGenerator</p>
+</li>
+<li>
+<p><strong>源码分析</strong></p>
+<ul>
+<li>默认使用ConcurrentMapCacheManager管理缓存，该类使用ConcurrentMap保存缓存，获取缓存如果没有Cache组件会自动创建,并以cacheNames-cache对放入ConcurrentMap。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConcurrentMapCacheManager</span> <span style="color:#66d9ef">implements</span> CacheManager<span style="color:#f92672">,</span> BeanClassLoaderAware <span style="color:#f92672">{</span>
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> ConcurrentMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Cache<span style="color:#f92672">&gt;</span> cacheMap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcurrentHashMap<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> dynamic <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+  
+<span style="color:#75715e">//获取缓存
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> Cache <span style="color:#a6e22e">getCache</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Cache cache <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cacheMap</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>name<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">//如果没有缓存会自动创建
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cache <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">dynamic</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cacheMap</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            cache <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cacheMap</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>name<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cache <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                cache <span style="color:#f92672">=</span> createConcurrentMapCache<span style="color:#f92672">(</span>name<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cacheMap</span><span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>name<span style="color:#f92672">,</span> cache<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> cache<span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>在@Cacheable标注方法执行前执行CacheAspectSupport的execute()方法，在该方法中会以一定的规则生成key，并尝试在缓存中通过该key获取值，若通过key获取到值则直接返回，不用执行@Cacheable标注方法，否则执行该方法获得返回值。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CacheAspectSupport</span> <span style="color:#66d9ef">extends</span> AbstractCacheInvoker
+    <span style="color:#66d9ef">implements</span> BeanFactoryAware<span style="color:#f92672">,</span> InitializingBean<span style="color:#f92672">,</span> SmartInitializingSingleton <span style="color:#f92672">{</span>
+<span style="color:#75715e">//在执行@Cacheable标注的方法前执行此方法
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Nullable</span>
+<span style="color:#66d9ef">private</span> Object <span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> CacheOperationInvoker invoker<span style="color:#f92672">,</span> Method method<span style="color:#f92672">,</span> CacheOperationContexts contexts<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>contexts<span style="color:#f92672">.</span><span style="color:#a6e22e">isSynchronized</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        CacheOperationContext context <span style="color:#f92672">=</span> contexts<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>CacheableOperation<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isConditionPassing<span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> CacheOperationExpressionEvaluator<span style="color:#f92672">.</span><span style="color:#a6e22e">NO_RESULT</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Object key <span style="color:#f92672">=</span> generateKey<span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> CacheOperationExpressionEvaluator<span style="color:#f92672">.</span><span style="color:#a6e22e">NO_RESULT</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            Cache cache <span style="color:#f92672">=</span> context<span style="color:#f92672">.</span><span style="color:#a6e22e">getCaches</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> wrapCacheValue<span style="color:#f92672">(</span>method<span style="color:#f92672">,</span> cache<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> <span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> unwrapReturnValue<span style="color:#f92672">(</span>invokeOperation<span style="color:#f92672">(</span>invoker<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Cache<span style="color:#f92672">.</span><span style="color:#a6e22e">ValueRetrievalException</span> ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">throw</span> <span style="color:#f92672">(</span>CacheOperationInvoker<span style="color:#f92672">.</span><span style="color:#a6e22e">ThrowableWrapper</span><span style="color:#f92672">)</span> ex<span style="color:#f92672">.</span><span style="color:#a6e22e">getCause</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> invokeOperation<span style="color:#f92672">(</span>invoker<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+      
+    processCacheEvicts<span style="color:#f92672">(</span>contexts<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>CacheEvictOperation<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span>
+            CacheOperationExpressionEvaluator<span style="color:#f92672">.</span><span style="color:#a6e22e">NO_RESULT</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+    <span style="color:#75715e">// 见findCachedItem方法
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//此方法通过一定规则生成的key找cache，若没找到则返回null
+</span><span style="color:#75715e"></span>    Cache<span style="color:#f92672">.</span><span style="color:#a6e22e">ValueWrapper</span> cacheHit <span style="color:#f92672">=</span> findCachedItem<span style="color:#f92672">(</span>contexts<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>CacheableOperation<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+    List<span style="color:#f92672">&lt;</span>CachePutRequest<span style="color:#f92672">&gt;</span> cachePutRequests <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cacheHit <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        collectPutRequests<span style="color:#f92672">(</span>contexts<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>CacheableOperation<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>
+                CacheOperationExpressionEvaluator<span style="color:#f92672">.</span><span style="color:#a6e22e">NO_RESULT</span><span style="color:#f92672">,</span> cachePutRequests<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    Object cacheValue<span style="color:#f92672">;</span>
+    Object returnValue<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cacheHit <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#f92672">!</span>hasCachePut<span style="color:#f92672">(</span>contexts<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 如果通过该key找到缓存，且无@cacheput,则直接返回cacheValue
+</span><span style="color:#75715e"></span>        cacheValue <span style="color:#f92672">=</span> cacheHit<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        returnValue <span style="color:#f92672">=</span> wrapCacheValue<span style="color:#f92672">(</span>method<span style="color:#f92672">,</span> cacheValue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 若通过该key未找到缓存，则执行@cacheable标注方法
+</span><span style="color:#75715e"></span>        returnValue <span style="color:#f92672">=</span> invokeOperation<span style="color:#f92672">(</span>invoker<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        cacheValue <span style="color:#f92672">=</span> unwrapReturnValue<span style="color:#f92672">(</span>returnValue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// Collect any explicit @CachePuts
+</span><span style="color:#75715e"></span>    collectPutRequests<span style="color:#f92672">(</span>contexts<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>CachePutOperation<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> cacheValue<span style="color:#f92672">,</span> cachePutRequests<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+    <span style="color:#75715e">// Process any collected put requests, either from @CachePut or a @Cacheable miss
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>CachePutRequest cachePutRequest <span style="color:#f92672">:</span> cachePutRequests<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        cachePutRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>cacheValue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// Process any late evictions
+</span><span style="color:#75715e"></span>    processCacheEvicts<span style="color:#f92672">(</span>contexts<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>CacheEvictOperation<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> cacheValue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">return</span> returnValue<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+  
+<span style="color:#a6e22e">@Nullable</span>
+<span style="color:#66d9ef">private</span> Cache<span style="color:#f92672">.</span><span style="color:#a6e22e">ValueWrapper</span> <span style="color:#a6e22e">findCachedItem</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;</span>CacheOperationContext<span style="color:#f92672">&gt;</span> contexts<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Object result <span style="color:#f92672">=</span> CacheOperationExpressionEvaluator<span style="color:#f92672">.</span><span style="color:#a6e22e">NO_RESULT</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>CacheOperationContext context <span style="color:#f92672">:</span> contexts<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isConditionPassing<span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> result<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">//通过一定规则生成key值(生成规则见generateKey方法)
+</span><span style="color:#75715e"></span>            Object key <span style="color:#f92672">=</span> generateKey<span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> result<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">//通过生成的key寻找缓存
+</span><span style="color:#75715e"></span>            Cache<span style="color:#f92672">.</span><span style="color:#a6e22e">ValueWrapper</span> cached <span style="color:#f92672">=</span> findInCaches<span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> key<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cached <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> cached<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isTraceEnabled</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;No cache entry for key &#39;&#34;</span> <span style="color:#f92672">+</span> key <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39; in cache(s) &#34;</span> <span style="color:#f92672">+</span> context<span style="color:#f92672">.</span><span style="color:#a6e22e">getCacheNames</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+  
+<span style="color:#75715e">//key的生成策略
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Nullable</span>
+<span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">generateKey</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Nullable</span> Object result<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">//如果@Cacheable设置了属性key，则根据设置值生成key
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">hasText</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">metadata</span><span style="color:#f92672">.</span><span style="color:#a6e22e">operation</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        EvaluationContext evaluationContext <span style="color:#f92672">=</span> createEvaluationContext<span style="color:#f92672">(</span>result<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> evaluator<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">metadata</span><span style="color:#f92672">.</span><span style="color:#a6e22e">operation</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">metadata</span><span style="color:#f92672">.</span><span style="color:#a6e22e">methodKey</span><span style="color:#f92672">,</span> evaluationContext<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">//否则使用keyGenerator生成key，默认keyGenerator为SimpleKeyGenerator
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">metadata</span><span style="color:#f92672">.</span><span style="color:#a6e22e">keyGenerator</span><span style="color:#f92672">.</span><span style="color:#a6e22e">generate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">target</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">metadata</span><span style="color:#f92672">.</span><span style="color:#a6e22e">method</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">args</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>默认情况下使用SimpleKeyGenerator生成key</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleKeyGenerator</span> <span style="color:#66d9ef">implements</span> KeyGenerator <span style="color:#f92672">{</span>
+<span style="color:#75715e">//SimpleKeyGenerator的生成规则
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Object <span style="color:#a6e22e">generateKey</span><span style="color:#f92672">(</span>Object<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> params<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">//若无参，则返回空key
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>params<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> SimpleKey<span style="color:#f92672">.</span><span style="color:#a6e22e">EMPTY</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>params<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Object param <span style="color:#f92672">=</span> params<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>param <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#f92672">!</span>param<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isArray</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">//1个参数，则直接返回该参数
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> param<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+      <span style="color:#75715e">//多个参数返回数组
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> SimpleKey<span style="color:#f92672">(</span>params<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>默认的缓存类ConcurrentMapCache，使用ConcurrentMap存储k-v</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConcurrentMapCache</span> <span style="color:#66d9ef">extends</span> AbstractValueAdaptingCache <span style="color:#f92672">{</span>
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String name<span style="color:#f92672">;</span>
+
+<span style="color:#75715e">//存储key-cacheValue
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> ConcurrentMap<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> store<span style="color:#f92672">;</span>
+  
+<span style="color:#75715e">//通过key查找cacheValue
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">lookup</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">store</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+  
+<span style="color:#75715e">//方法调用完后将结果存入缓存中
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">store</span><span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> toStoreValue<span style="color:#f92672">(</span>value<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+<hr>
+<h1 id="整合redis实现缓存">整合redis实现缓存</h1>
+<h2 id="基本步骤">基本步骤</h2>
+<ol>
+<li>引入spring-boot-starter-data-redis</li>
+<li>application.yml配置redis连接地址</li>
+<li>使用RestTemplate操作redis<br>
+1）redisTemplate.opsForValue();//操作字符串<br>
+2）redisTemplate.opsForHash();//操作hash<br>
+3）redisTemplate.opsForList();//操作list<br>
+4）redisTemplate.opsForSet();//操作set<br>
+5）redisTemplate.opsForZSet();//操作有序set</li>
+<li>配置缓存、CacheManagerCustomizers</li>
+<li>测试使用缓存、切换缓存、 CompositeCacheManager</li>
+</ol>
+<h2 id="环境搭建">环境搭建</h2>
+<ul>
+<li>导入依赖</li>
+</ul>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre><ul>
+<li>在spring.properties指定Redis服务器地址</li>
+</ul>
+<pre><code>#redis服务器主机地址
+spring.redis.host=192.168.31.162
+</code></pre><h2 id="redistemplate">RedisTemplate</h2>
+<p>RedisAutoConfiguration向容器中导入了两个类RedisTemplate&lt;Object, Object&gt; redisTemplate和StringRedisTemplate，作为Redis客户端分别操作k-v都为对象和k-v都为字符串的值<br>
+Redis常见的五大数据类型
+String（字符串）、List（列表）、Set（集合）、Hash（散列）、ZSet（有序集合）</p>
+<p>​ stringRedisTemplate.opsForValue()[String（字符串）]</p>
+<p>​ stringRedisTemplate.opsForList()[List（列表）]</p>
+<p>​ stringRedisTemplate.opsForSet()[Set（集合）]</p>
+<p>​ stringRedisTemplate.opsForHash()[Hash（散列）]</p>
+<p>​ stringRedisTemplate.opsForZSet()[ZSet（有序集合）]</p>
+<h2 id="redis缓存使用">Redis缓存使用</h2>
+<p>在导入redis依赖后RedisCacheConfiguration类就会自动生效，创建RedisCacheManager，并使用RedisCache进行缓存数据，要缓存的对象的类要实现Serializable接口，默认情况下是以jdk序列化数据存在redis中，如下：</p>
+<pre><code>k:&quot;emp::1&quot;
+v:
+\xAC\xED\x00\x05sr\x00$cn.edu.ustc.springboot.bean.Employeeuqf\
+</code></pre><p>要想让对象以json形式存储在redis中，需要自定义RedisCacheManager，使用GenericJackson2JsonRedisSerializer类对value进行序列化</p>
+<pre><code>@Configuration
+public class MyRedisConfig {
+    @Bean
+    RedisCacheManager cacheManager(RedisConnectionFactory factory){
+        //创建默认RedisCacheWriter
+        RedisCacheWriter cacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(factory);
+        
+        //创建默认RedisCacheConfiguration并使用GenericJackson2JsonRedisSerializer构造的		SerializationPair对value进行转换
+        //创建GenericJackson2JsonRedisSerializer的json序列化器
+        GenericJackson2JsonRedisSerializer jsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
+        //使用json序列化器构造出对转换Object类型的SerializationPair序列化对
+        RedisSerializationContext.SerializationPair&lt;Object&gt; serializationPair = RedisSerializationContext.SerializationPair.fromSerializer(jsonRedisSerializer);
+        //将可以把Object转换为json的SerializationPair传入RedisCacheConfiguration
+        //使得RedisCacheConfiguration在转换value时使用定制序列化器
+        RedisCacheConfiguration cacheConfiguration=RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(serializationPair);
+        
+        RedisCacheManager cacheManager = new RedisCacheManager(cacheWriter,cacheConfiguration);
+        return cacheManager;
+    }
+}
+</code></pre><p>序列化数据如下：</p>
+<pre><code>k:&quot;emp::3&quot;
+
+v:
+{
+  &quot;@class&quot;: &quot;cn.edu.ustc.springboot.bean.Employee&quot;,
+  &quot;id&quot;: 3,
+  &quot;lastName&quot;: &quot;aaa&quot;,
+  &quot;email&quot;: &quot;aaaa&quot;,
+  &quot;gender&quot;: 1,
+  &quot;dId&quot;: 5
+}
+</code></pre><p>注意，这里必须用GenericJackson2JsonRedisSerializer进行value的序列化解析，如果使用Jackson2JsonRedisSerializer，序列化的json没有&rdquo;@class&rdquo;: &ldquo;cn.edu.ustc.springboot.bean.Employee&rdquo;,在读取缓存时会报类型转换异常。</p>
+<h2 id="redis缓存原理">Redis缓存原理</h2>
+<p>配置类RedisCacheConfiguration向容器中导入了其定制的RedisCacheManager，在默认的RedisCacheManager的配置中，是使用jdk序列化value值</p>
+<pre><code>@Configuration(proxyBeanMethods = false)
+@ConditionalOnClass(RedisConnectionFactory.class)
+@AutoConfigureAfter(RedisAutoConfiguration.class)
+@ConditionalOnBean(RedisConnectionFactory.class)
+@ConditionalOnMissingBean(CacheManager.class)
+@Conditional(CacheCondition.class)
+class RedisCacheConfiguration {
+    
+    //向容器中导入RedisCacheManager
+	@Bean
+	RedisCacheManager cacheManager(CacheProperties cacheProperties, CacheManagerCustomizers cacheManagerCustomizers,
+			ObjectProvider&lt;org.springframework.data.redis.cache.RedisCacheConfiguration&gt; redisCacheConfiguration,
+			ObjectProvider&lt;RedisCacheManagerBuilderCustomizer&gt; redisCacheManagerBuilderCustomizers,
+			RedisConnectionFactory redisConnectionFactory, ResourceLoader resourceLoader) {
+		//使用determineConfiguration()的返回值生成RedisCacheManagerBuilder
+        //调用了RedisCacheManagerBuilder的cacheDefaults()方法(见下一代码块)
+        RedisCacheManagerBuilder builder = RedisCacheManager.builder(redisConnectionFactory).cacheDefaults(
+				determineConfiguration(cacheProperties, redisCacheConfiguration, resourceLoader.getClassLoader()));
+		List&lt;String&gt; cacheNames = cacheProperties.getCacheNames();
+		if (!cacheNames.isEmpty()) {
+			builder.initialCacheNames(new LinkedHashSet&lt;&gt;(cacheNames));
+		}
+		redisCacheManagerBuilderCustomizers.orderedStream().forEach((customizer) -&gt; customizer.customize(builder));
+        //使用RedisCacheManagerBuilder的build()方法创建RedisCacheManager并进行定制操作
+		return cacheManagerCustomizers.customize(builder.build());
+	}
+
+    
+	private org.springframework.data.redis.cache.RedisCacheConfiguration determineConfiguration(
+			CacheProperties cacheProperties,
+			ObjectProvider&lt;org.springframework.data.redis.cache.RedisCacheConfiguration&gt; redisCacheConfiguration,
+			ClassLoader classLoader) {
+        //determineConfiguration()调用了createConfiguration()
+		return redisCacheConfiguration.getIfAvailable(() -&gt; createConfiguration(cacheProperties, classLoader));
+	}
+
+    
+    //createConfiguration()定义了其序列化value的规则
+	private org.springframework.data.redis.cache.RedisCacheConfiguration createConfiguration(
+			CacheProperties cacheProperties, ClassLoader classLoader) {
+		Redis redisProperties = cacheProperties.getRedis();
+		org.springframework.data.redis.cache.RedisCacheConfiguration config = org.springframework.data.redis.cache.RedisCacheConfiguration
+				.defaultCacheConfig();
+        //使用jdk序列化器对value进行序列化
+		config = config.serializeValuesWith(
+				SerializationPair.fromSerializer(new JdkSerializationRedisSerializer(classLoader)));
+        //设置properties文件中设置的各项属性
+		if (redisProperties.getTimeToLive() != null) {
+			config = config.entryTtl(redisProperties.getTimeToLive());
+		}
+		if (redisProperties.getKeyPrefix() != null) {
+			config = config.prefixKeysWith(redisProperties.getKeyPrefix());
+		}
+		if (!redisProperties.isCacheNullValues()) {
+			config = config.disableCachingNullValues();
+		}
+		if (!redisProperties.isUseKeyPrefix()) {
+			config = config.disableKeyPrefix();
+		}
+		return config;
+	}
+
+}
+</code></pre><p>RedisCacheManager的直接构造类，该类保存了配置类 RedisCacheConfiguration，该配置在会传递给RedisCacheManager</p>
+<pre><code>public static class RedisCacheManagerBuilder {
+
+		private final RedisCacheWriter cacheWriter;
+    	//默认缓存配置使用RedisCacheConfiguration的默认配置
+    	//该默认配置缓存时默认将k按字符串存储，v按jdk序列化数据存储(见下一代码块)
+		private RedisCacheConfiguration defaultCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
+		private final Map&lt;String, RedisCacheConfiguration&gt; initialCaches = new LinkedHashMap&lt;&gt;();
+		private boolean enableTransactions;
+		boolean allowInFlightCacheCreation = true;
+
+		private RedisCacheManagerBuilder(RedisCacheWriter cacheWriter) {
+			this.cacheWriter = cacheWriter;
+		}
+
+		
+    	//传入RedisCacheManagerBuilder使用的缓存配置规则RedisCacheConfiguration类
+		public RedisCacheManagerBuilder cacheDefaults(RedisCacheConfiguration defaultCacheConfiguration) {
+
+			Assert.notNull(defaultCacheConfiguration, &quot;DefaultCacheConfiguration must not be null!&quot;);
+
+			this.defaultCacheConfiguration = defaultCacheConfiguration;
+
+			return this;
+		}
+    
+    
+    //使用默认defaultCacheConfiguration创建RedisCacheManager
+    public RedisCacheManager build() {
+
+			RedisCacheManager cm = new RedisCacheManager(cacheWriter, defaultCacheConfiguration, initialCaches,
+					allowInFlightCacheCreation);
+
+			cm.setTransactionAware(enableTransactions);
+
+			return cm;
+		}
+</code></pre><p>RedisCacheConfiguration保存了许多缓存规则，这些规则都保存在RedisCacheManagerBuilder的RedisCacheConfiguration defaultCacheConfiguration属性中，并且当RedisCacheManagerBuilder创建RedisCacheManager传递过去</p>
+<pre><code>public class RedisCacheConfiguration {
+
+	private final Duration ttl;
+	private final boolean cacheNullValues;
+	private final CacheKeyPrefix keyPrefix;
+	private final boolean usePrefix;
+
+	private final SerializationPair&lt;String&gt; keySerializationPair;
+	private final SerializationPair&lt;Object&gt; valueSerializationPair;
+
+	private final ConversionService conversionService;
+    
+    //默认缓存配置
+    public static RedisCacheConfiguration defaultCacheConfig(@Nullable ClassLoader classLoader) {
+
+            DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
+
+            registerDefaultConverters(conversionService);
+
+            return new RedisCacheConfiguration(Duration.ZERO, true, true, CacheKeyPrefix.simple(),
+                                     SerializationPair.fromSerializer(RedisSerializer.string()),//key使用字符串
+                                               SerializationPair.fromSerializer(RedisSerializer.java(classLoader)), conversionService);
+        //value按jdk序列化存储
+    }
+</code></pre><p>RedisCacheManager在创建RedisCache时将RedisCacheConfiguration传递过去，并在创建RedisCache时通过createRedisCache()起作用</p>
+<pre><code>public class RedisCacheManager extends AbstractTransactionSupportingCacheManager {
+
+	private final RedisCacheWriter cacheWriter;
+	private final RedisCacheConfiguration defaultCacheConfig;
+	private final Map&lt;String, RedisCacheConfiguration&gt; initialCacheConfiguration;
+	private final boolean allowInFlightCacheCreation;
+    
+    	protected RedisCache createRedisCache(String name, @Nullable RedisCacheConfiguration cacheConfig) {
+        //如果调用该方法时RedisCacheConfiguration有值则使用定制的，否则则使用默认的RedisCacheConfiguration defaultCacheConfig，即RedisCacheManagerBuilder传递过来的配置
+		return new RedisCache(name, cacheWriter, cacheConfig != null ? cacheConfig : defaultCacheConfig);
+	}
+</code></pre><p>RedisCache，Redis缓存，具体负责将缓存数据序列化的地方，将RedisCacheConfiguration的序列化对SerializationPair提取出来并使用其定义的序列化方式分别对k和v进行序列化操作</p>
+<pre><code>public class RedisCache extends AbstractValueAdaptingCache {
+    
+    private static final byte[] BINARY_NULL_VALUE = RedisSerializer.java().serialize(NullValue.INSTANCE);
+
+	private final String name;
+	private final RedisCacheWriter cacheWriter;
+	private final RedisCacheConfiguration cacheConfig;
+	private final ConversionService conversionService;
+    
+    public void put(Object key, @Nullable Object value) {
+
+		Object cacheValue = preProcessCacheValue(value);
+
+		if (!isAllowNullValues() &amp;&amp; cacheValue == null) {
+
+			throw new IllegalArgumentException(String.format(
+					&quot;Cache '%s' does not allow 'null' values. Avoid storing null via '@Cacheable(unless=\&quot;#result == null\&quot;)' or configure RedisCache to allow 'null' via RedisCacheConfiguration.&quot;,
+					name));
+		}
+
+        //在put k-v时使用cacheConfig中的k-v序列化器分别对k-v进行序列化
+		cacheWriter.put(name, createAndConvertCacheKey(key), serializeCacheValue(cacheValue), cacheConfig.getTtl());
+	}
+    
+    //从cacheConfig(即RedisCacheConfiguration)中获取KeySerializationPair并写入key值
+    protected byte[] serializeCacheKey(String cacheKey) {
+		return ByteUtils.getBytes(cacheConfig.getKeySerializationPair().write(cacheKey));
+	}
+    
+    
+    //从cacheConfig(即RedisCacheConfiguration)中获取ValueSerializationPair并写入key值
+    protected byte[] serializeCacheValue(Object value) {
+
+        if (isAllowNullValues() &amp;&amp; value instanceof NullValue) {
+            return BINARY_NULL_VALUE;
+        }
+
+        return ByteUtils.getBytes(cacheConfig.getValueSerializationPair().write(value));
+    }
+</code></pre><p>分析到这也就不难理解，要使用json保存序列化数据时，需要自定义RedisCacheManager，在RedisCacheConfiguration中定义序列化转化规则，并向RedisCacheManager传入我们自己定制的RedisCacheConfiguration了，我定制的序列化规则会跟随RedisCacheConfiguration一直传递到RedisCache，并在序列化时发挥作用。</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/608%E8%87%AA%E5%AE%9A%E4%B9%89starter/" data-toggle="tooltip" data-placement="top" title="8、自定义starter(SpringBoot)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/610spring-boot%E4%B8%8E%E6%B6%88%E6%81%AF/" data-toggle="tooltip" data-placement="top" title="10、Spring Boot与消息(SpringBoot)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

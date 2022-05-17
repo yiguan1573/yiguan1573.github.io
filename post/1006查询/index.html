@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="6、查询（Hive）" />
+    <meta property="og:title" content="6、查询（Hive）" />
+    <meta property="twitter:title" content="6、查询（Hive）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>6、查询（Hive）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/1006%E6%9F%A5%E8%AF%A2/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/hive" title="Hive">
+                            Hive
+                        </a>
+                        
+                    </div>
+                    <h1>6、查询（Hive）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Monday, March 7, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#基本查询selectfrom">基本查询（Select…From）</a>
+      <ul>
+        <li><a href="#全表和特定列查询">全表和特定列查询</a></li>
+        <li><a href="#列别名">列别名</a></li>
+        <li><a href="#算术运算符">算术运算符</a></li>
+        <li><a href="#常用函数">常用函数</a></li>
+        <li><a href="#limit-语句">Limit 语句</a></li>
+        <li><a href="#where-语句">Where 语句</a></li>
+        <li><a href="#比较运算符betweenin-is-null">比较运算符（Between/In/ Is Null）</a></li>
+        <li><a href="#like-和-rlike">Like 和 RLike</a></li>
+        <li><a href="#逻辑运算符andornot">逻辑运算符（And/Or/Not）</a></li>
+      </ul>
+    </li>
+    <li><a href="#分组">分组</a>
+      <ul>
+        <li><a href="#group-by-语句">Group By 语句</a></li>
+        <li><a href="#having-语句">Having 语句</a></li>
+      </ul>
+    </li>
+    <li><a href="#join语句">Join语句</a>
+      <ul>
+        <li><a href="#等值-join">等值 Join</a></li>
+        <li><a href="#表的别名">表的别名</a></li>
+        <li><a href="#内连接">内连接</a></li>
+        <li><a href="#左外连接">左外连接</a></li>
+        <li><a href="#右外连接">右外连接</a></li>
+        <li><a href="#满外连接">满外连接</a></li>
+        <li><a href="#多表连接">多表连接</a></li>
+        <li><a href="#笛卡尔积">笛卡尔积</a></li>
+      </ul>
+    </li>
+    <li><a href="#排序">排序</a>
+      <ul>
+        <li><a href="#全局排序order-by">全局排序（Order By）</a></li>
+        <li><a href="#按照别名排序">按照别名排序</a></li>
+        <li><a href="#多个列排序">多个列排序</a></li>
+        <li><a href="#每个-reduce-内部排序sort-by">每个 Reduce 内部排序（Sort By）</a></li>
+        <li><a href="#分区distribute-by">分区（Distribute By）</a></li>
+        <li><a href="#cluster-by">Cluster By</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="基本查询selectfrom">基本查询（Select…From）</h2>
+<ul>
+<li>
+<p>查询语句语法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">SELECT</span> [<span style="color:#66d9ef">ALL</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">DISTINCT</span>] select_expr, select_expr, ...
+<span style="color:#66d9ef">FROM</span> table_reference
+[<span style="color:#66d9ef">WHERE</span> where_condition]
+[<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> col_list]
+[<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> col_list]
+[<span style="color:#66d9ef">CLUSTER</span> <span style="color:#66d9ef">BY</span> col_list
+ <span style="color:#f92672">|</span> [DISTRIBUTE <span style="color:#66d9ef">BY</span> col_list] [SORT <span style="color:#66d9ef">BY</span> col_list]
+]
+[<span style="color:#66d9ef">LIMIT</span> number]
+</code></pre></div></li>
+</ul>
+<h3 id="全表和特定列查询"><strong>全表和特定列查询</strong></h3>
+<ul>
+<li>
+<p>数据准备</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0nd248u05j30q007zq34.jpg" alt="QQ截图20220326162328.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0nd2cqyfkj30qk0rsgo4.jpg" alt="QQ截图20220326162418.jpg"></p>
+</li>
+<li>
+<p><strong>全表查询</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> * from emp;
+hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> empno,ename,job,mgr,hiredate,sal,comm,deptno from 
+emp ;
+</code></pre></div></li>
+<li>
+<p><strong>选择特定列查询</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> empno, ename from emp;
+</code></pre></div></li>
+<li>
+<p>注意</p>
+<ul>
+<li>SQL 语言大小写不敏感。</li>
+<li>SQL 可以写在一行或者多行</li>
+<li>关键字不能被缩写也不能分行</li>
+<li>各子句一般要分行写。</li>
+<li>使用缩进提高语句的可读性。</li>
+</ul>
+</li>
+</ul>
+<h3 id="列别名"><strong>列别名</strong></h3>
+<ul>
+<li>
+<p>重命名一个列</p>
+</li>
+<li>
+<p>便于计算</p>
+</li>
+<li>
+<p>紧跟列名，也可以在列名和别名之间加入关键字‘AS’</p>
+</li>
+<li>
+<p>案例实操</p>
+<ul>
+<li>
+<p>查询名称和部门</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> ename AS name, deptno dn from emp;
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="算术运算符"><strong>算术运算符</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0nd7w6el9j30px0c4js3.jpg" alt="QQ截图20220326162906.jpg"></p>
+<h3 id="常用函数">常用函数</h3>
+<ul>
+<li>
+<p>求总行数（count）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> count<span style="color:#f92672">(</span>*<span style="color:#f92672">)</span> cnt from emp;
+</code></pre></div></li>
+<li>
+<p>求工资的最大值（max）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> max<span style="color:#f92672">(</span>sal<span style="color:#f92672">)</span> max_sal from emp;
+</code></pre></div></li>
+<li>
+<p>求工资的最小值（min）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> min<span style="color:#f92672">(</span>sal<span style="color:#f92672">)</span> min_sal from emp;
+</code></pre></div></li>
+<li>
+<p>求工资的总和（sum）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> sum<span style="color:#f92672">(</span>sal<span style="color:#f92672">)</span> sum_sal from emp;
+</code></pre></div></li>
+<li>
+<p>求工资的平均值（avg）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> avg<span style="color:#f92672">(</span>sal<span style="color:#f92672">)</span> avg_sal from emp;
+</code></pre></div></li>
+</ul>
+<h3 id="limit-语句"><strong>Limit</strong> <strong>语句</strong></h3>
+<ul>
+<li>
+<p>典型的查询会返回多行数据。LIMIT 子句用于限制返回的行数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> * from emp limit 5;
+hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> * from emp limit 2;
+</code></pre></div></li>
+</ul>
+<h3 id="where-语句"><strong>Where</strong> <strong>语句</strong></h3>
+<ul>
+<li>
+<p><strong>使用</strong> <strong>WHERE</strong> <strong>子句，将不满足条件的行过滤掉</strong></p>
+</li>
+<li>
+<p><strong>WHERE</strong> <strong>子句紧随</strong> <strong>FROM</strong> <strong>子句</strong></p>
+</li>
+<li>
+<p><strong>案例实操</strong></p>
+<ul>
+<li>
+<p>查询出薪水大于 1000 的所有员工(注意：where 子句中不能使用字段别名。)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> * from emp where sal &gt;1000;
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="比较运算符betweenin-is-null">比较运算符（Between/In/ Is Null）</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0ndj58sy3j30rq0scwhv.jpg" alt="QQ截图20220326164030.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0ndjc6g3ij30qi0cc0tw.jpg" alt="QQ截图20220326164040.jpg"></p>
+<h3 id="like-和-rlike"><strong>Like</strong> <strong>和</strong> <strong>RLike</strong></h3>
+<ul>
+<li>
+<p><strong>使用</strong> <strong>LIKE</strong> <strong>运算选择类似的值</strong></p>
+</li>
+<li>
+<p><strong>选择条件可以包含字符或数字</strong>**:**</p>
+<ul>
+<li>% 代表零个或多个字符(任意个字符)。</li>
+<li>_ 代表一个字符</li>
+</ul>
+</li>
+<li>
+<p><strong>RLIKE</strong> <strong>子句</strong></p>
+<ul>
+<li>RLIKE 子句是 Hive 中这个功能的一个扩展，其可以通过 Java 的正则表达式这个更强大的语言来指定匹配条件。</li>
+</ul>
+</li>
+<li>
+<p><strong>案例</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0ndl8gpaqj30p006jt98.jpg" alt="QQ截图20220326164239.jpg"></p>
+</li>
+</ul>
+<h3 id="逻辑运算符andornot">逻辑运算符（And/Or/Not）</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0ndmoir9uj30qq0833yv.jpg" alt="QQ截图20220326164353.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0ndmudkkpj30qc04gaae.jpg" alt="QQ截图20220326164359.jpg"></p>
+<h2 id="分组">分组</h2>
+<h3 id="group-by-语句"><strong>Group By</strong> <strong>语句</strong></h3>
+<ul>
+<li>
+<p>GROUP BY 语句通常会和聚合函数一起使用，按照一个或者多个列队结果进行分组，然后对每个组执行聚合操作</p>
+</li>
+<li>
+<p>案例</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0ndrfgolnj30ox06gjru.jpg" alt="QQ截图20220326164839.jpg"></p>
+</li>
+</ul>
+<h3 id="having-语句"><strong>Having</strong> <strong>语句</strong></h3>
+<ul>
+<li>
+<p><strong>having</strong> <strong>与</strong> <strong>where</strong> <strong>不同点</strong></p>
+<ul>
+<li>where 后面不能写分组函数，而 having 后面可以使用分组函数。</li>
+<li>having 只用于 group by 分组统计语句</li>
+</ul>
+</li>
+<li>
+<p><strong>案例实操</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0ndswipeyj30ou06ndgb.jpg" alt="QQ截图20220326165004.jpg"></p>
+</li>
+</ul>
+<h2 id="join语句">Join语句</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0ndwsqcvwj30s00lgmyr.jpg" alt="QQ截图20220326165339.jpg"></p>
+<h3 id="等值-join"><strong>等值</strong> <strong>Join</strong></h3>
+<ul>
+<li>
+<p>Hive 支持通常的 SQL JOIN 语句</p>
+</li>
+<li>
+<p><strong>案例实操</strong></p>
+<ul>
+<li>
+<p>根据员工表和部门表中的部门编号相等，查询员工编号、员工名称和部门名称</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> e.empno, e.ename, d.deptno, d.dname from emp e join dept d on e.deptno <span style="color:#f92672">=</span> d.deptno;
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="表的别名"><strong>表的别名</strong></h3>
+<ul>
+<li>
+<p><strong>好处</strong></p>
+<ul>
+<li>使用别名可以简化查询</li>
+<li>使用表名前缀可以提高执行效率</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0ndz2hd2cj30pn04e0st.jpg" alt="QQ截图20220326165600.jpg"></p>
+</li>
+</ul>
+<h3 id="内连接"><strong>内连接</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h0ndzmco53j30ob02vweq.jpg" alt="QQ截图20220326165632.jpg"></p>
+<h3 id="左外连接"><strong>左外连接</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11ilipdsxj30p103774g.jpg" alt="QQ截图20220407221327.jpg"></p>
+<h3 id="右外连接"><strong>右外连接</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11im77kx3j30oi032glt.jpg" alt="QQ截图20220407221333.jpg"></p>
+<h3 id="满外连接"><strong>满外连接</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11imde1eaj30pv04edg8.jpg" alt="QQ截图20220407221340.jpg"></p>
+<h3 id="多表连接"><strong>多表连接</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11in3t96bj30q2078weq.jpg" alt="QQ截图20220407221512.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11in9babej30r80l076b.jpg" alt="QQ截图20220407221525.jpg"></p>
+<h3 id="笛卡尔积"><strong>笛卡尔积</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11inqpvtmj30qf07kmxg.jpg" alt="QQ截图20220407221603.jpg"></p>
+<h2 id="排序"><strong>排序</strong></h2>
+<h3 id="全局排序order-by"><strong>全局排序（Order By）</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11ipdoa8xj30ns05xwek.jpg" alt="QQ截图20220407221727.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11iphv81zj30ri07d0t6.jpg" alt="QQ截图20220407221735.jpg"></p>
+<h3 id="按照别名排序"><strong>按照别名排序</strong></h3>
+<p>按照员工薪水的 2 倍排序</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> ename, sal<span style="color:#f92672">*</span><span style="color:#ae81ff">2</span> twosal <span style="color:#66d9ef">from</span> emp <span style="color:#66d9ef">order</span> <span style="color:#66d9ef">by</span> twosal;
+</code></pre></div><h3 id="多个列排序"><strong>多个列排序</strong></h3>
+<p>按照部门和工资升序排序</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> ename, deptno, sal <span style="color:#66d9ef">from</span> emp <span style="color:#66d9ef">order</span> <span style="color:#66d9ef">by</span> deptno, sal;
+</code></pre></div><h3 id="每个-reduce-内部排序sort-by"><strong>每个</strong> <strong>Reduce</strong> 内部排序（Sort By）</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11is5jsgtj30sc0f775v.jpg" alt="QQ截图20220407222017.jpg"></p>
+<h3 id="分区distribute-by">分区（Distribute By）</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11itrrtfmj30r106kdgg.jpg" alt="QQ截图20220407222109.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11itvw5scj30r80awgmk.jpg" alt="QQ截图20220407222141.jpg"></p>
+<h3 id="cluster-by"><strong>Cluster By</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11iwlg2gtj30r009ijsb.jpg" alt="QQ截图20220407222433.jpg"></p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1012hbase%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" data-toggle="tooltip" data-placement="top" title="2、HBase快速入门（HBase）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1013hbase%E8%BF%9B%E9%98%B6/" data-toggle="tooltip" data-placement="top" title="3、HBase进阶（HBase）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

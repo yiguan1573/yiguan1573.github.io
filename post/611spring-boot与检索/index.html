@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="11、Spring boot与检索(SpringBoot)" />
+    <meta property="og:title" content="11、Spring boot与检索(SpringBoot)" />
+    <meta property="twitter:title" content="11、Spring boot与检索(SpringBoot)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>11、Spring boot与检索(SpringBoot)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/611spring-boot%E4%B8%8E%E6%A3%80%E7%B4%A2/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/springboot" title="SpringBoot">
+                            SpringBoot
+                        </a>
+                        
+                    </div>
+                    <h1>11、Spring boot与检索(SpringBoot)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Thursday, July 2, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-es的简介">1. ES的简介</a></li>
+    <li><a href="#2-es的安装与运行">2. ES的安装与运行</a></li>
+    <li><a href="#3-es的基础入门">3. ES的基础入门</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#1-概述">1. 概述</a></li>
+    <li><a href="#2-环境搭建">2. 环境搭建</a></li>
+    <li><a href="#3-elasticsearch客户端">3. ElasticSearch客户端</a></li>
+    <li><a href="#4-elasticsearchresttemplate">4. ElasticsearchRestTemplate</a></li>
+    <li><a href="#5-elasticsearch-repositories">5. Elasticsearch Repositories</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="elasticsearch入门">ElasticSearch入门</h1>
+<h2 id="1-es的简介">1. ES的简介</h2>
+<p><strong>简介</strong><br>
+我们的应用经常需要添加检索功能，开源的 ElasticSearch 是目前全文搜索引擎的首选。他可以快速的存储、搜索和分析海量数据。Spring Boot通过整合Spring Data ElasticSearch为我们提供了非常便捷的检索功能支持；<br>
+Elasticsearch是一个分布式搜索服务，提供Restful API，底层基于Lucene，采用多shard（分片）的方式保证数据安全，并且提供自动resharding的功能，github等大型的站点也是采用了ElasticSearch作为其搜索服务。<br>
+<strong>概念</strong><br>
+员工文档 的形式存储为例：一个文档代表一个员工数据。存储数据到ElasticSearch 的行为叫做 索引 ，但在索引一个文档之前，需要确定将文档存储在哪里。<br>
+一个 ElasticSearch 集群可以包含多个 索引 ，相应的每个索引可以包含多个 类型 。 这些不同的类型存储着多个 文档 ，每个文档又有多个属性。</p>
+<pre><code>索引（名词）：
+
+如前所述，一个 *索引* 类似于传统关系数据库中的一个 *数据库* ，是一个存储关系型文档的地方。 *索引* (*index*) 的复数词为 *indices* 或 *indexes* 。
+
+索引（动词）：
+
+*索引一个文档* 就是存储一个文档到一个 *索引* （名词）中以便被检索和查询。这非常类似于 SQL 语句中的 `INSERT` 关键词，除了文档已存在时，新文档会替换旧文档情况之外。
+</code></pre><p>类似关系:</p>
+<pre><code>-	索引---数据库
+-	类型---表
+-	文档---表中的记录
+-	属性---列
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggwl9citunj30xo0gc0wj.jpg" alt="QQ截图20200719211101.png"></p>
+<h2 id="2-es的安装与运行">2. ES的安装与运行</h2>
+<p>与ES交互</p>
+<ul>
+<li>9200端口<br>
+RESTful API通过HTTP通信</li>
+<li>9300端口<br>
+Java客户端与ES的原生传输协议和集群交互</li>
+</ul>
+<pre><code># 拉取ES镜像
+docker pull elasticsearch:7.6.1
+#运行ES
+docker run -e &quot;discovery.type=single-node&quot; -e ES_JAVA_OPTS=&quot;-Xms256m -Xmx256m&quot; -d -p 9200:9200 -p 9300:9300 --name ES03 41072cdeebc5
+</code></pre><pre><code>ES_JAVA_OPTS指定java虚拟机相关参数
+
+​ -Xms256m 初始堆内存大小为256m
+
+​ -Xmx256m 最大堆内存大小为256m
+
+discovery.type=single-node 设置为单点启动
+</code></pre><h2 id="3-es的基础入门">3. ES的基础入门</h2>
+<p><strong>案例：创建一个员工目录，并支持各类型检索</strong><br>
+<strong>索引员工文档</strong><br>
+对于员工目录，我们将做如下操作：</p>
+<ul>
+<li>每个员工索引一个文档，文档包含该员工的所有信息。</li>
+<li>每个文档都将是 employee 类型 。</li>
+<li>该类型位于 索引 megacorp 内。</li>
+</ul>
+<pre><code>PUT /megacorp/employee/1
+{
+    &quot;first_name&quot; : &quot;John&quot;,
+    &quot;last_name&quot; :  &quot;Smith&quot;,
+    &quot;age&quot; :        25,
+    &quot;about&quot; :      &quot;I love to go rock climbing&quot;,
+    &quot;interests&quot;: [ &quot;sports&quot;, &quot;music&quot; ]
+}
+</code></pre><p>注意，路径 /megacorp/employee/1 包含了三部分的信息：</p>
+<ul>
+<li>megacorp:索引名称</li>
+<li>employee:类型名称</li>
+<li>1:特定雇员的ID</li>
+</ul>
+<p>请求体 —— JSON 文档 —— 包含了这位员工的所有详细信息</p>
+<pre><code>{
+    &quot;_index&quot;: &quot;megacorp&quot;,
+    &quot;_type&quot;: &quot;employee&quot;,
+    &quot;_id&quot;: &quot;1&quot;,
+    &quot;_version&quot;: 1,
+    &quot;result&quot;: &quot;created&quot;,
+    &quot;_shards&quot;: {
+        &quot;total&quot;: 2,
+        &quot;successful&quot;: 1,
+        &quot;failed&quot;: 0
+    },
+    &quot;_seq_no&quot;: 0,
+    &quot;_primary_term&quot;: 1
+}
+</code></pre><p>同理，添加更多员工</p>
+<pre><code>PUT /megacorp/employee/2
+{
+    &quot;first_name&quot; :  &quot;Jane&quot;,
+    &quot;last_name&quot; :   &quot;Smith&quot;,
+    &quot;age&quot; :         32,
+    &quot;about&quot; :       &quot;I like to collect rock albums&quot;,
+    &quot;interests&quot;:  [ &quot;music&quot; ]
+}
+
+PUT /megacorp/employee/3
+{
+    &quot;first_name&quot; :  &quot;Douglas&quot;,
+    &quot;last_name&quot; :   &quot;Fir&quot;,
+    &quot;age&quot; :         35,
+    &quot;about&quot;:        &quot;I like to build cabinets&quot;,
+    &quot;interests&quot;:  [ &quot;forestry&quot; ]
+}
+</code></pre><p><strong>检索文档</strong><br>
+HTTP GET 请求并指定文档的地址——索引库、类型和ID。</p>
+<pre><code>GET /megacorp/employee/1
+</code></pre><p>返回数据</p>
+<pre><code>{
+    &quot;_index&quot;: &quot;megacorp&quot;,
+    &quot;_type&quot;: &quot;employee&quot;,
+    &quot;_id&quot;: &quot;1&quot;,
+    &quot;_version&quot;: 1,
+    &quot;_seq_no&quot;: 0,
+    &quot;_primary_term&quot;: 1,
+    &quot;found&quot;: true,
+    &quot;_source&quot;: {
+        &quot;first_name&quot;: &quot;John&quot;,
+        &quot;last_name&quot;: &quot;Smith&quot;,
+        &quot;age&quot;: 25,
+        &quot;about&quot;: &quot;I love to go rock climbing&quot;,
+        &quot;interests&quot;: [
+            &quot;sports&quot;,
+            &quot;music&quot;
+        ]
+    }
+}
+</code></pre><p>将 HTTP 命令由 PUT 改为 GET 可以用来检索文档，同样的，可以使用 DELETE 命令来删除文档，以及使用 HEAD 指令来检查文档是否存在。如果想更新已存在的文档，只需再次 PUT 。
+<strong>轻量搜索</strong><br>
+搜索所有雇员：</p>
+<pre><code>GET /megacorp/employee/_search
+</code></pre><p>返回数据</p>
+<pre><code>{
+    &quot;took&quot;: 46,
+    &quot;timed_out&quot;: false,
+    &quot;_shards&quot;: {
+        &quot;total&quot;: 1,
+        &quot;successful&quot;: 1,
+        &quot;skipped&quot;: 0,
+        &quot;failed&quot;: 0
+    },
+    &quot;hits&quot;: {
+        &quot;total&quot;: {
+            &quot;value&quot;: 3,
+            &quot;relation&quot;: &quot;eq&quot;
+        },
+        &quot;max_score&quot;: 1,
+        &quot;hits&quot;: [
+            {
+                &quot;_index&quot;: &quot;megacorp&quot;,
+                &quot;_type&quot;: &quot;employee&quot;,
+                &quot;_id&quot;: &quot;1&quot;,
+                &quot;_score&quot;: 1,
+                &quot;_source&quot;: {
+                    &quot;first_name&quot;: &quot;John&quot;,
+                    &quot;last_name&quot;: &quot;Smith&quot;,
+                    &quot;age&quot;: 25,
+                    &quot;about&quot;: &quot;I love to go rock climbing&quot;,
+                    &quot;interests&quot;: [
+                        &quot;sports&quot;,
+                        &quot;music&quot;
+                    ]
+                }
+            },
+            {
+                &quot;_index&quot;: &quot;megacorp&quot;,
+                &quot;_type&quot;: &quot;employee&quot;,
+                &quot;_id&quot;: &quot;2&quot;,
+                &quot;_score&quot;: 1,
+                &quot;_source&quot;: {
+                    &quot;first_name&quot;: &quot;Jane&quot;,
+                    &quot;last_name&quot;: &quot;Smith&quot;,
+                    &quot;age&quot;: 32,
+                    &quot;about&quot;: &quot;I like to collect rock albums&quot;,
+                    &quot;interests&quot;: [
+                        &quot;music&quot;
+                    ]
+                }
+            },
+            {
+                &quot;_index&quot;: &quot;megacorp&quot;,
+                &quot;_type&quot;: &quot;employee&quot;,
+                &quot;_id&quot;: &quot;3&quot;,
+                &quot;_score&quot;: 1,
+                &quot;_source&quot;: {
+                    &quot;first_name&quot;: &quot;Douglas&quot;,
+                    &quot;last_name&quot;: &quot;Fir&quot;,
+                    &quot;age&quot;: 35,
+                    &quot;about&quot;: &quot;I like to build cabinets&quot;,
+                    &quot;interests&quot;: [
+                        &quot;forestry&quot;
+                    ]
+                }
+            }
+        ]
+    }
+}
+</code></pre><p>返回结果包括三个文档，放在数据hits中。<br>
+搜索姓氏为 Smith 的雇员</p>
+<pre><code>GET /megacorp/employee/_search?q=last_name:Smith
+</code></pre><p>在请求路径中使用 _search 端点，并将查询本身赋值给参数 q= 。返回结果给出了所有的 Smith：</p>
+<pre><code>{
+    &quot;took&quot;: 23,
+    &quot;timed_out&quot;: false,
+    &quot;_shards&quot;: {
+        &quot;total&quot;: 1,
+        &quot;successful&quot;: 1,
+        &quot;skipped&quot;: 0,
+        &quot;failed&quot;: 0
+    },
+    &quot;hits&quot;: {
+        &quot;total&quot;: {
+            &quot;value&quot;: 2,
+            &quot;relation&quot;: &quot;eq&quot;
+        },
+        &quot;max_score&quot;: 0.4700036,
+        &quot;hits&quot;: [
+            {
+                &quot;_index&quot;: &quot;megacorp&quot;,
+                &quot;_type&quot;: &quot;employee&quot;,
+                &quot;_id&quot;: &quot;1&quot;,
+                &quot;_score&quot;: 0.4700036,
+                &quot;_source&quot;: {
+                    &quot;first_name&quot;: &quot;John&quot;,
+                    &quot;last_name&quot;: &quot;Smith&quot;,
+                    &quot;age&quot;: 25,
+                    &quot;about&quot;: &quot;I love to go rock climbing&quot;,
+                    &quot;interests&quot;: [
+                        &quot;sports&quot;,
+                        &quot;music&quot;
+                    ]
+                }
+            },
+            {
+                &quot;_index&quot;: &quot;megacorp&quot;,
+                &quot;_type&quot;: &quot;employee&quot;,
+                &quot;_id&quot;: &quot;2&quot;,
+                &quot;_score&quot;: 0.4700036,
+                &quot;_source&quot;: {
+                    &quot;first_name&quot;: &quot;Jane&quot;,
+                    &quot;last_name&quot;: &quot;Smith&quot;,
+                    &quot;age&quot;: 32,
+                    &quot;about&quot;: &quot;I like to collect rock albums&quot;,
+                    &quot;interests&quot;: [
+                        &quot;music&quot;
+                    ]
+                }
+            }
+        ]
+    }
+}
+</code></pre><p><strong>使用查询表达式搜索</strong><br>
+Query-string 搜索通过命令非常方便地进行临时性的即席搜索 ，但它有自身的局限性。Elasticsearch 提供一个丰富灵活的查询语言叫做 查询表达式 ， 它支持构建更加复杂和健壮的查询。</p>
+<pre><code>GET /megacorp/employee/_search
+{
+    &quot;query&quot; : {
+        &quot;match&quot; : {
+            &quot;last_name&quot; : &quot;Smith&quot;
+        }
+    }
+}
+</code></pre><p>返回效果与之前一样</p>
+<p><strong>更复杂的搜索</strong><br>
+同样搜索姓氏为 Smith 的员工，但这次我们只需要年龄大于 30 的</p>
+<pre><code>GET /megacorp/employee/_search
+{
+    &quot;query&quot; : {
+        &quot;bool&quot;: {
+            &quot;must&quot;: {
+                &quot;match&quot; : {
+                    &quot;last_name&quot; : &quot;smith&quot; 
+                }
+            },
+            &quot;filter&quot;: {
+                &quot;range&quot; : {
+                    &quot;age&quot; : { &quot;gt&quot; : 30 } 
+                }
+            }
+        }
+    }
+}
+</code></pre><p><strong>全文搜索</strong><br>
+搜索下所有喜欢攀岩（rock climbing）的员工：</p>
+<pre><code>GET /megacorp/employee/_search
+{
+    &quot;query&quot; : {
+        &quot;match&quot; : {
+            &quot;about&quot; : &quot;rock climbing&quot;
+        }
+    }
+}
+</code></pre><p>返回结果</p>
+<pre><code>{
+    &quot;took&quot;: 13,
+    &quot;timed_out&quot;: false,
+    &quot;_shards&quot;: {
+        &quot;total&quot;: 1,
+        &quot;successful&quot;: 1,
+        &quot;skipped&quot;: 0,
+        &quot;failed&quot;: 0
+    },
+    &quot;hits&quot;: {
+        &quot;total&quot;: {
+            &quot;value&quot;: 2,
+            &quot;relation&quot;: &quot;eq&quot;
+        },
+        &quot;max_score&quot;: 1.4167401,
+        &quot;hits&quot;: [
+            {
+                &quot;_index&quot;: &quot;megacorp&quot;,
+                &quot;_type&quot;: &quot;employee&quot;,
+                &quot;_id&quot;: &quot;1&quot;,
+                &quot;_score&quot;: 1.4167401,
+                &quot;_source&quot;: {
+                    &quot;first_name&quot;: &quot;John&quot;,
+                    &quot;last_name&quot;: &quot;Smith&quot;,
+                    &quot;age&quot;: 25,
+                    &quot;about&quot;: &quot;I love to go rock climbing&quot;,
+                    &quot;interests&quot;: [
+                        &quot;sports&quot;,
+                        &quot;music&quot;
+                    ]
+                }
+            },
+            {
+                &quot;_index&quot;: &quot;megacorp&quot;,
+                &quot;_type&quot;: &quot;employee&quot;,
+                &quot;_id&quot;: &quot;2&quot;,
+                &quot;_score&quot;: 0.4589591,
+                &quot;_source&quot;: {
+                    &quot;first_name&quot;: &quot;Jane&quot;,
+                    &quot;last_name&quot;: &quot;Smith&quot;,
+                    &quot;age&quot;: 32,
+                    &quot;about&quot;: &quot;I like to collect rock albums&quot;,
+                    &quot;interests&quot;: [
+                        &quot;music&quot;
+                    ]
+                }
+            }
+        ]
+    }
+}
+</code></pre><p>可以看到返回结果还带有相关性得分_score</p>
+<p><strong>短语搜索</strong><br>
+精确匹配一系列单词或者短语 。 比如， 执行这样一个查询，短语 “rock climbing” 的形式紧挨着的雇员记录。<br>
+为此对 match 查询稍作调整，使用一个叫做 match_phrase 的查询</p>
+<pre><code>GET /megacorp/employee/_search
+{
+    &quot;query&quot; : {
+        &quot;match_phrase&quot; : {
+            &quot;about&quot; : &quot;rock climbing&quot;
+        }
+    }
+}
+</code></pre><p><strong>高亮搜索</strong><br>
+每个搜索结果中高亮部分文本片段<br>
+再次执行前面的查询，并增加一个新的 highlight 参数：</p>
+<pre><code>GET /megacorp/employee/_search
+{
+    &quot;query&quot; : {
+        &quot;match_phrase&quot; : {
+            &quot;about&quot; : &quot;rock climbing&quot;
+        }
+    },
+    &quot;highlight&quot;: {
+        &quot;fields&quot; : {
+            &quot;about&quot; : {}
+        }
+    }
+}
+</code></pre><p>返回结果</p>
+<pre><code>{
+		...
+    
+        &quot;hits&quot;: [
+            {
+                &quot;_index&quot;: &quot;megacorp&quot;,
+                &quot;_type&quot;: &quot;employee&quot;,
+                &quot;_id&quot;: &quot;1&quot;,
+                &quot;_score&quot;: 1.4167401,
+                &quot;_source&quot;: {
+                    &quot;first_name&quot;: &quot;John&quot;,
+                    &quot;last_name&quot;: &quot;Smith&quot;,
+                    &quot;age&quot;: 25,
+                    &quot;about&quot;: &quot;I love to go rock climbing&quot;,
+                    &quot;interests&quot;: [
+                        &quot;sports&quot;,
+                        &quot;music&quot;
+                    ]
+                },
+                &quot;highlight&quot;: {
+                    &quot;about&quot;: [
+                        &quot;I love to go &lt;em&gt;rock&lt;/em&gt; &lt;em&gt;climbing&lt;/em&gt;&quot;
+                    ]
+                }
+            }
+        ]
+    }
+}
+</code></pre><p>结果中还多了一个叫做 highlight 的部分。这个部分包含了 about 属性匹配的文本片段，并以 HTML 标签 <!-- raw HTML omitted --> 封装</p>
+<hr>
+<h1 id="springboot整合elasticsearch">Springboot整合ElasticSearch</h1>
+<h2 id="1-概述">1. 概述</h2>
+<p>SpringBoot默认支持两种技术来和ES交互；</p>
+<ul>
+<li>Jest（默认不生效）
+<ul>
+<li>需要导入jest的工具包（io.searchbox.client.JestClient）</li>
+<li>从springboot 2.2.0以后被弃用</li>
+</ul>
+</li>
+<li>SpringData ElasticSearch<br>
+版本适配说明
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggwlncaxb9j30ma0bsaad.jpg" alt="QQ截图20200719212458.png"><br>
+Springboot 2.2.6对应于 Spring Data Elasticsearch 3.2.6，即适配Elasticsearch 6.8.1</li>
+</ul>
+<h2 id="2-环境搭建">2. 环境搭建</h2>
+<p>编写文件对应Javabean，指定索引名和类型</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ustc&#34;</span><span style="color:#f92672">,</span>type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;book&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Book</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> Integer id<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> String bookName<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> String author<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> Integer <span style="color:#a6e22e">getId</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> id<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span>Integer id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getBookName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> bookName<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setBookName</span><span style="color:#f92672">(</span>String bookName<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">bookName</span> <span style="color:#f92672">=</span> bookName<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getAuthor</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> author<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setAuthor</span><span style="color:#f92672">(</span>String author<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">author</span> <span style="color:#f92672">=</span> author<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Book{&#34;</span> <span style="color:#f92672">+</span>
+                <span style="color:#e6db74">&#34;id=&#34;</span> <span style="color:#f92672">+</span> id <span style="color:#f92672">+</span>
+                <span style="color:#e6db74">&#34;, bookName=&#39;&#34;</span> <span style="color:#f92672">+</span> bookName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;\&#39;&#39;</span> <span style="color:#f92672">+</span>
+                <span style="color:#e6db74">&#34;, author=&#39;&#34;</span> <span style="color:#f92672">+</span> author <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;\&#39;&#39;</span> <span style="color:#f92672">+</span>
+                <span style="color:#e6db74">&#39;}&#39;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="3-elasticsearch客户端">3. ElasticSearch客户端</h2>
+<ul>
+<li><strong>Transport Client</strong><br>
+在ES7中已经被弃用，将在ES8被移除</li>
+<li><strong>High Level REST Client</strong><br>
+ES的默认客户端</li>
+<li><strong>Reactive Client</strong><br>
+非官方驱动，基于WebClient<br>
+下面以REST客户端为例说明ES的使用<br>
+<strong>配置主机地址</strong><br>
+方式一 配置类配置<br>
+注意：这种方式底层依赖于Http相关类，因此要导入web相关jar包</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Config</span> <span style="color:#f92672">{</span>
+  <span style="color:#a6e22e">@Bean</span>
+  RestHighLevelClient <span style="color:#a6e22e">client</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+    ClientConfiguration clientConfiguration <span style="color:#f92672">=</span> ClientConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> 
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">connectedTo</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localhost:9200&#34;</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">return</span> RestClients<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>clientConfiguration<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rest</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>                  
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>方式二 spring配置文件指定</p>
+<pre><code>spring.elasticsearch.rest.uris=http://192.168.31.162:9200
+</code></pre><p><strong>在测试类中注入客户端</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Autowired</span>
+RestHighLevelClient highLevelClient<span style="color:#f92672">;</span>
+</code></pre></div><p><strong>创建索引</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">IndexRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> IndexRequest<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ustc&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;book&#34;</span><span style="color:#f92672">,</span>
+        UUID<span style="color:#f92672">.</span><span style="color:#a6e22e">randomUUID</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">source</span><span style="color:#f92672">(</span>Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">singletonMap</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;feature&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;high-level-rest-client&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">setRefreshPolicy</span><span style="color:#f92672">(</span>WriteRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">RefreshPolicy</span><span style="color:#f92672">.</span><span style="color:#a6e22e">IMMEDIATE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+IndexResponse index <span style="color:#f92672">=</span> highLevelClient<span style="color:#f92672">.</span><span style="color:#a6e22e">index</span><span style="color:#f92672">(</span>request<span style="color:#f92672">,</span> RequestOptions<span style="color:#f92672">.</span><span style="color:#a6e22e">DEFAULT</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>index<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>下面为创建索引</p>
+<pre><code>{
+    &quot;_index&quot;: &quot;ustc&quot;,
+    &quot;_type&quot;: &quot;book&quot;,
+    &quot;_id&quot;: &quot;0dc9f47a-7913-481d-a36d-e8f034a6a3ac&quot;,
+    &quot;_score&quot;: 1,
+    &quot;_source&quot;: {
+        &quot;feature&quot;: &quot;high-level-rest-client&quot;
+    }
+}
+</code></pre><p>得到索引</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//分别指定要获取的索引、类型、id
+</span><span style="color:#75715e"></span>GetRequest getRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> GetRequest<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ustc&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;book&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;0dc9f47a-7913-481d-a36d-e8f034a6a3ac&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+GetResponse documentFields <span style="color:#f92672">=</span> highLevelClient<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>getRequest<span style="color:#f92672">,</span> RequestOptions<span style="color:#f92672">.</span><span style="color:#a6e22e">DEFAULT</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>documentFields<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><h2 id="4-elasticsearchresttemplate">4. ElasticsearchRestTemplate</h2>
+<p>ES有两个模板，分别为<strong>ElasticsearchRestTemplate</strong>和<strong>ElasticsearchTemplate</strong><br>
+分别对应于High Level REST Client和Transport Client(弃用)，两个模板都实现了ElasticsearchOperations接口，因此使用时我们一般使用ElasticsearchOperations，具体实现方式由底层决定。<br>
+由于在AbstractElasticsearchConfiguration中已经向容器中导入了ElasticsearchRestTemplate，因此我们使用时可以直接注入<br>
+<strong>注入模板</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Autowired</span>
+ElasticsearchOperations elasticsearchOperations<span style="color:#f92672">;</span>
+</code></pre></div><p><strong>保存索引</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Book book <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Book<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+book<span style="color:#f92672">.</span><span style="color:#a6e22e">setAuthor</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;路遥&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+book<span style="color:#f92672">.</span><span style="color:#a6e22e">setBookName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;平凡的世界&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+book<span style="color:#f92672">.</span><span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span>1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+IndexQuery indexQuery <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> IndexQueryBuilder<span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">.</span><span style="color:#a6e22e">withId</span><span style="color:#f92672">(</span>book<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">.</span><span style="color:#a6e22e">withObject</span><span style="color:#f92672">(</span>book<span style="color:#f92672">)</span>
+    <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+String index <span style="color:#f92672">=</span> elasticsearchOperations<span style="color:#f92672">.</span><span style="color:#a6e22e">index</span><span style="color:#f92672">(</span>indexQuery<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p><strong>查询索引</strong></p>
+<pre><code>Book book = elasticsearchOperations.queryForObject(GetQuery.getById(&quot;1&quot;), Book.class);
+</code></pre><h2 id="5-elasticsearch-repositories">5. Elasticsearch Repositories</h2>
+<p>编写相关Repository并继承Repository或ElasticsearchRepository，泛型分别为&lt;查询类，主键&gt;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">BookRepository</span> <span style="color:#66d9ef">extends</span> Repository<span style="color:#f92672">&lt;</span>Book<span style="color:#f92672">,</span>Integer<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    List<span style="color:#f92672">&lt;</span>Book<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findByBookNameAndAuthor</span><span style="color:#f92672">(</span>String bookName<span style="color:#f92672">,</span> String author<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>查询的方法仅需按照一定规则命名即可实现功能，无需编写实现，如上findByBookNameAndAuthor()方法相当于ES的json查询</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;query&#34;</span>: {
+        <span style="color:#f92672">&#34;bool&#34;</span> : {
+            <span style="color:#f92672">&#34;must&#34;</span> : [
+                { <span style="color:#f92672">&#34;query_string&#34;</span> : { <span style="color:#f92672">&#34;query&#34;</span> : <span style="color:#e6db74">&#34;?&#34;</span>, <span style="color:#f92672">&#34;fields&#34;</span> : [ <span style="color:#e6db74">&#34;bookName&#34;</span> ] } },
+                { <span style="color:#f92672">&#34;query_string&#34;</span> : { <span style="color:#f92672">&#34;query&#34;</span> : <span style="color:#e6db74">&#34;?&#34;</span>, <span style="color:#f92672">&#34;fields&#34;</span> : [ <span style="color:#e6db74">&#34;author&#34;</span> ] } }
+            ]
+        }
+    }
+}
+</code></pre></div><p><a href="https://docs.spring.io/spring-data/elasticsearch/docs/3.2.6.RELEASE/reference/html/#elasticsearch.repositories">更多命名规则见本文档</a>
+<strong>@Query</strong>
+此外，还可以使用@Query自定义请求json</p>
+<pre><code>interface BookRepository extends ElasticsearchRepository&lt;Book, String&gt; {
+    @Query(&quot;{\&quot;match\&quot;: {\&quot;name\&quot;: {\&quot;query\&quot;: \&quot;?0\&quot;}}}&quot;)
+    Page&lt;Book&gt; findByName(String name,Pageable pageable);
+}
+</code></pre><p>若参数为John，相当于请求体为</p>
+<pre><code>{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;name&quot;: {
+        &quot;query&quot;: &quot;John&quot;
+      }
+    }
+  }
+}
+</code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/610spring-boot%E4%B8%8E%E6%B6%88%E6%81%AF/" data-toggle="tooltip" data-placement="top" title="10、Spring Boot与消息(SpringBoot)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/612spring-boot%E4%B8%8E%E4%BB%BB%E5%8A%A1/" data-toggle="tooltip" data-placement="top" title="12、Spring boot与任务(SpringBoot)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

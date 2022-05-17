@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="1、MinIO安装（MinIO）" />
+    <meta property="og:title" content="1、MinIO安装（MinIO）" />
+    <meta property="twitter:title" content="1、MinIO安装（MinIO）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>1、MinIO安装（MinIO）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/982minio%E5%AE%89%E8%A3%85/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                    </div>
+                    <h1>1、MinIO安装（MinIO）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Wednesday, March 30, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#第一步-创建文件夹">第一步 创建文件夹</a></li>
+    <li><a href="#第二步-wget下载安装包">第二步 wget下载安装包</a></li>
+    <li><a href="#第三步-赋权限">第三步 赋权限</a></li>
+    <li><a href="#第四步-防火墙开启-9000-端口">第四步 防火墙开启 9000 端口</a></li>
+    <li><a href="#第五步-启动minio">第五步 启动minio</a></li>
+    <li><a href="#第六步-使用web页面">第六步 使用web页面</a></li>
+    <li><a href="#在启动前设置账号和密码">在启动前设置账号和密码</a></li>
+    <li><a href="#web页面的使用">WEB页面的使用</a></li>
+    <li><a href="#minio组织架构">minio组织架构</a></li>
+    <li><a href="#docker安装">docker安装</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="第一步-创建文件夹">第一步 创建文件夹</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd /opt
+mikdir MinIO
+<span style="color:#75715e">#用于存放数据</span>
+mikdir -p MinIO/data
+cd MinIO 
+<span style="color:#75715e">#日志</span>
+touch minio.log
+</code></pre></div><h2 id="第二步-wget下载安装包">第二步 wget下载安装包</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">wget https://dl.min.io/server/minio/release/linux-amd64/minio
+</code></pre></div><ul>
+<li>这时虚拟机报错如下</li>
+</ul>
+<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugh1428bj30kl03ftc8.jpg" alt="QQ截图20220401194120.png"></p>
+<ul>
+<li>要么安装证书要么加入参数</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">wget --no-check-certificate https://dl.min.io/server/minio/release/linux-amd64/minio
+</code></pre></div><ul>
+<li>下载完毕</li>
+</ul>
+<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugkalbmoj30n308jn36.jpg" alt="QQ截图20220401194434.png"></p>
+<h2 id="第三步-赋权限">第三步 赋权限</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">chmod <span style="color:#ae81ff">777</span> minio
+</code></pre></div><h2 id="第四步-防火墙开启-9000-端口">第四步 防火墙开启 9000 端口</h2>
+<ul>
+<li>开启端口</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">firewall-cmd --zone<span style="color:#f92672">=</span>public --add-port<span style="color:#f92672">=</span>9000/tcp --permanent
+</code></pre></div><ul>
+<li>重启防火墙</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl restart firewalld
+</code></pre></div><h2 id="第五步-启动minio">第五步 启动minio</h2>
+<ul>
+<li>
+<p>如果直接启动会报以下错误</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./minio server ./data/
+</code></pre></div><p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugp1wolcj30mp08lagf.jpg" alt="QQ截图20220401194908.png"></p>
+</li>
+<li>
+<p><strong>上面的报红：检测到Linux内核版本早于4.0.0版本，此内核版本存在一些已知的潜在性能问题。MinIO建议至少4.x.x以上linux内核版本以获得最佳性能</strong></p>
+</li>
+<li>
+<p><strong>下面的报红：控制台端点正在侦听动态端口 (42046)，请使用 &ndash;console-address “:PORT” 选择静态端口。</strong></p>
+</li>
+<li>
+<p><strong>后台的启动</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">nohup /opt/MinIO/minio server  /opt/MinIO/data --console-address <span style="color:#e6db74">&#34;:9000&#34;</span> &gt; /opt/MinIO/minio.log 2&gt;&amp;<span style="color:#ae81ff">1</span> &amp;
+</code></pre></div><ul>
+<li>
+<p>发现没有启动起来</p>
+</li>
+<li>
+<p>查看日志</p>
+<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0uhb1yc6xj30gs01m751.jpg" alt="QQ截图20220401201017.png"></p>
+</li>
+<li>
+<p>这是因为minio区分了Console和API两个服务的端口。原来都是共同使用9000，现在需要在启动命令中映射两个端口</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>正确的启动，其中9000是web服务的端口，9010是API的端口</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">nohup /opt/MinIO/minio server  /opt/MinIO/data --console-address <span style="color:#e6db74">&#34;:9000&#34;</span> --address <span style="color:#e6db74">&#34;:9010&#34;</span> &gt; /opt/MinIO/minio.log 2&gt;&amp;<span style="color:#ae81ff">1</span> &amp;
+</code></pre></div></li>
+</ul>
+<h2 id="第六步-使用web页面">第六步 使用web页面</h2>
+<ul>
+<li>
+<p>打开浏览器http://192.168.10.101:9000/login</p>
+<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugyy66evj319n0m8wqf.jpg" alt="QQ截图20220401195837.png"></p>
+</li>
+<li>
+<p>在/opt/MinIO/data里的隐藏文件夹可查看默认账号密码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat data/.minio.sys/config/config.json
+</code></pre></div><p>默认账号密码如下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;key&#34;</span>:<span style="color:#e6db74">&#34;access_key&#34;</span>,
+    <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;minioadmin&#34;</span>
+}<span style="color:#960050;background-color:#1e0010">,</span>
+{
+    <span style="color:#f92672">&#34;key&#34;</span>:<span style="color:#e6db74">&#34;secret_key&#34;</span>,
+    <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;minioadmin&#34;</span>
+}
+</code></pre></div></li>
+</ul>
+<h2 id="在启动前设置账号和密码">在启动前设置账号和密码</h2>
+<ul>
+<li>
+<p>在配置文件下加以下配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /etc/profile
+</code></pre></div><p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ui6cklj2j30hp08idjg.jpg" alt="QQ截图20220401203802.png"></p>
+<ul>
+<li>
+<p>注意需要设置的账号和密码有位数要求，不符合要求会启动失败</p>
+<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ui73fuoaj30lg024myk.jpg" alt="QQ截图20220401203516.png"></p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">source /etc/profile
+</code></pre></div></li>
+</ul>
+<h2 id="web页面的使用">WEB页面的使用</h2>
+<ul>
+<li>
+<p>建桶</p>
+<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0uid7xxhhj31fz0gyn4a.jpg" alt="QQ截图20220401204344.png"></p>
+</li>
+<li>
+<p>上传文件</p>
+<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0uidp57s8j31g80iwq8u.jpg" alt="QQ截图20220401204726.png"></p>
+</li>
+<li>
+<p>点击文件打开右侧详情，点击share出现文件地址</p>
+<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ujdum37ej31fq0og47a.jpg" alt="QQ截图20220401204905.png"></p>
+</li>
+<li>
+<p>其他使用如下</p>
+<ul>
+<li><a href="https://blog.csdn.net/smjmouse/article/details/119607048">通过minio的web页面实现文件权限管理</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="minio组织架构">minio组织架构</h2>
+<ul>
+<li>系统把整个存储资源组织为目录树的形式。与此不同，对象存储系统把存储资源组织为租户-桶-对象的形式</li>
+<li>用户:在租户下面创建的用于访问不同桶的账号。可以使用MinIO提供的mc命令设置不用用户访问各个桶的权限。</li>
+<li>租户:用于隔离存储资源。在租户之下可以建立桶、存储对象。</li>
+<li>桶:是若干个对象的逻辑抽象,是盛装对象的容器。</li>
+<li>对象:类似于hash表中的表项:它的名字相当于关键字，它的内容相当于“值”。</li>
+</ul>
+<h2 id="docker安装">docker安装</h2>
+<ul>
+<li><a href="https://www.cnblogs.com/daikainan/p/14413575.html">Minio安装(docker)</a></li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul>
+<li>
+<p><a href="https://blog.csdn.net/llwy1428/article/details/99618252?spm=1001.2101.3001.6650.7&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-7.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-7.pc_relevant_default&amp;utm_relevant_index=12">记一次 Centos7 安装 Minio （文件服务器）</a></p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/csdnerM/article/details/121336618?utm_term=minio%E5%9C%A8linux%E5%AE%89%E8%A3%85&amp;utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~all~sobaiduweb~default-3-121336618&amp;spm=3001.4430">Linux安装MinIO（图文解说详细版）</a></p>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1010%E4%BC%81%E4%B8%9A%E7%BA%A7%E8%B0%83%E4%BC%98/" data-toggle="tooltip" data-placement="top" title="10、企业级调优（Hive）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/983minio%E7%9A%84javaapi/" data-toggle="tooltip" data-placement="top" title="2、MinIO的JavaApi（MinIO）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

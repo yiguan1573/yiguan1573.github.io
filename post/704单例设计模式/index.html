@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="4、单例设计模式(设计模式)" />
+    <meta property="og:title" content="4、单例设计模式(设计模式)" />
+    <meta property="twitter:title" content="4、单例设计模式(设计模式)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>4、单例设计模式(设计模式)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/704%E5%8D%95%E4%BE%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                    </div>
+                    <h1>4、单例设计模式(设计模式)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Tuesday, August 18, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <h1 id="单例设计模式介绍">单例设计模式介绍</h1>
+<ul>
+<li>所谓类的单例设计模式，就是采取一定的方法保证在整个的软件系统中，对某个类只能存在一个对象实例，并且该类只提供一个取得其对象实例的方法(静态方法)</li>
+<li>如 Hibernate 的 SessionFactory，它充当数据存储源的代理，并负责创建 Session 对象。SessionFactory 并不是轻量级的，一般情况下，一个项目通常只需要一个 SessionFactory 就够，这是就会使用到单例模式</li>
+</ul>
+<h1 id="单例设计模式八种方式">单例设计模式八种方式</h1>
+<p>单例模式有八种方式：</p>
+<ol>
+<li>饿汉式(静态常量)</li>
+<li>饿汉式（静态代码块）</li>
+<li>懒汉式(线程不安全)</li>
+<li>懒汉式(线程安全，同步方法)</li>
+<li>懒汉式(线程安全，同步代码块)</li>
+<li>双重检查</li>
+<li>静态内部类</li>
+<li>枚举</li>
+</ol>
+<h1 id="饿汉式静态常量">饿汉式（静态常量）</h1>
+<ul>
+<li>步骤如下：
+<ol>
+<li>构造器私有化 (防止 new )</li>
+<li>类的内部创建对象</li>
+<li>向外暴露一个静态的公共方法。getInstance</li>
+</ol>
+</li>
+<li>代码实现</li>
+</ul>
+<pre><code>package com.atguigu.singleton.type1;
+
+public class SingletonTest01 {
+
+    public static void main(String[] args) {
+        //测试
+        Singleton instance = Singleton.getInstance(); 
+        Singleton instance2 = Singleton.getInstance(); System.out.println(instance == instance2); // true
+        System.out.println(&quot;instance.hashCode=&quot; + instance.hashCode()); 
+        System.out.println(&quot;instance2.hashCode=&quot; + instance2.hashCode());
+    }
+
+}
+
+//饿汉式(静态变量) 
+class Singleton {
+    //1. 构造器私有化,  外部能 new private Singleton() {}
+
+    //2.本类内部创建对象实例
+    private final static Singleton instance = new Singleton();
+
+    //3. 提供一个公有的静态方法，返回实例对象
+    public static Singleton getInstance() { return instance;
+    }
+
+}
+</code></pre><ul>
+<li><strong>优缺点说明：</strong>
+<ol>
+<li>优点：这种写法比较简单，就是在类装载的时候就完成实例化。避免了线程同步问题。</li>
+<li>缺点：在类装载的时候就完成实例化，没有达到 Lazy Loading 的效果。如果从始至终从未使用过这个实例，则会造成内存的浪费</li>
+<li>这种方式基于 classloder 机制避免了多线程的同步问题，不过，instance 在类装载时就实例化，在单例模式中大多数都是调用getInstance 方法，但是导致类装载的原因有很多种，因此不能确定有其他的方式（或者其他的静态方法）导致类装载，这时候初始化 instance 就没有达到 lazy loading 的效果</li>
+<li>结论：这种单例模式可用，可能造成内存浪费</li>
+</ol>
+</li>
+</ul>
+<h1 id="饿汉式静态代码块">饿汉式（静态代码块）</h1>
+<ul>
+<li>代码演示：</li>
+</ul>
+<pre><code>package com.atguigu.singleton.type2;
+
+public class SingletonTest02 {
+
+    public static void main(String[] args) {
+        //测试
+        Singleton instance = Singleton.getInstance(); 
+        Singleton instance2 = Singleton.getInstance(); System.out.println(instance == instance2); // true
+        System.out.println(&quot;instance.hashCode=&quot; + instance.hashCode()); 
+        System.out.println(&quot;instance2.hashCode=&quot; + instance2.hashCode());
+    }
+
+}
+
+//饿汉式(静态变量) 
+class Singleton {
+    //1. 构造器私有化,  外部能 new private Singleton() {
+
+    }
+
+    //2.本类内部创建对象实例
+    private	static Singleton instance;
+
+    static { // 在静态代码块中，创建单例对象
+    instance = new Singleton();
+    }
+
+    //3. 提供一个公有的静态方法，返回实例对象
+    public static Singleton getInstance() { return instance;
+    }
+
+}
+</code></pre><ul>
+<li><strong>优缺点说明：</strong>
+<ol>
+<li>这种方式和上面的方式其实类似，只不过将类实例化的过程放在了静态代码块中，也是在类装载的时候，就执行静态代码块中的代码，初始化类的实例。优缺点和上面是一样的。</li>
+<li>结论：这种单例模式可用，但是可能造成内存浪费</li>
+</ol>
+</li>
+</ul>
+<h1 id="懒汉式线程不安全">懒汉式(线程不安全)</h1>
+<ul>
+<li>代码演示：</li>
+</ul>
+<pre><code>package com.atguigu.singleton.type3;
+
+public class SingletonTest03 {
+    public static void main(String[] args) {
+        System.out.println(&quot;懒汉式 1 ， 线程不安全~&quot;); 
+        Singleton instance = Singleton.getInstance(); 
+        Singleton instance2 = Singleton.getInstance(); System.out.println(instance == instance2); // true
+        System.out.println(&quot;instance.hashCode=&quot; + instance.hashCode()); 
+        System.out.println(&quot;instance2.hashCode=&quot; + instance2.hashCode());
+    }
+}
+
+
+class Singleton {
+    private static Singleton instance;
+
+    private Singleton() {}
+
+    //提供一个静态的公有方法，当使用到该方法时，才去创建 instance
+    //即懒汉式
+    public static Singleton getInstance() { 
+        if(instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+</code></pre><ul>
+<li><strong>优缺点说明：</strong>
+<ol>
+<li>起到了 Lazy Loading 的效果，但是只能在单线程下使用。</li>
+<li>如果在多线程下，一个线程进入了 if (singleton == null)判断语句块，还未来得及往下执行，另一个线程也通过了这个判断语句，这时便会产生多个实例。所以在多线程环境下不可使用这种方式</li>
+<li>结论：在实际开发中，不要使用这种方式</li>
+</ol>
+</li>
+</ul>
+<h1 id="懒汉式线程安全同步方法">懒汉式(线程安全，同步方法)</h1>
+<ul>
+<li>代码演示：</li>
+</ul>
+<pre><code>package com.atguigu.singleton.type4;
+
+
+public class SingletonTest04 {
+
+    public static void main(String[] args) {
+    System.out.println(&quot;懒汉式 2 ， 线程安全~&quot;); 
+    Singleton instance = Singleton.getInstance(); 
+    Singleton instance2 = Singleton.getInstance(); System.out.println(instance == instance2); // true
+    System.out.println(&quot;instance.hashCode=&quot; + instance.hashCode()); 
+    System.out.println(&quot;instance2.hashCode=&quot; + instance2.hashCode());
+    }
+
+}
+// 懒汉式(线程安全，同步方法) 
+class Singleton {
+    private static Singleton instance;
+
+    private Singleton() {}
+
+    //提供一个静态的公有方法，加入同步处理的代码，解决线程安全问题
+    //即懒汉式
+    public static synchronized Singleton getInstance() { 
+        if(instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+</code></pre><ul>
+<li><strong>优缺点说明：</strong>
+<ol>
+<li>解决了线程安全问题</li>
+<li>效率太低了，每个线程在想获得类的实例时候，执行 getInstance()方法都要进行同步。而其实这个方法只执行一次实例化代码就够了，后面的想获得该类实例，直接 return 就行了。方法进行同步效率太低</li>
+<li>结论：在实际开发中，不推荐使用这种方式</li>
+</ol>
+</li>
+</ul>
+<h1 id="懒汉式线程安全同步代码块">懒汉式(线程安全，同步代码块)</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi5gdasunfj30iu0cvaeq.jpg" alt="QQ截图20200827163240.png"></p>
+<h1 id="双重检查">双重检查</h1>
+<ul>
+<li>代码演示</li>
+</ul>
+<pre><code>package com.atguigu.singleton.type6;
+
+public class SingletonTest06 {
+
+    public static void main(String[] args) {
+        System.out.println(&quot;双重检查&quot;);
+        Singleton instance = Singleton.getInstance(); 
+        Singleton instance2 = Singleton.getInstance(); System.out.println(instance == instance2); // true
+        System.out.println(&quot;instance.hashCode=&quot; + instance.hashCode());
+        System.out.println(&quot;instance2.hashCode=&quot; + instance2.hashCode());
+    }
+
+}
+
+// 懒汉式(线程安全，同步方法) 
+class Singleton {
+    private static volatile Singleton instance;
+    private Singleton() {}
+    //提供一个静态的公有方法，加入双重检查代码，解决线程安全问题, 同时解决懒加载问题
+    //同时保证了效率, 推荐使用
+
+
+    public static synchronized Singleton getInstance() { 
+        if(instance == null) {
+        synchronized (Singleton.class) { 
+            if(instance == null) {
+            instance = new Singleton();
+            }
+        }
+        }
+        return instance;
+    }
+}
+</code></pre><ul>
+<li><strong>优缺点说明：</strong>
+<ol>
+<li>Double-Check 概念是多线程开发中常使用到的，如代码中所示，我们进行了两次 if (singleton == null)检查，这样就可以保证线程安全了。</li>
+<li>这样，实例化代码只用执行一次，后面再次访问时，判断 if (singleton == null)，直接 return 实例化对象，也避免的反复进行方法同步.</li>
+<li>线程安全；延迟加载；效率较高
+结论：在实际开发中，推荐使用这种单例设计模式</li>
+</ol>
+</li>
+</ul>
+<h1 id="静态内部类">静态内部类</h1>
+<ul>
+<li>代码演示：</li>
+</ul>
+<pre><code>package com.atguigu.singleton.type7;
+
+
+public class SingletonTest07 {
+
+    public static void main(String[] args) {  
+        System.out.println(&quot;使用静态内部类完成单例模式&quot;); Singleton instance = Singleton.getInstance();
+        Singleton instance2 = Singleton.getInstance(); System.out.println(instance == instance2); // true 
+        System.out.println(&quot;instance.hashCode=&quot; + instance.hashCode()); System.out.println(&quot;instance2.hashCode=&quot; + instance2.hashCode());
+    }
+}
+
+// 静态内部类完成， 推荐使用
+class Singleton {
+    private static volatile Singleton instance;
+
+    //构造器私有化
+    private Singleton() {}
+
+    //写一个静态内部类,该类中有一个静态属性 
+    Singleton private static class SingletonInstance {
+        private static final Singleton INSTANCE = new Singleton();
+    }
+
+    //提供一个静态的公有方法，直接返回 SingletonInstance.INSTANCE 
+    
+    public static synchronized Singleton getInstance() {
+
+        return SingletonInstance.INSTANCE;
+    }
+}
+</code></pre><ul>
+<li><strong>优缺点说明：</strong>
+<ol>
+<li>这种方式采用了类装载的机制来保证初始化实例时只有一个线程</li>
+<li>静态内部类方式在 Singleton 类被装载时并不会立即实例化，而是在需要实例化时，调用 getInstance 方法，才会装载 SingletonInstance 类，从而完成 Singleton 的实例化。</li>
+<li>类的静态属性只会在第一次加载类的时候初始化，所以在这里，JVM 帮助我们保证了线程的安全性，在类进行初始化时，别的线程是无法进入的。</li>
+<li>优点：避免了线程不安全，利用静态内部类特点实现延迟加载，效率高</li>
+<li>结论：推荐使用</li>
+</ol>
+</li>
+</ul>
+<h1 id="枚举">枚举</h1>
+<ul>
+<li>代码演示</li>
+</ul>
+<pre><code>package com.atguigu.singleton.type8;
+
+public class SingletonTest08 {
+    public static void main(String[] args) { 
+    Singleton instance = Singleton.INSTANCE;
+    Singleton instance2 = Singleton.INSTANCE; 
+    System.out.println(instance == instance2);
+
+    System.out.println(instance.hashCode()); 
+    System.out.println(instance2.hashCode());
+
+    instance.sayOK();
+    }
+}
+
+//使用枚举，可以实现单例, 推荐
+enum Singleton {
+    INSTANCE; //属性
+    public void sayOK() { 
+        System.out.println(&quot;ok~&quot;);
+    }
+}
+</code></pre><ul>
+<li><strong>优缺点说明：</strong>
+<ol>
+<li>这借助 JDK1.5 中添加的枚举来实现单例模式。不仅能避免多线程同步问题，而且还能防止反序列化重新创建新的对象。</li>
+<li>这种方式是 Effective Java 作者 Josh Bloch  提倡的方式</li>
+<li>结论：推荐使用</li>
+</ol>
+</li>
+</ul>
+<h1 id="单例模式在-jdk-应用的源码分析">单例模式在 JDK 应用的源码分析</h1>
+<ul>
+<li>JDK 中，java.lang.Runtime 就是经典的单例模式(饿汉式)</li>
+<li>代码分析+Debug 源码+代码说明
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi5gnasrxfj30jd09n79y.jpg" alt="QQ截图20200827164218.png"></li>
+</ul>
+<h1 id="单例模式注意事项和细节说明">单例模式注意事项和细节说明</h1>
+<ul>
+<li>
+<p>单例模式保证了 系统内存中该类只存在一个对象，节省了系统资源，对于一些需要频繁创建销毁的对象，使用单例模式可以提高系统性能</p>
+</li>
+<li>
+<p>当想实例化一个单例类的时候，必须要记住使用相应的获取对象的方法，而不是使用 new</p>
+</li>
+<li>
+<p>单例模式使用的场景：需要频繁的进行创建和销毁的对象、创建对象时耗时过多或耗费资源过多(即：重量级对象)，但又经常用到的对象、工具类对象、频繁访问数据库或文件的对象(比如数据源、session 工厂等)</p>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/735%E9%80%92%E5%BD%92/" data-toggle="tooltip" data-placement="top" title="5、递归(数据结构与算法)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/736%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="6、排序算法(数据结构与算法)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

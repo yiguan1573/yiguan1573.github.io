@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="3、链表(数据结构与算法)" />
+    <meta property="og:title" content="3、链表(数据结构与算法)" />
+    <meta property="twitter:title" content="3、链表(数据结构与算法)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>3、链表(数据结构与算法)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/733%E9%93%BE%E8%A1%A8/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                    </div>
+                    <h1>3、链表(数据结构与算法)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Sunday, August 16, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#求单链表中有效节点的个数">求单链表中有效节点的个数</a></li>
+    <li><a href="#查找单链表中的倒数第-k-个结点-新浪面试题">查找单链表中的倒数第 k 个结点 【新浪面试题】</a></li>
+    <li><a href="#单链表的反转腾讯面试题">单链表的反转【腾讯面试题】</a></li>
+    <li><a href="#从尾到头打印单链表-百度要求方式1反向遍历方式2stack-栈">从尾到头打印单链表 【百度，要求方式1：反向遍历,方式2：Stack 栈】</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#双向链表的操作分析和实现">双向链表的操作分析和实现</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#josephu约瑟夫约瑟夫环-问题介绍">Josephu(约瑟夫、约瑟夫环) 问题介绍</a></li>
+    <li><a href="#单向环形链表介绍">单向环形链表介绍</a></li>
+    <li><a href="#josephu-问题">Josephu 问题</a></li>
+    <li><a href="#josephu-问题的代码实现">Josephu 问题的代码实现</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="链表linked-list介绍">链表(Linked List)介绍</h1>
+<ul>
+<li>链表是有序的列表，但是它在内存中是存储如下
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij3zr2s35j309n07v0sp.jpg" alt="QQ截图20200908120223.jpg"></li>
+<li>小结上图:
+<ol>
+<li>链表是以节点的方式来存储,是链式存储</li>
+<li>每个节点包含 data 域， next 域：指向下一个节点.</li>
+<li>如图：发现链表的各个节点不一定是连续存储.</li>
+<li>链表分带头节点的链表和没有头节点的链表，根据实际的需求来确定</li>
+</ol>
+</li>
+<li>单链表(带头结点) 逻辑结构示意图如下
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij40zrf4sj30bm03p3yc.jpg" alt="QQ截图20200908120335.jpg"></li>
+</ul>
+<h1 id="单链表的应用实例">单链表的应用实例</h1>
+<ul>
+<li>使用带 head 头的单向链表实现 –水浒英雄排行榜管理完成对英雄人物的增删改查操作， 注: 删除和修改,查找 可以考虑学员独立完成，也可带学员完成
+<ol>
+<li>第一种方法在添加英雄时，直接添加到链表的尾部
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij42hip5rj30gw07b0t3.jpg" alt="QQ截图20200908120502.jpg"></li>
+<li>第二种方式在添加英雄时，根据排名将英雄插入到指定位置(如果有这个排名，则添加失败，并给出提示) 思路的分析示意图:
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij438hugcj30c705vaa5.jpg" alt="QQ截图20200908120544.jpg"></li>
+<li>修改节点功能:思路
+<ul>
+<li>先找到该节点，通过遍历</li>
+<li>temp.name=newHeroNode.name，temp.nickname=newHeroNode.nickname</li>
+</ul>
+</li>
+<li>删除节点
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij46dp5eej30gb05wweo.jpg" alt="QQ截图20200908120821.jpg"></li>
+<li>完成的代码演示:
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4rors3qj30f109xmxd.jpg" alt="QQ截图20200908120919.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4rvgyruj30f60k274x.jpg" alt="QQ截图20200908120926.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4s2hfbaj30es0k6mxp.jpg" alt="QQ截图20200908120936.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4s6vulmj30h30jymy1.jpg" alt="QQ截图20200908120946.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sb9gqaj30h30k50ta.jpg" alt="QQ截图20200908120959.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sijkd8j30gz0jx0tb.jpg" alt="QQ截图20200908121006.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sqnoazj30ga0jvt94.jpg" alt="QQ截图20200908121016.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sv55roj30he0jymxl.jpg" alt="QQ截图20200908121026.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sz8ebpj30g808j0sr.jpg" alt="QQ截图20200908121033.jpg"></li>
+</ol>
+</li>
+</ul>
+<h1 id="单链表面试题新浪百度腾讯">单链表面试题(新浪、百度、腾讯)</h1>
+<h2 id="求单链表中有效节点的个数">求单链表中有效节点的个数</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4tstgp4j30h806474d.jpg" alt="QQ截图20200908123109.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4txd8dfj30gh08agll.jpg" alt="QQ截图20200908123115.jpg"></p>
+<h2 id="查找单链表中的倒数第-k-个结点-新浪面试题">查找单链表中的倒数第 k 个结点 【新浪面试题】</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4ufvh8fj30fw09674p.jpg" alt="QQ截图20200908123147.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4ujzzjvj30gf0bg3yp.jpg" alt="QQ截图20200908123154.jpg"></p>
+<h2 id="单链表的反转腾讯面试题">单链表的反转【腾讯面试题】</h2>
+<ul>
+<li>思路分析图解
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4vmmetfj309v05k74b.jpg" alt="QQ截图20200908123232.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4vs7nnzj30cm071jrn.jpg" alt="QQ截图20200908123252.jpg"></li>
+<li>代码实现
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4w98ltzj30i40bit97.jpg" alt="QQ截图20200908123328.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4wdht6jj30fr05b3yk.jpg" alt="QQ截图20200908123335.jpg"></li>
+</ul>
+<h2 id="从尾到头打印单链表-百度要求方式1反向遍历方式2stack-栈">从尾到头打印单链表 【百度，要求方式1：反向遍历,方式2：Stack 栈】</h2>
+<ul>
+<li>思路分析图解
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4xoby7hj30fn05cweq.jpg" alt="QQ截图20200908123457.jpg"></li>
+<li>代码实现:写了一个小程序，测试 Stack 的使用
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4ymwpplj30ct04gjr9.jpg" alt="QQ截图20200908123545.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4yrqex7j30en0blwek.jpg" alt="QQ截图20200908123554.jpg"></li>
+<li>代码实现:单链表的逆序打印代码:
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4zf119jj30ju05fq2z.jpg" alt="QQ截图20200908123630.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4zknm9oj30f509y0sz.jpg" alt="QQ截图20200908123638.jpg"></li>
+</ul>
+<h1 id="双向链表应用实例">双向链表应用实例</h1>
+<h2 id="双向链表的操作分析和实现">双向链表的操作分析和实现</h2>
+<ul>
+<li>
+<p><strong>管理单向链表的缺点分析:</strong></p>
+<ol>
+<li>单向链表，查找的方向只能是一个方向，而双向链表可以向前或者向后查找。</li>
+<li>单向链表不能自我删除，需要靠辅助节点 ，而双向链表，则可以自我删除，所以前面我们单链表删除 时节点，总是找到 temp,temp 是待删除节点的前一个节点(认真体会).</li>
+<li>分析了双向链表如何完成遍历，添加，修改和删除的思路
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik64lcjtij30jj04e0sx.jpg" alt="QQ截图20200909100132.jpg"></li>
+</ol>
+</li>
+<li>
+<p><strong>对上图的说明:</strong></p>
+<ul>
+<li>遍历 方和 单链表一样，只是可以向前，也可以向后查找</li>
+<li>添加 (默认添加到双向链表的最后)
+<ol>
+<li>先找到双向链表的最后这个节点</li>
+<li>temp.next = newHeroNode</li>
+<li>newHeroNode.pre = temp;</li>
+</ol>
+</li>
+<li>修改 思路和 原来的单向链表一样.</li>
+<li>删除
+<ol>
+<li>因为是双向链表，因此，我们可以实现自我删除某个节点</li>
+<li>直接找到要删除的这个节点，比如 temp</li>
+<li>temp.pre.next = temp.next</li>
+<li>temp.next.pre = temp.pre;</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>代码实现</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik68p7alnj30f003ra9x.jpg" alt="QQ截图20200909100432.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik68ttisqj30gb0jy0ti.jpg" alt="QQ截图20200909100441.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik68yndisj30gt0hvaac.jpg" alt="QQ截图20200909100449.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik693blt9j30ft0k0gm4.jpg" alt="QQ截图20200909100456.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69afbv1j30g40jy74t.jpg" alt="QQ截图20200909100504.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69gygepj30ge0jjwey.jpg" alt="QQ截图20200909100510.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69l0anej30gw0k0q3h.jpg" alt="QQ截图20200909100516.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69py9zpj30h50k3aai.jpg" alt="QQ截图20200909100525.jpg"></p>
+</li>
+</ul>
+<h1 id="单向环形链表应用场景">单向环形链表应用场景</h1>
+<h2 id="josephu约瑟夫约瑟夫环-问题介绍">Josephu(约瑟夫、约瑟夫环) 问题介绍</h2>
+<ul>
+<li>Josephu 问题为：设编号为 1，2，… n 的 n 个人围坐一圈，约定编号为 k（1&lt;=k&lt;=n）的人从 1 开始报数，数 到 m 的那个人出列，它的下一位又从 1 开始报数，数到 m 的那个人又出列，依次类推，直到所有人出列为止，由 此产生一个出队编号的序列</li>
+<li>提示：用一个不带头结点的循环链表来处理 Josephu 问题：先构成一个有 n 个结点的单循环链表，然后由 k 结 点起从 1 开始计数，计到 m 时，对应结点从链表中删除，然后再从被删除结点的下一个结点又从 1 开始计数，直 到最后一个结点从链表中删除算法结束</li>
+</ul>
+<h2 id="单向环形链表介绍">单向环形链表介绍</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6augopwj306204bdfp.jpg" alt="QQ截图20200909100750.jpg"></p>
+<h2 id="josephu-问题">Josephu 问题</h2>
+<ul>
+<li>约瑟夫问题的示意图
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6bbbhvlj30ek07uq38.jpg" alt="QQ截图20200909100816.jpg"></li>
+<li>约瑟夫问题-创建环形链表的思路图解
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6c7yyx0j30fm06imxe.jpg" alt="QQ截图20200909100907.jpg"></li>
+<li>约瑟夫问题-小孩出圈的思路分析图
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6cmizjdj30gd074q3a.jpg" alt="QQ截图20200909100932.jpg"></li>
+</ul>
+<h2 id="josephu-问题的代码实现">Josephu 问题的代码实现</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6dos76hj30gm0jygm9.jpg" alt="QQ截图20200909100955.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6dtq47rj30f40k0dgc.jpg" alt="QQ截图20200909101002.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6dzmfsxj30ev0k0aak.jpg" alt="QQ截图20200909101009.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6e53jilj30gk0jzq3o.jpg" alt="QQ截图20200909101018.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6eaq7p5j30fo0k3aad.jpg" alt="QQ截图20200909101024.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6egqpaxj30ek08rq2t.jpg" alt="QQ截图20200909101029.jpg"></p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/731%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/" data-toggle="tooltip" data-placement="top" title="1、数据结构与算法概述(数据结构与算法)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/702uml%E7%B1%BB%E5%9B%BE/" data-toggle="tooltip" data-placement="top" title="2、UML类图(设计模式)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

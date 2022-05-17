@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="3、组件化开发(Vue)" />
+    <meta property="og:title" content="3、组件化开发(Vue)" />
+    <meta property="twitter:title" content="3、组件化开发(Vue)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>3、组件化开发(Vue)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/803%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/vue" title="Vue">
+                            Vue
+                        </a>
+                        
+                    </div>
+                    <h1>3、组件化开发(Vue)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Sunday, September 13, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#父级向子级传递">父级向子级传递</a></li>
+    <li><a href="#子级向父级传递">子级向父级传递</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#children">$children</a></li>
+    <li><a href="#refs">$refs</a></li>
+    <li><a href="#parent">$parent</a></li>
+    <li><a href="#非父子组件通信">非父子组件通信</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#编译作用域">编译作用域</a></li>
+    <li><a href="#slot">slot</a></li>
+    <li><a href="#具名插槽slot">具名插槽slot</a></li>
+    <li><a href="#作用域插槽">作用域插槽</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="vue组件化思想">Vue组件化思想</h1>
+<ul>
+<li>组件化是Vue.js中的重要思想
+<ul>
+<li>它提供了一种抽象，让我们可以开发出一个个独立可复用的小组件来构造我们的应用。</li>
+<li>任何的应用都会被抽象成一颗组件树</li>
+</ul>
+</li>
+<li>组件化思想的应用：
+<ul>
+<li>有了组件化的思想，我们在之后的开发中就要充分的利用它。</li>
+<li>尽可能的将页面拆分成一个个小的、可复用的组件。</li>
+<li>这样让我们的代码更加方便组织和管理，并且扩展性也更强
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2b9j294j30a4033746.jpg" alt="QQ截图20201101225449.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="注册组件的基本步骤">注册组件的基本步骤</h1>
+<ul>
+<li>组件的使用分成三个步骤：
+<ol>
+<li>创建组件构造器</li>
+<li>注册组件</li>
+<li>使用组件
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2cvru4aj309a0ewdi5.jpg" alt="图片1.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2d47t2lj30fz0eudm2.jpg" alt="图片2.png"></li>
+</ol>
+</li>
+<li>Vue.extend()：
+<ul>
+<li>调用Vue.extend()创建的是一个组件构造器。</li>
+<li>通常在创建组件构造器时，传入template代表我们自定义组件的模板。</li>
+<li>该模板就是在使用到组件的地方，要显示的HTML代码。</li>
+<li>事实上，这种写法在Vue2.x的文档中几乎已经看不到了，它会直接使用下面我们会讲到的语法糖，但是在很多资料还是会提到这种方式</li>
+</ul>
+</li>
+<li>Vue.component()：
+<ul>
+<li>调用Vue.component()是将刚才的组件构造器注册为一个组件，并且给它起一个组件的标签名称。</li>
+<li>所以需要传递两个参数：1、注册组件的标签名 2、组件构造器</li>
+</ul>
+</li>
+<li>组件必须挂载在某个Vue实例下，否则它不会生效。
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2gr59plj30se0bodjv.jpg" alt="图片3.png"></li>
+</ul>
+<h1 id="全局组件和局部组件">全局组件和局部组件</h1>
+<ul>
+<li><strong>调用Vue.component()注册组件时，组件的注册是全局的，这意味着该组件可以在任意Vue示例下使用</strong></li>
+<li><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2i7zdrqj30k00hpdn3.jpg" alt="图片4.png"></li>
+<li><strong>如果我们注册的组件是挂载在某个实例中, 那么就是一个局部组件</strong></li>
+<li><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2ifrzrqj30k00irqb3.jpg" alt="图片5.png"></li>
+</ul>
+<h1 id="父组件和子组件">父组件和子组件</h1>
+<ul>
+<li><strong>组件和组件之间存在层级关系，而其中一种非常重要的关系就是父子组件的关系</strong></li>
+<li>父子组件错误用法：以子标签的形式在Vue实例中使用
+<ul>
+<li>因为当子组件注册到父组件的components时，Vue会编译好父组件的模块</li>
+<li>该模板的内容已经决定了父组件将要渲染的HTML（相当于父组件中已经有了子组件中的内容了）</li>
+<li><code>&lt;child-cpn/&gt;&lt;child-cpn/&gt;</code>是只能在父组件中被识别的。</li>
+<li>类似这种用法，<code>&lt;child-cpn&gt;&lt;/child-cpn&gt;</code>是会被浏览器忽略的
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2nl3b4pj30k00jn482.jpg" alt="图片6.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="注册组件语法糖">注册组件语法糖</h1>
+<ul>
+<li>在上面注册组件的方式，可能会有些繁琐。
+<ul>
+<li>Vue为了简化这个过程，提供了注册的语法糖。</li>
+<li>主要是省去了调用Vue.extend()的步骤，而是可以直接使用一个对象来代替
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2pwuy08j30k006dgp9.jpg" alt="图片7.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2q46r7fj30k008en17.jpg" alt="图片8.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="模板的分离写法">模板的分离写法</h1>
+<ul>
+<li><strong>Vue提供了两种方案来定义HTML模块内容：</strong>
+<ul>
+<li>使用<code>&lt;script&gt;</code>标签</li>
+<li>使用<code>&lt;template&gt;</code>标签
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2u2zuzwj30e10dngn0.jpg" alt="图片9.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2u82aiyj30cg0dg79g.jpg" alt="图片10.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="组件的数据存放">组件的数据存放</h1>
+<ul>
+<li>组件中不能直接访问Vue实例中的data</li>
+<li>组件对象也有一个data属性(也可以有methods等属性，下面我们有用到)</li>
+<li>只是这个data属性必须是一个函数</li>
+<li>而且这个函数返回一个对象，对象内部保存着数据
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2wil59kj30hs0f5wkl.jpg" alt="图片11.png"></li>
+<li><strong>为什么data在组件中必须是一个函数呢?</strong>
+<ul>
+<li>首先，如果不是一个函数，Vue直接就会报错。</li>
+<li>其次，原因是在于Vue让每个组件对象都返回一个新的对象，因为如果是同一个对象的，组件在多次使用后会相互影响
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2zh279nj30k00jxgty.jpg" alt="图片12.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="父子组件的通信">父子组件的通信</h1>
+<ul>
+<li>在开发中，往往一些数据确实需要从上层传递到下层：
+<ul>
+<li>比如在一个页面中，我们从服务器请求到了很多的数据。</li>
+<li>其中一部分数据，并非是我们整个页面的大组件来展示的，而是需要下面的子组件进行展示。</li>
+<li>这个时候，并不会让子组件再次发送一个网络请求，而是直接让大组件(父组件)将数据传递给小组件(子组件)。</li>
+</ul>
+</li>
+<li>如何进行父子组件间的通信呢？
+<ul>
+<li>通过props向子组件传递数据</li>
+<li>通过事件向父组件发送消息
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka32h359mj30fo06x0sx.jpg" alt="图片13.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="父级向子级传递">父级向子级传递</h2>
+<ul>
+<li><strong>在组件中，使用选项props来声明需要从父级接收到的数据</strong></li>
+<li>props的值有两种方式：
+<ul>
+<li>方式一：字符串数组，数组中的字符串就是传递时的名称。</li>
+<li>方式二：对象，对象可以设置传递时的类型，也可以设置默认值等
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka35vhdc2j31030ex774.jpg" alt="图片14.png"></li>
+</ul>
+</li>
+<li>除了数组之外，我们也可以使用对象，当需要对props进行类型等验证时，就需要对象写法了</li>
+<li>验证都支持哪些数据类型
+<ul>
+<li>String</li>
+<li>Number</li>
+<li>Boolean</li>
+<li>Array</li>
+<li>Object</li>
+<li>Date</li>
+<li>Function</li>
+<li>Symbol</li>
+</ul>
+</li>
+<li>当我们有自定义构造函数时，验证也支持自定义的类型
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka3yebleaj30bp06bt8y.jpg" alt="图片15.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka3yjw9aqj30h70kc763.jpg" alt="图片16.png"></li>
+</ul>
+<h2 id="子级向父级传递">子级向父级传递</h2>
+<ul>
+<li>之前学习的v-on不仅仅可以用于监听DOM事件，也可以用于组件间的自定义事件</li>
+<li>自定义事件的流程：
+<ul>
+<li>在子组件中，通过$emit()来触发事件。</li>
+<li>在父组件中，通过v-on来监听子组件事件</li>
+</ul>
+</li>
+<li>我们来看一个简单的例子：
+<ul>
+<li>我们之前做过一个两个按钮+1和-1，点击后修改counter。</li>
+<li>我们整个操作的过程还是在子组件中完成，但是之后的展示交给父组件。</li>
+<li>这样，我们就需要将子组件中的counter，传给父组件的某个属性，比如total
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka40j4rssj314v0kd0wo.jpg" alt="图片17.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="父子组件的访问">父子组件的访问</h1>
+<ul>
+<li><strong>有时候我们需要父组件直接访问子组件，子组件直接访问父组件，或者是子组件访问跟组件</strong>
+<ul>
+<li>父组件访问子组件：使用<code>$</code>children或<code>$</code>refs</li>
+<li>子组件访问父组件：使用<code>$</code>parent</li>
+</ul>
+</li>
+</ul>
+<h2 id="children">$children</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4p505skj30w70kvtf4.jpg" alt="图片1.png"></p>
+<h2 id="refs">$refs</h2>
+<ul>
+<li>通过<code>$</code>children访问子组件时，是一个数组类型，访问其中的子组件必须通过索引值。但是当子组件过多，我们需要拿到其中一个时，往往不能确定它的索引值，甚至还可能会发生变化。想明确获取其中一个特定的组件，这个时候就可以使用<code>$</code>refs</li>
+<li><code>$</code>refs和ref指令通常是一起使用的,首先，我们通过ref给某一个子组件绑定一个特定的ID。其次，通过this.$refs.ID就可以访问到该组件了
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4ud7gddj30g6025wen.jpg" alt="图片2.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4uhzyl2j30da02hgll.jpg" alt="图片3.png"></li>
+</ul>
+<h2 id="parent">$parent</h2>
+<ul>
+<li><strong>尽管在Vue开发中，我们允许通过$parent来访问父组件，但是在真实开发中尽量不要这样做，子组件应该尽量避免直接访问父组件的数据，因为这样耦合度太高了</strong></li>
+<li>如果我们将子组件放在另外一个组件之内，很可能该父组件没有对应的属性，往往会引起问题</li>
+<li>另外，更不好做的是通过$parent直接修改父组件的状态，那么父组件中的状态将变得飘忽不定，很不利于我的调试和维护
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4wd0jqrj30up0k041p.jpg" alt="图片4.png"></li>
+</ul>
+<h2 id="非父子组件通信">非父子组件通信</h2>
+<ul>
+<li>非父子组件关系包括多个层级的组件，也包括兄弟组件的关系</li>
+<li>在Vue1.x的时候，可以通过<code>$</code>dispatch和<code>$</code>broadcast完成
+<ul>
+<li><code>$</code>dispatch用于向上级派发事件</li>
+<li><code>$</code>broadcast用于向下级广播事件</li>
+<li>但是在Vue2.x都被取消了</li>
+</ul>
+</li>
+<li>在Vue2.x中，有一种方案是通过中央事件总线，也就是一个中介来完成
+<ul>
+<li>但是这种方案和直接使用Vuex的状态管理方案还是逊色很多。
+<ul>
+<li>并且Vuex提供了更多好用的功能，所以这里我们暂且不讨论这种方案，后续我们专门学习Vuex的状态管理</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="插槽slot">插槽slot</h1>
+<h2 id="编译作用域">编译作用域</h2>
+<ul>
+<li>来考虑下面的代码是否最终是可以渲染出来的：
+<ul>
+<li><code>&lt;</code>my-cpn v-show=&quot;isShow&quot;&gt;&lt;/&gt;中，我们使用了isShow属性。</li>
+<li>isShow属性包含在组件中，也包含在Vue实例中。
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkt9kng81xj30eq0fzdha.jpg" alt="图片1.png"></li>
+</ul>
+</li>
+<li>答案：最终可以渲染出来，也就是使用的是Vue实例的属性</li>
+<li><strong>父组件模板的所有东西都会在父级作用域内编译；子组件模板的所有东西都会在子级作用域内编译</strong></li>
+<li>而我们在使用<code>&lt;</code>my-cpn v-show=&quot;isShow&quot;&gt;&lt;/&gt;的时候，整个组件的使用过程是相当于在父组件中出现的。那么他的作用域就是父组件，使用的属性也是属于父组件的属性。isShow使用的是Vue实例中的属性，而不是子组件的属性</li>
+</ul>
+<h2 id="slot">slot</h2>
+<ul>
+<li>组件的插槽也是为了让我们封装的组件更加具有扩展性</li>
+<li><strong><code>&lt;</code>slot&gt;中的内容表示，如果没有在该组件中插入任何其他内容，就默认显示该内容</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkt9o7yz5kj30cd09pmxz.jpg" alt="图片2.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkt9odisxej30ih057wfj.jpg" alt="图片3.png"></li>
+</ul>
+<h2 id="具名插槽slot">具名插槽slot</h2>
+<ul>
+<li>当子组件的功能复杂时，子组件的插槽可能并非是一个。这个时候，我们就需要给插槽起一个名字
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktad2s40vj30co0b175b.jpg" alt="图片4.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktad8gw5xj30kc0af40f.jpg" alt="图片5.png"></li>
+</ul>
+<h2 id="作用域插槽">作用域插槽</h2>
+<ul>
+<li>父组件替换插槽的标签，但是内容由子组件来提供</li>
+<li>子组件中包括一组数据，需要在多个界面进行展示，某些界面是以水平方向一一展示的，某些界面是以列表形式展示的，某些界面直接展示一个数组
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktai4fulqj30hh0b075b.jpg" alt="图片6.png"></li>
+<li>在父组件使用我们的子组件时，从子组件中拿到数据，通过<code>&lt;</code>template slot-scope=&quot;slotProps&quot;&gt;获取到slotProps属性，在通过slotProps.data就可以获取到刚才我们传入的data了
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktaiaa5srj30r80bmjt1.jpg" alt="图片7.png"></li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/802vue%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="2、Vue基础语法(Vue)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/804%E6%A8%A1%E5%9D%97%E5%8C%96/" data-toggle="tooltip" data-placement="top" title="4、模块化(Vue)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

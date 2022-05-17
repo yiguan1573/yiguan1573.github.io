@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="2、Doker详解（Docker）" />
+    <meta property="og:title" content="2、Doker详解（Docker）" />
+    <meta property="twitter:title" content="2、Doker详解（Docker）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>2、Doker详解（Docker）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/883docker%E8%AF%A6%E8%A7%A3/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        <a class="tag" href="/tags/docker" title="Docker">
+                            Docker
+                        </a>
+                        
+                    </div>
+                    <h1>2、Doker详解（Docker）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Friday, September 10, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#docker三要素">Docker三要素</a></li>
+    <li><a href="#centos7安装docker步骤">CentOS7安装Docker步骤</a></li>
+    <li><a href="#底层原理">底层原理</a></li>
+    <li><a href="#docker常用命令">Docker常用命令</a>
+      <ul>
+        <li><a href="#帮助命令">帮助命令</a></li>
+        <li><a href="#镜像命令">镜像命令</a></li>
+        <li><a href="#容器命令">容器命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#docker镜像">Docker镜像</a>
+      <ul>
+        <li><a href="#unionfs-联合文件系统">UnionFS (联合文件系统)</a></li>
+        <li><a href="#docker镜像加载原理">Docker镜像加载原理</a></li>
+        <li><a href="#分层的镜像">分层的镜像</a></li>
+        <li><a href="#docker镜像commit操作">Docker镜像Commit操作</a></li>
+      </ul>
+    </li>
+    <li><a href="#容器数据卷">容器数据卷</a>
+      <ul>
+        <li><a href="#简介">简介</a></li>
+        <li><a href="#容器里添加数据卷">容器里添加数据卷</a></li>
+        <li><a href="#数据卷容器">数据卷容器</a></li>
+      </ul>
+    </li>
+    <li><a href="#dockerfile解析">DockerFile解析</a>
+      <ul>
+        <li><a href="#简介-1">简介</a></li>
+        <li><a href="#dockerfile构建过程解析">DockerFile构建过程解析</a></li>
+        <li><a href="#dockerfile体系结构保留字指令">DockerFile体系结构(保留字指令)</a></li>
+        <li><a href="#案例">案例</a></li>
+      </ul>
+    </li>
+    <li><a href="#本地镜像发布到阿里云">本地镜像发布到阿里云</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="概述">概述</h2>
+<ul>
+<li>开发需要清楚的告诉运维部署团队，用的全部配置文件+所有软件环境。不过，即便如此，仍然常常发生部署失败的状况。Docker镜 像的设计，使得Docker得以打过去「程序即应用」的观念。透过镜像(images)将作业系统核心除外，运作应用程式所需要的系统环境，由下而上打包，达到应用程式跨平台间的无缝接轨运作。
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5oatpzh3j60q00bxn1102.jpg" alt="QQ截图20211006163118.png"></li>
+<li>Docker是基于Go语言实现的云开源项目。Docker的主要目标是通过对应用组件的封装、分发、部署、运行等生命期的管理，使用户的APP (可以是一个WEB应用或数据库应用等等)及其运行环境能够做到“一次封装，到处运行”。</li>
+<li><strong>虚拟机技术</strong>
+<ul>
+<li>虚拟机(virtual machine)就是带环境安装的一种解决方案</li>
+<li>这类虚拟机完美的运行了另一套系统，能够使应用程序，操作系统和硬件三者之间的逻辑不变。</li>
+<li>缺点：资源占用多、冗余步骤多、启动慢</li>
+</ul>
+</li>
+<li><strong>容器虚拟化技术</strong>
+<ul>
+<li>由于前面虛拟机存在这些缺点，Linux 发展出了另一种虚拟化技术: Linux 容器(Linux Containers,缩为LXC)。</li>
+<li>Linux容器不是模拟一个完整的操作系统，而是对进程进行隔离。有了容器，就可以将软件运行所的所有资源打包到一个隔离的容器中。容器与虚拟机不同，不需要捆绑一整套操作系统，只需要软件工作所需的库资源和设置。系统因此而变得高效轻量并保证部署在任何环境中的软件都能始终如一地运行。</li>
+</ul>
+</li>
+<li><strong>两者区别</strong>
+<ul>
+<li>传统虚拟机技术是虚拟出一套硬件后，在其上运行一个完整操作系统，在该系统上再运行所需应用进程</li>
+<li>而容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核，而且也没有进行硬件虚拟。因此容器要比传统虚拟机为轻便。</li>
+<li>每个容器之间互相隔离，每个容器有自己的文件系统，容器之间进程不会相互影响，能区分计算资源。</li>
+</ul>
+</li>
+<li>Docker架构图
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5ozn9sxkj60sw0f0gr102.jpg" alt="QQ截图20211006165516.png"></li>
+</ul>
+<h2 id="docker三要素">Docker三要素</h2>
+<ul>
+<li>Docker本身是一个容器运行载体或称之为管理引擎。我们把应用程序和配置依赖打包好形成一个可交付的运行环境，这个打包好的运行环境就似乎image镜像文件。只有通过这个镜像文件才能生成Docker容器。image文件可以看作是容器的模板。Docker根据 image文件生成容器的实例。<strong>同一个image文件，可以生成多个同时运行的容器实例。</strong></li>
+<li>image 文件生成的容器实例，本身也是一个文件，称为镜像文件。Docker镜像（Image）就是一个只读的模板。镜像可以用来创建Docker容器，一个镜像可以创建很多容器。</li>
+<li>一个容器运行一种服务，当我们需要的时候，就可以通过docker客户端创建一个对应的运行实例，也就是我们的容器</li>
+<li>仓储就是放了一堆镜像的地方，我们可以把镜像发布到仓储中，需要的时候从仓储中拉下来就可以了。仓库分为公开仓库（Public）和私有仓库（Private）两种形式。最大的公开仓库是Docker Hub。国内的公开仓库包括阿里云、网易云等。</li>
+</ul>
+<h2 id="centos7安装docker步骤">CentOS7安装Docker步骤</h2>
+<ol>
+<li>确认为centos7且内核版本为3.1以上</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">uname -r
+</code></pre></div><ol start="2">
+<li>yum安装gcc相关</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum -y install gcc
+yum -y install gcc-c++
+</code></pre></div><ol start="3">
+<li>卸载旧版本</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo yum remove docker <span style="color:#ae81ff">\</span>
+                  docker-client <span style="color:#ae81ff">\</span>
+                  docker-client-latest <span style="color:#ae81ff">\</span>
+                  docker-common <span style="color:#ae81ff">\</span>
+                  docker-latest <span style="color:#ae81ff">\</span>
+                  docker-latest-logrotate <span style="color:#ae81ff">\</span>
+                  docker-logrotate <span style="color:#ae81ff">\</span>
+                  docker-engine
+</code></pre></div><ol start="4">
+<li>安装所需的软件包</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo yum install -y yum-utils <span style="color:#ae81ff">\</span>
+  device-mapper-persistent-data <span style="color:#ae81ff">\</span>
+  lvm2
+</code></pre></div><ol start="5">
+<li>设置镜像仓库</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo yum-config-manager <span style="color:#ae81ff">\</span>
+    --add-repo <span style="color:#ae81ff">\</span>
+    http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+</code></pre></div><ol start="6">
+<li>更新yum软件包索引</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum makecache fast
+</code></pre></div><ol start="7">
+<li>安装docker ce</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum -y install docker-ce
+</code></pre></div><ol start="8">
+<li>启动dokcer</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl start docker
+</code></pre></div><ol start="9">
+<li>设置开机自启动</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl enable docker
+</code></pre></div><ol start="10">
+<li>配置镜像加速器</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <span style="color:#e6db74">&lt;&lt;-&#39;EOF&#39;
+</span><span style="color:#e6db74">{
+</span><span style="color:#e6db74">  &#34;registry-mirrors&#34;: [&#34;https://65fiy50w.mirror.aliyuncs.com&#34;]
+</span><span style="color:#e6db74">}
+</span><span style="color:#e6db74">EOF</span>
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+</code></pre></div><ol start="11">
+<li>卸载</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl stop docker
+yum -y remove docker-ce
+rm -rf/var/lib/dockerw
+</code></pre></div><ul>
+<li><strong>官方脚本安装</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+</code></pre></div><h2 id="底层原理">底层原理</h2>
+<ul>
+<li>Docker是一个Client-Server结构的系统，Docker守 护进程运行在主机上，然后通过Socket连 接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。容器，是一个运行时环境，就是我们前面说到的集装箱。</li>
+<li><strong>为什么Docker比较比vm快</strong>
+<ul>
+<li>docker有着比虚拟机更少的抽象层。由亍docker不需要Hypervisor实现硬件资源虚拟化,运行在docker容器上的程序直接使用的都是实际物理机的硬件资源。因此在CPU、内存利用率上docker将会在效率上有明显优势。</li>
+<li>docker利用的是宿主机的内核,而不需要Guest OS。因此,当新建一个 容器时,docker不需要和虚拟机一样 重新加载一个操作系统内核仍而避免引寻、加载操作系统内核返个比较费时费资源的过程,当新建一个虚拟机时,虚拟机软件需要加载GuestOS,返个新建过程是分钟级别的。而docker由于直接利用宿主机的操作系统,则省略了返个过程,因此新建一个docker容器只需要几秒钟。</li>
+</ul>
+</li>
+</ul>
+<h2 id="docker常用命令">Docker常用命令</h2>
+<h3 id="帮助命令">帮助命令</h3>
+<ul>
+<li>docker version(docker -v)</li>
+<li>docker info</li>
+<li>docker &ndash;help</li>
+</ul>
+<h3 id="镜像命令">镜像命令</h3>
+<ul>
+<li>docker images(列出本地主机上的镜像)
+<ul>
+<li>-a:列出本地所有的镜像（含中间映像层)</li>
+<li>-q:只显示镜像ID。</li>
+<li>&ndash;digests :显示镜像的摘要信息</li>
+</ul>
+</li>
+<li>docker search tomcat(搜索镜像)
+<ul>
+<li>&ndash;no-trunc :显示完整的镜像描述</li>
+<li>-s:列出收藏数不小于指定值的镜像。</li>
+<li>&ndash;automated:只列出automated build类型的镜像;</li>
+</ul>
+</li>
+<li>docker pull tomcat(拉取镜像)</li>
+<li>docker rmi tomcat(删除镜像镜像名和镜像id都行)
+<ul>
+<li>-f:强制删除</li>
+<li>删除多个：docker rmi -f 镜像名1:TAG 镜像名2:TGA</li>
+<li>删除全部：docker rmi -f $(docker image -qa)</li>
+</ul>
+</li>
+</ul>
+<h3 id="容器命令">容器命令</h3>
+<ul>
+<li>​ docker run (新建并启动容器)</li>
+</ul>
+<pre><code>OPTIONS说明(常用) :
+--name=&quot;容器新名字&quot;:为容器指定一个名称;
+-d:后台运行容器，并返回容器ID， 也即启动守护式容器;
+-i:以交互模式运行容器，通常与-t同时使用;
+-t:为容器重新分配一个伪输入终端，通常与-i同时使用;
+-P:随机端口映射;
+-p:指定端口映射，有以下四种格式
+ip:hostPort:containerPort
+ip::containerPort
+hostPort:containerPort
+containerPort
+</code></pre><ul>
+<li>​ docker ps(列出当前所有正在运行的容器)</li>
+</ul>
+<pre><code>OPTIONS说明(常用) :
+-a :列出当前所有正在运行的容器+历史上运行过的
+-l:显示最近创建的容器。
+-n:显示最近n个创建的容器。
+-q :静默模式，只显示容器编号。
+--no-trunc :不截断输出。
+</code></pre><ul>
+<li>退出容器</li>
+</ul>
+<pre><code>两种退出方式
+​exit 容器停止退出
+​ctrl+P+Q 容器不停止退出
+</code></pre><ul>
+<li>docker start(启动容器)</li>
+<li>docker restart(重启容器)</li>
+<li>docker stop(停止容器)</li>
+<li>docker kill(强制停止容器)</li>
+<li>docker rm(删除已停止的容器)
+<ul>
+<li>docker rm -f $(docker ps -a -q)(删除多个容器)</li>
+<li>docker ps -a -q | xargs docker rm(删除多个容器)</li>
+</ul>
+</li>
+<li>启动守护式容器
+<ul>
+<li>使用镜像centos:latest以后台模式启动一个容器 docker run -d centos</li>
+<li>问题:然后docker ps -a进行查看,会发现容器已经退出。很重要的要说明的一点: Docker容器后台运行,就必须有一个前台进程. 容器运行的命令如果不是那些一直挂起的命令 (比如运行top，tail) ，就是会自动退出的。 这个是docker的机制问题,比如你的web容器，我们以nginx为例，正常情况下,我们配置启动服务只需要启动响应的service即可。例如 service nginx start 但是,这样做,nginx为后台进程模式运行,就导致docker前台没有运行的应用,这样的容器后台启动后，会立即自杀因为他觉得他没事可做了.所以，最佳的解决方案是将你要运行的程序以前台进程的形式运行</li>
+</ul>
+</li>
+<li>查看容器日志</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">//后台运行且不会背杀死
+docker run -d centos /bin/sh -c <span style="color:#e6db74">&#34;while true; do echo hello world;sleep 2; done&#34;</span>
+//查看日志
+docker logs -f -t --tail 容器ID
+​ -t 是加入时间戳
+​ -f 跟随最新的日志打印
+​ --tail 数字显示最后多少条
+</code></pre></div><ul>
+<li>docker top 容器ID(查看容器内的进程)</li>
+<li>docker inspect 容器ID(查看容器内的进程)</li>
+<li>进入正在运行的容器并以命令行交互
+<ul>
+<li>docker exec -it 容器ID bashShell,</li>
+<li>docker attach 容器ID</li>
+<li>attach 直接进入容器启动命令的终端，不会启动新的进程;exec 是在容器中打开新的终端，并且可以启动新的进程
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yeb3z45j30n106gtau.jpg" alt="QQ截图20211006222046.png"></li>
+</ul>
+</li>
+<li>docker cp 容器ID:容器内路径 目的主机路径(从容器内拷贝文件到主机上)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yalway4j30nj0a1424.jpg" alt="QQ截图20211006221708.png"></li>
+</ul>
+<h2 id="docker镜像">Docker镜像</h2>
+<ul>
+<li>镜像是一种轻量级、可执行的独立软件包，用来打包软件运行环境和基于运行环境开发的软件，它包含运行某个软件所需的有内容，包括代码、运行时、库、环境变量和配置文件</li>
+</ul>
+<h3 id="unionfs-联合文件系统">UnionFS (联合文件系统)</h3>
+<ul>
+<li>Union文件系统(UnionFS)是一种分层、轻量级并且高性能的文件系统，它支持<strong>对文件系统的修作为一次提交来一层层的叠加</strong>，同时可以将不同目录挂载到同一个虚拟文件系统下(unite several directories into a singlevirtualfilesystem)。Union文件系统是Docker镜像的基础。镜像可以通过分层来进行继承，基于基础镜像(没有父镜像)可以制作各种具体的应用镜像。</li>
+<li>**特性:**一次同时加载多个文件系统，但从外面看起来，只能看到一个文件系统，联合加载会把各层文件系统叠加起来，这样最终的文件系统会包含所有底层的文件和目录</li>
+</ul>
+<h3 id="docker镜像加载原理">Docker镜像加载原理</h3>
+<ul>
+<li>docker的镜像实际上由一层一层的文件系统组成，这种层级的文件系统UnionFS。</li>
+<li>botfs(boot file system)主要包含bootloader和kernel, bootloader主 要是引导加载kernel, Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是bootfs。这一-层与我们典型的Linux/Unix系统是- - -样的，包含boot加载器和内核。当boot加载完成之 后整个内核就都在内存中了，此时内存的使用权己由bootfs转交给内核，此时系统也会卸载bootfs。</li>
+<li>rootfs (root file system)，在bootfs之 上。 包含的就是典型Linux系统中的/dev, /proc, /bin, /etc等标准目录和文件。rootfs就 是各种不同的操作系统发行版，比如Ubuntu，Centos等等。</li>
+<li>对于一个精简的OS, rootfs可 以很小，只需要包括最基本的命令、工具和程序库就可以了，因为底层直接用Host的kernel,自只需要提供rootfs就行了。由此可见对于不同的linux发行版, bootfs基本是一致的, rootfs会有差别，因此不同的发行版可以公用bootfs。</li>
+</ul>
+<h3 id="分层的镜像">分层的镜像</h3>
+<ul>
+<li>docker的镜像一层一层的加载
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yrnvxc4j60p3055ta302.jpg" alt="QQ截图20211006223337.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yua7jhmj30rf0cc428.jpg" alt="QQ截图20211006223607.png"></li>
+<li><strong>最大的一个好处就是共享资源</strong>，比如:有多个镜像都从相同的base镜像构建而来，那么宿主机只需在磁盘上保存一份base镜像, 同时内存中也只需加载一份base镜像，就可以为所有容器服务了。而且镜像的每一层都可以被共享。</li>
+<li>**特点：**Docker镜像都是只读的，当容器启动时，一个新的可写层被加载到镜像的顶部，这一层通常被称为容器层，容器层之下都叫镜像层</li>
+</ul>
+<h3 id="docker镜像commit操作">Docker镜像Commit操作</h3>
+<ul>
+<li>docker commit 提交容器副本使之称为一个新的镜像</li>
+<li>docker commit -m=&quot;提交的描述信息&rdquo; -a=&quot;作者&rdquo; 容器ID 要创建的目标镜像名:[标签名]</li>
+<li><strong>案例</strong></li>
+</ul>
+<ol>
+<li>从Hub上下载tomcat镜像到本地并成功运行(docker run -d -p 8080:8080 tomcat)</li>
+<li>故意删除上一步镜像生产tomcat容器的文档
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5z7bmy7pj60kz04qgmz02.jpg" alt="QQ截图20211006224839.png"></li>
+<li>当前的tomcat运行实例是一个没有文档内容的容器，以此模板commit一个没有doc的tomcat新镜像 atguigu/tomcat02
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5zasng6wj60u305lwgw02.jpg" alt="QQ截图20211006225157.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5ze9ele8j618a04ymzp02.jpg" alt="QQ截图20211006225520.png"></li>
+<li>启动新镜像并和原来的对比，新镜像没有doc</li>
+</ol>
+<h2 id="容器数据卷">容器数据卷</h2>
+<h3 id="简介">简介</h3>
+<ul>
+<li>Docker的理念: 将运用与运行的环境打包形成容器运行，运行可以伴随着容器，但是我们对数据的要求<strong>希望是持久化的</strong>。容器之间希望有可能共享数据。</li>
+<li>Docker容器产生的数据，如果不通过docker commit生成新的镜像，使得数据做为镜像的一部分保存下来，那么当容器删除后，数据自然也就没有了。 为了能保存数据在docker中我们使用卷</li>
+<li><strong>卷就是目录或文件</strong>，存在于一个或多个容器中，由docker挂载到容器，但不属于联合文件系统，因此能够绕过Union FileSystem提供一些用于持续存储或共享数据的特性: 卷的设计目的就是数据的持久化，完全独立于容器的生存周期，因此Docker不会在容器删除时删除其挂载的数据卷</li>
+<li>特点:
+<ol>
+<li>数据卷可在容器之间共享或重用数据</li>
+<li>卷中的更改可以直接生效</li>
+<li>数据卷中的更改不会包含在镜像的更新中</li>
+<li>数据卷的生命周期一直持续到没有容器使用它为止</li>
+</ol>
+</li>
+</ul>
+<h3 id="容器里添加数据卷">容器里添加数据卷</h3>
+<ul>
+<li><strong>直接命令添加</strong>
+<ul>
+<li>docker run -it -v /宿主机绝对路径目录:/容器内目录 镜像名</li>
+<li>查看数据卷是否挂载成功，使用docker -inspect
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv602knr0nj31370g2jwm.jpg" alt="QQ截图20211006231841.png"></li>
+<li>容器和宿主机之间数据共享
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv601ks65wj318p098jyb.jpg" alt="QQ截图20211006231744.png"></li>
+<li>容器停止退出后，主机修改后的数据是否同步</li>
+<li>命令(带权限,容器只读):docker run -it -v /宿主机绝对路径目录:/容器内目录:ro 镜像名</li>
+</ul>
+</li>
+<li>Docker挂载主机目录Docker访问出现cannot open directory . Permission denied 解决办法:在挂载目录后多加一个&ndash;privileged=true参数，即</li>
+</ul>
+<pre><code>docker run -it -v /宿主机绝对路径目录:/容器内目录 --privileged=true 镜像名
+</code></pre><ul>
+<li><strong>DockerFile添加</strong>
+<ul>
+<li>根目录下新建mydocker文件夹并进入</li>
+<li>在Dockerfile中使用VOLUME指令来给镜像添加一个或多个数据卷
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv60vmhtcsj60wn07hdk902.jpg" alt="QQ截图20211006234636.png"></li>
+<li>File构建
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv60ywp1rbj30k204r0tb.jpg" alt="QQ截图20211006234946.png"></li>
+<li>build后生成镜像
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv60ztebohj612h0ejafo02.jpg" alt="QQ截图20211006235038.png"></li>
+<li>运行后默认在宿主机生成数据卷
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv615a5ig3j614a0cf78p02.jpg" alt="QQ截图20211006235553.png"></li>
+</ul>
+</li>
+</ul>
+<h3 id="数据卷容器">数据卷容器</h3>
+<ul>
+<li>命名的容器挂载数据卷，其它容器通过挂载这个(父容器)实现数据共享，挂载数据卷的容器，称之为数据卷容器</li>
+<li>以上一步新建的zzyy/centos为模板并运行容器 doc1/doc2/doc3，doc2和doc3继承doc1，达到数据卷共享数据的目的
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv61j5fxj7j61630i146y02.jpg" alt="QQ截图20211007000719.png"></li>
+<li><strong>结论：容器之间配置信息的传递，数据卷的生命周期一直持续到没有容器使用它为止</strong></li>
+</ul>
+<h2 id="dockerfile解析">DockerFile解析</h2>
+<h3 id="简介-1">简介</h3>
+<ul>
+<li><strong>Dockerfile是用来构建Docker镜像的构建文件，由一系列命令和参数构成的脚本</strong></li>
+<li><strong>构建三步骤</strong>
+<ul>
+<li>编写Dockerfile文件</li>
+<li>docker build</li>
+<li>docker run</li>
+</ul>
+</li>
+<li>centos的DockerFile如下
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv627pg6q0j60cl05fjsh02.jpg" alt="QQ截图20211007003249.png"></li>
+</ul>
+<h3 id="dockerfile构建过程解析">DockerFile构建过程解析</h3>
+<ul>
+<li><strong>Dockerfile内容基础知识</strong>
+<ol>
+<li>每条保留字指令都必须为大写字母且后面要跟随至少一个参数</li>
+<li>指令按照从上到下，顺序执行</li>
+<li>#表示注释</li>
+<li>每条指令都会创建一个新的镜像层，并对镜像进行提交</li>
+</ol>
+</li>
+<li><strong>Docker执行Dockerfile的大致流程</strong>
+<ol>
+<li>docker 从基础镜像运行一个容器</li>
+<li>执行一-条指令并对容器作出修改</li>
+<li>执行类似docker commit的操作提交一个新的镜像层</li>
+<li>docker再基 于刚提交的镜像运行一个新容器</li>
+<li>执行dockerfile中的 下一条指令直到所有指令都执行完成</li>
+</ol>
+</li>
+<li>从应用软件的角度来看，Dockerfile、 Docker镜像与Docker容器分别代表软件的三个不同阶段， Dockerfile是软件的原材料 Docker镜像是软件的交付品 Docker容器则可以认为是软件的运行态。 Dockerfile面向开发，Docker镜 像成为交付标准，Docker容 器则涉及部署与运维，三者缺一不可，合力充当Docker体系的基石。</li>
+</ul>
+<h3 id="dockerfile体系结构保留字指令">DockerFile体系结构(保留字指令)</h3>
+<ul>
+<li>FROM(基础镜像，当前新镜像是基于哪个镜像的)</li>
+<li>MAINTAINER(镜像维护者的名字和邮箱地址)</li>
+<li>RUN(容器构建时需要运行的命令)</li>
+<li>EXPOSE(当前容器对外暴露的端口)</li>
+<li>WORKDIR(指定在创建容器后，终端默认登录进来的工作目录，一个落脚点)</li>
+<li>ENV(用来构建镜像过程中设置环境变量)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6oqvmto5j60x307cdj702.jpg" alt="QQ截图20211007133226.png"></li>
+<li>ADD(将宿主机目录下的文件拷贝进镜像且ADD命令会自动处理URL和解压tar压缩包)</li>
+<li>COPY(类似ADD，拷贝文件和目录到镜像中。将从构建上下文目录中源路径的文件/目录复制到新的一层的镜像内的目标路径)</li>
+<li>VOLUME(容器数据卷，用于数据保存和持久化工作)</li>
+<li>CMD(指定一个容器启动时要运行的命令。Dockerfile中可以有多个CMD指令，但只有最后一个生效，CMD会被docker run之后的参数替换)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6ox2cqduj60r907p76v02.jpg" alt="QQ截图20211007133822.png"></li>
+<li>ENTRYPOINT(指定一个容器启动时要运行的命令。ENTRYPOINT的目的和CMD一样，都是在指定容器启动程序及参数)</li>
+<li>ONBUILD(当构建一个被继承的Dockerfile时运行命令，父镜像在被子继承后父镜像的onbuild被触发)</li>
+</ul>
+<h3 id="案例">案例</h3>
+<ul>
+<li><strong>Base镜像(scratch)</strong> 
+Docker Hub中 99%的镜像都是通过在base镜像中安装和配置需要的软件构建出来的</li>
+<li><strong>自定义镜像mycentos</strong>
+<ol>
+<li>编写
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6p7qco7rj60z90h6dng02.jpg" alt="QQ截图20211007134837.png"></li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">FROM centos
+MAINTAINER ZZYY&lt;zzyy167@126.com&gt;
+
+ENV MYPATH /usr/local
+WORKDIR $MYPATH
+
+RUN yum -y install vim
+RUN yum -y install net-tools
+
+EXPOSE 80
+
+CMD echo $MYPATH
+CMD echo <span style="color:#e6db74">&#34;success--------------ok&#34;</span>
+CMD /bin/bash
+</code></pre></div><ol start="2">
+<li>构建(docker build -t 新镜像名字:TAG .)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6pe4g4mbj612p0htwq602.jpg" alt="QQ截图20211007135445.png"></li>
+<li>运行
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6pinrc05j60tf04jwfr02.jpg" alt="QQ截图20211007135908.png"></li>
+<li>列出镜像的变更历史
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6pkf0v5gj60vn09an1x02.jpg" alt="QQ截图20211007140048.png"></li>
+</ol>
+</li>
+<li><strong>CMD/ENTRYPOINT</strong>
+<ul>
+<li>Dockerfile中可以有多个CMD指令，但只有最后一个生效，CMD会被dockerrun之后的参数替换</li>
+<li>docker run 之后的参数会被当做参数传递给 ENTRYPOINT 之后形成新的命令组合</li>
+</ul>
+</li>
+<li><strong>ONBUILD案例</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6q9gsz69j60gp03fwex02.jpg" alt="QQ截图20211007142453.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6qamw0woj60sv0f1jwl02.jpg" alt="QQ截图20211007142601.png"></li>
+<li><strong>自定义镜像Tomcat</strong>
+<ol>
+<li>mkdir -p /zzyy/mydockerfile/tomcat9</li>
+<li>在上述目录下 touch c.txt</li>
+<li>将jdk和tomcat安装的压缩包拷贝进上一步目录
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6qedqqpqj60mc05jmz002.jpg" alt="QQ截图20211007142936.png"></li>
+<li>在zzyyuse/mydockerfile/tomcat9目录下新建Dockerfile文件</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">FROM centos
+MAINTAINER zzyy&lt;zzyybs@ 126.com&gt;
+<span style="color:#75715e">#把宿主机当前上下文的c .txt拷贝到容器/usr/local/路径下</span>
+COPY c.txt /usr/local/cincontainer.txt
+<span style="color:#75715e">#把java与tomcat添加到容器中</span>
+ADD jdk-8u171-linux x64.tar .gz /usr/local/
+ADD apache-tomcat-9.0.8.tar.gz /usr/ocal/
+<span style="color:#75715e">#安装vim编辑器</span>
+RUN yum -y install vim
+<span style="color:#75715e">#设置工 作访问时候的WORKDIR路径， 登录落脚点</span>
+ENV MYPATH /usr/local
+WORKDIR $MYPATH
+<span style="color:#75715e">#配:置java与tomcat环境变量</span>
+ENV JAVA_ HOME /usr/localjdk1 .8.0_ 171
+ENV CLASSPATH $JAVA_ HOME/lib/dt.jar:$JAVA_ HOME/lib/tools.jar
+ENV CATALINA_ HOME /usr/local/apache-tomcat-9.0.8
+ENV CATALINA_ BASE /usr/ocal/apache-tomcat-9.0.8
+ENV PATH $PATH:$JAVA_ HOME/bin:$CATALINA_ HOME/ib:$CATALINA_ HOME/bin
+<span style="color:#75715e">#容器运行时监听的端口</span>
+EXPOSE 8080
+<span style="color:#75715e">#启动时运行tomcat</span>
+<span style="color:#75715e"># ENTRYPOINT [&#34;/usrl/local/apache-tomcat-9.0.8/bin/startup.sh&#34; ]</span>
+<span style="color:#75715e"># CMD [&#34;/usr/local/apache-tomcat-9.0.8/bin/catalina.sh&#34;,&#34;run&#34;]</span>
+CMD /usr/local/apache-tomcat-9.0.8/bin/startup.sh <span style="color:#f92672">&amp;&amp;</span> tail -F /usr/local/apache-tomcat-9.0.8/in/logs/catalina.out
+</code></pre></div><ol start="5">
+<li>构建(如果是本路径下的Dockerfile文件就不需要写-f 路径)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6qedqqpqj60mc05jmz002.jpg" alt="QQ截图20211007142936.png"></li>
+<li>run</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -d -p 9080:8080 -name myt9
+-v /zyuse/mydockerfiletomcat9/test:/usrlocal/apache-tomcat9.0.8/webapps/test
+-v /zzyyuse/mydockerfile/tomcat9/tomcat9logs/:/usrlocal/apache-tomcat-9.0.8/logs 
+-privileged<span style="color:#f92672">=</span>true 
+zzyytomcat9
+</code></pre></div><ol start="7">
+<li>容器卷测试的web服务test发布(将war包放到宿主映射文件夹中)</li>
+</ol>
+</li>
+</ul>
+<h2 id="本地镜像发布到阿里云">本地镜像发布到阿里云</h2>
+<ul>
+<li>发布流程
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6r6oxxn3j60tw0i2goq02.jpg" alt="QQ截图20211007145649.png"></li>
+<li><strong>镜像生成方法</strong>
+<ol>
+<li>Dockerfile</li>
+<li>从容器中创建一个新的镜像</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker commit <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> 容器ID <span style="color:#f92672">[</span>REPOSITORY<span style="color:#f92672">[</span>:TAG<span style="color:#f92672">]</span><span style="color:#f92672">]</span>
+</code></pre></div></li>
+<li><strong>将本地镜像推送到阿里云</strong>
+<ol>
+<li>创建镜像仓库
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rf8io5xj611r0dhae502.jpg" alt="QQ截图20211007150502.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rgdbbv9j61gu0j4k1202.jpg" alt="QQ截图20211007150607.png"></li>
+<li>将镜像推送到registry</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo docker login --username<span style="color:#f92672">=</span>white3e registry.cn-shenzhen.aliyuncs.com
+$ sudo docker tag <span style="color:#f92672">[</span>ImageId<span style="color:#f92672">]</span> registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style="color:#f92672">[</span>镜像版本号<span style="color:#f92672">]</span>
+$ sudo docker push registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style="color:#f92672">[</span>镜像版本号<span style="color:#f92672">]</span>
+其中<span style="color:#f92672">[</span>ImageId<span style="color:#f92672">]</span><span style="color:#f92672">[</span>镜像版本<span style="color:#f92672">]</span>自己填写
+</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rjralc0j610308l43e02.jpg" alt="QQ截图20211007150922.png">
+3. 公有云查询
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rmf0hyxj619q0k411b02.jpg" alt="QQ截图20211007151154.png">
+4. 查看详情
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rmzto9hj617y0gttcz02.jpg" alt="QQ截图20211007151229.png">
+5. 将阿里云上的镜像下载到本地
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6roeojqzj60x508yach02.jpg" alt="QQ截图20211007151348.png"></p>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/882java8%E6%96%B0%E7%89%B9%E6%80%A7/" data-toggle="tooltip" data-placement="top" title="2、Java8新特性（Java8）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/871zookeeper%E5%85%A5%E9%97%A8/" data-toggle="tooltip" data-placement="top" title="1、Zookeeper入门（Zookeeper）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

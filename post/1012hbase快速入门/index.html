@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="2、HBase快速入门（HBase）" />
+    <meta property="og:title" content="2、HBase快速入门（HBase）" />
+    <meta property="twitter:title" content="2、HBase快速入门（HBase）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>2、HBase快速入门（HBase）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/1012hbase%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/hbase" title="HBase">
+                            HBase
+                        </a>
+                        
+                    </div>
+                    <h1>2、HBase快速入门（HBase）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Sunday, March 6, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#hbase-安装部署">HBase 安装部署</a>
+      <ul>
+        <li><a href="#zookeeper-正常部署">Zookeeper 正常部署</a></li>
+        <li><a href="#hadoop-正常部署">Hadoop 正常部署</a></li>
+        <li><a href="#hbase-的解压">HBase 的解压</a></li>
+        <li><a href="#hbase-的配置文件">HBase 的配置文件</a></li>
+        <li><a href="#hbase-远程发送到其他集群">HBase 远程发送到其他集群</a></li>
+        <li><a href="#hbase-服务的启动">HBase 服务的启动</a></li>
+        <li><a href="#查看-hbase-页面">查看 HBase 页面</a></li>
+      </ul>
+    </li>
+    <li><a href="#hbase-shell-操作">HBase Shell 操作</a>
+      <ul>
+        <li><a href="#基本操作">基本操作</a></li>
+        <li><a href="#表的操作">表的操作</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="hbase-安装部署">HBase 安装部署</h2>
+<h3 id="zookeeper-正常部署">Zookeeper 正常部署</h3>
+<ul>
+<li>
+<p>首先保证 Zookeeper 集群的正常部署，并启动之：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 zookeeper-3.4.10<span style="color:#f92672">]</span>$ bin/zkServer.sh start
+<span style="color:#f92672">[</span>atguigu@hadoop103 zookeeper-3.4.10<span style="color:#f92672">]</span>$ bin/zkServer.sh start
+<span style="color:#f92672">[</span>atguigu@hadoop104 zookeeper-3.4.10<span style="color:#f92672">]</span>$ bin/zkServer.sh start
+</code></pre></div></li>
+</ul>
+<h3 id="hadoop-正常部署">Hadoop 正常部署</h3>
+<ul>
+<li>
+<p>Hadoop 集群的正常部署并启动：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-2.7.2<span style="color:#f92672">]</span>$ sbin/start-dfs.sh
+<span style="color:#f92672">[</span>atguigu@hadoop103 hadoop-2.7.2<span style="color:#f92672">]</span>$ sbin/start-yarn.sh
+</code></pre></div></li>
+</ul>
+<h3 id="hbase-的解压">HBase 的解压</h3>
+<ul>
+<li>
+<p>解压 Hbase 到指定目录：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ tar -zxvf hbase-1.3.1-bin.tar.gz -C /opt/module
+</code></pre></div></li>
+</ul>
+<h3 id="hbase-的配置文件">HBase 的配置文件</h3>
+<p>修改HBase对应的配置文件。</p>
+<p>1）hbase-env.sh修改内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export JAVA_HOME<span style="color:#f92672">=</span>/opt/module/jdk1.6.0_
+export HBASE_MANAGES_ZK<span style="color:#f92672">=</span>false
+</code></pre></div><p>2）hbase-site.xml修改内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.rootdir<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>hdfs://hadoop102: 9000 /HBase<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.cluster.distributed<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 0.98后的新变动，之前版本没有.port,默认端口为 60000 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.master.port<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>16000<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.zookeeper.quorum<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>hadoop102,hadoop103,hadoop104<span style="color:#f92672">&lt;/value&gt;</span>
+
+    <span style="color:#f92672">&lt;/property&gt;</span>
+
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.zookeeper.property.dataDir<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>/opt/module/zookeeper-3.4.10/zkData<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+<span style="color:#f92672">&lt;/configuration&gt;</span>
+</code></pre></div><p>3）regionservers：</p>
+<pre><code>hadoop102
+hadoop103
+hadoop104
+</code></pre><p>4）软连接hadoop配置文件到HBase：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ ln -s /opt/module/hadoop-2.7.2/etc/hadoop/core-site.xml /opt/module/hbase/conf/core-site.xml
+<span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ ln -s /opt/module/hadoop-2.7.2/etc/hadoop/hdfs-site.xml /opt/module/hbase/conf/hdfs-site.xml
+</code></pre></div><h3 id="hbase-远程发送到其他集群">HBase 远程发送到其他集群</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ xsync hbase/
+</code></pre></div><h3 id="hbase-服务的启动">HBase 服务的启动</h3>
+<ul>
+<li>
+<p><strong>启动方式</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hbase<span style="color:#f92672">]</span>$ bin/hbase-daemon.sh start master
+<span style="color:#f92672">[</span>atguigu@hadoop102 hbase<span style="color:#f92672">]</span>$ bin/hbase-daemon.sh start regionserver
+</code></pre></div><ul>
+<li>
+<p>提示：如果集群之间的节点时间不同步，会导致 regionserver 无法启动，抛出ClockOutOfSyncException 异常。</p>
+</li>
+<li>
+<p>修复提示：</p>
+<p>a、同步时间服务</p>
+<p>b、属性：hbase.master.maxclockskew 设置更大的值</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.master.maxclockskew<span style="color:#f92672">&lt;/name&gt;</span>
+    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>180000<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>Time difference of regionserver from master<span style="color:#f92672">&lt;/description&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><strong>启动方式 2</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hbase<span style="color:#f92672">]</span>$ bin/start-hbase.sh
+</code></pre></div><p>对应的停止服务：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hbase<span style="color:#f92672">]</span>$ bin/stop-hbase.sh
+</code></pre></div></li>
+</ul>
+<h3 id="查看-hbase-页面">查看 HBase 页面</h3>
+<ul>
+<li>启动成功后，可以通过“host:port”的方式来访问 HBase 管理页面，例如：http://hadoop102:16010</li>
+</ul>
+<h2 id="hbase-shell-操作">HBase Shell 操作</h2>
+<h3 id="基本操作">基本操作</h3>
+<p>1 ．进入HBase客户端命令行</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hbase<span style="color:#f92672">]</span>$ bin/hbase shell
+</code></pre></div><p>2 ．查看帮助命令</p>
+<pre><code>hbase(main):001:0&gt; help
+</code></pre><p>3 ．查看当前数据库中有哪些表</p>
+<pre><code>hbase(main):002:0&gt; list
+</code></pre><h3 id="表的操作">表的操作</h3>
+<p>1 ．创建表</p>
+<pre><code>hbase(main):002:0&gt; create 'student','info'
+</code></pre><p>2 ．插入数据到表</p>
+<pre><code>hbase(main):003:0&gt; put 'student','1001','info:sex','male'
+hbase(main):004:0&gt; put 'student','1001','info:age','18'
+hbase(main):005:0&gt; put 'student','1002','info:name','Janna'
+hbase(main):006:0&gt; put 'student','1002','info:sex','female'
+hbase(main):007:0&gt; put 'student','1002','info:age','20'
+</code></pre><p>3 ．扫描查看表数据</p>
+<pre><code>hbase(main):008:0&gt; scan 'student'
+hbase(main):009:0&gt; scan 'student',{STARTROW =&gt; '1001', STOPROW =&gt;'1001'}
+hbase(main):010:0&gt; scan 'student',{STARTROW =&gt; '1001'}
+</code></pre><p>4 ．查看表结构</p>
+<pre><code>hbase(main):011:0&gt; describe ‘student’
+</code></pre><p>5 ．更新指定字段的数据</p>
+<pre><code>hbase(main):012:0&gt; put 'student','1001','info:name','Nick'
+hbase(main):013:0&gt; put 'student','1001','info:age','100'
+</code></pre><p>6 ．查看“指定行”或“指定列族:列”的数据</p>
+<pre><code>hbase(main):014:0&gt; get 'student','1001'
+hbase(main):015:0&gt; get 'student','1001','info:name'
+</code></pre><p>7 ．统计表数据行数</p>
+<pre><code>hbase(main):021:0&gt; count 'student'
+</code></pre><p>8 ．删除数据</p>
+<p>删除某rowkey的全部数据：</p>
+<pre><code>hbase(main):016:0&gt; deleteall 'student','1001'
+</code></pre><p>删除某rowkey的某一列数据：</p>
+<pre><code>hbase(main):017:0&gt; delete 'student','1002','info:sex'
+</code></pre><p>9 ．清空表数据</p>
+<pre><code>hbase(main):018:0&gt; truncate 'student'
+</code></pre><p>提示：清空表的操作顺序为先disable，然后再truncate。</p>
+<p>10 ．删除表</p>
+<p>首先需要先让该表为disable状态：</p>
+<pre><code>hbase(main):019:0&gt; disable 'student'
+</code></pre><p>然后才能drop这个表：</p>
+<pre><code>hbase(main):020:0&gt; drop 'student'
+</code></pre><p>提示：如果直接drop表，会报错：ERROR: Table student is enabled. Disable it first.</p>
+<p>11 ．变更表信息</p>
+<p>将info列族中的数据存放 3 个版本：</p>
+<pre><code>hbase(main):022:0&gt; alter 'student',{NAME=&gt;'info',VERSIONS=&gt;3}
+hbase(main):022:0&gt; get 'student','1001',{COLUMN=&gt;'info:name',VERSIONS=&gt;3}
+</code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1011hbase%E7%AE%80%E4%BB%8B/" data-toggle="tooltip" data-placement="top" title="1、HBase简介（HBase）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1006%E6%9F%A5%E8%AF%A2/" data-toggle="tooltip" data-placement="top" title="6、查询（Hive）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

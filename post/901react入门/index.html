@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="1、React入门（React）" />
+    <meta property="og:title" content="1、React入门（React）" />
+    <meta property="twitter:title" content="1、React入门（React）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>1、React入门（React）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/901react%E5%85%A5%E9%97%A8/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/react" title="React">
+                            React
+                        </a>
+                        
+                    </div>
+                    <h1>1、React入门（React）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Monday, July 12, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#react简介">React简介</a></li>
+    <li><a href="#react的基本使用">React的基本使用</a></li>
+    <li><a href="#虚拟dom与真实dom">虚拟DOM与真实DOM</a></li>
+    <li><a href="#jsx">JSX</a></li>
+    <li><a href="#jsx练习">JSX练习</a></li>
+    <li><a href="#模块化和组件化">模块化和组件化</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="react简介">React简介</h2>
+<ul>
+<li><strong>描述</strong>
+<ul>
+<li>用于动态构建用户界面的 JavaScript 库(只关注于视图)</li>
+<li>由Facebook开源</li>
+</ul>
+</li>
+<li><strong>特点</strong>
+<ul>
+<li>声明式编码</li>
+<li>组件化编码</li>
+<li>React Native 编写原生应用</li>
+<li>高效（优秀的Diffing算法）</li>
+</ul>
+</li>
+<li><strong>React高效的原因</strong>
+<ul>
+<li>使用虚拟(virtual)DOM, 不总是直接操作页面真实DOM</li>
+<li>DOM Diffing算法, 最小化页面重绘</li>
+</ul>
+</li>
+</ul>
+<h2 id="react的基本使用">React的基本使用</h2>
+<ul>
+<li><strong>相关js库</strong>
+<ul>
+<li>react.js：React核心库</li>
+<li>react-dom.js：提供操作DOM的react扩展库</li>
+<li>babel.min.js：解析JSX语法代码转为JS代码的库</li>
+</ul>
+</li>
+<li><strong>程序</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-react" data-lang="react"><span style="color:#f92672">&lt;</span><span style="color:#f92672">!</span><span style="color:#a6e22e">DOCTYPE</span> <span style="color:#a6e22e">html</span><span style="color:#f92672">&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+	&lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+	&lt;<span style="color:#f92672">title</span>&gt;<span style="color:#a6e22e">hello_react</span>&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">准备好一个</span><span style="color:#960050;background-color:#1e0010">“</span><span style="color:#a6e22e">容器</span><span style="color:#960050;background-color:#1e0010">”</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入react核心库</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/react.development.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入react</span><span style="color:#f92672">-</span><span style="color:#a6e22e">dom</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">用于支持react操作DOM</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/react-dom.development.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入babel</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">用于将jsx转为js</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/babel.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/babel&#34;</span> &gt; <span style="color:#75715e">/* 此处一定要写babel */</span>
+		<span style="color:#75715e">//1.创建虚拟DOM
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">VDOM</span> <span style="color:#f92672">=</span> &lt;<span style="color:#f92672">h1</span>&gt;<span style="color:#a6e22e">Hello</span>,<span style="color:#a6e22e">React</span>&lt;/<span style="color:#f92672">h1</span>&gt; <span style="color:#75715e">/* 此处一定不要写引号，因为不是字符串 */</span>
+		<span style="color:#75715e">//2.渲染虚拟DOM到页面
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">render</span>(<span style="color:#a6e22e">VDOM</span>,document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;test&#39;</span>))
+	&lt;/<span style="color:#f92672">script</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><ul>
+<li><strong>创建虚拟DOM的两种方式</strong>
+<ul>
+<li>纯JS方式(一般不用)</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-react" data-lang="react"><span style="color:#f92672">&lt;</span><span style="color:#f92672">!</span><span style="color:#a6e22e">DOCTYPE</span> <span style="color:#a6e22e">html</span><span style="color:#f92672">&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+	&lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+	&lt;<span style="color:#f92672">title</span>&gt;<span style="color:#ae81ff">2</span><span style="color:#a6e22e">_使用js创建虚拟DOM</span>&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">准备好一个</span><span style="color:#960050;background-color:#1e0010">“</span><span style="color:#a6e22e">容器</span><span style="color:#960050;background-color:#1e0010">”</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入react核心库</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/react.development.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入react</span><span style="color:#f92672">-</span><span style="color:#a6e22e">dom</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">用于支持react操作DOM</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/react-dom.development.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> &gt; 
+		<span style="color:#75715e">//1.创建虚拟DOM
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">VDOM</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;h1&#39;</span>,{<span style="color:#a6e22e">id</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;title&#39;</span>},<span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;span&#39;</span>,{},<span style="color:#e6db74">&#39;Hello,React&#39;</span>))
+		<span style="color:#75715e">//2.渲染虚拟DOM到页面
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">render</span>(<span style="color:#a6e22e">VDOM</span>,document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;test&#39;</span>))
+	&lt;/<span style="color:#f92672">script</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><ul>
+<li>JSX方式</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-react" data-lang="react"><span style="color:#f92672">&lt;</span><span style="color:#f92672">!</span><span style="color:#a6e22e">DOCTYPE</span> <span style="color:#a6e22e">html</span><span style="color:#f92672">&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+	&lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+	&lt;<span style="color:#f92672">title</span>&gt;<span style="color:#ae81ff">1</span><span style="color:#a6e22e">_使用jsx创建虚拟DOM</span>&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">准备好一个</span><span style="color:#960050;background-color:#1e0010">“</span><span style="color:#a6e22e">容器</span><span style="color:#960050;background-color:#1e0010">”</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入react核心库</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/react.development.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入react</span><span style="color:#f92672">-</span><span style="color:#a6e22e">dom</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">用于支持react操作DOM</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/react-dom.development.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入babel</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">用于将jsx转为js</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/babel.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/babel&#34;</span> &gt; <span style="color:#75715e">/* 此处一定要写babel */</span>
+		<span style="color:#75715e">//1.创建虚拟DOM
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">VDOM</span> <span style="color:#f92672">=</span> (  <span style="color:#75715e">/* 此处一定不要写引号，因为不是字符串 */</span>
+			&lt;<span style="color:#f92672">h1</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;title&#34;</span>&gt;
+				&lt;<span style="color:#f92672">span</span>&gt;<span style="color:#a6e22e">Hello</span>,<span style="color:#a6e22e">React</span>&lt;/<span style="color:#f92672">span</span>&gt;
+			&lt;/<span style="color:#f92672">h1</span>&gt;
+		)
+		<span style="color:#75715e">//2.渲染虚拟DOM到页面
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">render</span>(<span style="color:#a6e22e">VDOM</span>,document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;test&#39;</span>))
+	&lt;/<span style="color:#f92672">script</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><h2 id="虚拟dom与真实dom">虚拟DOM与真实DOM</h2>
+<ul>
+<li>虚拟DOM本质是Object类型的对象（一般对象）</li>
+<li>虚拟DOM比较“轻”，真实DOM比较“重”，因为虚拟DOM是React内部在用，无需真实DOM上那么多的属性。</li>
+<li>虚拟DOM最终会被React转化为真实DOM，呈现在页面上。</li>
+</ul>
+<h2 id="jsx">JSX</h2>
+<ul>
+<li>全称:  JavaScript XML</li>
+<li>react定义的一种类似于XML的JS扩展语法: JS + XML本质是React.createElement(component, props, &hellip;children)方法的语法糖</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-react" data-lang="react"><span style="color:#f92672">&lt;</span><span style="color:#f92672">!</span><span style="color:#a6e22e">DOCTYPE</span> <span style="color:#a6e22e">html</span><span style="color:#f92672">&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+	&lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+	&lt;<span style="color:#f92672">title</span>&gt;<span style="color:#a6e22e">jsx语法规则</span>&lt;/<span style="color:#f92672">title</span>&gt;
+	&lt;<span style="color:#f92672">style</span>&gt;
+		.<span style="color:#a6e22e">title</span>{
+			<span style="color:#a6e22e">background</span><span style="color:#f92672">-</span><span style="color:#a6e22e">color</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">orange</span>;
+			<span style="color:#a6e22e">width</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">200</span><span style="color:#a6e22e">px</span>;
+		}
+	&lt;/<span style="color:#f92672">style</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">准备好一个</span><span style="color:#960050;background-color:#1e0010">“</span><span style="color:#a6e22e">容器</span><span style="color:#960050;background-color:#1e0010">”</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入react核心库</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/react.development.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入react</span><span style="color:#f92672">-</span><span style="color:#a6e22e">dom</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">用于支持react操作DOM</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/react-dom.development.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入babel</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">用于将jsx转为js</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/babel.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/babel&#34;</span> &gt;
+		<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">myId</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aTgUiGu&#39;</span>
+		<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">myData</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;HeLlo,rEaCt&#39;</span>
+
+		<span style="color:#75715e">//1.创建虚拟DOM
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">VDOM</span> <span style="color:#f92672">=</span> (
+			&lt;<span style="color:#f92672">div</span>&gt;
+				&lt;<span style="color:#f92672">h2</span> <span style="color:#a6e22e">className</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;title&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">myId</span>.<span style="color:#a6e22e">toLowerCase</span>()}&gt;
+					&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{<span style="color:#a6e22e">color</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;white&#39;</span>,<span style="color:#a6e22e">fontSize</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;29px&#39;</span>}}&gt;{<span style="color:#a6e22e">myData</span>.<span style="color:#a6e22e">toLowerCase</span>()}&lt;/<span style="color:#f92672">span</span>&gt;
+				&lt;/<span style="color:#f92672">h2</span>&gt;
+				&lt;<span style="color:#f92672">h2</span> <span style="color:#a6e22e">className</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;title&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">myId</span>.<span style="color:#a6e22e">toUpperCase</span>()}&gt;
+					&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{<span style="color:#a6e22e">color</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;white&#39;</span>,<span style="color:#a6e22e">fontSize</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;29px&#39;</span>}}&gt;{<span style="color:#a6e22e">myData</span>.<span style="color:#a6e22e">toLowerCase</span>()}&lt;/<span style="color:#f92672">span</span>&gt;
+				&lt;/<span style="color:#f92672">h2</span>&gt;
+				&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span>/&gt;
+			&lt;/<span style="color:#f92672">div</span>&gt;
+		)
+		<span style="color:#75715e">//2.渲染虚拟DOM到页面
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">render</span>(<span style="color:#a6e22e">VDOM</span>,document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;test&#39;</span>))
+
+		<span style="color:#75715e">/* 
+</span><span style="color:#75715e">            jsx语法规则：
+</span><span style="color:#75715e">                1.定义虚拟DOM时，不要写引号。
+</span><span style="color:#75715e">                2.标签中混入JS表达式时要用{}。
+</span><span style="color:#75715e">                3.样式的类名指定不要用class，要用className。
+</span><span style="color:#75715e">                4.内联样式，要用style={{key:value}}的形式去写。
+</span><span style="color:#75715e">                5.只有一个根标签
+</span><span style="color:#75715e">                6.标签必须闭合
+</span><span style="color:#75715e">                7.标签首字母
+</span><span style="color:#75715e">                        (1).若小写字母开头，则将该标签转为html中同名元素，若html中无该标签对应的同名元素，则报错。
+</span><span style="color:#75715e">                        (2).若大写字母开头，react就去渲染对应的组件，若组件没有定义，则报错。
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">		 */</span>
+	&lt;/<span style="color:#f92672">script</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><h2 id="jsx练习">JSX练习</h2>
+<ul>
+<li>需求: 动态展示如下列表
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsejqtk73ej304t03hmx6.jpg" alt="QQ截图20210712224212.png"></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-react" data-lang="react"><span style="color:#f92672">&lt;</span><span style="color:#f92672">!</span><span style="color:#a6e22e">DOCTYPE</span> <span style="color:#a6e22e">html</span><span style="color:#f92672">&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+	&lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+	&lt;<span style="color:#f92672">title</span>&gt;<span style="color:#a6e22e">jsx小练习</span>&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">准备好一个</span><span style="color:#960050;background-color:#1e0010">“</span><span style="color:#a6e22e">容器</span><span style="color:#960050;background-color:#1e0010">”</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+	
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入react核心库</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/react.development.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入react</span><span style="color:#f92672">-</span><span style="color:#a6e22e">dom</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">用于支持react操作DOM</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/react-dom.development.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+	<span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">引入babel</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">用于将jsx转为js</span> <span style="color:#f92672">--</span><span style="color:#f92672">&gt;</span>
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../js/babel.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+
+	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/babel&#34;</span> &gt;
+		<span style="color:#75715e">/* 
+</span><span style="color:#75715e">			一定注意区分：【js语句(代码)】与【js表达式】
+</span><span style="color:#75715e">					1.表达式：一个表达式会产生一个值，可以放在任何一个需要值的地方
+</span><span style="color:#75715e">								下面这些都是表达式：
+</span><span style="color:#75715e">										(1). a
+</span><span style="color:#75715e">										(2). a+b
+</span><span style="color:#75715e">										(3). demo(1)
+</span><span style="color:#75715e">										(4). arr.map() 
+</span><span style="color:#75715e">										(5). function test () {}
+</span><span style="color:#75715e">					2.语句(代码)：
+</span><span style="color:#75715e">								下面这些都是语句(代码)：
+</span><span style="color:#75715e">										(1).if(){}
+</span><span style="color:#75715e">										(2).for(){}
+</span><span style="color:#75715e">										(3).switch(){case:xxxx}
+</span><span style="color:#75715e">		
+</span><span style="color:#75715e">	 */</span>
+		<span style="color:#75715e">//模拟一些数据
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;Angular&#39;</span>,<span style="color:#e6db74">&#39;React&#39;</span>,<span style="color:#e6db74">&#39;Vue&#39;</span>]
+		<span style="color:#75715e">//1.创建虚拟DOM
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">VDOM</span> <span style="color:#f92672">=</span> (
+			&lt;<span style="color:#f92672">div</span>&gt;
+				&lt;<span style="color:#f92672">h1</span>&gt;<span style="color:#a6e22e">前端js框架列表</span>&lt;/<span style="color:#f92672">h1</span>&gt;
+				&lt;<span style="color:#f92672">ul</span>&gt;
+					{
+						<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">item</span>,<span style="color:#a6e22e">index</span>)=&gt;{
+							<span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">li</span> <span style="color:#a6e22e">key</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">index</span>}&gt;{<span style="color:#a6e22e">item</span>}&lt;/<span style="color:#f92672">li</span>&gt;
+						})
+					}
+				&lt;/<span style="color:#f92672">ul</span>&gt;
+			&lt;/<span style="color:#f92672">div</span>&gt;
+		)
+		<span style="color:#75715e">//2.渲染虚拟DOM到页面
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">render</span>(<span style="color:#a6e22e">VDOM</span>,document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;test&#39;</span>))
+	&lt;/<span style="color:#f92672">script</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><h2 id="模块化和组件化">模块化和组件化</h2>
+<ul>
+<li>模块：向外提供特定功能的js程序, 一般就是一个js文件。复用js, 简化js的编写, 提高js运行效率。</li>
+<li>组件：用来实现局部功能效果的代码和资源的集合(html/css/js/image等等)。复用编码, 简化项目编码, 提高运行效率</li>
+<li>模块化：当应用的js都以模块来编写的, 这个应用就是一个模块化的应用</li>
+<li>组件化：当应用是以多组件的方式实现, 这个应用就是一个组件化的应用</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/862%E7%B4%A2%E5%BC%95/" data-toggle="tooltip" data-placement="top" title="2、索引（MySQL）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/902react%E9%9D%A2%E5%90%91%E7%BB%84%E4%BB%B6%E7%BC%96%E7%A8%8B/" data-toggle="tooltip" data-placement="top" title="2、React面向组件编程（React）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

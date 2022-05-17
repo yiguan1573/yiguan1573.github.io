@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="5、React路由（React）" />
+    <meta property="og:title" content="5、React路由（React）" />
+    <meta property="twitter:title" content="5、React路由（React）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>5、React路由（React）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/905react%E8%B7%AF%E7%94%B1/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/react" title="React">
+                            React
+                        </a>
+                        
+                    </div>
+                    <h1>5、React路由（React）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Friday, July 16, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#react-router-dom">react-router-dom</a></li>
+    <li><a href="#基本使用">基本使用</a></li>
+    <li><a href="#路由组件和一般组件">路由组件和一般组件</a></li>
+    <li><a href="#navlink与封装navlink">NavLink与封装NavLink</a></li>
+    <li><a href="#switch的使用">Switch的使用</a></li>
+    <li><a href="#解决多级路径刷新页面样式丢失的问题">解决多级路径刷新页面样式丢失的问题</a></li>
+    <li><a href="#路由的严格匹配与模糊匹配">路由的严格匹配与模糊匹配</a></li>
+    <li><a href="#redirect的使用">Redirect的使用</a></li>
+    <li><a href="#嵌套路由">嵌套路由</a></li>
+    <li><a href="#向路由组件传递参数">向路由组件传递参数</a></li>
+    <li><a href="#编程式路由导航">编程式路由导航</a></li>
+    <li><a href="#browserrouter与hashrouter的区别">BrowserRouter与HashRouter的区别</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="简介">简介</h2>
+<ul>
+<li><strong>理解：一个路由就是一个映射关系(key:value)，key为路径, value可能是function或component。</strong></li>
+<li><strong>后端路由：</strong>
+<ul>
+<li>理解： value是function, 用来处理客户端提交的请求。</li>
+<li>注册路由： router.get(path, function(req, res))</li>
+<li>工作过程：当node接收到一个请求时, 根据请求路径找到匹配的路由, 调用路由中的函数来处理请求, 返回响应数据</li>
+</ul>
+</li>
+<li><strong>前端路由：</strong>
+<ul>
+<li>浏览器端路由，value是component，用于展示页面内容。</li>
+<li>注册路由: <code>&lt;Route path=&quot;/test&quot; component={Test}&gt;</code></li>
+<li>工作过程：当浏览器的path变为/test时, 当前路由组件就会变为Test组件</li>
+</ul>
+</li>
+</ul>
+<h2 id="react-router-dom">react-router-dom</h2>
+<ul>
+<li><strong>下载</strong></li>
+</ul>
+<pre><code>npm add -react-router-dom
+</code></pre><ul>
+<li><strong>内置组件</strong>
+<ol>
+<li><code>&lt;BrowserRouter&gt;</code></li>
+<li><code>&lt;HashRouter&gt;</code></li>
+<li><code>&lt;Route&gt;</code></li>
+<li><code>&lt;Redirect&gt;</code></li>
+<li><code>&lt;Link&gt;</code></li>
+<li><code>&lt;NavLink&gt;</code></li>
+<li><code>&lt;Switch&gt;</code></li>
+</ol>
+</li>
+<li><strong>其它</strong>
+<ol>
+<li>history对象</li>
+<li>match对象</li>
+<li>withRouter函数</li>
+</ol>
+</li>
+</ul>
+<h2 id="基本使用">基本使用</h2>
+<ol>
+<li>明确好界面中的导航区、展示区</li>
+<li>导航区的a标签改为Link标签
+<code>&lt;Link to=&quot;/xxxxx&quot;&gt;Demo&lt;/Link&gt;</code></li>
+<li>展示区写Route标签进行路径的匹配
+<code>&lt;Route path='/xxxx' component={Demo}/&gt;</code></li>
+<li><code>&lt;App&gt;</code>的最外侧包裹了一个<code>&lt;BrowserRouter&gt;</code>或<code>&lt;HashRouter&gt;</code></li>
+<li></li>
+</ol>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsmmrzn860g30il0cqmzq.gif" alt="react-router demo1 (3).gif">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsmmt27tf9j30v00qitkk.jpg" alt="QQ截图20210719223317.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsmmt833cqj30l60azq6a.jpg" alt="QQ截图20210719223323.png"></p>
+<h2 id="路由组件和一般组件">路由组件和一般组件</h2>
+<ol>
+<li>写法不同：
+一般组件：<code>&lt;Demo/&gt;</code>
+路由组件：<code>&lt;Route path=&quot;/demo&quot; component={Demo}/&gt;</code></li>
+<li>存放位置不同：
+一般组件：components
+路由组件：pages</li>
+<li>接收到的props不同：
+一般组件：写组件标签时传递了什么，就能收到什么
+路由组件：接收到三个固定的属性
+history:
+go: ƒ go(n)
+goBack: ƒ goBack()
+goForward: ƒ goForward()
+push: ƒ push(path, state)
+replace: ƒ replace(path, state)
+location:
+pathname: &ldquo;/about&rdquo;
+search: &quot;&rdquo;
+state: undefined
+match:
+params: {}
+path: &ldquo;/about&rdquo;
+url: &ldquo;/about&rdquo;
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsmn413xm3j314409jgqt.jpg" alt="QQ截图20210719224015.png"></li>
+</ol>
+<h2 id="navlink与封装navlink">NavLink与封装NavLink</h2>
+<ul>
+<li><strong>NavLink的使用</strong>
+<ul>
+<li><strong>NavLink可以实现路由链接的高亮，通过activeClassName指定样式名，默认样式名为active</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsmnfyry8ij310c0qgqfu.jpg" alt="QQ截图20210719225508.png"></li>
+</ul>
+</li>
+<li><strong>封装NavLink</strong>
+<ul>
+<li><strong>标签体内容是一个特殊的标签属性</strong></li>
+<li><strong>通过this.props.children可以获取标签体内容</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsmnjeyehcj30tk08atcn.jpg" alt="QQ截图20210719225822.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsmnjjuikej30uy0qp4ai.jpg" alt="QQ截图20210719225838.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="switch的使用">Switch的使用</h2>
+<ul>
+<li><strong>通常情况下，path和component是一一对应的关系。会遍历所有路由组件，找到对应的组件（可以不止一个）。如果想让其匹配到一个对应的路由组件后不再继续遍历即可使用Swith</strong></li>
+<li><strong>Switch可以提高路由匹配效率(单一匹配)。</strong></li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gstfc63nhyj30ge0h5n2x.jpg" alt="QQ截图20210725193241.png"></p>
+<h2 id="解决多级路径刷新页面样式丢失的问题">解决多级路径刷新页面样式丢失的问题</h2>
+<ul>
+<li>方法一：public/index.html 中 引入样式时不写 ./ 写 / （常用）</li>
+<li>方法二：public/index.html 中 引入样式时不写 ./ 写 %PUBLIC_URL% （常用）</li>
+<li>方法三：使用HashRouter</li>
+</ul>
+<h2 id="路由的严格匹配与模糊匹配">路由的严格匹配与模糊匹配</h2>
+<ul>
+<li>默认使用的是模糊匹配（简单记：【输入的路径】必须包含要【匹配的路径】，且顺序要一致）</li>
+<li>开启严格匹配：</li>
+</ul>
+<pre><code>  &lt;Route exact={true} path=&quot;/about&quot; component={About}/&gt;
+  或者&lt;Route exact path=&quot;/about&quot; component={About}/&gt;
+</code></pre><ul>
+<li>严格匹配不要随便开启，需要再开，有些时候开启会导致无法继续匹配二级路由</li>
+</ul>
+<h2 id="redirect的使用">Redirect的使用</h2>
+<ul>
+<li>一般写在所有路由注册的最下方，当所有路由都无法匹配时，跳转到Redirect指定的路由</li>
+<li>具体编码：</li>
+</ul>
+<pre><code>&lt;Switch&gt;
+      &lt;Route path=&quot;/about&quot; component={About}/&gt;
+      &lt;Route path=&quot;/home&quot; component={Home}/&gt;
+      &lt;Redirect to=&quot;/about&quot;/&gt;
+&lt;/Switch&gt;
+</code></pre><h2 id="嵌套路由">嵌套路由</h2>
+<ul>
+<li>注册子路由时要写上父路由的path值</li>
+<li>路由的匹配是按照注册路由的顺序进行的
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gstfluckgdj30fv0bb0vs.jpg" alt="QQ截图20210725194312.png"></li>
+</ul>
+<h2 id="向路由组件传递参数">向路由组件传递参数</h2>
+<ul>
+<li><strong>案例</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gstfr9hn86g30gz0df0xj.gif" alt="react-router demo3 (2).gif"></li>
+<li><strong>params参数</strong></li>
+</ul>
+<pre><code>路由链接(携带参数)：&lt;Link to='/demo/test/tom/18'}&gt;详情&lt;/Link&gt;
+注册路由(声明接收)：&lt;Route path=&quot;/demo/test/:name/:age&quot; component={Test}/&gt;
+接收参数：this.props.match.params
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gstfrwql68j312q0jl48q.jpg" alt="QQ截图20210725194742.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gstfs1hi40j30oi0gwn5z.jpg" alt="QQ截图20210725194754.png"></p>
+<ul>
+<li><strong>search参数</strong></li>
+</ul>
+<pre><code>路由链接(携带参数)：&lt;Link to='/demo/test?name=tom&amp;age=18'}&gt;详情&lt;/Link&gt;
+注册路由(无需声明，正常注册即可)：&lt;Route path=&quot;/demo/test&quot; component={Test}/&gt;
+接收参数：this.props.location.search
+备注：获取到的search是urlencoded编码字符串，需要借助querystring解析
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gstftqg8grj30yb0jmdlw.jpg" alt="QQ截图20210725195036.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gstfulosyxj30qy0jsalh.jpg" alt="QQ截图20210725195136.png"></p>
+<ul>
+<li><strong>state参数</strong></li>
+</ul>
+<pre><code>路由链接(携带参数)：&lt;Link to={{pathname:'/demo/test',state:{name:'tom',age:18}}}&gt;详情&lt;/Link&gt;
+注册路由(无需声明，正常注册即可)：&lt;Route path=&quot;/demo/test&quot; component={Test}/&gt;
+接收参数：this.props.location.state
+备注：刷新也可以保留住参数
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gstfvijuo4j317i0kr7hj.jpg" alt="QQ截图20210725195216.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gstfvomt3sj30pn0k4wp4.jpg" alt="QQ截图20210725195223.png"></p>
+<h2 id="编程式路由导航">编程式路由导航</h2>
+<ul>
+<li><strong>借助this.prosp.history对象上的API对操作路由跳转、前进、后退</strong>
+- this.prosp.history.push()
+- this.prosp.history.replace()
+- this.prosp.history.goBack()
+- this.prosp.history.goForward()
+- this.prosp.history.go()</li>
+</ul>
+<h2 id="browserrouter与hashrouter的区别">BrowserRouter与HashRouter的区别</h2>
+<ol>
+<li>底层原理不一样：
+<ul>
+<li>BrowserRouter使用的是H5的history API，不兼容IE9及以下版本。</li>
+<li>HashRouter使用的是URL的哈希值。</li>
+</ul>
+</li>
+<li>path表现形式不一样
+<ul>
+<li>BrowserRouter的路径中没有#,例如：localhost:3000/demo/test</li>
+<li>HashRouter的路径包含#,例如：localhost:3000/#/demo/test</li>
+</ul>
+</li>
+<li>刷新后对路由state参数的影响
+<ul>
+<li>BrowserRouter没有任何影响，因为state保存在history对象中。</li>
+<li>HashRouter刷新后会导致路由state参数的丢失！！！</li>
+</ul>
+</li>
+<li>备注：HashRouter可以用于解决一些路径错误相关的问题。</li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/904react%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/" data-toggle="tooltip" data-placement="top" title="4、React网络请求（React）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/906react-ui%E7%BB%84%E4%BB%B6%E5%BA%93/" data-toggle="tooltip" data-placement="top" title="6、React UI组件库（React）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
