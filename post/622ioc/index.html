@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="2、IOC(Spring)" />
+    <meta property="og:title" content="2、IOC(Spring)" />
+    <meta property="twitter:title" content="2、IOC(Spring)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>2、IOC(Spring)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/622ioc/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                    </div>
+                    <h1>2、IOC(Spring)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Monday, July 20, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#字面量">字面量</a></li>
+    <li><a href="#注入属性-外部-bean">注入属性-外部 bean</a></li>
+    <li><a href="#注入属性-内部-bean">注入属性-内部 bean</a></li>
+    <li><a href="#注入属性-级联赋值">注入属性-级联赋值</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#生命周期">生命周期</a></li>
+    <li><a href="#bean-生命周期">bean 生命周期</a></li>
+    <li><a href="#演示-bean-生命周期">演示 bean 生命周期</a></li>
+    <li><a href="#bean-的后置处理器bean-生命周期有七步">bean 的后置处理器，bean 生命周期有七步</a></li>
+    <li><a href="#演示添加后置处理器效果">演示添加后置处理器效果</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#什么是自动装配">什么是自动装配</a></li>
+    <li><a href="#演示自动装配过程">演示自动装配过程</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#直接配置数据库信息">直接配置数据库信息</a></li>
+    <li><a href="#引入外部属性文件配置数据库连接池">引入外部属性文件配置数据库连接池</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#什么是注解">什么是注解</a></li>
+    <li><a href="#spring-针对-bean-管理中创建对象提供注解">Spring 针对 Bean 管理中创建对象提供注解</a></li>
+    <li><a href="#基于注解方式实现对象创建">基于注解方式实现对象创建</a></li>
+    <li><a href="#开启组件扫描细节配置">开启组件扫描细节配置</a></li>
+    <li><a href="#基于注解方式实现属性注入">基于注解方式实现属性注入</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="ioc概念和原理">IOC（概念和原理）</h1>
+<ul>
+<li><strong>什么是 IOC</strong>
+<ol>
+<li>控制反转，把对象创建和对象之间的调用过程，交给 Spring 进行管理</li>
+<li>使用 IOC 目的：为了耦合度降低</li>
+<li>做入门案例就是 IOC 实现</li>
+</ol>
+</li>
+<li><strong>IOC 底层原理</strong>
+<ul>
+<li>xml 解析、工厂模式、反射</li>
+</ul>
+</li>
+<li><strong>画图讲解 IOC 底层原理</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh4ltj9uu9j31540dbac9.jpg" alt="QQ截图20200726193522.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh4lyibkmhj31if0qnqbn.jpg" alt="QQ截图20200726194007.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh4lc27e2tj30su0bkq4q.jpg" alt="QQ截图20200726191834.png"></li>
+</ul>
+<hr>
+<h1 id="iocbeanfactory-接口">IOC（BeanFactory 接口）</h1>
+<ul>
+<li><strong>IOC 思想基于 IOC 容器完成，IOC 容器底层就是对象工厂</strong></li>
+<li>Spring 提供 IOC 容器实现两种方式：（两个接口）
+<ul>
+<li>BeanFactory：IOC 容器基本实现，是 Spring 内部的使用接口，不提供开发人员进行使用，加载配置文件时候不会创建对象，在获取对象（使用）才去创建对象</li>
+<li>ApplicationContext：BeanFactory 接口的子接口，提供更多更强大的功能，一般由开发人员进行使用，加载配置文件时候就会把在配置文件对象进行创建</li>
+</ul>
+</li>
+<li>ApplicationContext 接口有实现类
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh4led4usbj30t9085jwh.jpg" alt="QQ截图20200726192048.png"></li>
+</ul>
+<h1 id="ioc-操作-bean-管理概念">IOC 操作 Bean 管理（概念）</h1>
+<ul>
+<li>什么是 Bean 管理
+<ul>
+<li>Bean 管理指的是两个操作</li>
+<li>Spring 创建对象</li>
+<li>Spirng 注入属性</li>
+</ul>
+</li>
+<li>Bean 管理操作有两种方式
+<ul>
+<li>基于 xml 配置文件方式实现</li>
+<li>基于注解方式实现</li>
+</ul>
+</li>
+</ul>
+<h1 id="ioc-操作-bean-管理基于-xml-方式">IOC 操作 Bean 管理（基于 xml 方式）</h1>
+<ul>
+<li><strong>基于 xml 方式创建对象</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh4oiy5ju1j30qx02qq45.jpg" alt="QQ截图20200726210859.png">
+<ul>
+<li>在 spring 配置文件中，使用 bean 标签，标签里面添加对应属性，就可以实现对象创建</li>
+<li>在 bean 标签有很多属性，介绍常用的属性
+<ul>
+<li>id 属性：唯一标识</li>
+<li>class 属性：类全路径（包类路径）</li>
+</ul>
+</li>
+<li>创建对象时候，默认也是执行无参数构造方法完成对象创建</li>
+</ul>
+</li>
+<li><strong>基于 xml 方式注入属性</strong>
+<ul>
+<li>DI：依赖注入，就是注入属性</li>
+</ul>
+</li>
+<li><strong>第一种注入方式：使用 set 方法进行注入</strong>
+<ol>
+<li>创建类，定义属性和对应的 set 方法</li>
+</ol>
+<pre><code>/**
+* 演示使用 set 方法进行注入属性
+*/
+public class Book {
+//创建属性
+private String bname;
+private String bauthor;
+//创建属性对应的 set 方法
+public void setBname(String bname) {
+this.bname = bname;
+}
+public void setBauthor(String bauthor) {
+this.bauthor = bauthor;
+}
+}
+</code></pre><ol start="2">
+<li>在 spring 配置文件配置对象创建，配置属性注入</li>
+</ol>
+<pre><code>&lt;!--2 set 方法注入属性--&gt;
+&lt;bean id=&quot;book&quot; class=&quot;com.atguigu.spring5.Book&quot;&gt;
+&lt;!--使用 property 完成属性注入
+name：类里面属性名称
+value：向属性注入的值
+--&gt;
+&lt;property name=&quot;bname&quot; value=&quot;易筋经&quot;&gt;&lt;/property&gt;
+&lt;property name=&quot;bauthor&quot; value=&quot;达摩老祖&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+</code></pre></li>
+<li><strong>第二种注入方式：使用有参数构造进行注入</strong>
+<ol>
+<li>创建类，定义属性，创建属性对应有参数构造方法</li>
+</ol>
+<pre><code>/**
+* 使用有参数构造注入
+*/
+public class Orders {
+//属性
+private String oname;
+private String address;
+//有参数构造
+public Orders(String oname,String address) {
+this.oname = oname;
+this.address = address;
+}
+}
+</code></pre><ol start="2">
+<li>在 spring 配置文件中进行配置</li>
+</ol>
+<pre><code>    &lt;!--3 有参数构造注入属性--&gt;
+&lt;bean id=&quot;orders&quot; class=&quot;com.atguigu.spring5.Orders&quot;&gt;
+    &lt;constructor-arg name=&quot;oname&quot; value=&quot;电脑&quot;&gt;&lt;/constructor-arg&gt;
+    &lt;constructor-arg name=&quot;address&quot; value=&quot;China&quot;&gt;&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+</code></pre></li>
+<li><strong>p 名称空间注入（了解）</strong><br>
+使用 p 名称空间注入，可以简化基于 xml 配置方式
+<ul>
+<li>第一步 添加 p 名称空间在配置文件中
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh4oqdmy5yj30sr04iq5l.jpg" alt="QQ截图20200726211550.png"></li>
+<li>第二步 进行属性注入，在 bean 标签里面进行操作
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh4oqj4ga9j30pj02tt9j.jpg" alt="QQ截图20200726211600.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="ioc-操作-bean-管理xml-注入其他类型属性">IOC 操作 Bean 管理（xml 注入其他类型属性）</h1>
+<h2 id="字面量">字面量</h2>
+<ul>
+<li>null 值</li>
+</ul>
+<pre><code>&lt;!--null 值--&gt;
+&lt;property name=&quot;address&quot;&gt;
+    &lt;null/&gt;
+&lt;/property&gt;
+</code></pre><ul>
+<li>属性值包含特殊符号</li>
+</ul>
+<pre><code>&lt;!--属性值包含特殊符号
+ 1 把&lt;&gt;进行转义 &amp;lt; &amp;gt;
+ 2 把带特殊符号内容写到 CDATA
+--&gt;
+&lt;property name=&quot;address&quot;&gt;
+    &lt;value&gt;&lt;![CDATA[&lt;&lt;南京&gt;&gt;]]&gt;&lt;/value&gt;
+&lt;/property&gt;
+</code></pre><h2 id="注入属性-外部-bean">注入属性-外部 bean</h2>
+<ul>
+<li>创建两个类 service 类和 dao 类</li>
+<li>在 service 调用 dao 里面的方法</li>
+<li>在 spring 配置文件中进行配置</li>
+</ul>
+<pre><code>public class UserService {
+ //创建 UserDao 类型属性，生成 set 方法
+ private UserDao userDao;
+ public void setUserDao(UserDao userDao) {
+ this.userDao = userDao;
+ }
+ public void add() {
+ System.out.println(&quot;service add...............&quot;);
+ userDao.update();
+ }
+}
+&lt;!--1 service 和 dao 对象创建--&gt;
+&lt;bean id=&quot;userService&quot; class=&quot;com.atguigu.spring5.service.UserService&quot;&gt;
+ &lt;!--注入 userDao 对象
+ name 属性：类里面属性名称
+ ref 属性：创建 userDao 对象 bean 标签 id 值
+ --&gt;
+ &lt;property name=&quot;userDao&quot; ref=&quot;userDaoImpl&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+&lt;bean id=&quot;userDaoImpl&quot; class=&quot;com.atguigu.spring5.dao.UserDaoImpl&quot;&gt;&lt;/bean&gt;
+</code></pre><h2 id="注入属性-内部-bean">注入属性-内部 bean</h2>
+<ul>
+<li>一对多关系：部门和员工,一个部门有多个员工，一个员工属于一个部门</li>
+<li>在实体类之间表示一对多关系，员工表示所属部门，使用对象类型属性进行表示</li>
+</ul>
+<pre><code>//部门类
+public class Dept {
+ private String dname;
+ public void setDname(String dname) {
+ this.dname = dname;
+ }
+}
+//员工类
+public class Emp {
+ private String ename;
+ private String gender;
+ //员工属于某一个部门，使用对象形式表示
+ private Dept dept;
+ public void setDept(Dept dept) {
+ this.dept = dept;
+ }
+ public void setEname(String ename) {
+ this.ename = ename;
+ }
+ public void setGender(String gender) {
+ this.gender = gender;
+ }
+}
+</code></pre><ul>
+<li>在 spring 配置文件中进行配置</li>
+</ul>
+<pre><code>&lt;!--内部 bean--&gt;
+&lt;bean id=&quot;emp&quot; class=&quot;com.atguigu.spring5.bean.Emp&quot;&gt;
+ &lt;!--设置两个普通属性--&gt;
+ &lt;property name=&quot;ename&quot; value=&quot;lucy&quot;&gt;&lt;/property&gt;
+ &lt;property name=&quot;gender&quot; value=&quot;女&quot;&gt;&lt;/property&gt;
+ &lt;!--设置对象类型属性--&gt;
+ &lt;property name=&quot;dept&quot;&gt;
+ &lt;bean id=&quot;dept&quot; class=&quot;com.atguigu.spring5.bean.Dept&quot;&gt;
+ &lt;property name=&quot;dname&quot; value=&quot;安保部&quot;&gt;&lt;/property&gt;
+ &lt;/bean&gt;
+ &lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><h2 id="注入属性-级联赋值">注入属性-级联赋值</h2>
+<ul>
+<li>第一种写法</li>
+</ul>
+<pre><code>&lt;!--级联赋值--&gt;
+&lt;bean id=&quot;emp&quot; class=&quot;com.atguigu.spring5.bean.Emp&quot;&gt;
+    &lt;!--设置两个普通属性--&gt;
+    &lt;property name=&quot;ename&quot; value=&quot;lucy&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;gender&quot; value=&quot;女&quot;&gt;&lt;/property&gt;
+    &lt;!--级联赋值--&gt;
+    &lt;property name=&quot;dept&quot; ref=&quot;dept&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+&lt;bean id=&quot;dept&quot; class=&quot;com.atguigu.spring5.bean.Dept&quot;&gt;
+    &lt;property name=&quot;dname&quot; value=&quot;财务部&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><ul>
+<li>第二种写法
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh4oxpy06fj30nf0dwdip.jpg" alt="QQ截图20200726212230.png"></li>
+</ul>
+<pre><code>&lt;!--级联赋值--&gt;
+&lt;bean id=&quot;emp&quot; class=&quot;com.atguigu.spring5.bean.Emp&quot;&gt;
+    &lt;!--设置两个普通属性--&gt;
+    &lt;property name=&quot;ename&quot; value=&quot;lucy&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;gender&quot; value=&quot;女&quot;&gt;&lt;/property&gt;
+    &lt;!--级联赋值--&gt;
+    &lt;property name=&quot;dept&quot; ref=&quot;dept&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;dept.dname&quot; value=&quot;技术部&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+&lt;bean id=&quot;dept&quot; class=&quot;com.atguigu.spring5.bean.Dept&quot;&gt;
+    &lt;property name=&quot;dname&quot; value=&quot;财务部&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><h1 id="ioc-操作-bean-管理xml-注入集合属性">IOC 操作 Bean 管理（xml 注入集合属性）</h1>
+<ol>
+<li>注入数组类型属性</li>
+<li>注入 List 集合类型属性</li>
+<li>注入 Map 集合类型属性
+<ul>
+<li>创建类，定义数组、list、map、set 类型属性，生成对应 set 方法</li>
+</ul>
+<pre><code>public class Stu {
+//1 数组类型属性
+private String[] courses;
+//2 list 集合类型属性
+private List&lt;String&gt; list;
+//3 map 集合类型属性
+private Map&lt;String,String&gt; maps;
+//4 set 集合类型属性
+private Set&lt;String&gt; sets;
+public void setSets(Set&lt;String&gt; sets) {
+this.sets = sets;
+}
+public void setCourses(String[] courses) {
+this.courses = courses;
+}
+public void setList(List&lt;String&gt; list) {
+this.list = list;
+}
+public void setMaps(Map&lt;String, String&gt; maps) {
+this.maps = maps;
+}
+}
+</code></pre><ul>
+<li>在 spring 配置文件进行配置</li>
+</ul>
+</li>
+</ol>
+<pre><code>&lt;!--1 集合类型属性注入--&gt;
+&lt;bean id=&quot;stu&quot; class=&quot;com.atguigu.spring5.collectiontype.Stu&quot;&gt;
+    &lt;!--数组类型属性注入--&gt;
+    &lt;property name=&quot;courses&quot;&gt;
+        &lt;array&gt;
+            &lt;value&gt;java 课程&lt;/value&gt;
+            &lt;value&gt;数据库课程&lt;/value&gt;
+        &lt;/array&gt;
+    &lt;/property&gt;
+    &lt;!--list 类型属性注入--&gt;
+    &lt;property name=&quot;list&quot;&gt;
+        &lt;list&gt;
+            &lt;value&gt;张三&lt;/value&gt;
+            &lt;value&gt;小三&lt;/value&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;!--map 类型属性注入--&gt;
+    &lt;property name=&quot;maps&quot;&gt;
+        &lt;map&gt;
+            &lt;entry key=&quot;JAVA&quot; value=&quot;java&quot;&gt;&lt;/entry&gt;
+            &lt;entry key=&quot;PHP&quot; value=&quot;php&quot;&gt;&lt;/entry&gt;
+        &lt;/map&gt;
+    &lt;/property&gt;
+    &lt;!--set 类型属性注入--&gt;
+    &lt;property name=&quot;sets&quot;&gt;
+        &lt;set&gt;
+            &lt;value&gt;MySQL&lt;/value&gt;
+            &lt;value&gt;Redis&lt;/value&gt;
+        &lt;/set&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><ol start="4">
+<li>在集合里面设置对象类型值</li>
+</ol>
+<pre><code>&lt;!--创建多个 course 对象--&gt;
+&lt;bean id=&quot;course1&quot; class=&quot;com.atguigu.spring5.collectiontype.Course&quot;&gt;
+    &lt;property name=&quot;cname&quot; value=&quot;Spring5 框架&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+&lt;bean id=&quot;course2&quot; class=&quot;com.atguigu.spring5.collectiontype.Course&quot;&gt;
+    &lt;property name=&quot;cname&quot; value=&quot;MyBatis 框架&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+&lt;!--注入 list 集合类型，值是对象--&gt;
+&lt;property name=&quot;courseList&quot;&gt;
+    &lt;list&gt;
+        &lt;ref bean=&quot;course1&quot;&gt;&lt;/ref&gt;
+        &lt;ref bean=&quot;course2&quot;&gt;&lt;/ref&gt;
+    &lt;/list&gt;
+&lt;/property&gt;
+</code></pre><ol start="5">
+<li>把集合注入部分提取出来
+<ul>
+<li>在 spring 配置文件中引入名称空间 util</li>
+</ul>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+xmlns:util=&quot;http://www.springframework.org/schema/util&quot;
+xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd&quot;&gt;
+</code></pre><ul>
+<li>使用 util 标签完成 list 集合注入提取</li>
+</ul>
+<pre><code>&lt;!--1 提取 list 集合类型属性注入--&gt;
+&lt;util:list id=&quot;bookList&quot;&gt;
+    &lt;value&gt;易筋经&lt;/value&gt;
+    &lt;value&gt;九阴真经&lt;/value&gt;
+    &lt;value&gt;九阳神功&lt;/value&gt;
+&lt;/util:list&gt;
+&lt;!--2 提取 list 集合类型属性注入使用--&gt;
+&lt;bean id=&quot;book&quot; class=&quot;com.atguigu.spring5.collectiontype.Book&quot;&gt;
+    &lt;property name=&quot;list&quot; ref=&quot;bookList&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+</code></pre></li>
+</ol>
+<h1 id="ioc-操作-bean-管理factorybean">IOC 操作 Bean 管理（FactoryBean）</h1>
+<ul>
+<li><strong>Spring 有两种类型 bean,一种普通 bean，另外一种工厂bean（FactoryBean）</strong></li>
+<li>普通 bean：在配置文件中定义 bean 类型就是返回类型</li>
+<li>工厂 bean：在配置文件定义 bean 类型可以和返回类型不一样
+<ul>
+<li>第一步， 创建类，让这个类作为工厂 bean，实现接口 FactoryBean</li>
+<li>第二步，实现接口里面的方法，在实现的方法中定义返回的 bean 类型</li>
+</ul>
+</li>
+</ul>
+<pre><code>public class MyBean implements FactoryBean&lt;Course&gt; {
+    //定义返回 bean
+    @Override
+    public Course getObject() throws Exception {
+        Course course = new Course();
+        course.setCname(&quot;abc&quot;);
+        return course;
+    }
+    @Override
+    public Class&lt;?&gt; getObjectType() {
+        return null;
+    }
+    @Override
+    public boolean isSingleton() {
+        return false;
+    }
+}
+&lt;bean id=&quot;myBean&quot; class=&quot;com.atguigu.spring5.factorybean.MyBean&quot;&gt;
+&lt;/bean&gt;
+@Test
+public void test3() {
+    ApplicationContext context =
+    new ClassPathXmlApplicationContext(&quot;bean3.xml&quot;);
+    Course course = context.getBean(&quot;myBean&quot;, Course.class);
+    System.out.println(course);
+}
+</code></pre><h1 id="ioc-操作-bean-管理bean-作用域">IOC 操作 Bean 管理（bean 作用域）</h1>
+<ol>
+<li>在 Spring 里面，设置创建 bean 实例是单实例还是多实例</li>
+<li>在 Spring 里面，默认情况下，bean 是单实例对象
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh5nkgdf6rj30nh0brtcs.jpg" alt="QQ截图20200727172123.png"></li>
+<li>如何设置单实例还是多实例
+<ul>
+<li>在 spring 配置文件 bean 标签里面有属性（scope）用于设置单实例还是多实例</li>
+<li>scope 属性值
+<ul>
+<li>第一个值 默认值，singleton，表示是单实例对象</li>
+<li>第二个值 prototype，表示是多实例对象
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh5nlv1u5ij30n3067772.jpg" alt="QQ截图20200727172247.png"></li>
+</ul>
+</li>
+<li>singleton 和 prototype 区别
+<ul>
+<li>singleton 单实例，prototype 多实例</li>
+<li>设置 scope 值是 singleton 时候，加载 spring 配置文件时候就会创建单实例对象；设置 scope 值是 prototype 时候，不是在加载 spring 配置文件时候创建 对象，在调用getBean 方法时候创建多实例对象</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id="ioc-操作-bean-管理bean-生命周期">IOC 操作 Bean 管理（bean 生命周期）</h1>
+<h2 id="生命周期">生命周期</h2>
+<ul>
+<li>从对象创建到对象销毁的过程</li>
+</ul>
+<h2 id="bean-生命周期">bean 生命周期</h2>
+<ol>
+<li>通过构造器创建 bean 实例（无参数构造）</li>
+<li>为 bean 的属性设置值和对其他 bean 引用（调用 set 方法）</li>
+<li>调用 bean 的初始化的方法（需要进行配置初始化的方法）</li>
+<li>bean 可以使用了（对象获取到了）</li>
+<li>当容器关闭时候，调用 bean 的销毁的方法（需要进行配置销毁的方法）</li>
+</ol>
+<h2 id="演示-bean-生命周期">演示 bean 生命周期</h2>
+<pre><code>public class Orders {
+ //无参数构造
+    public Orders() {
+        System.out.println(&quot;第一步 执行无参数构造创建 bean 实例&quot;);
+    }
+    private String oname;
+    public void setOname(String oname) {
+        this.oname = oname;
+        System.out.println(&quot;第二步 调用 set 方法设置属性值&quot;);
+    }
+    //创建执行的初始化的方法
+    public void initMethod() {
+        System.out.println(&quot;第三步 执行初始化的方法&quot;);
+    }
+    //创建执行的销毁的方法
+    public void destroyMethod() {
+        System.out.println(&quot;第五步 执行销毁的方法&quot;);
+    }
+}
+</code></pre><pre><code>&lt;bean id=&quot;orders&quot; class=&quot;com.atguigu.spring5.bean.Orders&quot; initmethod=&quot;initMethod&quot; destroy-method=&quot;destroyMethod&quot;&gt;
+    &lt;property name=&quot;oname&quot; value=&quot;手机&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><pre><code> @Test
+ public void testBean3() {
+    // ApplicationContext context =
+    // new ClassPathXmlApplicationContext(&quot;bean4.xml&quot;);
+    ClassPathXmlApplicationContext context =
+    new ClassPathXmlApplicationContext(&quot;bean4.xml&quot;);
+    Orders orders = context.getBean(&quot;orders&quot;, Orders.class);
+    System.out.println(&quot;第四步 获取创建 bean 实例对象&quot;);
+    System.out.println(orders);
+    //手动让 bean 实例销毁
+    context.close();
+ }
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh5nriirdqj30k606q41c.jpg" alt="QQ截图20200727172812.png"></p>
+<h2 id="bean-的后置处理器bean-生命周期有七步">bean 的后置处理器，bean 生命周期有七步</h2>
+<ol>
+<li>通过构造器创建 bean 实例（无参数构造）</li>
+<li>为 bean 的属性设置值和对其他 bean 引用（调用 set 方法）</li>
+<li>把 bean 实例传递 bean 后置处理器的方法 postProcessBeforeInitialization</li>
+<li>调用 bean 的初始化的方法（需要进行配置初始化的方法）</li>
+<li>把 bean 实例传递 bean 后置处理器的方法 postProcessAfterInitialization</li>
+<li>bean 可以使用了（对象获取到了）</li>
+<li>当容器关闭时候，调用 bean 的销毁的方法（需要进行配置销毁的方法）</li>
+</ol>
+<h2 id="演示添加后置处理器效果">演示添加后置处理器效果</h2>
+<p>创建类，实现接口 BeanPostProcessor，创建后置处理器</p>
+<pre><code>public class MyBeanPost implements BeanPostProcessor {
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName)
+    throws BeansException {
+        System.out.println(&quot;在初始化之前执行的方法&quot;);
+        return bean;
+    }
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName)
+    throws BeansException {
+        System.out.println(&quot;在初始化之后执行的方法&quot;);
+        return bean;
+    }
+}
+</code></pre><pre><code>&lt;!--配置后置处理器--&gt;
+&lt;bean id=&quot;myBeanPost&quot; class=&quot;com.atguigu.spring5.bean.MyBeanPost&quot;&gt;&lt;/bean&gt;
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh5nuaplvdj30jv08w77z.jpg" alt="QQ截图20200727173053.png"></p>
+<hr>
+<h1 id="ioc-操作-bean-管理xml-自动装配">IOC 操作 Bean 管理（xml 自动装配）</h1>
+<h2 id="什么是自动装配">什么是自动装配</h2>
+<p>根据指定装配规则（属性名称或者属性类型），Spring 自动将匹配的属性值进行注入</p>
+<h2 id="演示自动装配过程">演示自动装配过程</h2>
+<ul>
+<li>根据属性名称自动注入</li>
+</ul>
+<pre><code>&lt;!--实现自动装配
+ bean 标签属性 autowire，配置自动装配
+ autowire 属性常用两个值：
+ byName 根据属性名称注入 ，注入值 bean 的 id 值和类属性名称一样
+ byType 根据属性类型注入
+--&gt;
+&lt;bean id=&quot;emp&quot; class=&quot;com.atguigu.spring5.autowire.Emp&quot; autowire=&quot;byName&quot;&gt;
+ &lt;!--&lt;property name=&quot;dept&quot; ref=&quot;dept&quot;&gt;&lt;/property&gt;--&gt;
+&lt;/bean&gt;
+&lt;bean id=&quot;dept&quot; class=&quot;com.atguigu.spring5.autowire.Dept&quot;&gt;&lt;/bean&gt;
+</code></pre><ul>
+<li>根据属性类型自动注入</li>
+</ul>
+<pre><code>&lt;!--实现自动装配
+ bean 标签属性 autowire，配置自动装配
+ autowire 属性常用两个值：
+ byName 根据属性名称注入 ，注入值 bean 的 id 值和类属性名称一样
+ byType 根据属性类型注入
+--&gt;
+&lt;bean id=&quot;emp&quot; class=&quot;com.atguigu.spring5.autowire.Emp&quot; autowire=&quot;byType&quot;&gt;
+ &lt;!--&lt;property name=&quot;dept&quot; ref=&quot;dept&quot;&gt;&lt;/property&gt;--&gt;
+&lt;/bean&gt;
+&lt;bean id=&quot;dept&quot; class=&quot;com.atguigu.spring5.autowire.Dept&quot;&gt;&lt;/bean&gt;
+</code></pre><h1 id="ioc-操作-bean-管理外部属性文件">IOC 操作 Bean 管理(外部属性文件)</h1>
+<h2 id="直接配置数据库信息">直接配置数据库信息</h2>
+<ul>
+<li>配置德鲁伊连接池</li>
+<li>引入德鲁伊连接池依赖 jar 包
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh5o3gkmgaj30b0069aad.jpg" alt="QQ截图20200727173940.png"></li>
+</ul>
+<pre><code>&lt;!--直接配置连接池--&gt; 
+&lt;bean id=&quot;dataSource&quot; class=&quot;com.alibaba.druid.pool.DruidDataSource&quot;&gt;
+    &lt;property name=&quot;driverClassName&quot; value=&quot;com.mysql.jdbc.Driver&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;url&quot; 
+    value=&quot;jdbc:mysql://localhost:3306/userDb&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;username&quot; value=&quot;root&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;password&quot; value=&quot;root&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><h2 id="引入外部属性文件配置数据库连接池">引入外部属性文件配置数据库连接池</h2>
+<ul>
+<li>创建外部属性文件，properties 格式文件，写数据库信息
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh5o69mlfzj30mh06pmyn.jpg" alt="QQ截图20200727174222.png"></li>
+<li>把外部 properties 属性文件引入到 spring 配置文件中, 引入 context 名称空间</li>
+</ul>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot; 
+ xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+ xmlns:p=&quot;http://www.springframework.org/schema/p&quot; 
+ xmlns:util=&quot;http://www.springframework.org/schema/util&quot; 
+ xmlns:context=&quot;http://www.springframework.org/schema/context&quot; 
+ xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans.xsd 
+ http://www.springframework.org/schema/util 
+http://www.springframework.org/schema/util/spring-util.xsd 
+ http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt; 
+</code></pre><p>在 spring 配置文件使用标签引入外部属性文件</p>
+<pre><code>&lt;!--引入外部属性文件--&gt; &lt;context:property-placeholder location=&quot;classpath:jdbc.properties&quot;/&gt;
+&lt;!--配置连接池--&gt; 
+&lt;bean id=&quot;dataSource&quot; class=&quot;com.alibaba.druid.pool.DruidDataSource&quot;&gt;
+    &lt;property name=&quot;driverClassName&quot; value=&quot;${prop.driverClass}&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;url&quot; value=&quot;${prop.url}&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;username&quot; value=&quot;${prop.userName}&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;password&quot; value=&quot;${prop.password}&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><h1 id="ioc-操作-bean-管理基于注解方式">IOC 操作 Bean 管理(基于注解方式)</h1>
+<h2 id="什么是注解">什么是注解</h2>
+<ol>
+<li>注解是代码特殊标记，格式：@注解名称(属性名称=属性值, 属性名称=属性值..)</li>
+<li>使用注解，注解作用在类上面，方法上面，属性上面</li>
+<li>使用注解目的：简化 xml 配置</li>
+</ol>
+<h2 id="spring-针对-bean-管理中创建对象提供注解">Spring 针对 Bean 管理中创建对象提供注解</h2>
+<p>（1）@Component<br>
+（2）@Service<br>
+（3）@Controller<br>
+（4）@Repository</p>
+<p>上面四个注解功能是一样的，都可以用来创建 bean 实例</p>
+<h2 id="基于注解方式实现对象创建">基于注解方式实现对象创建</h2>
+<ul>
+<li>第一步 引入依赖
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh5w07jiwqj30at0190so.jpg" alt="QQ截图20200727221321.png"></li>
+<li>第二步 开启组件扫描</li>
+</ul>
+<pre><code>&lt;!--开启组件扫描
+    1 如果扫描多个包，多个包使用逗号隔开
+    2 扫描包上层目录
+--&gt;
+&lt;context:component-scan base-package=&quot;com.atguigu&quot;&gt;&lt;/context:component-scan&gt;
+</code></pre><ul>
+<li>第三步 创建类，在类上面添加创建对象注解</li>
+</ul>
+<pre><code>//在注解里面 value 属性值可以省略不写，
+//默认值是类名称，首字母小写
+//UserService -- userService
+@Component(value = &quot;userService&quot;) //&lt;bean id=&quot;userService&quot; class=&quot;..&quot;/&gt;
+public class UserService {
+    public void add() {
+        System.out.println(&quot;service add.......&quot;);
+    } 
+}
+</code></pre><h2 id="开启组件扫描细节配置">开启组件扫描细节配置</h2>
+<pre><code>&lt;!--示例 1
+    use-default-filters=&quot;false&quot; 表示现在不使用默认 filter，自己配置 filter
+    context:include-filter ，设置扫描哪些内容
+--&gt;
+&lt;context:component-scan base-package=&quot;com.atguigu&quot; use-default-filters=&quot;false&quot;&gt;
+    &lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;
+&lt;/context:component-scan&gt;
+&lt;!--示例 2
+    下面配置扫描包所有内容
+    context:exclude-filter： 设置哪些内容不进行扫描
+--&gt;
+&lt;context:component-scan base-package=&quot;com.atguigu&quot;&gt;
+    &lt;context:exclude-filter type=&quot;annotation&quot; 
+ 
+expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;
+&lt;/context:component-scan&gt;
+</code></pre><h2 id="基于注解方式实现属性注入">基于注解方式实现属性注入</h2>
+<ul>
+<li><strong>@Autowired：根据属性类型进行自动装配</strong>
+<ul>
+<li>第一步 把 service 和 dao 对象创建，在 service 和 dao 类添加创建对象注解</li>
+<li>第二步 在 service 注入 dao 对象，在 service 类添加 dao 类型属性，在属性上面使用注解</li>
+</ul>
+</li>
+</ul>
+<pre><code>@Service
+public class UserService {
+    //定义 dao 类型属性
+    //不需要添加 set 方法
+    //添加注入属性注解
+    @Autowired 
+    private UserDao userDao;
+    public void add() {
+        System.out.println(&quot;service add.......&quot;);
+        userDao.add();
+    } 
+}
+</code></pre><ul>
+<li><strong>@Qualifier：根据名称进行注入</strong>
+<ul>
+<li>这个@Qualifier 注解的使用，和上面@Autowired 一起使用</li>
+</ul>
+</li>
+</ul>
+<pre><code>//定义 dao 类型属性
+//不需要添加 set 方法
+//添加注入属性注解
+@Autowired //根据类型进行注入
+@Qualifier(value = &quot;userDaoImpl1&quot;) //根据名称进行注入
+private UserDao userDao;
+</code></pre><ul>
+<li><strong>@Resource：可以根据类型注入，可以根据名称注入</strong></li>
+</ul>
+<pre><code>//@Resource //根据类型进行注入
+@Resource(name = &quot;userDaoImpl1&quot;) //根据名称进行注入
+private UserDao userDao;
+</code></pre><ul>
+<li><strong>@Value：注入普通类型属性</strong></li>
+</ul>
+<pre><code>@Value(value = &quot;abc&quot;)
+private String name;
+</code></pre><h1 id="完全注解开发">完全注解开发</h1>
+<ul>
+<li>创建配置类，替代 xml 配置文件</li>
+</ul>
+<pre><code>@Configuration //作为配置类，替代 xml 配置文件
+@ComponentScan(basePackages = {&quot;com.atguigu&quot;})
+public class SpringConfig {
+}
+</code></pre><ul>
+<li>编写测试类</li>
+</ul>
+<pre><code>@Test
+public void testService2() {
+    //加载配置类
+    ApplicationContext context
+    = new AnnotationConfigApplicationContext(SpringConfig.class);
+    UserService userService = context.getBean(&quot;userService&quot;, 
+    UserService.class);
+    System.out.println(userService);
+    userService.add();
+}
+</code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/621spring%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/" data-toggle="tooltip" data-placement="top" title="1、Spring框架概述(Spring)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/623aop/" data-toggle="tooltip" data-placement="top" title="3、AOP(Spring)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

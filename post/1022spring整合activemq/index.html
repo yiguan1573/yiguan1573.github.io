@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="6、Spring整合ActiveMQ（ActiveMQ）" />
+    <meta property="og:title" content="6、Spring整合ActiveMQ（ActiveMQ）" />
+    <meta property="twitter:title" content="6、Spring整合ActiveMQ（ActiveMQ）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>6、Spring整合ActiveMQ（ActiveMQ）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/1022spring%E6%95%B4%E5%90%88activemq/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/activemq" title="ActiveMQ">
+                            ActiveMQ
+                        </a>
+                        
+                    </div>
+                    <h1>6、Spring整合ActiveMQ（ActiveMQ）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Monday, May 2, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#pomxml添加依赖">pom.xml添加依赖</a></li>
+    <li><a href="#spring的activemq配置文件">Spring的ActiveMQ配置文件</a></li>
+    <li><a href="#队列生产者">队列生产者</a></li>
+    <li><a href="#队列消费者">队列消费者</a></li>
+    <li><a href="#主题生产者和消费者">主题生产者和消费者</a></li>
+    <li><a href="#配置消费者的监听类">配置消费者的监听类</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="pomxml添加依赖">pom.xml添加依赖</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
+   <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> activemq核心依赖包  </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.activemq<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>activemq-all<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>5.10.0<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">  嵌入式activemq的broker所需要的依赖包   </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>com.fasterxml.jackson.core<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>jackson-databind<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.10.1<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> activemq连接池 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.activemq<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>activemq-pool<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>5.15.10<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> spring支持jms的包 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-jms<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>5.2.1.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">spring相关依赖包</span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.xbean<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>xbean-spring<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.15<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-aop<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>5.2.1.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> Spring核心依赖 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.3.23.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-context<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.3.23.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-aop<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.3.23.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-orm<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.3.23.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;/dependencies&gt;</span>
+</code></pre></div><h2 id="spring的activemq配置文件">Spring的ActiveMQ配置文件</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
+       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+       <span style="color:#a6e22e">xmlns:context=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/context&#34;</span>
+       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">  开启包的自动扫描  </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;context:component-scan</span> <span style="color:#a6e22e">base-package=</span><span style="color:#e6db74">&#34;com.activemq.demo&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">  配置生产者  </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;connectionFactory&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.apache.activemq.pool.PooledConnectionFactory&#34;</span> <span style="color:#a6e22e">destroy-method=</span><span style="color:#e6db74">&#34;stop&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;connectionFactory&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">      正真可以生产Connection的ConnectionFactory,由对应的JMS服务商提供      </span><span style="color:#75715e">--&gt;</span>
+            <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.apache.activemq.spring.ActiveMQConnectionFactory&#34;</span><span style="color:#f92672">&gt;</span>
+                <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;brokerURL&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;tcp://192.168.10.130:61616&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;/bean&gt;</span>
+        <span style="color:#f92672">&lt;/property&gt;</span>
+        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;maxConnections&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;100&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/bean&gt;</span>
+
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">  这个是队列目的地,点对点的Queue  </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;destinationQueue&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.apache.activemq.command.ActiveMQQueue&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">    通过构造注入Queue名    </span><span style="color:#75715e">--&gt;</span>
+        <span style="color:#f92672">&lt;constructor-arg</span> <span style="color:#a6e22e">index=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;spring-active-queue&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/bean&gt;</span>
+
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">  这个是队列目的地,  发布订阅的主题Topic</span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;destinationTopic&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.apache.activemq.command.ActiveMQTopic&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;constructor-arg</span> <span style="color:#a6e22e">index=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;spring-active-topic&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/bean&gt;</span>
+
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">  Spring提供的JMS工具类,他可以进行消息发送,接收等  </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;jmsTemplate&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.jms.core.JmsTemplate&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">    传入连接工厂    </span><span style="color:#75715e">--&gt;</span>
+        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;connectionFactory&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;connectionFactory&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">    传入目的地    </span><span style="color:#75715e">--&gt;</span>
+        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;defaultDestination&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;destinationQueue&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">    消息自动转换器    </span><span style="color:#75715e">--&gt;</span>
+        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;messageConverter&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.jms.support.converter.SimpleMessageConverter&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#f92672">&lt;/bean&gt;</span>
+<span style="color:#f92672">&lt;/beans&gt;</span>
+</code></pre></div><h2 id="队列生产者">队列生产者</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.activemq.demo.spring<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> org.apache.xbean.spring.context.ClassPathXmlApplicationContext<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.beans.factory.annotation.Autowired<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.context.ApplicationContext<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.jms.core.JmsTemplate<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.jms.core.MessageCreator<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.springframework.stereotype.Service<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> javax.jms.JMSException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.Message<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.Session<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@Service</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpringProduce</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Autowired</span>
+    <span style="color:#66d9ef">private</span> JmsTemplate jmsTemplate<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        ApplicationContext applicationContext <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ClassPathXmlApplicationContext<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;spring-activemq.xml&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        SpringProduce springMQ_producer <span style="color:#f92672">=</span> applicationContext<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>SpringProduce<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        springMQ_producer<span style="color:#f92672">.</span><span style="color:#a6e22e">jmsTemplate</span><span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>
+                <span style="color:#66d9ef">new</span> MessageCreator<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">public</span> Message <span style="color:#a6e22e">createMessage</span><span style="color:#f92672">(</span>Session session<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException <span style="color:#f92672">{</span>
+                        <span style="color:#66d9ef">return</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createTextMessage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;***Spring和ActiveMQ的整合case111.....&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">}</span>
+        <span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;********send task over&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="队列消费者">队列消费者</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h213rk0jzbj30r50a03z1.jpg" alt="QQ截图20220508170058.jpg"></p>
+<h2 id="主题生产者和消费者">主题生产者和消费者</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h213sf7on3j30pm0aoq3y.jpg" alt="QQ截图20220508170150.jpg"></p>
+<h2 id="配置消费者的监听类">配置消费者的监听类</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h213tbonf5j30p70r40uq.jpg" alt="QQ截图20220508170244.jpg"></p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1021activemq%E7%9A%84broker/" data-toggle="tooltip" data-placement="top" title="5、ActiveMQ的broker（ActiveMQ）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1023springboot%E6%95%B4%E5%90%88activemq/" data-toggle="tooltip" data-placement="top" title="7、SpringBoot整合ActiveMQ（ActiveMQ）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

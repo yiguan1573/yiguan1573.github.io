@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="4、Yarn（Hadoop）" />
+    <meta property="og:title" content="4、Yarn（Hadoop）" />
+    <meta property="twitter:title" content="4、Yarn（Hadoop）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>4、Yarn（Hadoop）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/924yarn/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/hadoop" title="Hadoop">
+                            Hadoop
+                        </a>
+                        
+                    </div>
+                    <h1>4、Yarn（Hadoop）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Saturday, October 23, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#yarn调度器">Yarn调度器</a>
+      <ul>
+        <li><a href="#yarn基础架构">Yarn基础架构</a></li>
+        <li><a href="#yarn工作机制">Yarn工作机制</a></li>
+        <li><a href="#作业提交过程">作业提交过程</a></li>
+        <li><a href="#yarn调度器和调度算法">Yarn调度器和调度算法</a></li>
+        <li><a href="#yarn常用命令">Yarn常用命令</a></li>
+        <li><a href="#yarn生产环境核心参数">Yarn生产环境核心参数</a></li>
+      </ul>
+    </li>
+    <li><a href="#yarn案例实操">yarn案例实操</a>
+      <ul>
+        <li><a href="#yarn生产环境核心参数配置案例">Yarn生产环境核心参数配置案例</a></li>
+        <li><a href="#容量调度器多队列提交案例">容量调度器多队列提交案例</a></li>
+        <li><a href="#公平调度器案例">公平调度器案例</a></li>
+        <li><a href="#yarn的tool接口案例">Yarn的Tool接口案例</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="yarn调度器">Yarn调度器</h2>
+<ul>
+<li><strong>Yarn是一个资源调度平台，负责为运算程序提供服务器运算资源，相当于一个分布式的操作系统平台，而MapReduce等运算程序则相当于运行于操作系统之上的应用程序。</strong></li>
+</ul>
+<h3 id="yarn基础架构">Yarn基础架构</h3>
+<ul>
+<li>
+<p>YARN主要由ResourceManager、NodeManager、ApplicationMaster和Container等组件构成。</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi8f2417tj30o70bwwji.jpg" alt="QQ截图20211117163434.png"></p>
+</li>
+</ul>
+<h3 id="yarn工作机制">Yarn工作机制</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi8g3btclj30p20bmn1x.jpg" alt="QQ截图20211117163534.png"></p>
+<p>​	（1）MR程序提交到客户端所在的节点。</p>
+<p>​	（2）YarnRunner向ResourceManager申请一个Application。</p>
+<p>​	（3）RM将该应用程序的资源路径返回给YarnRunner。</p>
+<p>​	（4）该程序将运行所需资源提交到HDFS上。</p>
+<p>​	（5）程序资源提交完毕后，申请运行mrAppMaster。</p>
+<p>​	（6）RM将用户的请求初始化成一个Task。</p>
+<p>​	（7）其中一个NodeManager领取到Task任务。</p>
+<p>​	（8）该NodeManager创建容器Container，并产生MRAppmaster。</p>
+<p>​	（9）Container从HDFS上拷贝资源到本地。</p>
+<p>​	（10）MRAppmaster向RM 申请运行MapTask资源。</p>
+<p>​	（11）RM将运行MapTask任务分配给另外两个NodeManager，另两个NodeManager分别领取任务并创建容器。</p>
+<p>​	（12）MR向两个接收到任务的NodeManager发送程序启动脚本，这两个NodeManager分别启动MapTask，MapTask对数据分区排序。</p>
+<p>​	（13）MrAppMaster等待所有MapTask运行完毕后，向RM申请容器，运行ReduceTask。</p>
+<p>​	（14）ReduceTask向MapTask获取相应分区的数据。</p>
+<p>​	（15）程序运行完毕后，MR会向RM申请注销自己。</p>
+<h3 id="作业提交过程">作业提交过程</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi8luq8yfj30nt0bnq7k.jpg" alt="QQ截图20211117164108.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi8mmww5dj30ob0qdk37.jpg" alt="QQ截图20211117164151.png"></p>
+<p>作业提交全过程详解</p>
+<p>（1）作业提交</p>
+<p>​	第1步：Client调用job.waitForCompletion方法，向整个集群提交MapReduce作业。</p>
+<p>​	第2步：Client向RM申请一个作业id。</p>
+<p>​	第3步：RM给Client返回该job资源的提交路径和作业id。</p>
+<p>​	第4步：Client提交jar包、切片信息和配置文件到指定的资源提交路径。</p>
+<p>​	第5步：Client提交完资源后，向RM申请运行MrAppMaster。</p>
+<p>（2）作业初始化</p>
+<p>​	第6步：当RM收到Client的请求后，将该job添加到容量调度器中。</p>
+<p>​	第7步：某一个空闲的NM领取到该Job。</p>
+<p>​	第8步：该NM创建Container，并产生MRAppmaster。</p>
+<p>​	第9步：下载Client提交的资源到本地。</p>
+<p>（3）任务分配</p>
+<p>​	第10步：MrAppMaster向RM申请运行多个MapTask任务资源。</p>
+<p>​	第11步：RM将运行MapTask任务分配给另外两个NodeManager，另两个NodeManager分别领取任务并创建容器。</p>
+<p>（4）任务运行</p>
+<p>​	第12步：MR向两个接收到任务的NodeManager发送程序启动脚本，这两个NodeManager分别启动MapTask，MapTask对数据分区排序。</p>
+<p>​	第13步：MrAppMaster等待所有MapTask运行完毕后，向RM申请容器，运行ReduceTask。</p>
+<p>​	第14步：ReduceTask向MapTask获取相应分区的数据。</p>
+<p>​	第15步：程序运行完毕后，MR会向RM申请注销自己。</p>
+<p>（5）进度和状态更新</p>
+<p>​	YARN中的任务将其进度和状态(包括counter)返回给应用管理器, 客户端每秒(通过mapreduce.client.progressmonitor.pollinterval设置)向应用管理器请求进度更新, 展示给用户。</p>
+<p>（6）作业完成</p>
+<p>​	除了向应用管理器请求作业进度外, 客户端每5秒都会通过调用waitForCompletion()来检查作业是否完成。时间间隔可以通过mapreduce.client.completion.pollinterval来设置。作业完成之后, 应用管理器和Container会清理工作状态。作业的信息会被作业历史服务器存储以备之后用户核查。</p>
+<h3 id="yarn调度器和调度算法">Yarn调度器和调度算法</h3>
+<ul>
+<li>
+<p>目前，Hadoop作业调度器主要有三种：<strong>FIFO、容量（Capacity Scheduler）和公平（Fair Scheduler）</strong>。Apache Hadoop3.1.3默认的资源调度器是Capacity Scheduler。CDH框架默认调度器是Fair Scheduler。</p>
+</li>
+<li>
+<p>具体配置：yarn-default.xml文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>The class to use as the resource scheduler.<span style="color:#f92672">&lt;/description&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.resourcemanager.scheduler.class<span style="color:#f92672">&lt;/name&gt;</span>
+<span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler<span style="color:#f92672">&lt;/value&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+</code></pre></div></li>
+<li>
+<p><strong>先进先出调度器（FIFO）</strong></p>
+<ul>
+<li>FIFO调度器（First In First Out）：单队列，根据提交作业的先后顺序，先来先服务。</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi8shdk97j30n40e1ad9.jpg" alt="QQ截图20211117164729.png"></p>
+</li>
+<li>
+<p><strong>容量调度器（Capacity Scheduler）</strong></p>
+<ul>
+<li>Capacity Scheduler是Yahoo开发的多用户调度器。</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi8txj45nj30n00brjvb.jpg" alt="QQ截图20211117164838.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi8u49e7ej30nl0bw77u.jpg" alt="QQ截图20211117164852.png"></p>
+</li>
+<li>
+<p><strong>公平调度器（Fair Scheduler）</strong></p>
+<ul>
+<li>
+<p>Fair Schedulere是Facebook开发的多用户调度器。</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi90vzttdj30n40bygql.jpg" alt="QQ截图20211117165343.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi917w7b9j30pf0r3qb6.jpg" alt="QQ截图20211117165440.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi91fgu5dj30nl0qxgvv.jpg" alt="QQ截图20211117165452.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwi91mn7q1j30nj09btb2.jpg" alt="QQ截图20211117165522.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="yarn常用命令">Yarn常用命令</h3>
+<ul>
+<li>
+<p>Yarn状态的查询，除了可以在hadoop103:8088页面查看外，还可以通过命令操作。常见的命令操作如下所示：</p>
+<p>需求：执行WordCount案例，并用Yarn命令查看任务运行情况。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ myhadoop.sh start
+  
+<span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar wordcount /input /output
+</code></pre></div></li>
+<li>
+<p>yarn application查看任务</p>
+<ul>
+<li>
+<p>列出所有Application：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn application -list
+2021-02-06 10:21:19,238 INFO client.RMProxy: Connecting to ResourceManager at hadoop103/192.168.10.103:8032
+Total number of applications <span style="color:#f92672">(</span>application-types: <span style="color:#f92672">[</span><span style="color:#f92672">]</span>, states: <span style="color:#f92672">[</span>SUBMITTED, ACCEPTED, RUNNING<span style="color:#f92672">]</span> and tags: <span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span>:0
+                Application-Id	    Application-Name	    Application-Type	      User	     Queue	             State	       Final-State	       Progress	                       Tracking-URL
+</code></pre></div></li>
+<li>
+<p>根据Application状态过滤：yarn application -list -appStates （所有状态：ALL、NEW、NEW_SAVING、SUBMITTED、ACCEPTED、RUNNING、FINISHED、FAILED、KILLED）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn application -list -appStates FINISHED
+2021-02-06 10:22:20,029 INFO client.RMProxy: Connecting to ResourceManager at hadoop103/192.168.10.103:8032
+Total number of applications <span style="color:#f92672">(</span>application-types: <span style="color:#f92672">[</span><span style="color:#f92672">]</span>, states: <span style="color:#f92672">[</span>FINISHED<span style="color:#f92672">]</span> and tags: <span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span>:1
+                Application-Id	    Application-Name	    Application-Type	      User	     Queue	             State	       Final-State	       Progress	                       Tracking-URL
+application_1612577921195_0001	          word count	           MAPREDUCE	   atguigu	   default	          FINISHED	         SUCCEEDED	           100%	http://hadoop102:19888/jobhistory/job/job_1612577921195_0001
+</code></pre></div></li>
+<li>
+<p>Kill掉Application：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn application -kill application_1612577921195_0001
+2021-02-06 10:23:48,530 INFO client.RMProxy: Connecting to ResourceManager at hadoop103/192.168.10.103:8032
+Application application_1612577921195_0001 has already finished
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>yarn logs查看日志</p>
+<ul>
+<li>
+<p>查询Application日志：yarn logs -applicationId &lt;ApplicationId&gt;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn logs -applicationId application_1612577921195_0001
+</code></pre></div></li>
+<li>
+<p>查询Container日志：yarn logs -applicationId &lt;ApplicationId&gt; -containerId &lt;ContainerId&gt;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn logs -applicationId application_1612577921195_0001 -containerId container_1612577921195_0001_01_000001
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>yarn applicationattempt查看尝试运行的任务</p>
+<ul>
+<li>
+<p>列出所有Application尝试的列表：yarn applicationattempt -list &lt;ApplicationId&gt;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn applicationattempt -list application_1612577921195_0001
+2021-02-06 10:26:54,195 INFO client.RMProxy: Connecting to ResourceManager at hadoop103/192.168.10.103:8032
+Total number of application attempts :1
+         ApplicationAttempt-Id	               State	                    AM-Container-Id	                       Tracking-URL
+appattempt_1612577921195_0001_000001	            FINISHED	container_1612577921195_0001_01_000001	http://hadoop103:8088/proxy/application_1612577921195_0001/
+</code></pre></div></li>
+<li>
+<p>打印ApplicationAttemp状态：yarn applicationattempt -status &lt;ApplicationAttemptId&gt;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn applicationattempt -status appattempt_1612577921195_0001_000001
+2021-02-06 10:27:55,896 INFO client.RMProxy: Connecting to ResourceManager at hadoop103/192.168.10.103:8032
+Application Attempt Report : 
+    ApplicationAttempt-Id : appattempt_1612577921195_0001_000001
+    State : FINISHED
+    AMContainer : container_1612577921195_0001_01_000001
+    Tracking-URL : http://hadoop103:8088/proxy/application_1612577921195_0001/
+    RPC Port : 34756
+    AM Host : hadoop104
+    Diagnostics :
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>yarn container查看容器</p>
+<ul>
+<li>
+<p>列出所有Container：yarn container -list &lt;ApplicationAttemptId&gt;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn container -list appattempt_1612577921195_0001_000001
+2021-02-06 10:28:41,396 INFO client.RMProxy: Connecting to ResourceManager at hadoop103/192.168.10.103:8032
+Total number of containers :0
+                  Container-Id	          Start Time	         Finish Time	               State	                Host	   Node Http Address
+</code></pre></div></li>
+<li>
+<p>打印Container状态：	yarn container -status &lt;ContainerId&gt;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn container -status container_1612577921195_0001_01_000001
+2021-02-06 10:29:58,554 INFO client.RMProxy: Connecting to ResourceManager at hadoop103/192.168.10.103:8032
+Container with id <span style="color:#e6db74">&#39;container_1612577921195_0001_01_000001&#39;</span> doesn<span style="color:#960050;background-color:#1e0010">&#39;</span>t exist in RM or Timeline Server.
+</code></pre></div><p><strong>注：只有在任务跑的途中才能看到container的状态</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>yarn node查看节点状态</p>
+<ul>
+<li>
+<p>列出所有节点：yarn node -list -all</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn node -list -all
+2021-02-06 10:31:36,962 INFO client.RMProxy: Connecting to ResourceManager at hadoop103/192.168.10.103:8032
+Total Nodes:3
+         Node-Id	     Node-State	Node-Http-Address	Number-of-Running-Containers
+ hadoop103:38168	        RUNNING	   hadoop103:8042	                           0
+ hadoop102:42012	        RUNNING	   hadoop102:8042	                           0
+ hadoop104:39702	        RUNNING	   hadoop104:8042	                           0
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>yarn rmadmin更新配置</p>
+<ul>
+<li>
+<p>加载队列配置：yarn rmadmin -refreshQueues</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn rmadmin -refreshQueues
+2021-02-06 10:32:03,331 INFO client.RMProxy: Connecting to ResourceManager at hadoop103/192.168.10.103:8033
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>yarn queue查看队列</p>
+<ul>
+<li>
+<p>打印队列信息：yarn queue -status &lt;QueueName&gt;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn queue -status default
+2021-02-06 10:32:33,403 INFO client.RMProxy: Connecting to ResourceManager at hadoop103/192.168.10.103:8032
+Queue Information : 
+Queue Name : default
+    State : RUNNING
+    Capacity : 100.0%
+    Current Capacity : .0%
+    Maximum Capacity : 100.0%
+    Default Node Label expression : &lt;DEFAULT_PARTITION&gt;
+    Accessible Node Labels : *
+    Preemption : disabled
+    Intra-queue Preemption : disabled
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="yarn生产环境核心参数">Yarn生产环境核心参数</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiag7oyg7j30nx0cbagz.jpg" alt="QQ截图20211117174000.png"></p>
+<h2 id="yarn案例实操">yarn案例实操</h2>
+<h3 id="yarn生产环境核心参数配置案例">Yarn生产环境核心参数配置案例</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiagusidrj30pf0i5gwt.jpg" alt="QQ截图20211117174303.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiah3lil1j30n81291kx.jpg" alt="QQ截图20211117174340.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiahdkpcvj30nf10wkg9.jpg" alt="QQ截图20211117174402.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiahodcw3j30pl0orn7b.jpg" alt="QQ截图20211117174424.png"></p>
+<h3 id="容量调度器多队列提交案例">容量调度器多队列提交案例</h3>
+<ul>
+<li>
+<p>在生产环境怎么创建队列？</p>
+<ul>
+<li>
+<p>调度器默认就1个default队列，不能满足生产要求。</p>
+</li>
+<li>
+<p>按照框架：hive /spark/ flink 每个框架的任务放入指定的队列（企业用的不是特别多）</p>
+</li>
+<li>
+<p>按照业务模块：登录注册、购物车、下单、业务部门1、业务部门2</p>
+</li>
+</ul>
+</li>
+<li>
+<p>创建多队列的好处？</p>
+<p>（1）因为担心员工不小心，写递归死循环代码，把所有资源全部耗尽。</p>
+<p>（2）实现任务的<strong>降级</strong>使用，特殊时期保证重要的任务队列资源充足。</p>
+<p>业务部门1（重要）=》业务部门2（比较重要）=》下单（一般）=》购物车（一般）=》登录注册（次要）</p>
+</li>
+<li>
+<p>需求</p>
+<ul>
+<li>需求1：default队列占总内存的40%，最大资源容量占总资源60%，hive队列占总内存的60%，最大资源容量占总资源80%。</li>
+<li>需求2：配置队列优先级</li>
+</ul>
+</li>
+<li>
+<p><strong>配置多队列的容量调度器</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiaodywzvj30ow0sedsz.jpg" alt="QQ截图20211117175156.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiaolgvb5j30ov0y4h2g.jpg" alt="QQ截图20211117175225.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiaov9uhgj30od0aujwl.jpg" alt="QQ截图20211117175244.png"></p>
+</li>
+<li>
+<p><strong>向Hive队列提交任务</strong></p>
+<ul>
+<li>
+<p>hadoop jar的方式</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar wordcount -D mapreduce.job.queuename<span style="color:#f92672">=</span>hive /input /output
+</code></pre></div><p><strong>注: -D表示运行时改变参数值</strong></p>
+</li>
+<li>
+<p>打jar包的方式</p>
+<p>默认的任务提交都是提交到default队列的。如果希望向其他队列提交任务，需要在Driver中声明：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WcDrvier</span> <span style="color:#f92672">{</span>
+    
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> ClassNotFoundException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+    
+        Configuration conf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    
+        conf<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mapreduce.job.queuename&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;hive&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    
+        <span style="color:#75715e">//1. 获取一个Job实例
+</span><span style="color:#75715e"></span>            
+        Job job <span style="color:#f92672">=</span> Job<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>conf<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    
+        <span style="color:#960050;background-color:#1e0010">。</span><span style="color:#960050;background-color:#1e0010">。</span><span style="color:#960050;background-color:#1e0010">。</span> <span style="color:#960050;background-color:#1e0010">。</span><span style="color:#960050;background-color:#1e0010">。</span><span style="color:#960050;background-color:#1e0010">。</span>
+    
+        <span style="color:#75715e">//6. 提交Job
+</span><span style="color:#75715e"></span>                
+        <span style="color:#66d9ef">boolean</span> b <span style="color:#f92672">=</span> job<span style="color:#f92672">.</span><span style="color:#a6e22e">waitForCompletion</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>b <span style="color:#f92672">?</span> 0 <span style="color:#f92672">:</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>任务优先级</p>
+<ul>
+<li>
+<p>容量调度器，支持任务优先级的配置，在资源紧张时，优先级高的任务将优先获取资源。默认情况，Yarn将所有任务的优先级限制为0，若想使用任务的优先级功能，须开放该限制。</p>
+</li>
+<li>
+<p>修改yarn-site.xml文件，增加以下参数</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.cluster.max-application-priority<span style="color:#f92672">&lt;/name&gt;</span>
+    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>5<span style="color:#f92672">&lt;/value&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+</code></pre></div></li>
+<li>
+<p>分发配置，并重启Yarn</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop<span style="color:#f92672">]</span>$ xsync yarn-site.xml
+<span style="color:#f92672">[</span>atguigu@hadoop103 hadoop-3.1.3<span style="color:#f92672">]</span>$ sbin/stop-yarn.sh
+<span style="color:#f92672">[</span>atguigu@hadoop103 hadoop-3.1.3<span style="color:#f92672">]</span>$ sbin/start-yarn.sh
+</code></pre></div></li>
+<li>
+<p><strong>模拟资源紧张环境，可连续提交以下任务，直到新提交的任务申请不到资源为止。</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop jar /opt/module/hadoop-3.1.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar pi <span style="color:#ae81ff">5</span> 2000000
+</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiau686zkj30n2060tay.jpg" alt="QQ截图20211117175817.png"></p>
+</li>
+<li>
+<p>再次重新提交优先级高的任务</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop jar /opt/module/hadoop-3.1.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar pi  -D mapreduce.job.priority<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span> <span style="color:#ae81ff">5</span> 2000000
+</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiavcp33tj30ng07xjuk.jpg" alt="QQ截图20211117175910.png"></p>
+</li>
+<li>
+<p>也可以通过以下命令修改正在执行的任务的优先级。</p>
+<p>yarn application -appID &lt;ApplicationID&gt; -updatePriority 优先级</p>
+<pre><code>[atguigu@hadoop102 hadoop-3.1.3]$ yarn application -appID application_1611133087930_0009 -updatePriority 5
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h3 id="公平调度器案例">公平调度器案例</h3>
+<ul>
+<li>
+<p>需求</p>
+<ul>
+<li>
+<p>创建两个队列，分别是test和atguigu（以用户所属组命名）。期望实现以下效果：<strong>若用户提交任务时指定队列，则任务提交到指定队列运行</strong>；若未指定队列，test用户提交的任务到<strong>root.group.test队列运行</strong>，atguigu提交的任务到root.group.atguigu队列运行（注：group为用户所属组）。</p>
+</li>
+<li>
+<p>公平调度器的配置涉及到两个文件，一个是yarn-site.xml，另一个是公平调度器队列分配文件fair-scheduler.xml（文件名可自定义）。</p>
+</li>
+<li>
+<p>配置文件参考资料：</p>
+<p><a href="https://hadoop.apache.org/docs/r3.1.3/hadoop-yarn/hadoop-yarn-site/FairScheduler.html">https://hadoop.apache.org/docs/r3.1.3/hadoop-yarn/hadoop-yarn-site/FairScheduler.html</a></p>
+<p>任务队列放置规则参考资料：</p>
+<p><a href="https://blog.cloudera.com/untangling-apache-hadoop-yarn-part-4-fair-scheduler-queue-basics/">https://blog.cloudera.com/untangling-apache-hadoop-yarn-part-4-fair-scheduler-queue-basics/</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>配置多队列的公平调度器</p>
+<ul>
+<li>
+<p>修改yarn-site.xml文件，加入以下参数</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.resourcemanager.scheduler.class<span style="color:#f92672">&lt;/name&gt;</span>
+              <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>配置使用公平调度器<span style="color:#f92672">&lt;/description&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+    
+<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.scheduler.fair.allocation.file<span style="color:#f92672">&lt;/name&gt;</span>
+    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>/opt/module/hadoop-3.1.3/etc/hadoop/fair-scheduler.xml<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>指明公平调度器队列分配配置文件<span style="color:#f92672">&lt;/description&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+    
+<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.scheduler.fair.preemption<span style="color:#f92672">&lt;/name&gt;</span>
+    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>false<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>禁止队列间资源抢占<span style="color:#f92672">&lt;/description&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+</code></pre></div></li>
+<li>
+<p>配置fair-scheduler.xml</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<span style="color:#f92672">&lt;allocations</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 单个队列中Application Master占用资源的最大比例,取值0</span><span style="color:#75715e">-</span><span style="color:#75715e">1 ，企业一般配置0.1 </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#f92672">&lt;queueMaxAMShareDefault</span><span style="color:#f92672">&gt;</span>0.5<span style="color:#f92672">&lt;/queueMaxAMShareDefault&gt;</span>
+  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 单个队列最大资源的默认值 test atguigu default </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#f92672">&lt;queueMaxResourcesDefault</span><span style="color:#f92672">&gt;</span>4096mb,4vcores<span style="color:#f92672">&lt;/queueMaxResourcesDefault&gt;</span>
+    
+  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 增加一个队列test </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#f92672">&lt;queue</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 队列最小资源 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;minResources</span><span style="color:#f92672">&gt;</span>2048mb,2vcores<span style="color:#f92672">&lt;/minResources&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 队列最大资源 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;maxResources</span><span style="color:#f92672">&gt;</span>4096mb,4vcores<span style="color:#f92672">&lt;/maxResources&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 队列中最多同时运行的应用数，默认50，根据线程数配置 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;maxRunningApps</span><span style="color:#f92672">&gt;</span>4<span style="color:#f92672">&lt;/maxRunningApps&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 队列中Application Master占用资源的最大比例 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;maxAMShare</span><span style="color:#f92672">&gt;</span>0.5<span style="color:#f92672">&lt;/maxAMShare&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 该队列资源权重,默认值为1.0 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;weight</span><span style="color:#f92672">&gt;</span>1.0<span style="color:#f92672">&lt;/weight&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 队列内部的资源分配策略 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;schedulingPolicy</span><span style="color:#f92672">&gt;</span>fair<span style="color:#f92672">&lt;/schedulingPolicy&gt;</span>
+  <span style="color:#f92672">&lt;/queue&gt;</span>
+  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 增加一个队列atguigu </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#f92672">&lt;queue</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;atguigu&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;parent&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 队列最小资源 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;minResources</span><span style="color:#f92672">&gt;</span>2048mb,2vcores<span style="color:#f92672">&lt;/minResources&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 队列最大资源 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;maxResources</span><span style="color:#f92672">&gt;</span>4096mb,4vcores<span style="color:#f92672">&lt;/maxResources&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 队列中最多同时运行的应用数，默认50，根据线程数配置 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;maxRunningApps</span><span style="color:#f92672">&gt;</span>4<span style="color:#f92672">&lt;/maxRunningApps&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 队列中Application Master占用资源的最大比例 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;maxAMShare</span><span style="color:#f92672">&gt;</span>0.5<span style="color:#f92672">&lt;/maxAMShare&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 该队列资源权重,默认值为1.0 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;weight</span><span style="color:#f92672">&gt;</span>1.0<span style="color:#f92672">&lt;/weight&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 队列内部的资源分配策略 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;schedulingPolicy</span><span style="color:#f92672">&gt;</span>fair<span style="color:#f92672">&lt;/schedulingPolicy&gt;</span>
+  <span style="color:#f92672">&lt;/queue&gt;</span>
+    
+  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 任务队列分配策略,可配置多层规则,从第一个规则开始匹配,直到匹配成功 </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#f92672">&lt;queuePlacementPolicy</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 提交任务时指定队列,如未指定提交队列,则继续匹配下一个规则; false表示：如果指定队列不存在,不允许自动创建</span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;rule</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;specified&#34;</span> <span style="color:#a6e22e">create=</span><span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 提交到root.group.username队列,若root.group不存在,不允许自动创建；若root.group.user不存在,允许自动创建 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;rule</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;nestedUserQueue&#34;</span> <span style="color:#a6e22e">create=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;rule</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;primaryGroup&#34;</span> <span style="color:#a6e22e">create=</span><span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/rule&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 最后一个规则必须为reject或者default。Reject表示拒绝创建提交失败，default表示把任务提交到default队列 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;rule</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;reject&#34;</span> <span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;/queuePlacementPolicy&gt;</span>
+<span style="color:#f92672">&lt;/allocations&gt;</span>
+</code></pre></div></li>
+<li>
+<p>分发配置并重启Yarn</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop<span style="color:#f92672">]</span>$ xsync yarn-site.xml
+<span style="color:#f92672">[</span>atguigu@hadoop102 hadoop<span style="color:#f92672">]</span>$ xsync fair-scheduler.xml
+    
+<span style="color:#f92672">[</span>atguigu@hadoop103 hadoop-3.1.3<span style="color:#f92672">]</span>$ sbin/stop-yarn.sh
+<span style="color:#f92672">[</span>atguigu@hadoop103 hadoop-3.1.3<span style="color:#f92672">]</span>$ sbin/start-yarn.sh
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><strong>测试提交任务</strong></p>
+<ul>
+<li>
+<p>提交任务时指定队列，按照配置规则，任务会到指定的root.test队列</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop jar /opt/module/hadoop-3.1.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar pi -Dmapreduce.job.queuename<span style="color:#f92672">=</span>root.test <span style="color:#ae81ff">1</span> 1
+</code></pre></div></li>
+<li>
+<p>提交任务时不指定队列，按照配置规则，任务会到root.atguigu.atguigu队列</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop jar /opt/module/hadoop-3.1.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar pi <span style="color:#ae81ff">1</span> 1
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="yarn的tool接口案例">Yarn的Tool接口案例</h3>
+<ol>
+<li>
+<p>回顾</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop jar wc.jar com.atguigu.mapreduce.wordcount2.WordCountDriver /input /output1
+</code></pre></div><p>期望可以动态传参，结果报错，误认为是第一个输入参数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop jar wc.jar com.atguigu.mapreduce.wordcount2.WordCountDriver -Dmapreduce.job.queuename<span style="color:#f92672">=</span>root.test /input /output1
+</code></pre></div></li>
+<li>
+<p>需求：自己写的程序也可以动态修改参数。编写Yarn的Tool接口。</p>
+</li>
+<li>
+<p><strong>具体步骤</strong></p>
+<ul>
+<li>
+<p>新建Maven项目YarnDemo，pom如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span>
+         <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+         <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;modelVersion</span><span style="color:#f92672">&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
+     
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>com.atguigu.hadoop<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>yarn_tool_test<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
+     
+    <span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.hadoop<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>hadoop-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
+            <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.1.3<span style="color:#f92672">&lt;/version&gt;</span>
+        <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+<span style="color:#f92672">&lt;/project&gt;</span>
+</code></pre></div></li>
+<li>
+<p>新建com.atguigu.yarn报名</p>
+</li>
+<li>
+<p>创建类WordCount并实现Tool接口：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu.yarn<span style="color:#f92672">;</span>
+     
+<span style="color:#f92672">import</span> org.apache.hadoop.conf.Configuration<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.fs.Path<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.io.IntWritable<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.io.LongWritable<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.io.Text<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.Job<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.Mapper<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.Reducer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.lib.input.FileInputFormat<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.lib.output.FileOutputFormat<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.util.Tool<span style="color:#f92672">;</span>
+     
+<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+     
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WordCount</span> <span style="color:#66d9ef">implements</span> Tool <span style="color:#f92672">{</span>
+     
+    <span style="color:#66d9ef">private</span> Configuration conf<span style="color:#f92672">;</span>
+     
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+     
+        Job job <span style="color:#f92672">=</span> Job<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>conf<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setJarByClass</span><span style="color:#f92672">(</span>WordCountDriver<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapperClass</span><span style="color:#f92672">(</span>WordCountMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setReducerClass</span><span style="color:#f92672">(</span>WordCountReducer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapOutputKeyClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapOutputValueClass</span><span style="color:#f92672">(</span>IntWritable<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputKeyClass</span><span style="color:#f92672">(</span>Text<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        job<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputValueClass</span><span style="color:#f92672">(</span>IntWritable<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+        FileInputFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">setInputPaths</span><span style="color:#f92672">(</span>job<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        FileOutputFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputPath</span><span style="color:#f92672">(</span>job<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+        <span style="color:#66d9ef">return</span> job<span style="color:#f92672">.</span><span style="color:#a6e22e">waitForCompletion</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span> <span style="color:#f92672">?</span> 0 <span style="color:#f92672">:</span> 1<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+     
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setConf</span><span style="color:#f92672">(</span>Configuration conf<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">conf</span> <span style="color:#f92672">=</span> conf<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+     
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> Configuration <span style="color:#a6e22e">getConf</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> conf<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+     
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WordCountMapper</span> <span style="color:#66d9ef">extends</span> Mapper<span style="color:#f92672">&lt;</span>LongWritable<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> IntWritable<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+     
+        <span style="color:#66d9ef">private</span> Text outK <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Text<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> IntWritable outV <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> IntWritable<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>LongWritable key<span style="color:#f92672">,</span> Text value<span style="color:#f92672">,</span> Context context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+     
+            String line <span style="color:#f92672">=</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> words <span style="color:#f92672">=</span> line<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String word <span style="color:#f92672">:</span> words<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                outK<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>word<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+                context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>outK<span style="color:#f92672">,</span> outV<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+     
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WordCountReducer</span> <span style="color:#66d9ef">extends</span> Reducer<span style="color:#f92672">&lt;</span>Text<span style="color:#f92672">,</span> IntWritable<span style="color:#f92672">,</span> Text<span style="color:#f92672">,</span> IntWritable<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> IntWritable outV <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> IntWritable<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reduce</span><span style="color:#f92672">(</span>Text key<span style="color:#f92672">,</span> Iterable<span style="color:#f92672">&lt;</span>IntWritable<span style="color:#f92672">&gt;</span> values<span style="color:#f92672">,</span> Context context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+     
+            <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+     
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>IntWritable value <span style="color:#f92672">:</span> values<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                sum <span style="color:#f92672">+</span><span style="color:#f92672">=</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            outV<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>sum<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+            context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> outV<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p>新建WordCountDriver</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu.yarn<span style="color:#f92672">;</span>
+     
+<span style="color:#f92672">import</span> org.apache.hadoop.conf.Configuration<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.util.Tool<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.util.ToolRunner<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.Arrays<span style="color:#f92672">;</span>
+     
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WordCountDriver</span> <span style="color:#f92672">{</span>
+     
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Tool tool<span style="color:#f92672">;</span>
+     
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 1. 创建配置文件
+</span><span style="color:#75715e"></span>             
+        Configuration conf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+        <span style="color:#75715e">// 2. 判断是否有tool接口
+</span><span style="color:#75715e"></span>             
+        <span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;wordcount&#34;</span><span style="color:#f92672">:</span>
+                tool <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WordCount<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+                <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34; No such tool: &#34;</span><span style="color:#f92672">+</span> args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#75715e">// 3. 用Tool执行程序
+</span><span style="color:#75715e"></span>             
+        <span style="color:#75715e">// Arrays.copyOfRange 将老数组的元素放到新数组里面
+</span><span style="color:#75715e"></span>             
+        <span style="color:#66d9ef">int</span> run <span style="color:#f92672">=</span> ToolRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> tool<span style="color:#f92672">,</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">copyOfRange</span><span style="color:#f92672">(</span>args<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>run<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p>在HDFS上准备输入文件，假设为/input目录，向集群提交该Jar包</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn jar YarnDemo.jar com.atguigu.yarn.WordCountDriver wordcount /input /output
+</code></pre></div><p>注意此时提交的3个参数，第一个用于生成特定的Tool，第二个和第三个为输入输出目录。此时如果我们希望加入设置参数，可以在wordcount后面添加参数，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ yarn jar YarnDemo.jar com.atguigu.yarn.WordCountDriver wordcount -Dmapreduce.job.queuename<span style="color:#f92672">=</span>root.test /input /output1
+</code></pre></div></li>
+<li>
+<p><strong>注：以上操作全部做完过后，快照回去或者手动将配置文件修改成之前的状态，因为本身资源就不够，分成了这么多，不方便以后测试。</strong></p>
+</li>
+</ul>
+</li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/923mapreduce/" data-toggle="tooltip" data-placement="top" title="3、MapReduce（Hadoop）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/925%E7%94%9F%E4%BA%A7%E8%B0%83%E4%BC%98/" data-toggle="tooltip" data-placement="top" title="5、生产调优（Hadoop）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

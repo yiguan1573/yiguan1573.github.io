@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="9、ActiveMQ的消息存储和持久化（ActiveMQ）" />
+    <meta property="og:title" content="9、ActiveMQ的消息存储和持久化（ActiveMQ）" />
+    <meta property="twitter:title" content="9、ActiveMQ的消息存储和持久化（ActiveMQ）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>9、ActiveMQ的消息存储和持久化（ActiveMQ）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/1025activemq%E7%9A%84%E6%B6%88%E6%81%AF%E5%AD%98%E5%82%A8%E5%92%8C%E6%8C%81%E4%B9%85%E5%8C%96/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/activemq" title="ActiveMQ">
+                            ActiveMQ
+                        </a>
+                        
+                    </div>
+                    <h1>9、ActiveMQ的消息存储和持久化（ActiveMQ）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Thursday, May 5, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#介绍">介绍</a></li>
+    <li><a href="#有哪些">有哪些</a></li>
+    <li><a href="#kahadb消息存储">kahaDB消息存储</a></li>
+    <li><a href="#jdbc消息存储">JDBC消息存储</a>
+      <ul>
+        <li><a href="#设置步骤">设置步骤</a></li>
+        <li><a href="#queue验证和数据表变化">queue验证和数据表变化</a></li>
+        <li><a href="#topic验证和说明">topic验证和说明</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#jdbc-message-store-with-activemq-journal">JDBC Message Store with ActiveMQ Journal</a></li>
+    <li><a href="#总结-1">总结</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="介绍">介绍</h2>
+<ul>
+<li>
+<p>此处持久化和之前的持久化的区别</p>
+</li>
+<li>
+<p>MQ高可用：事务、可持久、签收，是属于MQ自身特性，自带的。这里的持久化是外力，是外部插件。之前讲的持久化是MQ的外在表现，现在讲的的持久是是底层实现。</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214h33bi5j30j80acmxe.jpg" alt="QQ截图20220508172535.jpg"></p>
+</li>
+<li>
+<p>官网文档：http://activemq.apache.org/persistence</p>
+</li>
+<li>
+<p>持久化是什么？一句话就是：ActiveMQ宕机了，消息不会丢失的机制。</p>
+</li>
+<li>
+<p>说明：为了避免意外宕机以后丢失信息，需要做到重启后可以恢复消息队列，消息系统一半都会采用持久化机制。ActiveMQ的消息持久化机制有JDBC，AMQ，KahaDB和LevelDB，无论使用哪种持久化方式，消息的存储逻辑都是一致的。就是在发送者将消息发送出去后，消息中心首先将消息存储到本地数据文件、内存数据库或者远程数据库等。再试图将消息发给接收者，成功则将消息从存储中删除，失败则继续尝试尝试发送。消息中心启动以后，要先检查指定的存储位置是否有未成功发送的消息，如果有，则会先把存储位置中的消息发出去。</p>
+</li>
+</ul>
+<h2 id="有哪些">有哪些</h2>
+<ul>
+<li>
+<p>AMQ Message Store</p>
+<ul>
+<li>基于文件的存储机制，是以前的默认机制，现在不再使用。</li>
+<li>AMQ是一种文件存储形式，它具有写入速度快和容易恢复的特点。消息存储再一个个文件中文件的默认大小为32M，当一个文件中的消息已经全部被消费，那么这个文件将被标识为可删除，在下一个清除阶段，这个文件被删除。AMQ适用于ActiveMQ5.3之前的版本</li>
+</ul>
+</li>
+<li>
+<p>kahaDB</p>
+<ul>
+<li>现在默认的</li>
+</ul>
+</li>
+<li>
+<p>JDBC消息存储</p>
+<ul>
+<li>下面我们再详细介绍</li>
+</ul>
+</li>
+<li>
+<p>LevelDB消息存储</p>
+<ul>
+<li>
+<p>过于新兴的技术，现在有些不确定</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214jm9dv7j30rs07mjrt.jpg" alt="QQ截图20220508172802.jpg"></p>
+</li>
+</ul>
+</li>
+<li>
+<p>JDBC Message Store with ActiveMQ Journal</p>
+<ul>
+<li>下面我们再详细介绍</li>
+</ul>
+</li>
+</ul>
+<h2 id="kahadb消息存储">kahaDB消息存储</h2>
+<ul>
+<li>
+<p>介绍</p>
+<ul>
+<li>
+<p>基于日志文件，从ActiveMQ5.4（含）开始默认的持久化插件。</p>
+<p>官网文档：http://activemq.aache.org/kahadb</p>
+<p>官网上还有一些其他配置参数，配置文件activemq.xml中，如下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">   <span style="color:#f92672">&lt;persistenceAdapter</span><span style="color:#f92672">&gt;</span>
+         <span style="color:#f92672">&lt;kahaDB</span> <span style="color:#a6e22e">directory=</span><span style="color:#e6db74">&#34;${activemq.data}/kahadb&#34;</span><span style="color:#f92672">/&gt;</span>
+   <span style="color:#f92672">&lt;/persistenceAdapter&gt;</span>
+</code></pre></div><p>日志文件的存储目录在：%activemq安装目录%/data/kahadb</p>
+</li>
+</ul>
+</li>
+<li>
+<p>说明</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214lwj4u6j30s20fyq4p.jpg" alt="QQ截图20220508173001.jpg"></p>
+</li>
+<li>
+<p>KahaDB的存储原理</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214ma0hlaj30sh0aumy7.jpg" alt="QQ截图20220508173009.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214mr7kagj30rt0bjgm7.jpg" alt="QQ截图20220508173102.jpg"></p>
+</li>
+</ul>
+<h2 id="jdbc消息存储">JDBC消息存储</h2>
+<h3 id="设置步骤">设置步骤</h3>
+<ul>
+<li>
+<p>原理图</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214o2msmrj30ig0alq31.jpg" alt="QQ截图20220508173145.jpg"></p>
+</li>
+<li>
+<p>添加mysql数据库的驱动包到lib文件夹</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214o65o6qj30qz0dp0ux.jpg" alt="QQ截图20220508173155.jpg"></p>
+</li>
+<li>
+<p>jdbcPersistenceAdapter配置</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214p00pq9j30rz081gmh.jpg" alt="QQ截图20220508173312.jpg"></p>
+<ul>
+<li>
+<p>修改配置文件activemq.xml。将之前的替换为jdbc的配置。如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e">  
+</span><span style="color:#75715e">&lt;persistenceAdapter&gt;
+</span><span style="color:#75715e">            &lt;kahaDB directory=&#34;${activemq.data}/kahadb&#34;/&gt;
+</span><span style="color:#75715e">      &lt;/persistenceAdapter&gt;
+</span><span style="color:#75715e"></span><span style="color:#75715e">--&gt;</span>
+<span style="color:#f92672">&lt;persistenceAdapter</span><span style="color:#f92672">&gt;</span>  
+      <span style="color:#f92672">&lt;jdbcPersistenceAdapter</span> <span style="color:#a6e22e">dataSource=</span><span style="color:#e6db74">&#34;#mysql-ds&#34;</span> <span style="color:#a6e22e">createTableOnStartup=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span> 
+<span style="color:#f92672">&lt;/persistenceAdapter&gt;</span>
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>数据库连接池配置</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214q7qxiqj30na05xt9a.jpg" alt="QQ截图20220508173422.jpg"></p>
+<p>在<code>&lt;/broker&gt;</code>标签和<code>&lt;import&gt;</code>标签之间插入数据库连接池配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;/broker&gt;</span>
+  
+<span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;mysql-ds&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.apache.commons.dbcp2.BasicDataSource&#34;</span> <span style="color:#a6e22e">destroy-method=</span><span style="color:#e6db74">&#34;close&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;driverClassName&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;com.mysql.jdbc.Driver&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;url&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;jdbc:mysql://mysql数据库URL/activemq?relaxAutoCommit=true&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;mysql数据库用户名&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;mysql数据库密码&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;poolPreparedStatements&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/bean&gt;</span>
+  
+<span style="color:#f92672">&lt;import</span> <span style="color:#a6e22e">resource=</span><span style="color:#e6db74">&#34;jetty.xml&#34;</span><span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>之后需要建一个数据库，名为activemq。新建的数据库要采用latin1 或者ASCII编码。https://blog.csdn.net/JeremyJiaming/article/details/88734762</p>
+<p>默认是的dbcp数据库连接池，如果要换成其他数据库连接池，需要将该连接池jar包，也放到lib目录下。</p>
+</li>
+<li>
+<p>建库SQL和创表说明</p>
+<ul>
+<li>
+<p>重启activemq。会自动生成如下3张表。如果没有自动生成，需要我们手动执行SQL。我个人建议要自动生成，我在操作过程中查看日志文件，发现了不少问题，最终解决了这些问题后，是能够自动生成的。如果不能自动生成说明你的操作有问题。如果实在不行，下面是手动建表的SQL:</p>
+</li>
+<li>
+<p>建表SQL</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#75715e">-- auto-generated definition
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> ACTIVEMQ_ACKS
+(
+    CONTAINER     varchar(<span style="color:#ae81ff">250</span>)     <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">消息的Destination</span><span style="color:#e6db74">&#39;</span>,
+    SUB_DEST      varchar(<span style="color:#ae81ff">250</span>)     <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">如果使用的是Static集群，这个字段会有集群其他系统的信息</span><span style="color:#e6db74">&#39;</span>,
+    CLIENT_ID     varchar(<span style="color:#ae81ff">250</span>)     <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">每个订阅者都必须有一个唯一的客户端ID用以区分</span><span style="color:#e6db74">&#39;</span>,
+    SUB_NAME      varchar(<span style="color:#ae81ff">250</span>)     <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">订阅者名称</span><span style="color:#e6db74">&#39;</span>,
+    SELECTOR      varchar(<span style="color:#ae81ff">250</span>)     <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">选择器，可以选择只消费满足条件的消息，条件可以用自定义属性实现，可支持多属性AND和OR操作</span><span style="color:#e6db74">&#39;</span>,
+    LAST_ACKED_ID bigint           <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">记录消费过消息的ID</span><span style="color:#e6db74">&#39;</span>,
+    PRIORITY      bigint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">5</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">优先级，默认5</span><span style="color:#e6db74">&#39;</span>,
+    XID           varchar(<span style="color:#ae81ff">250</span>)     <span style="color:#66d9ef">null</span>,
+    <span style="color:#66d9ef">primary</span> <span style="color:#66d9ef">key</span> (CONTAINER, CLIENT_ID, SUB_NAME, PRIORITY)
+)
+    <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">用于存储订阅关系。如果是持久化Topic，订阅者和服务器的订阅关系在这个表保存</span><span style="color:#e6db74">&#39;</span>;
+    
+<span style="color:#66d9ef">create</span> <span style="color:#66d9ef">index</span> ACTIVEMQ_ACKS_XIDX
+    <span style="color:#66d9ef">on</span> ACTIVEMQ_ACKS (XID);
+    
+     
+<span style="color:#75715e">-- auto-generated definition
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> ACTIVEMQ_LOCK
+(
+    ID          bigint       <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span>
+        <span style="color:#66d9ef">primary</span> <span style="color:#66d9ef">key</span>,
+    TIME        bigint       <span style="color:#66d9ef">null</span>,
+    BROKER_NAME varchar(<span style="color:#ae81ff">250</span>) <span style="color:#66d9ef">null</span>
+);
+    
+     
+<span style="color:#75715e">-- auto-generated definition
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> ACTIVEMQ_MSGS
+(
+    ID         bigint       <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span>
+        <span style="color:#66d9ef">primary</span> <span style="color:#66d9ef">key</span>,
+    CONTAINER  varchar(<span style="color:#ae81ff">250</span>) <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span>,
+    MSGID_PROD varchar(<span style="color:#ae81ff">250</span>) <span style="color:#66d9ef">null</span>,
+    MSGID_SEQ  bigint       <span style="color:#66d9ef">null</span>,
+    EXPIRATION bigint       <span style="color:#66d9ef">null</span>,
+    MSG        blob         <span style="color:#66d9ef">null</span>,
+    PRIORITY   bigint       <span style="color:#66d9ef">null</span>,
+    XID        varchar(<span style="color:#ae81ff">250</span>) <span style="color:#66d9ef">null</span>
+);
+    
+<span style="color:#66d9ef">create</span> <span style="color:#66d9ef">index</span> ACTIVEMQ_MSGS_CIDX
+    <span style="color:#66d9ef">on</span> ACTIVEMQ_MSGS (CONTAINER);
+    
+<span style="color:#66d9ef">create</span> <span style="color:#66d9ef">index</span> ACTIVEMQ_MSGS_EIDX
+    <span style="color:#66d9ef">on</span> ACTIVEMQ_MSGS (EXPIRATION);
+    
+<span style="color:#66d9ef">create</span> <span style="color:#66d9ef">index</span> ACTIVEMQ_MSGS_MIDX
+    <span style="color:#66d9ef">on</span> ACTIVEMQ_MSGS (MSGID_PROD, MSGID_SEQ);
+    
+<span style="color:#66d9ef">create</span> <span style="color:#66d9ef">index</span> ACTIVEMQ_MSGS_PIDX
+    <span style="color:#66d9ef">on</span> ACTIVEMQ_MSGS (PRIORITY);
+    
+<span style="color:#66d9ef">create</span> <span style="color:#66d9ef">index</span> ACTIVEMQ_MSGS_XIDX
+    <span style="color:#66d9ef">on</span> ACTIVEMQ_MSGS (XID);
+</code></pre></div></li>
+<li>
+<p>ACTIVEMQ_MSGS数据表：</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214u5vt1qj30s80ef401.jpg" alt="QQ截图20220508173809.jpg"></p>
+</li>
+<li>
+<p>ACTIVEMQ_ACKS数据表：</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214uz6kuuj30rm08nwfc.jpg" alt="QQ截图20220508173849.jpg"></p>
+</li>
+<li>
+<p>ACTIVEMQ_LOCK数据表：</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214vac0vkj30rf06naak.jpg" alt="QQ截图20220508173854.jpg"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="queue验证和数据表变化">queue验证和数据表变化</h3>
+<ul>
+<li>
+<p>queue模式，非持久化不会将消息持久化到数据库。</p>
+</li>
+<li>
+<p>queue模式，持久化会将消息持久化数据库。</p>
+</li>
+<li>
+<p>使用queue模式持久化，发布3条消息后，发现ACTIVEMQ_MSGS数据表多了3条数据</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214xdb7bwj30qs04m3yx.jpg" alt="QQ截图20220508174059.jpg"></p>
+</li>
+<li>
+<p>启动消费者，消费了所有的消息后，发现数据表的数据消失了</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h214xj0930j30qu03bt8r.jpg" alt="QQ截图20220508174110.jpg"></p>
+</li>
+<li>
+<p>queue模式非持久化，不会持久化消息到数据表</p>
+</li>
+</ul>
+<h3 id="topic验证和说明">topic验证和说明</h3>
+<ul>
+<li>
+<p>启动一下持久化topic的消费者。看到ACTIVEMQ_ACKS数据表多了一条消息</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.activemq.demo<span style="color:#f92672">;</span>
+  
+<span style="color:#f92672">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.*<span style="color:#f92672">;</span>
+  
+<span style="color:#75715e">// 持久化topic 的消息消费者
+</span><span style="color:#75715e"></span>  
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JmsConsummer_persistence</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String TOPIC_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;jdbc-02&#34;</span><span style="color:#f92672">;</span>
+  
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
+        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ActiveMQConnectionFactory<span style="color:#f92672">(</span>ACTIVEMQ_URL<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Connection connection <span style="color:#f92672">=</span> activeMQConnectionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">setClientID</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;marrry&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Session session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> Session<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Topic topic <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createTopic</span><span style="color:#f92672">(</span>TOPIC_NAME<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        TopicSubscriber topicSubscriber <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createDurableSubscriber</span><span style="color:#f92672">(</span>topic<span style="color:#f92672">,</span><span style="color:#e6db74">&#34;remark...&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Message message <span style="color:#f92672">=</span> topicSubscriber<span style="color:#f92672">.</span><span style="color:#a6e22e">receive</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">null</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> message<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+            TextMessage textMessage <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TextMessage<span style="color:#f92672">)</span>message<span style="color:#f92672">;</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 收到的持久化 topic ：&#34;</span><span style="color:#f92672">+</span>textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            message <span style="color:#f92672">=</span> topicSubscriber<span style="color:#f92672">.</span><span style="color:#a6e22e">receive</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p>ACTIVEMQ_ACKS数据表，多了一个消费者的身份信息。一条记录代表：一个持久化topic消费者</p>
+</li>
+<li>
+<p>我们启动持久化生产者发布3个数据，ACTIVEMQ_MSGS数据表新增3条数据，消费者消费所有的数据后，ACTIVEMQ_MSGS数据表的数据并没有消失。持久化topic的消息不管是否被消费，是否有消费者，产生的数据永远都存在，且只存储一条。这个是要注意的，持久化的topic大量数据后可能导致性能下降。这里就像公总号一样，消费者消费完后，消息还会保留。</p>
+</li>
+</ul>
+<h3 id="总结">总结</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h21501tk8gj30t90gv0u0.jpg" alt="QQ截图20220508174347.jpg"></p>
+<h2 id="jdbc-message-store-with-activemq-journal">JDBC Message Store with ActiveMQ Journal</h2>
+<ul>
+<li>
+<p>说明</p>
+<ul>
+<li>这种方式克服了JDBC Store的不足，JDBC每次消息过来，都需要去写库读库。ActiveMQ Journal，使用高速缓存写入技术，大大提高了性能。当消费者的速度能够及时跟上生产者消息的生产速度时，journal文件能够大大减少需要写入到DB中的消息。</li>
+<li>举个例子：生产者生产了1000条消息，这1000条消息会保存到journal文件，如果消费者的消费速度很快的情况下，在journal文件还没有同步到DB之前，消费者已经消费了90%的以上消息，那么这个时候只需要同步剩余的10%的消息到DB。如果消费者的速度很慢，这个时候journal文件可以使消息以批量方式写到DB。</li>
+<li>为了高性能，这种方式使用日志文件存储+数据库存储。先将消息持久到日志文件，等待一段时间再将未消费的消息持久到数据库。该方式要比JDBC性能要高。</li>
+</ul>
+</li>
+<li>
+<p>配置</p>
+<ul>
+<li>
+<p>下面是基于上面JDBC配置，再做一点修改：</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2151qow30j30tq0mbmz4.jpg" alt="QQ截图20220508174526.jpg"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结-1">总结</h2>
+<ul>
+<li>
+<p>jdbc效率低，kahaDB效率高，jdbc+Journal效率较高。</p>
+</li>
+<li>
+<p>持久化消息主要指的是：MQ所在服务器宕机了消息不会丢试的机制。</p>
+</li>
+<li>
+<p>持久化机制演变的过程：</p>
+<p>从最初的AMQ Message Store方案到ActiveMQ V4版本退出的High Performance Journal（高性能事务支持）附件，并且同步推出了关于关系型数据库的存储方案。ActiveMQ5.3版本又推出了对KahaDB的支持（5.4版本后被作为默认的持久化方案），后来ActiveMQ 5.8版本开始支持LevelDB，到现在5.9提供了标准的Zookeeper+LevelDB集群化方案。</p>
+</li>
+<li>
+<p>ActiveMQ消息持久化机制有：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>AMQ</th>
+<th>基于日志文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KahaDB</td>
+<td>基于日志文件，从ActiveMQ5.4开始默认使用</td>
+</tr>
+<tr>
+<td>JDBC</td>
+<td>基于第三方数据库</td>
+</tr>
+<tr>
+<td>Replicated LevelDB Store</td>
+<td>从5.9开始提供了LevelDB和Zookeeper的数据复制方法，用于Master-slave方式的首选数据复制方案。</td>
+</tr>
+</tbody>
+</table>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1024activemq%E7%9A%84%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE/" data-toggle="tooltip" data-placement="top" title="8、ActiveMQ的传输协议（ActiveMQ）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1026activemq%E5%A4%9A%E8%8A%82%E7%82%B9%E9%9B%86%E7%BE%A4/" data-toggle="tooltip" data-placement="top" title="10、ActiveMQ多节点集群（ActiveMQ）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

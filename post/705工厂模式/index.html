@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="5、工厂模式(设计模式)" />
+    <meta property="og:title" content="5、工厂模式(设计模式)" />
+    <meta property="twitter:title" content="5、工厂模式(设计模式)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>5、工厂模式(设计模式)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/705%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                    </div>
+                    <h1>5、工厂模式(设计模式)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Wednesday, August 19, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#需求">需求</a></li>
+    <li><a href="#使用传统的方式来完成">使用传统的方式来完成</a></li>
+    <li><a href="#传统的方式的优缺点">传统的方式的优缺点</a></li>
+    <li><a href="#基本介绍">基本介绍</a></li>
+    <li><a href="#使用简单工厂模式">使用简单工厂模式</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#新的需求">新的需求</a></li>
+    <li><a href="#思路">思路</a></li>
+    <li><a href="#工厂方法模式介绍">工厂方法模式介绍</a></li>
+    <li><a href="#工厂方法模式应用案例">工厂方法模式应用案例</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#基本介绍-1">基本介绍</a></li>
+    <li><a href="#抽象工厂模式应用实例">抽象工厂模式应用实例</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="简单工厂模式">简单工厂模式</h1>
+<h2 id="需求">需求</h2>
+<ul>
+<li>看一个披萨的项目：要便于披萨种类的扩展，要便于维护</li>
+<li>披萨的种类很多(比如 GreekPizz、CheesePizz 等)</li>
+<li>披萨的制作有 prepare，bake, cut, box</li>
+<li>完成披萨店订购功能</li>
+</ul>
+<h2 id="使用传统的方式来完成">使用传统的方式来完成</h2>
+<ul>
+<li>思路分析(类图)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6lw1seo9j30fv07cjsq.jpg" alt="QQ截图20200828162847.png"></li>
+<li>编写 OrderPizza.java 去订购需要的各种 Pizza
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6lzscyysj30li01sdfm.jpg" alt="QQ截图20200828163244.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6lzyxd3kj30mz0s7myf.jpg" alt="QQ截图20200828163253.png"></li>
+</ul>
+<h2 id="传统的方式的优缺点">传统的方式的优缺点</h2>
+<ul>
+<li>优点是比较好理解，简单易操作。</li>
+<li>缺点是违反了设计模式的 ocp 原则，即对扩展开放，对修改关闭。即当我们给类增加新功能的时候，尽量不修改代码，或者尽可能少修改代码.</li>
+<li>比如我们这时要新增加一个 Pizza 的种类(Pepper 披萨)，我们需要做如下修改. 如果我们增加一个 Pizza 类，只要是订购 Pizza 的代码都需要修改
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6m168h30j30gs07q0ws.jpg" alt="QQ截图20200828163414.png"></li>
+<li>改进的思路分析
+<ul>
+<li>把创建 Pizza 对象封装到一个类中，这样我们有新的 Pizza 种类时，只需要修改该类就可，其它有创建到 Pizza对象的代码就不需要修改了&ndash;&gt; 简单工厂模式</li>
+</ul>
+</li>
+</ul>
+<h2 id="基本介绍">基本介绍</h2>
+<ul>
+<li>简单工厂模式是属于创建型模式，是工厂模式的一种。简单工厂模式是由一个工厂对象决定创建出哪一种产品类的实例。简单工厂模式是工厂模式家族中最简单实用的模式</li>
+<li>简单工厂模式：定义了一个创建对象的类，由这个类来封装实例化对象的行为(代码)</li>
+<li>在软件开发中，当我们会用到大量的创建某种、某类或者某批对象时，就会使用到工厂模式</li>
+</ul>
+<h2 id="使用简单工厂模式">使用简单工厂模式</h2>
+<ul>
+<li>简单工厂模式的设计方案: 定义一个可以实例化 Pizaa 对象的类，封装创建对象的代码
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6m39u31bj30ip0dbdiu.jpg" alt="QQ截图20200828163603.png"></li>
+<li>代码
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6m7bdzbwj30kd0qwq42.jpg" alt="QQ截图20200828163952.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mazpwowj30pp0tsmy8.jpg" alt="QQ截图20200828164221.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mb5c9kvj30qt0srwfr.jpg" alt="QQ截图20200828164314.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mba757gj30o60timy6.jpg" alt="QQ截图20200828164327.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mbfttivj30oq0tsab4.jpg" alt="QQ截图20200828164335.png"></li>
+</ul>
+<h1 id="工厂方法模式">工厂方法模式</h1>
+<h2 id="新的需求">新的需求</h2>
+<ul>
+<li>披萨项目新的需求：客户在点披萨时，可以点不同口味的披萨，比如 北京的奶酪pizza、北京的胡椒 pizza 或者是伦敦的奶酪 pizza、伦敦的胡椒 pizza</li>
+</ul>
+<h2 id="思路">思路</h2>
+<ol>
+<li>使用简单工厂模式，创建不同的简单工厂类，比如 BJPizzaSimpleFactory、LDPizzaSimpleFactory 等等.从当前这个案例来说，也是可以的，但是考虑到项目的规模，以及软件的可维护性、可扩展性并不是特别好</li>
+<li>使用工厂方法模式</li>
+</ol>
+<h2 id="工厂方法模式介绍">工厂方法模式介绍</h2>
+<ul>
+<li>工厂方法模式设计方案：将披萨项目的实例化功能抽象成抽象方法，在不同的口味点餐子类中具体实现。</li>
+<li>工厂方法模式：定义了一个创建对象的抽象方法，由子类决定要实例化的类。工厂方法模式将对象的实例化推迟到子类</li>
+</ul>
+<h2 id="工厂方法模式应用案例">工厂方法模式应用案例</h2>
+<ul>
+<li>
+<p>披萨项目新的需求：客户在点披萨时，可以点不同口味的披萨，比如 北京的奶酪 pizza、北京的胡椒 pizza 或者是伦敦的奶酪 pizza、伦敦的胡椒 pizza</p>
+</li>
+<li>
+<p>思路分析图解
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mhk994yj30jc0dwgp2.jpg" alt="QQ截图20200828164955.png"></p>
+</li>
+<li>
+<p>代码
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mo2bzqbj30oi0pb0to.jpg" alt="QQ截图20200828165236.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mo8zruvj30sf0tf3zl.jpg" alt="QQ截图20200828165248.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mr0z905j30qq0trdgx.jpg" alt="QQ截图20200828165651.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mr7845bj30jp0h0t91.jpg" alt="QQ截图20200828165845.png"></p>
+</li>
+</ul>
+<h1 id="抽象工厂模式">抽象工厂模式</h1>
+<h2 id="基本介绍-1">基本介绍</h2>
+<ul>
+<li>抽象工厂模式：定义了一个 interface 用于创建相关或有依赖关系的对象簇，而无需指明具体的类</li>
+<li>抽象工厂模式可以将简单工厂模式和工厂方法模式进行整合。</li>
+<li>从设计层面看，抽象工厂模式就是对简单工厂模式的改进(或者称为进一步的抽象)。</li>
+<li>将工厂抽象成两层，AbsFactory(抽象工厂) 和 具体实现的工厂子类。程序员可以根据创建对象类型使用对应的工厂子类。这样将单个的简单工厂类变成了工厂簇，更利于代码的维护和扩展。</li>
+<li>类图
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mtme09jj30ju0e7gpa.jpg" alt="QQ截图20200828170132.png"></li>
+</ul>
+<h2 id="抽象工厂模式应用实例">抽象工厂模式应用实例</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mutyb9vj30o509v74l.jpg" alt="QQ截图20200828170211.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6muzvphxj30rj0tmwfo.jpg" alt="QQ截图20200828170220.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mv45rh5j30t20u275e.jpg" alt="QQ截图20200828170229.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mwigsrsj30qi0tot9t.jpg" alt="QQ截图20200828170411.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mwnkh8hj30on0o0dgm.jpg" alt="QQ截图20200828170421.png"></p>
+<h1 id="工厂模式在-jdk-calendar-应用的源码分析">工厂模式在 JDK-Calendar 应用的源码分析</h1>
+<ul>
+<li>JDK 中的 Calendar 类中，就使用了简单工厂模式</li>
+<li>源码分析+Debug 源码+说明
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6myrqequj30on0ql3zp.jpg" alt="QQ截图20200828170556.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6myvvx9xj30sz0tbt9t.jpg" alt="QQ截图20200828170606.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mz078cvj30pj0g3dg6.jpg" alt="QQ截图20200828170631.png"></li>
+</ul>
+<h1 id="工厂模式小结">工厂模式小结</h1>
+<ul>
+<li>工厂模式的意义
+<ul>
+<li>将实例化对象的代码提取出来，放到一个类中统一管理和维护，达到和主项目的依赖关系的解耦。从而提高项目的扩展和维护性。</li>
+</ul>
+</li>
+<li>三种工厂模式 (简单工厂模式、工厂方法模式、抽象工厂模式)</li>
+<li>设计模式的依赖抽象原则</li>
+<li>创建对象实例时，不要直接 new 类, 而是把这个 new 类的动作放在一个工厂的方法中，并返回。有的书上说， 变量不要直接持有具体类的引用。</li>
+<li>不要让类继承具体类，而是继承抽象类或者是实现 interface(接口)</li>
+<li>不要覆盖基类中已经实现的方法</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/736%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="6、排序算法(数据结构与算法)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/737%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="7、查找算法(数据结构与算法)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

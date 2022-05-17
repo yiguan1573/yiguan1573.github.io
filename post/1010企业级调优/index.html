@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="10、企业级调优（Hive）" />
+    <meta property="og:title" content="10、企业级调优（Hive）" />
+    <meta property="twitter:title" content="10、企业级调优（Hive）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>10、企业级调优（Hive）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/1010%E4%BC%81%E4%B8%9A%E7%BA%A7%E8%B0%83%E4%BC%98/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/hive" title="Hive">
+                            Hive
+                        </a>
+                        
+                    </div>
+                    <h1>10、企业级调优（Hive）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Tuesday, March 22, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#执行计划explain">执行计划（Explain）</a></li>
+    <li><a href="#fetch-抓取">Fetch 抓取</a></li>
+    <li><a href="#本地模式">本地模式</a></li>
+    <li><a href="#表的优化">表的优化</a>
+      <ul>
+        <li><a href="#小表大表-joinmapjoin">小表大表 Join（MapJOIN）</a></li>
+        <li><a href="#大表-join-大表">大表 Join 大表</a></li>
+        <li><a href="#group-by">Group By</a></li>
+        <li><a href="#countdistinct-去重统计">Count(Distinct) 去重统计</a></li>
+        <li><a href="#笛卡尔积">笛卡尔积</a></li>
+        <li><a href="#行列过滤">行列过滤</a></li>
+      </ul>
+    </li>
+    <li><a href="#合理设置-map-及-reduce-数">合理设置 Map 及 Reduce 数</a>
+      <ul>
+        <li><a href="#复杂文件增加-map-数">复杂文件增加 Map 数</a></li>
+        <li><a href="#小文件进行合并">小文件进行合并</a></li>
+        <li><a href="#合理设置-reduce-数">合理设置 Reduce 数</a></li>
+      </ul>
+    </li>
+    <li><a href="#并行执行">并行执行</a></li>
+    <li><a href="#严格模式">严格模式</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="执行计划explain"><strong>执行计划（Explain）</strong></h2>
+<ul>
+<li>
+<p><strong>基本语法</strong></p>
+<p>EXPLAIN [EXTENDED | DEPENDENCY | AUTHORIZATION] query</p>
+</li>
+<li>
+<p><strong>案例实操</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fhz5juzgj30pq0zcju6.jpg" alt="QQ截图20220420003018.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fi01ddygj30on0sq415.jpg" alt="QQ截图20220420003048.jpg"></p>
+</li>
+</ul>
+<h2 id="fetch-抓取"><strong>Fetch</strong> <strong>抓取</strong></h2>
+<ul>
+<li>Fetch 抓取是指，Hive 中对某些情况的查询可以不必使用 MapReduce 计算。例如：SELECT * FROM employees;在这种情况下，Hive 可以简单地读取 employee 对应的存储目录下的文件，然后输出查询结果到控制台。</li>
+<li>在 hive-default.xml.template 文件中 hive.fetch.task.conversion 默认是 more，老版本 hive默认是 minimal，该属性修改为 more 以后，在全局查找、字段查找、limit 查找等都不走mapreduce。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.fetch.task.conversion<span style="color:#f92672">&lt;/name&gt;</span>
+    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>more<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>
+        Expects one of [none, minimal, more].
+        Some select queries can be converted to single FETCH task minimizing 
+        latency.
+        Currently the query should be single sourced not having any subquery 
+        and should not have any aggregations or distincts (which incurs RS), 
+        lateral views and joins.
+        0. none : disable hive.fetch.task.conversion
+        1. minimal : SELECT STAR, FILTER on partition columns, LIMIT only
+        2. more : SELECT, FILTER, LIMIT only (support TABLESAMPLE and 
+        virtual columns)
+    <span style="color:#f92672">&lt;/description&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fi2niyrwj30q90bydgy.jpg" alt="QQ截图20220420003339.jpg"></p>
+<h2 id="本地模式"><strong>本地模式</strong></h2>
+<ul>
+<li>
+<p>大多数的 Hadoop Job 是需要 Hadoop 提供的完整的可扩展性来处理大数据集的。不过，有时 Hive 的输入数据量是非常小的。在这种情况下，为查询触发执行任务消耗的时间可能会比实际 job 的执行时间要多的多。对于大多数这种情况，<strong>Hive 可以通过本地模式在单台机器上处理所有的任务。对于小数据集，执行时间可以明显被缩短。</strong></p>
+</li>
+<li>
+<p>用户可以通过设置 hive.exec.mode.local.auto 的值为 true，来让 Hive 在适当的时候自动启动这个优化。</p>
+<pre><code>set hive.exec.mode.local.auto=true; //开启本地 mr
+//设置 local mr 的最大输入数据量，当输入数据量小于这个值时采用 local mr 的方式，默认为 134217728，即 128M
+set hive.exec.mode.local.auto.inputbytes.max=50000000;
+//设置 local mr 的最大输入文件个数，当输入文件个数小于这个值时采用 local mr 的方式，默认为 4
+set hive.exec.mode.local.auto.input.files.max=10;
+</code></pre></li>
+<li>
+<p><strong>案例实操：</strong></p>
+<ul>
+<li>
+<p>关闭本地模式（默认是关闭的），并执行查询语句</p>
+<pre><code>hive (default)&gt; select count(*) from emp group by deptno;
+</code></pre></li>
+<li>
+<p>开启本地模式，并执行查询语句</p>
+<pre><code>hive (default)&gt; set hive.exec.mode.local.auto=true;
+hive (default)&gt; select count(*) from emp group by deptno;
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h2 id="表的优化"><strong>表的优化</strong></h2>
+<h3 id="小表大表-joinmapjoin"><strong>小表大表</strong> Join（MapJOIN）</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fiewc8idj30rr0wiwhd.jpg" alt="QQ截图20220420004518.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fif6jirjj30px0lm76l.jpg" alt="QQ截图20220420004526.jpg"></p>
+<h3 id="大表-join-大表"><strong>大表</strong> <strong>Join</strong> <strong>大表</strong></h3>
+<ul>
+<li>空key过滤使用场景
+<ul>
+<li>非inner join</li>
+<li>不需要字段为null</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fiiv1wkqj30qf0f8wfm.jpg" alt="QQ截图20220420004821.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fiizsyfcj30pn0ykdj2.jpg" alt="QQ截图20220420004829.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fikggozxj30rj11wq7d.jpg" alt="QQ截图20220420005033.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fikme29pj30pu0xzgoa.jpg" alt="QQ截图20220420005047.jpg"></p>
+<h3 id="group-by"><strong>Group By</strong></h3>
+<ul>
+<li>
+<p>默认情况下，Map 阶段同一 Key 数据分发给一个 reduce，当一个 key 数据过大时就倾斜了。</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hr5bdogjj30pk12eq6q.jpg" alt="QQ截图20220421231842.jpg"></p>
+</li>
+</ul>
+<h3 id="countdistinct-去重统计"><strong>Count(Distinct)</strong> <strong>去重统计</strong></h3>
+<ul>
+<li>
+<p>数据量小的时候无所谓，数据量大的情况下，由于 COUNT DISTINCT 操作需要用一个Reduce Task 来完成，这一个 Reduce 需要处理的数据量太大，就会导致整个 Job 很难完成，一般 COUNT DISTINCT 使用先 GROUP BY 再 COUNT 的方式替换,但是需要注意 group by 造成的数据倾斜问题.</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hrd2krscj30pk0q8dib.jpg" alt="QQ截图20220421232608.jpg"></p>
+</li>
+</ul>
+<h3 id="笛卡尔积"><strong>笛卡尔积</strong></h3>
+<ul>
+<li>尽量避免笛卡尔积，join 的时候不加 on 条件，或者无效的 on 条件，Hive 只能使用 1 个reducer 来完成笛卡尔积。</li>
+</ul>
+<h3 id="行列过滤"><strong>行列过滤</strong></h3>
+<ul>
+<li>列处理：在 SELECT 中，只拿需要的列，如果有分区，尽量使用分区过滤，少用 SELECT *。</li>
+<li>行处理：在分区剪裁中，当使用外关联时，如果将副表的过滤条件写在 Where 后面，那么就会先全表关联，之后再过滤，比如：</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hriweh1tj30qk09h0tg.jpg" alt="QQ截图20220421233148.jpg"></p>
+<h2 id="合理设置-map-及-reduce-数"><strong>合理设置</strong> <strong>Map</strong> <strong>及</strong> <strong>Reduce</strong> <strong>数</strong></h2>
+<ul>
+<li>
+<p>通常情况下，作业会通过 input 的目录产生一个或者多个 map 任务。<strong>主要的决定因素有：input 的文件总个数，input 的文件大小，集群设置的文件块大小。</strong></p>
+</li>
+<li>
+<p>是不是 map 数越多越好？</p>
+<ul>
+<li>答案是否定的。如果一个任务有很多小文件（远远小于块大小 128m），则每个小文件也会被当做一个块，用一个 map 任务来完成，而一个 map 任务启动和初始化的时间远远大于逻辑处理的时间，就会造成很大的资源浪费。而且，同时可执行的 map 数是受限的。</li>
+</ul>
+</li>
+<li>
+<p>是不是保证每个 map 处理接近 128m 的文件块，就高枕无忧了？</p>
+<ul>
+<li>答案也是不一定。比如有一个 127m 的文件，正常会用一个 map 去完成，但这个文件只有一个或者两个小字段，却有几千万的记录，如果 map 处理的逻辑比较复杂，用一个 map任务去做，肯定也比较耗时。</li>
+</ul>
+</li>
+<li>
+<p>针对上面的问题 2 和 3，我们需要采取两种方式来解决：即减少 map 数和增加 map 数；</p>
+</li>
+</ul>
+<h3 id="复杂文件增加-map-数"><strong>复杂文件增加</strong> <strong>Map</strong> <strong>数</strong></h3>
+<ul>
+<li>
+<p>当 input 的文件都很大，任务逻辑复杂，map 执行非常慢的时候，可以考虑增加 Map 数，来使得每个 map 处理的数据量减少，从而提高任务的执行效率。</p>
+</li>
+<li>
+<p>增加 map 的方法为：根据computeSliteSize(Math.max(minSize,Math.min(maxSize,blocksize)))=blocksize=128M 公式，调整 maxSize 最大值。让 maxSize 最大值低于 blocksize 就可以增加 map 的个数。</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hrsypyrsj30op07e74v.jpg" alt="QQ截图20220421234126.jpg"></p>
+</li>
+</ul>
+<h3 id="小文件进行合并"><strong>小文件进行合并</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hrtrif0mj30pb0d5abh.jpg" alt="QQ截图20220421234214.jpg"></p>
+<h3 id="合理设置-reduce-数"><strong>合理设置</strong> <strong>Reduce</strong> <strong>数</strong></h3>
+<ul>
+<li>
+<p><strong>调整</strong> <strong>reduce</strong> <strong>个数方法一</strong></p>
+<ul>
+<li>
+<p>每个 Reduce 处理的数据量默认是 256MB</p>
+<pre><code>hive.exec.reducers.bytes.per.reducer=256000000
+</code></pre></li>
+<li>
+<p>每个任务最大的 reduce 数，默认为 1009</p>
+<pre><code>hive.exec.reducers.max=1009
+</code></pre></li>
+<li>
+<p>计算 reducer 数的公式</p>
+<pre><code>N=min(参数 2，总输入数据量/参数 1)
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p><strong>调整</strong> <strong>reduce</strong> <strong>个数方法二</strong></p>
+<ul>
+<li>
+<p>在 hadoop 的 mapred-default.xml 文件中修改,设置每个 job 的 Reduce 个数</p>
+<pre><code>set mapreduce.job.reduces = 15;
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p><strong>reduce</strong> <strong>个数并不是越多越好</strong></p>
+<ul>
+<li>过多的启动和初始化 reduce 也会消耗时间和资源；</li>
+<li>另外，有多少个 reduce，就会有多少个输出文件，如果生成了很多个小文件，那么如果这些小文件作为下一个任务的输入，则也会出现小文件过多的问题；</li>
+<li>在设置 reduce 个数的时候也需要考虑这两个原则：处理大数据量利用合适的 reduce 数；使单个 reduce 任务处理数据量大小要合适</li>
+</ul>
+</li>
+</ul>
+<h2 id="并行执行"><strong>并行执行</strong></h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hs02rn27j30qi0cjwg9.jpg" alt="QQ截图20220421234818.jpg"></p>
+<h2 id="严格模式"><strong>严格模式</strong></h2>
+<ul>
+<li>Hive 可以通过设置防止一些危险操作：</li>
+<li><strong>分区表不使用分区过滤</strong>
+<ul>
+<li>将 hive.strict.checks.no.partition.filter 设置为 true 时，对于分区表，**除非 where 语句中含有分区字段过滤条件来限制范围，否则不允许执行。**换句话说，就是用户不允许扫描所有分区。进行这个限制的原因是，通常分区表都拥有非常大的数据集，而且数据增加迅速。没有进行分区限制的查询可能会消耗令人不可接受的巨大资源来处理这个表。</li>
+</ul>
+</li>
+<li><strong>使用</strong> <strong>order by</strong> <strong>没有</strong> <strong>limit</strong> <strong>过滤</strong>
+<ul>
+<li>将 hive.strict.checks.orderby.no.limit 设置为 true 时，**对于使用了 order by 语句的查询，要求必须使用 limit 语句。**因为 order by 为了执行排序过程会将所有的结果数据分发到同一个Reducer 中进行处理，强制要求用户增加这个 LIMIT 语句可以防止 Reducer 额外执行很长一段时间。</li>
+</ul>
+</li>
+<li><strong>笛卡尔积</strong>
+<ul>
+<li>将 hive.strict.checks.cartesian.product 设置为 true 时，**会限制笛卡尔积的查询。**对关系型数据库非常了解的用户可能期望在 执行 JOIN 查询的时候不使用 ON 语句而是使用 where 语句，这样关系数据库的执行优化器就可以高效地将 WHERE 语句转化成那个 ON 语句。不幸的是，Hive 并不会执行这种优化，因此，如果表足够大，那么这个查询就会出现不可控的情况。</li>
+</ul>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1009%E5%8E%8B%E7%BC%A9%E5%92%8C%E5%AD%98%E5%82%A8/" data-toggle="tooltip" data-placement="top" title="9、压缩和存储（Hive）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/982minio%E5%AE%89%E8%A3%85/" data-toggle="tooltip" data-placement="top" title="1、MinIO安装（MinIO）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

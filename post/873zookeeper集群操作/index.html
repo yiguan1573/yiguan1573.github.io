@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="3、Zookeeper集群操作（Zookeeper）" />
+    <meta property="og:title" content="3、Zookeeper集群操作（Zookeeper）" />
+    <meta property="twitter:title" content="3、Zookeeper集群操作（Zookeeper）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>3、Zookeeper集群操作（Zookeeper）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/873zookeeper%E9%9B%86%E7%BE%A4%E6%93%8D%E4%BD%9C/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/zookeeper" title="Zookeeper">
+                            Zookeeper
+                        </a>
+                        
+                    </div>
+                    <h1>3、Zookeeper集群操作（Zookeeper）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Sunday, October 3, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#集群操作">集群操作</a>
+      <ul>
+        <li><a href="#集群安装">集群安装</a></li>
+        <li><a href="#选举机制">选举机制</a></li>
+        <li><a href="#zk-集群启动停止脚本">ZK 集群启动停止脚本</a></li>
+      </ul>
+    </li>
+    <li><a href="#客户端命令行操作">客户端命令行操作</a>
+      <ul>
+        <li><a href="#命令行语法">命令行语法</a></li>
+        <li><a href="#znode-节点数据信息">znode 节点数据信息</a></li>
+        <li><a href="#节点类型持久短暂有序号无序号">节点类型（持久/短暂/有序号/无序号）</a></li>
+        <li><a href="#监听器原理">监听器原理</a></li>
+        <li><a href="#节点删除与查看">节点删除与查看</a></li>
+      </ul>
+    </li>
+    <li><a href="#客户端-api-操作">客户端 API 操作</a>
+      <ul>
+        <li><a href="#idea-环境搭建">IDEA 环境搭建</a></li>
+        <li><a href="#创建-zookeeper-客户端">创建 ZooKeeper 客户端</a></li>
+      </ul>
+    </li>
+    <li><a href="#客户端向服务端写数据流程">客户端向服务端写数据流程</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="集群操作">集群操作</h2>
+<h3 id="集群安装">集群安装</h3>
+<ul>
+<li>
+<p><strong>集群规划</strong></p>
+<p>在 hadoop102、hadoop103 和 hadoop104 三个节点上都部署 Zookeeper。</p>
+</li>
+<li>
+<p><strong>解压安装</strong></p>
+<ul>
+<li>在 hadoop102 解压 Zookeeper 安装包到/opt/module/目录下</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ tar -zxvf apache-zookeeper-3.5.7-
+bin.tar.gz -C /opt/module/
+</code></pre></div><ul>
+<li>修改 apache-zookeeper-3.5.7-bin 名称为 zookeeper-3.5.7</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ mv apache-zookeeper-3.5.7-bin/ 
+zookeeper-3.5.7
+</code></pre></div></li>
+<li>
+<p><strong>配置服务器编号</strong></p>
+<ul>
+<li>在/opt/module/zookeeper-3.5.7/这个目录下创建zkData</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 zookeeper-3.5.7<span style="color:#f92672">]</span>$ mkdir zkData
+</code></pre></div><ul>
+<li>在/opt/module/zookeeper-3.5.7/zkData 目录下创建一个 myid 的文件</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 zkData<span style="color:#f92672">]</span>$ vi myid
+</code></pre></div><p>在文件中添加与 server 对应的编号（注意：上下不要有空行，左右不要有空格）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">2
+</code></pre></div><p>注意：添加 myid 文件，一定要在 Linux 里面创建，在 notepad++里面很可能乱码</p>
+<ul>
+<li>拷贝配置好的 zookeeper 到其他机器上</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module <span style="color:#f92672">]</span>$ xsync zookeeper-3.5.7
+</code></pre></div><p>并分别在 hadoop103、hadoop104 上修改 myid 文件中内容为 3、4</p>
+</li>
+<li>
+<p><strong>配置zoo.cfg文件</strong></p>
+<ul>
+<li>重命名/opt/module/zookeeper-3.5.7/conf 这个目录下的 zoo_sample.cfg 为 zoo.cfg</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 conf<span style="color:#f92672">]</span>$ mv zoo_sample.cfg zoo.cfg
+</code></pre></div><ul>
+<li>打开 zoo.cfg 文件</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 conf<span style="color:#f92672">]</span>$ vim zoo.cfg
+<span style="color:#75715e">#修改数据存储路径配置</span>
+dataDir<span style="color:#f92672">=</span>/opt/module/zookeeper-3.5.7/zkData
+<span style="color:#75715e">#增加如下配置</span>
+<span style="color:#75715e">#######################cluster##########################</span>
+server.2<span style="color:#f92672">=</span>hadoop102:2888:3888
+server.3<span style="color:#f92672">=</span>hadoop103:2888:3888
+server.4<span style="color:#f92672">=</span>hadoop104:2888:3888
+</code></pre></div><ul>
+<li>配置参数解读</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">server.A<span style="color:#f92672">=</span>B:C:D
+</code></pre></div><p><strong>A</strong> 是一个数字，表示这个是第几号服务器</p>
+<p>集群模式下配置一个文件 myid，这个文件在 dataDir 目录下，这个文件里面有一个数据 就是 A 的值，<strong>Zookeeper 启动时读取此文件，拿到里面的数据与 zoo.cfg 里面的配置信息比较从而判断到底是哪个 server</strong>。</p>
+<p><strong>B</strong> 是这个服务器的地址</p>
+<p><strong>C</strong> 是这个服务器 Follower 与集群中的 Leader 服务器交换信息的端口</p>
+<p><strong>D</strong> 是万一集群中的 Leader 服务器挂了，需要一个端口来重新进行选举，选出一个新的 Leader，而这个端口就是用来执行选举时服务器相互通信的端口</p>
+<ul>
+<li>同步 zoo.cfg 配置文件</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 conf<span style="color:#f92672">]</span>$ xsync zoo.cfg
+</code></pre></div></li>
+<li>
+<p><strong>集群操作</strong></p>
+<ul>
+<li>分别启动 Zookeeper</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 zookeeper-3.5.7<span style="color:#f92672">]</span>$ bin/zkServer.sh start
+<span style="color:#f92672">[</span>atguigu@hadoop103 zookeeper-3.5.7<span style="color:#f92672">]</span>$ bin/zkServer.sh start
+<span style="color:#f92672">[</span>atguigu@hadoop104 zookeeper-3.5.7<span style="color:#f92672">]</span>$ bin/zkServer.sh start
+</code></pre></div><ul>
+<li>查看状态</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 zookeeper-3.5.7<span style="color:#f92672">]</span><span style="color:#75715e"># bin/zkServer.sh status</span> 
+JMX enabled by default
+Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg Mode: follower
+<span style="color:#f92672">[</span>atguigu@hadoop103 zookeeper-3.5.7<span style="color:#f92672">]</span><span style="color:#75715e"># bin/zkServer.sh status</span> 
+JMX enabled by default
+Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg Mode: leader
+<span style="color:#f92672">[</span>atguigu@hadoop104 zookeeper-3.4.5<span style="color:#f92672">]</span><span style="color:#75715e"># bin/zkServer.sh status</span> 
+JMX enabled by default
+Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg Mode: follower
+</code></pre></div></li>
+</ul>
+<h3 id="选举机制">选举机制</h3>
+<ul>
+<li>
+<p>第一次启动</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkwcafh8wj60yc0hm7mu02.jpg" alt="QQ截图20211019203144.png"></p>
+</li>
+<li>
+<p>非第一次启动</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkwciiu6zj60yr0i219l02.jpg" alt="QQ截图20211019203156.png"></p>
+</li>
+</ul>
+<h3 id="zk-集群启动停止脚本">ZK 集群启动停止脚本</h3>
+<ul>
+<li>
+<p>在 hadoop102 的/home/atguigu/bin 目录下创建脚本</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 bin<span style="color:#f92672">]</span>$ vim zk.sh
+</code></pre></div><p>在脚本中编写如下内容</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">case</span> $1 in
+<span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">for</span> i in hadoop102 hadoop103 hadoop104
+    <span style="color:#66d9ef">do</span>
+      echo ---------- zookeeper $i 启动 ------------
+      ssh $i <span style="color:#e6db74">&#34;/opt/module/zookeeper-3.5.7/bin/zkServer.sh 
+</span><span style="color:#e6db74">start&#34;</span>
+  <span style="color:#66d9ef">done</span>
+<span style="color:#f92672">}</span>;;
+<span style="color:#e6db74">&#34;stop&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">for</span> i in hadoop102 hadoop103 hadoop104
+    <span style="color:#66d9ef">do</span>
+      echo ---------- zookeeper $i 停止 ------------ 
+      ssh $i <span style="color:#e6db74">&#34;/opt/module/zookeeper-3.5.7/bin/zkServer.sh 
+</span><span style="color:#e6db74">stop&#34;</span>
+  <span style="color:#66d9ef">done</span>
+<span style="color:#f92672">}</span>;;
+<span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">for</span> i in hadoop102 hadoop103 hadoop104
+  <span style="color:#66d9ef">do</span>
+      echo ---------- zookeeper $i 状态 ------------ 
+      ssh $i <span style="color:#e6db74">&#34;/opt/module/zookeeper-3.5.7/bin/zkServer.sh 
+</span><span style="color:#e6db74">status&#34;</span>
+  <span style="color:#66d9ef">done</span>
+<span style="color:#f92672">}</span>;;
+<span style="color:#66d9ef">esac</span>
+</code></pre></div></li>
+<li>
+<p>增加脚本执行权限</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 bin<span style="color:#f92672">]</span>$ chmod u+x zk.sh
+</code></pre></div></li>
+<li>
+<p>Zookeeper 集群启动脚本</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ zk.sh start
+</code></pre></div></li>
+<li>
+<p>Zookeeper 集群停止脚本</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ zk.sh stop
+</code></pre></div></li>
+</ul>
+<h2 id="客户端命令行操作">客户端命令行操作</h2>
+<h3 id="命令行语法">命令行语法</h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkwhvvtg1j60gs03i0tp02.jpg" alt="QQ截图20211019203821.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkwhztvqjj60gn06fwgc02.jpg" alt="QQ截图20211019203832.png"></p>
+<ul>
+<li>
+<p>启动客户端</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 zookeeper-3.5.7<span style="color:#f92672">]</span>$ bin/zkCli.sh -server hadoop102:2181
+</code></pre></div></li>
+<li>
+<p>显示所有操作命令</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: hadoop102:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 1<span style="color:#f92672">]</span> help
+</code></pre></div></li>
+</ul>
+<h3 id="znode-节点数据信息">znode 节点数据信息</h3>
+<ul>
+<li>
+<p>查看当前znode中所包含的内容</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: hadoop102:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 0<span style="color:#f92672">]</span> ls /
+<span style="color:#f92672">[</span>zookeeper<span style="color:#f92672">]</span>
+</code></pre></div></li>
+<li>
+<p>查看当前节点详细数据</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: hadoop102:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 5<span style="color:#f92672">]</span> ls -s /
+<span style="color:#f92672">[</span>zookeeper<span style="color:#f92672">]</span>cZxid <span style="color:#f92672">=</span> 0x0
+ctime <span style="color:#f92672">=</span> Thu Jan <span style="color:#ae81ff">01</span> 08:00:00 CST 1970
+mZxid <span style="color:#f92672">=</span> 0x0
+mtime <span style="color:#f92672">=</span> Thu Jan <span style="color:#ae81ff">01</span> 08:00:00 CST 1970
+pZxid <span style="color:#f92672">=</span> 0x0
+cversion <span style="color:#f92672">=</span> -1
+dataVersion <span style="color:#f92672">=</span> 0
+aclVersion <span style="color:#f92672">=</span> 0
+ephemeralOwner <span style="color:#f92672">=</span> 0x0
+dataLength <span style="color:#f92672">=</span> 0
+numChildren <span style="color:#f92672">=</span> 1
+</code></pre></div><ul>
+<li>
+<p><strong>czxid：创建节点的事务 zxid</strong></p>
+<p>每次修改 ZooKeeper 状态都会产生一个 ZooKeeper 事务 ID。事务 ID 是 ZooKeeper 中所有修改总的次序。每次修改都有唯一的 zxid，如果 zxid1 小于 zxid2，那么 zxid1 在 zxid2 之前发生。</p>
+</li>
+<li>
+<p>ctime：znode 被创建的毫秒数（从 1970 年开始）</p>
+</li>
+<li>
+<p>mzxid：znode 最后更新的事务 zxid</p>
+</li>
+<li>
+<p>mtime：znode 最后修改的毫秒数（从 1970 年开始）</p>
+</li>
+<li>
+<p>pZxid：znode 最后更新的子节点 zxid</p>
+</li>
+<li>
+<p>cversion：znode 子节点变化号，znode 子节点修改次数</p>
+</li>
+<li>
+<p><strong>dataversion：znode 数据变化号</strong></p>
+</li>
+<li>
+<p>aclVersion：znode 访问控制列表的变化号</p>
+</li>
+<li>
+<p>ephemeralOwner：如果是临时节点，这个是 znode 拥有者的 session id。如果不是临时节点则是 0。</p>
+</li>
+<li>
+<p><strong>dataLength：znode 的数据长度</strong></p>
+</li>
+<li>
+<p><strong>numChildren：znode 子节点数量</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="节点类型持久短暂有序号无序号">节点类型（持久/短暂/有序号/无序号）</h3>
+<ul>
+<li>
+<p>节点类型</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkwnfr56fj30zl0hr171.jpg" alt="QQ截图20211019204347.png"></p>
+</li>
+<li>
+<p>分别创建2个普通节点（永久节点 + 不带序号）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 3<span style="color:#f92672">]</span> create /sanguo <span style="color:#e6db74">&#34;diaochan&#34;</span>
+Created /sanguo
+<span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 4<span style="color:#f92672">]</span> create /sanguo/shuguo <span style="color:#e6db74">&#34;liubei&#34;</span>
+Created /sanguo/shuguo
+</code></pre></div></li>
+<li>
+<p>获得节点的值</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 5<span style="color:#f92672">]</span> get -s /sanguo
+diaochan
+cZxid <span style="color:#f92672">=</span> 0x100000003
+ctime <span style="color:#f92672">=</span> Wed Aug <span style="color:#ae81ff">29</span> 00:03:23 CST 2018
+mZxid <span style="color:#f92672">=</span> 0x100000003
+mtime <span style="color:#f92672">=</span> Wed Aug <span style="color:#ae81ff">29</span> 00:03:23 CST 2018
+pZxid <span style="color:#f92672">=</span> 0x100000004
+cversion <span style="color:#f92672">=</span> 1
+dataVersion <span style="color:#f92672">=</span> 0
+aclVersion <span style="color:#f92672">=</span> 0
+ephemeralOwner <span style="color:#f92672">=</span> 0x0
+dataLength <span style="color:#f92672">=</span> 7
+numChildren <span style="color:#f92672">=</span> 1
+  
+<span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 6<span style="color:#f92672">]</span> get -s /sanguo/shuguo
+liubei
+cZxid <span style="color:#f92672">=</span> 0x100000004
+ctime <span style="color:#f92672">=</span> Wed Aug <span style="color:#ae81ff">29</span> 00:04:35 CST 2018
+mZxid <span style="color:#f92672">=</span> 0x100000004
+mtime <span style="color:#f92672">=</span> Wed Aug <span style="color:#ae81ff">29</span> 00:04:35 CST 2018
+pZxid <span style="color:#f92672">=</span> 0x100000004
+cversion <span style="color:#f92672">=</span> 0
+dataVersion <span style="color:#f92672">=</span> 0
+aclVersion <span style="color:#f92672">=</span> 0
+ephemeralOwner <span style="color:#f92672">=</span> 0x0
+dataLength <span style="color:#f92672">=</span> 6
+numChildren <span style="color:#f92672">=</span> 0
+</code></pre></div></li>
+<li>
+<p>创建带序号的节点（永久节点 + 带序号）</p>
+<ol>
+<li>
+<p>先创建一个普通的根节点/sanguo/weiguo</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 1<span style="color:#f92672">]</span> create /sanguo/weiguo <span style="color:#e6db74">&#34;caocao&#34;</span>
+Created /sanguo/weiguo
+</code></pre></div></li>
+<li>
+<p>创建带序号的节点</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 2<span style="color:#f92672">]</span> create -s /sanguo/weiguo/zhangliao <span style="color:#e6db74">&#34;zhangliao&#34;</span>
+Created /sanguo/weiguo/zhangliao0000000000
+<span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 3<span style="color:#f92672">]</span> create -s /sanguo/weiguo/zhangliao <span style="color:#e6db74">&#34;zhangliao&#34;</span>
+Created /sanguo/weiguo/zhangliao0000000001
+<span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 4<span style="color:#f92672">]</span> create -s /sanguo/weiguo/xuchu <span style="color:#e6db74">&#34;xuchu&#34;</span>
+Created /sanguo/weiguo/xuchu0000000002
+</code></pre></div><p>如果原来没有序号节点，序号从 0 开始依次递增。如果原节点下已有 2 个节点，则再排序时从 2 开始，以此类推。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>创建短暂节点（短暂节点 + 不带序号 or 带序号）</p>
+<ul>
+<li>
+<p>创建短暂的不带序号的节点</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 7<span style="color:#f92672">]</span> create -e /sanguo/wuguo <span style="color:#e6db74">&#34;zhouyu&#34;</span>
+Created /sanguo/wuguo
+</code></pre></div></li>
+<li>
+<p>创建短暂的带序号的节点</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 2<span style="color:#f92672">]</span> create -e -s /sanguo/wuguo <span style="color:#e6db74">&#34;zhouyu&#34;</span>
+Created /sanguo/wuguo0000000001
+</code></pre></div></li>
+<li>
+<p>在当前客户端是能查看到的</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 3<span style="color:#f92672">]</span> ls /sanguo 
+<span style="color:#f92672">[</span>wuguo, wuguo0000000001, shuguo<span style="color:#f92672">]</span>
+</code></pre></div></li>
+<li>
+<p>退出当前客户端然后再重启客户端</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 12<span style="color:#f92672">]</span> quit
+<span style="color:#f92672">[</span>atguigu@hadoop104 zookeeper-3.5.7<span style="color:#f92672">]</span>$ bin/zkCli.sh
+</code></pre></div></li>
+<li>
+<p>再次查看根目录下短暂节点已经删除</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 0<span style="color:#f92672">]</span> ls /sanguo
+<span style="color:#f92672">[</span>shuguo<span style="color:#f92672">]</span>
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>修改节点数据值</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 6<span style="color:#f92672">]</span> set /sanguo/weiguo <span style="color:#e6db74">&#34;simayi&#34;</span>
+</code></pre></div></li>
+</ul>
+<h3 id="监听器原理">监听器原理</h3>
+<ul>
+<li>客户端注册监听它关心的目录节点，当目录节点发生变化（数据改变、节点删除、子目 录节点增加删除）时，ZooKeeper 会通知客户端。监听机制保证 ZooKeeper 保存的任何的数据的任何改变都能快速的响应到监听了该节点的应用程序。</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkwv9ryhgj60y90hx4a502.jpg" alt="QQ截图20211019205120.png"></p>
+<ul>
+<li>
+<p>节点的值变化监听</p>
+<ul>
+<li>
+<p>在 hadoop104 主机上注册监听/sanguo 节点数据变化</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 26<span style="color:#f92672">]</span> get -w /sanguo
+</code></pre></div></li>
+<li>
+<p>在 hadoop103 主机上修改/sanguo 节点的数据</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 1<span style="color:#f92672">]</span> set /sanguo <span style="color:#e6db74">&#34;xisi&#34;</span>
+</code></pre></div></li>
+<li>
+<p>观察 hadoop104 主机收到数据变化的监听</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">WATCHER::
+WatchedEvent state:SyncConnected type:NodeDataChanged path:/sanguo
+</code></pre></div><p>注意：在hadoop103再多次修改/sanguo的值，hadoop104上不会再收到监听。因为注册一次，只能监听一次。想再次监听，需要再次注册。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>节点的子节点变化监听（路径变化）</p>
+<ul>
+<li>
+<p>在 hadoop104 主机上注册监听/sanguo 节点的子节点变化</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 1<span style="color:#f92672">]</span> ls -w /sanguo
+<span style="color:#f92672">[</span>shuguo, weiguo<span style="color:#f92672">]</span>
+</code></pre></div></li>
+<li>
+<p>在 hadoop103 主机/sanguo 节点上创建子节点</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 2<span style="color:#f92672">]</span> create /sanguo/jin <span style="color:#e6db74">&#34;simayi&#34;</span>
+Created /sanguo/jin
+</code></pre></div></li>
+<li>
+<p>观察 hadoop104 主机收到子节点变化的监听</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">WATCHER::
+WatchedEvent state:SyncConnected type:NodeChildrenChanged path:/sanguo
+</code></pre></div><p>注意：节点的路径变化，也是注册一次，生效一次。想多次生效，就需要多次注册。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="节点删除与查看">节点删除与查看</h3>
+<ul>
+<li>
+<p>删除节点</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 4<span style="color:#f92672">]</span> delete /sanguo/jin
+</code></pre></div></li>
+<li>
+<p>递归删除节点</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 15<span style="color:#f92672">]</span> deleteall /sanguo/shuguo
+</code></pre></div></li>
+<li>
+<p>查看节点状态</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 17<span style="color:#f92672">]</span> stat /sanguo
+cZxid <span style="color:#f92672">=</span> 0x100000003
+ctime <span style="color:#f92672">=</span> Wed Aug <span style="color:#ae81ff">29</span> 00:03:23 CST 2018
+mZxid <span style="color:#f92672">=</span> 0x100000011
+mtime <span style="color:#f92672">=</span> Wed Aug <span style="color:#ae81ff">29</span> 00:21:23 CST 2018
+pZxid <span style="color:#f92672">=</span> 0x100000014
+cversion <span style="color:#f92672">=</span> 9
+dataVersion <span style="color:#f92672">=</span> 1
+aclVersion <span style="color:#f92672">=</span> 0
+ephemeralOwner <span style="color:#f92672">=</span> 0x0
+dataLength <span style="color:#f92672">=</span> 4
+numChildren <span style="color:#f92672">=</span> 1
+</code></pre></div></li>
+</ul>
+<h2 id="客户端-api-操作">客户端 API 操作</h2>
+<ul>
+<li>前提：保证 hadoop102、hadoop103、hadoop104 服务器上 Zookeeper 集群服务端启动。</li>
+</ul>
+<h3 id="idea-环境搭建">IDEA 环境搭建</h3>
+<ol>
+<li>
+<p>创建一个工程：zookeeper</p>
+</li>
+<li>
+<p>添加pom文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>junit<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>junit<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.logging.log4j<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>log4j-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.8.2<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.zookeeper<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>zookeeper<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.5.7<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;/dependencies&gt;</span>
+</code></pre></div></li>
+<li>
+<p>拷贝log4j.properties文件到项目根目录</p>
+<p>需要在项目的 src/main/resources 目录下，新建一个文件，命名为“log4j.properties”，在文件中填入。</p>
+<pre><code class="language-properties" data-lang="properties">log4j.rootLogger=INFO, stdout 
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender 
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout 
+log4j.appender.stdout.layout.ConversionPattern=%d %p [%c] - %m%n 
+log4j.appender.logfile=org.apache.log4j.FileAppender 
+log4j.appender.logfile.File=target/spring.log 
+log4j.appender.logfile.layout=org.apache.log4j.PatternLayout 
+log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
+</code></pre></li>
+<li>
+<p>创建包名com.atguigu.zk</p>
+</li>
+<li>
+<p>创建类名称zkClient</p>
+</li>
+</ol>
+<h3 id="创建-zookeeper-客户端">创建 ZooKeeper 客户端</h3>
+<ul>
+<li>创建客户端程序</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 注意：逗号前后不能有空格
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> String connectString <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hadoop102:2181,hadoop103:2181,hadoop104:2181&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> sessionTimeout <span style="color:#f92672">=</span> 2000<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> ZooKeeper zkClient <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#a6e22e">@Before</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    zkClient <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ZooKeeper<span style="color:#f92672">(</span>connectString<span style="color:#f92672">,</span> sessionTimeout<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Watcher<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		<span style="color:#a6e22e">@Override</span>
+		<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>WatchedEvent watchedEvent<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+			<span style="color:#75715e">// 收到事件通知后的回调函数（用户的业务逻辑）
+</span><span style="color:#75715e"></span>            
+			System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>watchedEvent<span style="color:#f92672">.</span><span style="color:#a6e22e">getType</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;--&#34;</span> <span style="color:#f92672">+</span> watchedEvent<span style="color:#f92672">.</span><span style="color:#a6e22e">getPath</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+			<span style="color:#75715e">// 再次启动监听
+</span><span style="color:#75715e"></span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> children <span style="color:#f92672">=</span> zkClient<span style="color:#f92672">.</span><span style="color:#a6e22e">getChildren</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                 <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String child <span style="color:#f92672">:</span> children<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>child<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                 <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> 
+        <span style="color:#f92672">}</span>
+	<span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>
+<p>创建子节点</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 创建子节点
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+  <span style="color:#75715e">// 参数 1：要创建的节点的路径； 参数 2：节点数据 ； 参数 3：节点权限 ；参数 4：节点的类型
+</span><span style="color:#75715e"></span>
+  String nodeCreated <span style="color:#f92672">=</span> zkClient<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/atguigu&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;shuaige&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>Ids<span style="color:#f92672">.</span><span style="color:#a6e22e">OPEN_ACL_UNSAFE</span><span style="color:#f92672">,</span>CreateMode<span style="color:#f92672">.</span><span style="color:#a6e22e">PERSISTENT</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>测试：在 hadoop102 的 zk 客户端上查看创建节点情况</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 16<span style="color:#f92672">]</span> get -s /atguigu
+shuaige
+</code></pre></div></li>
+<li>
+<p>获取子节点并监听节点变化</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 获取子节点
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getChildren</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> children <span style="color:#f92672">=</span> zkClient<span style="color:#f92672">.</span><span style="color:#a6e22e">getChildren</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String child <span style="color:#f92672">:</span> children<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>child<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// 延时阻塞
+</span><span style="color:#75715e"></span>
+    Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>Long<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>
+<p>在 IDEA 控制台上看到如下节点：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">zookeeper
+sanguo
+atguigu
+</code></pre></div></li>
+<li>
+<p>在 hadoop102 的客户端上创建再创建一个节点/atguigu1，观察 IDEA 控制台</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 3<span style="color:#f92672">]</span> create /atguigu1 <span style="color:#e6db74">&#34;atguigu1&#34;</span>
+</code></pre></div></li>
+<li>
+<p>在 hadoop102 的客户端上删除节点/atguigu1，观察 IDEA 控制台</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 4<span style="color:#f92672">]</span> delete /atguigu1
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>判断 Znode 是否存在</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 判断 znode 是否存在
+</span><span style="color:#75715e"></span>  
+<span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">exist</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    Stat stat <span style="color:#f92672">=</span> zkClient<span style="color:#f92672">.</span><span style="color:#a6e22e">exists</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/atguigu&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>stat <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;not exist&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;exist&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p><a href="https://blog.csdn.net/u010391342/article/details/100404588?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-2.no_search_link&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-2.no_search_link">SpringBoot集成Zookeeper</a></p>
+</li>
+</ul>
+<h2 id="客户端向服务端写数据流程">客户端向服务端写数据流程</h2>
+<ul>
+<li>
+<p>写流程之写入请求直接发送给Leader节点</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkxgjs4mhj60x10ejq5m02.jpg" alt="QQ截图20211019211047.png"></p>
+</li>
+<li>
+<p>写流程之写入请求发送给follower节点</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkxgqiccuj610a0czwhd02.jpg" alt="QQ截图20211019211131.png"></p>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/872zookeeper%E6%9C%AC%E5%9C%B0%E5%AE%89%E8%A3%85/" data-toggle="tooltip" data-placement="top" title="2、Zookeeper本地安装（Zookeeper）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/874%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%A8%E6%80%81%E4%B8%8A%E4%B8%8B%E7%BA%BF%E7%9B%91%E5%90%AC%E6%A1%88%E4%BE%8B/" data-toggle="tooltip" data-placement="top" title="4、服务器动态上下线监听案例（Zookeeper）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

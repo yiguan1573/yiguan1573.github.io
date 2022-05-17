@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="4、Kafka API（Kafka）" />
+    <meta property="og:title" content="4、Kafka API（Kafka）" />
+    <meta property="twitter:title" content="4、Kafka API（Kafka）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>4、Kafka API（Kafka）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/914kafka-api/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/kafka" title="Kafka">
+                            Kafka
+                        </a>
+                        
+                    </div>
+                    <h1>4、Kafka API（Kafka）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Wednesday, October 13, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#producer-api">Producer API</a>
+      <ul>
+        <li><a href="#消息发送流程">消息发送流程</a></li>
+        <li><a href="#异步发送api">异步发送API</a></li>
+        <li><a href="#自定义分区器">自定义分区器</a></li>
+        <li><a href="#同步发送api">同步发送API</a></li>
+      </ul>
+    </li>
+    <li><a href="#consumer-api">Consumer API</a>
+      <ul>
+        <li><a href="#创建简单消费者">创建简单消费者</a></li>
+        <li><a href="#手动提交offset">手动提交offset</a></li>
+        <li><a href="#自定义存储offset">自定义存储offset</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <p>xsync</p>
+<h2 id="producer-api">Producer API</h2>
+<h3 id="消息发送流程">消息发送流程</h3>
+<ul>
+<li>Kafka 的 Producer 发送消息采用的是<strong>异步发送</strong>的方式。在消息发送的过程中，涉及到了<strong>两个线程——main 线程和 Sender 线程</strong>，以及<strong>一个线程共享变量——RecordAccumulator</strong>。 main 线程将消息发送给RecordAccumulator， Sender 线程不断从 RecordAccumulator 中拉取消息发送到 Kafka broker。</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvpdor6cf4j613e0oktlo02.jpg" alt="QQ截图20211023173529.png"></p>
+<h3 id="异步发送api">异步发送API</h3>
+<ul>
+<li>
+<p>导入依赖</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.kafka<span style="color:#f92672">&lt;/groupId&gt;</span>
+  <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>kafka-clients<span style="color:#f92672">&lt;/artifactId&gt;</span>
+  <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>0.11.0.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div></li>
+<li>
+<p>编写代码</p>
+<p>​	需要用到的类：</p>
+<ul>
+<li>KafkaProducer：需要创建一个生产者对象，用来发送数据</li>
+<li>ProducerConfig：获取所需的一系列配置参数</li>
+<li>ProducerRecord：每条数据都要封装成一个 ProducerRecord 对象</li>
+</ul>
+</li>
+<li>
+<p>不带回调参数的API</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> java.util.Properties<span style="color:#f92672">;</span>
+  
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.KafkaProducer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.Producer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.ProducerRecord<span style="color:#f92672">;</span>
+  
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomProducer</span> <span style="color:#f92672">{</span>
+  
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      Properties props <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">// kafka 集群， broker-list
+</span><span style="color:#75715e"></span>  		
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bootstrap.servers&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;127.0.0.1:9092&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  		
+      <span style="color:#75715e">//可用ProducerConfig.ACKS_CONFIG 代替 &#34;acks&#34;
+</span><span style="color:#75715e"></span>          
+      <span style="color:#75715e">//props.put(ProducerConfig.ACKS_CONFIG, &#34;all&#34;);
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;acks&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;all&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">// 重试次数
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;retries&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">// 批次大小
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;batch.size&#34;</span><span style="color:#f92672">,</span> 16384<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">// 等待时间
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;linger.ms&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">// RecordAccumulator 缓冲区大小
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;buffer.memory&#34;</span><span style="color:#f92672">,</span> 33554432<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;key.serializer&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;org.apache.kafka.common.serialization.StringSerializer&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value.serializer&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;org.apache.kafka.common.serialization.StringSerializer&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      Producer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> producer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KafkaProducer<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>props<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 100<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+          producer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ProducerRecord<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;test-&#34;</span> <span style="color:#f92672">+</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span><span style="color:#f92672">,</span>
+                  <span style="color:#e6db74">&#34;test-&#34;</span> <span style="color:#f92672">+</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+      producer<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+  
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p>带回调参数的API</p>
+<ul>
+<li>
+<p>回调函数会在 producer 收到 ack 时调用，为异步调用， 该方法有两个参数，分别是 RecordMetadata 和 Exception，如果 Exception 为 null，说明消息发送成功，如果Exception 不为 null，说明消息发送失败。</p>
+<p><strong>注意</strong>：消息发送失败会自动重试，不需要我们在回调函数中手动重试。</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> java.util.Properties<span style="color:#f92672">;</span>
+  
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.Callback<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.KafkaProducer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.Producer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.ProducerRecord<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.producer.RecordMetadata<span style="color:#f92672">;</span>
+  
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CallBackProducer</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      Properties props <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bootstrap.servers&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;127.0.0.1:9092&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">//kafka 集群， broker-list
+</span><span style="color:#75715e"></span>      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;acks&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;all&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;retries&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">//重试次数
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;batch.size&#34;</span><span style="color:#f92672">,</span> 16384<span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">//批次大小
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;linger.ms&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">//等待时间
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;buffer.memory&#34;</span><span style="color:#f92672">,</span> 33554432<span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">//RecordAccumulator 缓冲区大小
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;key.serializer&#34;</span><span style="color:#f92672">,</span>
+      <span style="color:#e6db74">&#34;org.apache.kafka.common.serialization.StringSerializer&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value.serializer&#34;</span><span style="color:#f92672">,</span>
+      <span style="color:#e6db74">&#34;org.apache.kafka.common.serialization.StringSerializer&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  		
+      Producer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> producer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KafkaProducer<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>props<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 100<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+          producer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ProducerRecord<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">,</span>
+              <span style="color:#e6db74">&#34;test&#34;</span> <span style="color:#f92672">+</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Callback<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  			
+              <span style="color:#75715e">//回调函数， 该方法会在 Producer 收到 ack 时调用，为异步调用
+</span><span style="color:#75715e"></span>                  
+              <span style="color:#a6e22e">@Override</span>
+              <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCompletion</span><span style="color:#f92672">(</span>RecordMetadata metadata<span style="color:#f92672">,</span> Exception exception<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>exception <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>metadata<span style="color:#f92672">.</span><span style="color:#a6e22e">partition</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; - &#34;</span> <span style="color:#f92672">+</span> metadata<span style="color:#f92672">.</span><span style="color:#a6e22e">offset</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                  <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                      exception<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                  <span style="color:#f92672">}</span>
+              <span style="color:#f92672">}</span>
+          <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+  		
+      producer<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+<h3 id="自定义分区器">自定义分区器</h3>
+<ul>
+<li>ProducerRecord类有许多构造函数，其中一个参数partition可指定分区</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvpdxjtzoxj60po091dom02.jpg" alt="QQ截图20211023174401.png"></p>
+<ul>
+<li>
+<p>自定义分区器</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.apache.kafka.clients.producer.Partitioner<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.common.Cluster<span style="color:#f92672">;</span>
+  
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyPartitioner</span> <span style="color:#66d9ef">implements</span> Partitioner <span style="color:#f92672">{</span>
+  
+  <span style="color:#a6e22e">@Override</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span>Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> <span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> configs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#75715e">// TODO Auto-generated method stub
+</span><span style="color:#75715e"></span>  
+  <span style="color:#f92672">}</span>
+  
+  <span style="color:#a6e22e">@Override</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">partition</span><span style="color:#f92672">(</span>String topic<span style="color:#f92672">,</span> Object key<span style="color:#f92672">,</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> keyBytes<span style="color:#f92672">,</span> Object value<span style="color:#f92672">,</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> valueBytes<span style="color:#f92672">,</span> Cluster cluster<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#75715e">// TODO Auto-generated method stub
+</span><span style="color:#75715e"></span>        Integer integer <span style="color:#f92672">=</span> cluster<span style="color:#f92672">.</span><span style="color:#a6e22e">partitionCountForTopic</span><span style="color:#f92672">(</span>topic<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+  
+  <span style="color:#a6e22e">@Override</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#75715e">// TODO Auto-generated method stub
+</span><span style="color:#75715e"></span>  
+  <span style="color:#f92672">}</span>
+  
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>参考默认分区器<code>org.apache.kafka.clients.producer.internals.DefaultPartitioner</code></li>
+</ul>
+</li>
+<li>
+<p>在Producer配置中注册使用</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Properties props <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ProducerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">PARTITIONER_CLASS_CONFIG</span><span style="color:#f92672">,</span> MyPartitioner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+Producer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> producer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KafkaProducer<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>props<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div></li>
+</ul>
+<h3 id="同步发送api">同步发送API</h3>
+<ul>
+<li>
+<p>同步发送的意思就是，一条消息发送之后，会阻塞当前线程， 直至返回 ack。</p>
+</li>
+<li>
+<p>由于 send 方法返回的是一个 Future 对象，根据 Futrue 对象的特点，我们也可以实现同步发送的效果，只需在调用 Future 对象的 get 方发即可。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Producer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> producer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KafkaProducer<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>props<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 100<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  producer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ProducerRecord<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">,</span>  <span style="color:#e6db74">&#34;test - 1&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Callback<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCompletion</span><span style="color:#f92672">(</span>RecordMetadata metadata<span style="color:#f92672">,</span> Exception exception<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+          <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+      <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">//&lt;----------------------
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+<h2 id="consumer-api">Consumer API</h2>
+<h3 id="创建简单消费者">创建简单消费者</h3>
+<ul>
+<li><strong>KafkaConsumer</strong>： 需要创建一个消费者对象，用来消费数据</li>
+<li><strong>ConsumerConfig</strong>： 获取所需的一系列配置参数</li>
+<li><strong>ConsuemrRecord</strong>： 每条数据都要封装成一个 ConsumerRecord 对象</li>
+</ul>
+<p><strong>为了使我们能够专注于自己的业务逻辑， Kafka 提供了自动提交 offset 的功能</strong>。</p>
+<p>自动提交 offset 的相关参数：</p>
+<ul>
+<li>
+<p><strong>enable.auto.commit</strong>：是否开启自动提交 offset 功能</p>
+</li>
+<li>
+<p><strong>auto.commit.interval.ms</strong>：自动提交 offset 的时间间隔</p>
+</li>
+<li>
+<p><strong>案例</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> java.util.Arrays<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.Properties<span style="color:#f92672">;</span>
+  
+<span style="color:#f92672">import</span> org.apache.kafka.clients.consumer.ConsumerRecord<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.consumer.ConsumerRecords<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.kafka.clients.consumer.KafkaConsumer<span style="color:#f92672">;</span>
+  
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomConsumer</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  		
+      Properties props <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  		
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bootstrap.servers&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;127.0.0.1:9092&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">//消费者组
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;group.id&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;abc&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">//自动提交offset
+</span><span style="color:#75715e"></span>          
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;enable.auto.commit&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;auto.commit.interval.ms&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;1000&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;key.deserializer&#34;</span><span style="color:#f92672">,</span>
+              <span style="color:#e6db74">&#34;org.apache.kafka.common.serialization.StringDeserializer&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value.deserializer&#34;</span><span style="color:#f92672">,</span>
+              <span style="color:#e6db74">&#34;org.apache.kafka.common.serialization.StringDeserializer&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  		
+      KafkaConsumer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> consumer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KafkaConsumer<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>props<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">//订阅主题
+</span><span style="color:#75715e"></span>          
+      consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  		
+      <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+          ConsumerRecords<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> records <span style="color:#f92672">=</span> consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">poll</span><span style="color:#f92672">(</span>100<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>ConsumerRecord<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> record <span style="color:#f92672">:</span> records<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+              System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;offset = %d, key = %s, value = %s%n&#34;</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">offset</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          <span style="color:#f92672">}</span>
+      <span style="color:#f92672">}</span>
+        <span style="color:#75715e">//关闭连接
+</span><span style="color:#75715e"></span>          
+        consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+<h3 id="手动提交offset">手动提交offset</h3>
+<ul>
+<li>
+<p>虽然自动提交 offset 十分便利，但由于其是基于时间提交的， 开发人员难以把握offset 提交的时机。因此 <strong>Kafka 还提供了手动提交 offset 的 API</strong>。</p>
+</li>
+<li>
+<p>手动提交 offset 的方法有两种：</p>
+<ul>
+<li>commitSync（同步提交）</li>
+<li>commitAsync（异步提交）</li>
+</ul>
+</li>
+<li>
+<p>两者的<strong>相同点</strong>是，都会将本次 poll 的一批数据最高的偏移量提交；</p>
+</li>
+<li>
+<p><strong>不同点</strong>是，commitSync 阻塞当前线程，一直到提交成功，并且会自动失败重试（由不可控因素导致，也会出现提交失败）；而 commitAsync 则没有失败重试机制，故有可能提交失败。</p>
+</li>
+<li>
+<p>同步提交</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SyncCommitOffset</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      Properties props <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+      <span style="color:#75715e">//&lt;-----------------
+</span><span style="color:#75715e"></span>              
+      <span style="color:#75715e">//关闭自动提交 offset
+</span><span style="color:#75715e"></span>              
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;enable.auto.commit&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+      KafkaConsumer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> consumer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KafkaConsumer<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>props<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;first&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">//消费者订阅主题
+</span><span style="color:#75715e"></span>          
+      <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+          <span style="color:#75715e">//消费者拉取数据
+</span><span style="color:#75715e"></span>              
+          ConsumerRecords<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> records <span style="color:#f92672">=</span>
+          consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">poll</span><span style="color:#f92672">(</span>100<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>ConsumerRecord<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> record <span style="color:#f92672">:</span> records<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+              System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;offset = %d, key = %s, value= %s%n&#34;</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">offset</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          <span style="color:#f92672">}</span>
+          <span style="color:#75715e">//&lt;---------------------------------------
+</span><span style="color:#75715e"></span>              
+          <span style="color:#75715e">//同步提交，当前线程会阻塞直到 offset 提交成功
+</span><span style="color:#75715e"></span>              
+          consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">commitSync</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p>异步提交（<strong>虽然同步提交 offset 更可靠一些，但是由于其会阻塞当前线程，直到提交成功。因此吞吐量会收到很大的影响。因此更多的情况下，会选用异步提交 offset 的方式。</strong>）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AsyncCommitOffset</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      Properties props <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+      <span style="color:#75715e">//&lt;--------------------------------------
+</span><span style="color:#75715e"></span>              
+      <span style="color:#75715e">//关闭自动提交
+</span><span style="color:#75715e"></span>              
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;enable.auto.commit&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+      KafkaConsumer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> consumer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KafkaConsumer<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>props<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;first&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">// 消费者订阅主题
+</span><span style="color:#75715e"></span>          
+      <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+          ConsumerRecords<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> records <span style="color:#f92672">=</span> consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">poll</span><span style="color:#f92672">(</span>100<span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">// 消费者拉取数据
+</span><span style="color:#75715e"></span>              
+          <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>ConsumerRecord<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> record <span style="color:#f92672">:</span> records<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+              System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;offset = %d, key = %s, value = %s%n&#34;</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">offset</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          <span style="color:#f92672">}</span>
+          <span style="color:#75715e">//&lt;----------------------------------------------
+</span><span style="color:#75715e"></span>              
+          <span style="color:#75715e">// 异步提交
+</span><span style="color:#75715e"></span>              
+          consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">commitAsync</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> OffsetCommitCallback<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+              <span style="color:#a6e22e">@Override</span>
+              <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onComplete</span><span style="color:#f92672">(</span>Map<span style="color:#f92672">&lt;</span>TopicPartition<span style="color:#f92672">,</span> OffsetAndMetadata<span style="color:#f92672">&gt;</span> offsets<span style="color:#f92672">,</span> Exception exception<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>exception <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                      System<span style="color:#f92672">.</span><span style="color:#a6e22e">err</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Commit failed for&#34;</span> <span style="color:#f92672">+</span> offsets<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                  <span style="color:#f92672">}</span>
+              <span style="color:#f92672">}</span>
+          <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p><strong>数据漏消费和重复消费分析</strong></p>
+<ul>
+<li>无论是同步提交还是异步提交 offset，都有可能会造成数据的漏消费或者重复消费。先提交 offset 后消费，有可能造成数据的漏消费；而先消费后提交 offset，有可能会造成数据的重复消费。</li>
+</ul>
+</li>
+</ul>
+<h3 id="自定义存储offset">自定义存储offset</h3>
+<ul>
+<li>
+<p>Kafka 0.9 版本之前， offset 存储在 zookeeper， 0.9 版本及之后，默认将 offset 存储在 Kafka的一个内置的 topic 中。除此之外， Kafka 还可以选择自定义存储 offset。</p>
+</li>
+<li>
+<p>offset 的维护是相当繁琐的， 因为需要考虑到消费者的 Rebalace。</p>
+</li>
+<li>
+<p><strong>当有新的消费者加入消费者组、 已有的消费者推出消费者组或者所订阅的主题的分区发生变化，就会触发到分区的重新分配，重新分配的过程叫做 Rebalance</strong>。</p>
+<p>消费者发生 Rebalance 之后，每个消费者消费的分区就会发生变化。<strong>因此消费者要首先获取到自己被重新分配到的分区，并且定位到每个分区最近提交的 offset 位置继续消费</strong>。</p>
+</li>
+<li>
+<p>要实现自定义存储 offset，需要借助 <code>ConsumerRebalanceListener</code>， 以下为示例代码，其中提交和获取 offset 的方法，需要根据所选的 offset 存储系统自行实现。(可将offset存入MySQL数据库)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomSaveOffset</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Map<span style="color:#f92672">&lt;</span>TopicPartition<span style="color:#f92672">,</span> Long<span style="color:#f92672">&gt;</span> currentOffset <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#75715e">// 创建配置信息
+</span><span style="color:#75715e"></span>          
+      Properties props <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+      <span style="color:#75715e">//&lt;--------------------------------------
+</span><span style="color:#75715e"></span>              
+      <span style="color:#75715e">// 关闭自动提交 offset
+</span><span style="color:#75715e"></span>              
+      props<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;enable.auto.commit&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+      <span style="color:#75715e">// 创建一个消费者
+</span><span style="color:#75715e"></span>              
+      KafkaConsumer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> consumer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KafkaConsumer<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span>props<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">// 消费者订阅主题
+</span><span style="color:#75715e"></span>          
+      consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;first&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> 
+          <span style="color:#75715e">//&lt;-------------------------------------
+</span><span style="color:#75715e"></span>                             
+          <span style="color:#66d9ef">new</span> ConsumerRebalanceListener<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+          <span style="color:#75715e">// 该方法会在 Rebalance 之前调用
+</span><span style="color:#75715e"></span>                  
+          <span style="color:#a6e22e">@Override</span>
+          <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onPartitionsRevoked</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;</span>TopicPartition<span style="color:#f92672">&gt;</span> partitions<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+              commitOffset<span style="color:#f92672">(</span>currentOffset<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          <span style="color:#f92672">}</span>
+  
+          <span style="color:#75715e">// 该方法会在 Rebalance 之后调用
+</span><span style="color:#75715e"></span>                  
+          <span style="color:#a6e22e">@Override</span>
+          <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onPartitionsAssigned</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;</span>TopicPartition<span style="color:#f92672">&gt;</span> partitions<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  
+              currentOffset<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+              <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>TopicPartition partition <span style="color:#f92672">:</span> partitions<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                  consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">seek</span><span style="color:#f92672">(</span>partition<span style="color:#f92672">,</span> getOffset<span style="color:#f92672">(</span>partition<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">// 定位到最近提交的 offset 位置继续消费
+</span><span style="color:#75715e"></span>                      
+              <span style="color:#f92672">}</span>
+          <span style="color:#f92672">}</span>
+      <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  		
+      <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+          ConsumerRecords<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> records <span style="color:#f92672">=</span> consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">poll</span><span style="color:#f92672">(</span>100<span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">// 消费者拉取数据
+</span><span style="color:#75715e"></span>              
+          <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>ConsumerRecord<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> record <span style="color:#f92672">:</span> records<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+              System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;offset = %d, key = %s, value = %s%n&#34;</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">offset</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+              currentOffset<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> TopicPartition<span style="color:#f92672">(</span>record<span style="color:#f92672">.</span><span style="color:#a6e22e">topic</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">partition</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> record<span style="color:#f92672">.</span><span style="color:#a6e22e">offset</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          <span style="color:#f92672">}</span>
+          commitOffset<span style="color:#f92672">(</span>currentOffset<span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">// 异步提交
+</span><span style="color:#75715e"></span>              
+      <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+  
+  <span style="color:#75715e">// 获取某分区的最新 offset
+</span><span style="color:#75715e"></span>      
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">getOffset</span><span style="color:#f92672">(</span>TopicPartition partition<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+  
+  <span style="color:#75715e">// 提交该消费者所有分区的 offset
+</span><span style="color:#75715e"></span>      
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">commitOffset</span><span style="color:#f92672">(</span>Map<span style="color:#f92672">&lt;</span>TopicPartition<span style="color:#f92672">,</span> Long<span style="color:#f92672">&gt;</span> currentOffset<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/897juc%E8%BE%85%E5%8A%A9%E7%B1%BB/" data-toggle="tooltip" data-placement="top" title="7、JUC辅助类（JUC）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/915%E8%87%AA%E5%AE%9A%E4%B9%89-interceptor/" data-toggle="tooltip" data-placement="top" title="5、自定义 Interceptor（Kafka）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

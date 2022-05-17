@@ -2,16 +2,17 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+	<meta name="referrer" content="never">
+	
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://yiguan1573.github.io//img/01.jpg">
-    <meta property="twitter:image" content="https://yiguan1573.github.io//img/01.jpg" />
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
     
 
     
@@ -220,6 +221,14 @@
     <li><a href="#2-搭建实验环境">2. 搭建实验环境</a></li>
     <li><a href="#3-快速体验缓存">3. 快速体验缓存</a></li>
     <li><a href="#4-工作原理">4. 工作原理</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#基本步骤">基本步骤</a></li>
+    <li><a href="#环境搭建">环境搭建</a></li>
+    <li><a href="#redistemplate">RedisTemplate</a></li>
+    <li><a href="#redis缓存使用">Redis缓存使用</a></li>
+    <li><a href="#redis缓存原理">Redis缓存原理</a></li>
   </ul>
 </nav>
                 
@@ -670,8 +679,7 @@ SimpleKeyGenerator生成key的默认策略；<br>
 </ul>
 <hr>
 <h1 id="整合redis实现缓存">整合redis实现缓存</h1>
-<ul>
-<li><strong>基本步骤</strong>
+<h2 id="基本步骤">基本步骤</h2>
 <ol>
 <li>引入spring-boot-starter-data-redis</li>
 <li>application.yml配置redis连接地址</li>
@@ -684,22 +692,247 @@ SimpleKeyGenerator生成key的默认策略；<br>
 <li>配置缓存、CacheManagerCustomizers</li>
 <li>测试使用缓存、切换缓存、 CompositeCacheManager</li>
 </ol>
-</li>
-<li><strong>环境搭建</strong>
+<h2 id="环境搭建">环境搭建</h2>
 <ul>
 <li>导入依赖</li>
 </ul>
 <pre><code>&lt;dependency&gt;
- &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
- &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
 &lt;/dependency&gt;
 </code></pre><ul>
 <li>在spring.properties指定Redis服务器地址</li>
 </ul>
 <pre><code>#redis服务器主机地址
 spring.redis.host=192.168.31.162
-</code></pre></li>
-</ul>
+</code></pre><h2 id="redistemplate">RedisTemplate</h2>
+<p>RedisAutoConfiguration向容器中导入了两个类RedisTemplate&lt;Object, Object&gt; redisTemplate和StringRedisTemplate，作为Redis客户端分别操作k-v都为对象和k-v都为字符串的值<br>
+Redis常见的五大数据类型
+String（字符串）、List（列表）、Set（集合）、Hash（散列）、ZSet（有序集合）</p>
+<p>​ stringRedisTemplate.opsForValue()[String（字符串）]</p>
+<p>​ stringRedisTemplate.opsForList()[List（列表）]</p>
+<p>​ stringRedisTemplate.opsForSet()[Set（集合）]</p>
+<p>​ stringRedisTemplate.opsForHash()[Hash（散列）]</p>
+<p>​ stringRedisTemplate.opsForZSet()[ZSet（有序集合）]</p>
+<h2 id="redis缓存使用">Redis缓存使用</h2>
+<p>在导入redis依赖后RedisCacheConfiguration类就会自动生效，创建RedisCacheManager，并使用RedisCache进行缓存数据，要缓存的对象的类要实现Serializable接口，默认情况下是以jdk序列化数据存在redis中，如下：</p>
+<pre><code>k:&quot;emp::1&quot;
+v:
+\xAC\xED\x00\x05sr\x00$cn.edu.ustc.springboot.bean.Employeeuqf\
+</code></pre><p>要想让对象以json形式存储在redis中，需要自定义RedisCacheManager，使用GenericJackson2JsonRedisSerializer类对value进行序列化</p>
+<pre><code>@Configuration
+public class MyRedisConfig {
+    @Bean
+    RedisCacheManager cacheManager(RedisConnectionFactory factory){
+        //创建默认RedisCacheWriter
+        RedisCacheWriter cacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(factory);
+        
+        //创建默认RedisCacheConfiguration并使用GenericJackson2JsonRedisSerializer构造的		SerializationPair对value进行转换
+        //创建GenericJackson2JsonRedisSerializer的json序列化器
+        GenericJackson2JsonRedisSerializer jsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
+        //使用json序列化器构造出对转换Object类型的SerializationPair序列化对
+        RedisSerializationContext.SerializationPair&lt;Object&gt; serializationPair = RedisSerializationContext.SerializationPair.fromSerializer(jsonRedisSerializer);
+        //将可以把Object转换为json的SerializationPair传入RedisCacheConfiguration
+        //使得RedisCacheConfiguration在转换value时使用定制序列化器
+        RedisCacheConfiguration cacheConfiguration=RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(serializationPair);
+        
+        RedisCacheManager cacheManager = new RedisCacheManager(cacheWriter,cacheConfiguration);
+        return cacheManager;
+    }
+}
+</code></pre><p>序列化数据如下：</p>
+<pre><code>k:&quot;emp::3&quot;
+
+v:
+{
+  &quot;@class&quot;: &quot;cn.edu.ustc.springboot.bean.Employee&quot;,
+  &quot;id&quot;: 3,
+  &quot;lastName&quot;: &quot;aaa&quot;,
+  &quot;email&quot;: &quot;aaaa&quot;,
+  &quot;gender&quot;: 1,
+  &quot;dId&quot;: 5
+}
+</code></pre><p>注意，这里必须用GenericJackson2JsonRedisSerializer进行value的序列化解析，如果使用Jackson2JsonRedisSerializer，序列化的json没有&rdquo;@class&rdquo;: &ldquo;cn.edu.ustc.springboot.bean.Employee&rdquo;,在读取缓存时会报类型转换异常。</p>
+<h2 id="redis缓存原理">Redis缓存原理</h2>
+<p>配置类RedisCacheConfiguration向容器中导入了其定制的RedisCacheManager，在默认的RedisCacheManager的配置中，是使用jdk序列化value值</p>
+<pre><code>@Configuration(proxyBeanMethods = false)
+@ConditionalOnClass(RedisConnectionFactory.class)
+@AutoConfigureAfter(RedisAutoConfiguration.class)
+@ConditionalOnBean(RedisConnectionFactory.class)
+@ConditionalOnMissingBean(CacheManager.class)
+@Conditional(CacheCondition.class)
+class RedisCacheConfiguration {
+    
+    //向容器中导入RedisCacheManager
+	@Bean
+	RedisCacheManager cacheManager(CacheProperties cacheProperties, CacheManagerCustomizers cacheManagerCustomizers,
+			ObjectProvider&lt;org.springframework.data.redis.cache.RedisCacheConfiguration&gt; redisCacheConfiguration,
+			ObjectProvider&lt;RedisCacheManagerBuilderCustomizer&gt; redisCacheManagerBuilderCustomizers,
+			RedisConnectionFactory redisConnectionFactory, ResourceLoader resourceLoader) {
+		//使用determineConfiguration()的返回值生成RedisCacheManagerBuilder
+        //调用了RedisCacheManagerBuilder的cacheDefaults()方法(见下一代码块)
+        RedisCacheManagerBuilder builder = RedisCacheManager.builder(redisConnectionFactory).cacheDefaults(
+				determineConfiguration(cacheProperties, redisCacheConfiguration, resourceLoader.getClassLoader()));
+		List&lt;String&gt; cacheNames = cacheProperties.getCacheNames();
+		if (!cacheNames.isEmpty()) {
+			builder.initialCacheNames(new LinkedHashSet&lt;&gt;(cacheNames));
+		}
+		redisCacheManagerBuilderCustomizers.orderedStream().forEach((customizer) -&gt; customizer.customize(builder));
+        //使用RedisCacheManagerBuilder的build()方法创建RedisCacheManager并进行定制操作
+		return cacheManagerCustomizers.customize(builder.build());
+	}
+
+    
+	private org.springframework.data.redis.cache.RedisCacheConfiguration determineConfiguration(
+			CacheProperties cacheProperties,
+			ObjectProvider&lt;org.springframework.data.redis.cache.RedisCacheConfiguration&gt; redisCacheConfiguration,
+			ClassLoader classLoader) {
+        //determineConfiguration()调用了createConfiguration()
+		return redisCacheConfiguration.getIfAvailable(() -&gt; createConfiguration(cacheProperties, classLoader));
+	}
+
+    
+    //createConfiguration()定义了其序列化value的规则
+	private org.springframework.data.redis.cache.RedisCacheConfiguration createConfiguration(
+			CacheProperties cacheProperties, ClassLoader classLoader) {
+		Redis redisProperties = cacheProperties.getRedis();
+		org.springframework.data.redis.cache.RedisCacheConfiguration config = org.springframework.data.redis.cache.RedisCacheConfiguration
+				.defaultCacheConfig();
+        //使用jdk序列化器对value进行序列化
+		config = config.serializeValuesWith(
+				SerializationPair.fromSerializer(new JdkSerializationRedisSerializer(classLoader)));
+        //设置properties文件中设置的各项属性
+		if (redisProperties.getTimeToLive() != null) {
+			config = config.entryTtl(redisProperties.getTimeToLive());
+		}
+		if (redisProperties.getKeyPrefix() != null) {
+			config = config.prefixKeysWith(redisProperties.getKeyPrefix());
+		}
+		if (!redisProperties.isCacheNullValues()) {
+			config = config.disableCachingNullValues();
+		}
+		if (!redisProperties.isUseKeyPrefix()) {
+			config = config.disableKeyPrefix();
+		}
+		return config;
+	}
+
+}
+</code></pre><p>RedisCacheManager的直接构造类，该类保存了配置类 RedisCacheConfiguration，该配置在会传递给RedisCacheManager</p>
+<pre><code>public static class RedisCacheManagerBuilder {
+
+		private final RedisCacheWriter cacheWriter;
+    	//默认缓存配置使用RedisCacheConfiguration的默认配置
+    	//该默认配置缓存时默认将k按字符串存储，v按jdk序列化数据存储(见下一代码块)
+		private RedisCacheConfiguration defaultCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
+		private final Map&lt;String, RedisCacheConfiguration&gt; initialCaches = new LinkedHashMap&lt;&gt;();
+		private boolean enableTransactions;
+		boolean allowInFlightCacheCreation = true;
+
+		private RedisCacheManagerBuilder(RedisCacheWriter cacheWriter) {
+			this.cacheWriter = cacheWriter;
+		}
+
+		
+    	//传入RedisCacheManagerBuilder使用的缓存配置规则RedisCacheConfiguration类
+		public RedisCacheManagerBuilder cacheDefaults(RedisCacheConfiguration defaultCacheConfiguration) {
+
+			Assert.notNull(defaultCacheConfiguration, &quot;DefaultCacheConfiguration must not be null!&quot;);
+
+			this.defaultCacheConfiguration = defaultCacheConfiguration;
+
+			return this;
+		}
+    
+    
+    //使用默认defaultCacheConfiguration创建RedisCacheManager
+    public RedisCacheManager build() {
+
+			RedisCacheManager cm = new RedisCacheManager(cacheWriter, defaultCacheConfiguration, initialCaches,
+					allowInFlightCacheCreation);
+
+			cm.setTransactionAware(enableTransactions);
+
+			return cm;
+		}
+</code></pre><p>RedisCacheConfiguration保存了许多缓存规则，这些规则都保存在RedisCacheManagerBuilder的RedisCacheConfiguration defaultCacheConfiguration属性中，并且当RedisCacheManagerBuilder创建RedisCacheManager传递过去</p>
+<pre><code>public class RedisCacheConfiguration {
+
+	private final Duration ttl;
+	private final boolean cacheNullValues;
+	private final CacheKeyPrefix keyPrefix;
+	private final boolean usePrefix;
+
+	private final SerializationPair&lt;String&gt; keySerializationPair;
+	private final SerializationPair&lt;Object&gt; valueSerializationPair;
+
+	private final ConversionService conversionService;
+    
+    //默认缓存配置
+    public static RedisCacheConfiguration defaultCacheConfig(@Nullable ClassLoader classLoader) {
+
+            DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
+
+            registerDefaultConverters(conversionService);
+
+            return new RedisCacheConfiguration(Duration.ZERO, true, true, CacheKeyPrefix.simple(),
+                                     SerializationPair.fromSerializer(RedisSerializer.string()),//key使用字符串
+                                               SerializationPair.fromSerializer(RedisSerializer.java(classLoader)), conversionService);
+        //value按jdk序列化存储
+    }
+</code></pre><p>RedisCacheManager在创建RedisCache时将RedisCacheConfiguration传递过去，并在创建RedisCache时通过createRedisCache()起作用</p>
+<pre><code>public class RedisCacheManager extends AbstractTransactionSupportingCacheManager {
+
+	private final RedisCacheWriter cacheWriter;
+	private final RedisCacheConfiguration defaultCacheConfig;
+	private final Map&lt;String, RedisCacheConfiguration&gt; initialCacheConfiguration;
+	private final boolean allowInFlightCacheCreation;
+    
+    	protected RedisCache createRedisCache(String name, @Nullable RedisCacheConfiguration cacheConfig) {
+        //如果调用该方法时RedisCacheConfiguration有值则使用定制的，否则则使用默认的RedisCacheConfiguration defaultCacheConfig，即RedisCacheManagerBuilder传递过来的配置
+		return new RedisCache(name, cacheWriter, cacheConfig != null ? cacheConfig : defaultCacheConfig);
+	}
+</code></pre><p>RedisCache，Redis缓存，具体负责将缓存数据序列化的地方，将RedisCacheConfiguration的序列化对SerializationPair提取出来并使用其定义的序列化方式分别对k和v进行序列化操作</p>
+<pre><code>public class RedisCache extends AbstractValueAdaptingCache {
+    
+    private static final byte[] BINARY_NULL_VALUE = RedisSerializer.java().serialize(NullValue.INSTANCE);
+
+	private final String name;
+	private final RedisCacheWriter cacheWriter;
+	private final RedisCacheConfiguration cacheConfig;
+	private final ConversionService conversionService;
+    
+    public void put(Object key, @Nullable Object value) {
+
+		Object cacheValue = preProcessCacheValue(value);
+
+		if (!isAllowNullValues() &amp;&amp; cacheValue == null) {
+
+			throw new IllegalArgumentException(String.format(
+					&quot;Cache '%s' does not allow 'null' values. Avoid storing null via '@Cacheable(unless=\&quot;#result == null\&quot;)' or configure RedisCache to allow 'null' via RedisCacheConfiguration.&quot;,
+					name));
+		}
+
+        //在put k-v时使用cacheConfig中的k-v序列化器分别对k-v进行序列化
+		cacheWriter.put(name, createAndConvertCacheKey(key), serializeCacheValue(cacheValue), cacheConfig.getTtl());
+	}
+    
+    //从cacheConfig(即RedisCacheConfiguration)中获取KeySerializationPair并写入key值
+    protected byte[] serializeCacheKey(String cacheKey) {
+		return ByteUtils.getBytes(cacheConfig.getKeySerializationPair().write(cacheKey));
+	}
+    
+    
+    //从cacheConfig(即RedisCacheConfiguration)中获取ValueSerializationPair并写入key值
+    protected byte[] serializeCacheValue(Object value) {
+
+        if (isAllowNullValues() &amp;&amp; value instanceof NullValue) {
+            return BINARY_NULL_VALUE;
+        }
+
+        return ByteUtils.getBytes(cacheConfig.getValueSerializationPair().write(value));
+    }
+</code></pre><p>分析到这也就不难理解，要使用json保存序列化数据时，需要自定义RedisCacheManager，在RedisCacheConfiguration中定义序列化转化规则，并向RedisCacheManager传入我们自己定制的RedisCacheConfiguration了，我定制的序列化规则会跟随RedisCacheConfiguration一直传递到RedisCache，并在序列化时发挥作用。</p>
 
 
                 
@@ -741,6 +974,12 @@ spring.redis.host=192.168.31.162
                         
                         
                         
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
                         <a href="/tags/ajax" title="ajax">
                             ajax
                         </a>
@@ -753,8 +992,38 @@ spring.redis.host=192.168.31.162
                         
                         
                         
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
                         <a href="/tags/filter" title="filter">
                             filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
                         </a>
                         
                         
@@ -799,6 +1068,24 @@ spring.redis.host=192.168.31.162
                         
                         
                         
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
                         <a href="/tags/linux" title="linux">
                             linux
                         </a>
@@ -809,6 +1096,56 @@ spring.redis.host=192.168.31.162
                         
                         <a href="/tags/maven" title="maven">
                             maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
                         </a>
                         
                         
@@ -825,8 +1162,44 @@ spring.redis.host=192.168.31.162
                         
                         
                         
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
                         <a href="/tags/springboot" title="springboot">
                             springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
                         </a>
                         
                         
@@ -837,8 +1210,38 @@ spring.redis.host=192.168.31.162
                         
                         
                         
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
                         <a href="/tags/xml" title="xml">
                             xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
                         </a>
                         
                         
@@ -923,7 +1326,7 @@ spring.redis.host=192.168.31.162
             
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; 亿观的博客 2020
+                    Copyright &copy; 亿观的博客 2022
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

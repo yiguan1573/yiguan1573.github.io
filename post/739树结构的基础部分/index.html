@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="9、树结构的基础部分(数据结构与算法)" />
+    <meta property="og:title" content="9、树结构的基础部分(数据结构与算法)" />
+    <meta property="twitter:title" content="9、树结构的基础部分(数据结构与算法)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>9、树结构的基础部分(数据结构与算法)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/739%E6%A0%91%E7%BB%93%E6%9E%84%E7%9A%84%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                    </div>
+                    <h1>9、树结构的基础部分(数据结构与算法)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Saturday, August 22, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#为什么需要树这种数据结构">为什么需要树这种数据结构</a></li>
+    <li><a href="#树示意图">树示意图</a></li>
+    <li><a href="#二叉树的概念">二叉树的概念</a></li>
+    <li><a href="#二叉树遍历的说明">二叉树遍历的说明</a></li>
+    <li><a href="#二叉树遍历应用实例">二叉树遍历应用实例</a></li>
+    <li><a href="#二叉树-查找指定节点">二叉树-查找指定节点</a></li>
+    <li><a href="#二叉树-删除节点">二叉树-删除节点</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#顺序存储二叉树的概念">顺序存储二叉树的概念</a></li>
+    <li><a href="#顺序存储二叉树遍历">顺序存储二叉树遍历</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#问题">问题</a></li>
+    <li><a href="#线索二叉树基本介绍">线索二叉树基本介绍</a></li>
+    <li><a href="#线索二叉树应用案例">线索二叉树应用案例</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="二叉树">二叉树</h1>
+<h2 id="为什么需要树这种数据结构">为什么需要树这种数据结构</h2>
+<ul>
+<li><strong>数组存储方式的分析</strong>
+<ul>
+<li>优点：通过下标方式访问元素，速度快。对于有序数组，还可使用二分查找提高检索速度。</li>
+<li>缺点：如果要检索具体某个值，或者插入值(按一定顺序)会整体移动，效率较低
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipyzl3ps4j30e405r0sx.jpg" alt="QQ截图20200914102743.jpg"></li>
+</ul>
+</li>
+<li><strong>链式存储方式的分析</strong>
+<ul>
+<li>优点：在一定程度上对数组存储方式有优化(比如：插入一个数值节点，只需要将插入节点，链接到链表中即可， 删除效率也很好)。</li>
+<li>缺点：在进行检索时，效率仍然较低，比如(检索某个值，需要从头节点开始遍历)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipyzq6ir1j30dl03ijrb.jpg" alt="QQ截图20200914102748.jpg"></li>
+</ul>
+</li>
+<li><strong>树存储方式的分析</strong>
+<ul>
+<li>能提高数据存储，读取的效率, 比如利用 二叉排序树(Binary Sort Tree)，既可以保证数据的检索速度，同时也 可以保证数据的插入，删除，修改的速度
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipyzyarnqj30f704w3yl.jpg" alt="QQ截图20200914102753.jpg"></li>
+</ul>
+</li>
+</ul>
+<h2 id="树示意图">树示意图</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz10zcgpj30dl0733yh.jpg" alt="QQ截图20200914102919.jpg"></p>
+<ul>
+<li>树的常用术语(结合示意图理解)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz1bgx1uj30h5089aa3.jpg" alt="QQ截图20200914102932.jpg"></li>
+</ul>
+<h2 id="二叉树的概念">二叉树的概念</h2>
+<ul>
+<li>树有很多种，每个节点最多只能有两个子节点的一种形式称为二叉树。</li>
+<li>二叉树的子节点分为左节点和右节点</li>
+<li>示意图
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz2t86wvj309a03g3yc.jpg" alt="QQ截图20200914103101.jpg"></li>
+<li>如果该二叉树的所有叶子节点都在最后一层，并且结点总数= 2^n -1 , n 为层数，则我们称为满二叉树
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz2xojybj308z03jq2r.jpg" alt="QQ截图20200914103107.jpg"></li>
+<li>如果该二叉树的所有叶子节点都在最后一层或者倒数第二层，而且最后一层的叶子节点在左边连续，倒数第二 层的叶子节点在右边连续，我们称为完全二叉树
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz2xojybj308z03jq2r.jpg" alt="QQ截图20200914103107.jpg"></li>
+</ul>
+<h2 id="二叉树遍历的说明">二叉树遍历的说明</h2>
+<ul>
+<li>前序遍历: 先输出父节点，再遍历左子树和右子树</li>
+<li>中序遍历: 先遍历左子树，再输出父节点，再遍历右子树</li>
+<li>后序遍历: 先遍历左子树，再遍历右子树，最后输出父节点</li>
+<li>小结: 看输出父节点的顺序，就确定是前序，中序还是后序</li>
+</ul>
+<h2 id="二叉树遍历应用实例">二叉树遍历应用实例</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz4efx5pj30fq06oq3c.jpg" alt="QQ截图20200914103250.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz703b9qj30dp08ajrj.jpg" alt="QQ截图20200914103354.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz75x65tj30hg0k6wey.jpg" alt="QQ截图20200914103402.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz7aeiegj30fr0k6glw.jpg" alt="QQ截图20200914103411.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz7fs9qzj30f50k1wes.jpg" alt="QQ截图20200914103420.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz7kgocgj30d70k3dg9.jpg" alt="QQ截图20200914103429.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz7o61iyj30eu0k0jrp.jpg" alt="QQ截图20200914103436.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz7s52mkj30et04dmwy.jpg" alt="QQ截图20200914103446.jpg"></p>
+<h2 id="二叉树-查找指定节点">二叉树-查找指定节点</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipz8a17n0j30iq07nmxw.jpg" alt="QQ截图20200914103634.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipzanejxsj30g205cmx4.jpg" alt="QQ截图20200914103822.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipzasfojcj30gn0jvdgo.jpg" alt="QQ截图20200914103834.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipzaxbk94j30gz0k2q3k.jpg" alt="QQ截图20200914103842.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipzb1w2evj30fr0f6glx.jpg" alt="QQ截图20200914103848.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipzbzgsnij30dj0310sl.jpg" alt="QQ截图20200914103953.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipzc4658xj30go0ff0sv.jpg" alt="QQ截图20200914104006.jpg"></p>
+<h2 id="二叉树-删除节点">二叉树-删除节点</h2>
+<ul>
+<li><strong>要求</strong>
+<ol>
+<li>如果删除的节点是叶子节点，则删除该节点</li>
+<li>如果删除的节点是非叶子节点，则删除该子树</li>
+<li>测试，删除掉 5 号叶子节点 和 3 号子树.</li>
+<li>完成删除思路分析
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipzdont8dj30jy08kq3n.jpg" alt="QQ截图20200914104145.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipzgi707xj30ju08adg1.jpg" alt="QQ截图20200914104349.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipzgp3z1uj30jy0k5dgw.jpg" alt="QQ截图20200914104405.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gipzgte0oij30iy0fyq34.jpg" alt="QQ截图20200914104418.jpg"></li>
+</ol>
+</li>
+</ul>
+<h1 id="顺序存储二叉树">顺序存储二叉树</h1>
+<h2 id="顺序存储二叉树的概念">顺序存储二叉树的概念</h2>
+<ul>
+<li>从数据存储来看，数组存储方式和树的存储方式可以相互转换，即数组可以转换成树，树也可以转换成数组， 看右面的示意图
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giuxatx1swj308r068jrb.jpg" alt="QQ截图20200918171734.jpg"></li>
+<li>要求:
+<ul>
+<li>右图的二叉树的结点，要求以数组的方式来存放 arr : [1, 2, 3, 4, 5, 6, 6]</li>
+<li>要求在遍历数组 arr 时，仍然可以以前序遍历，中序遍历和后序遍历的方式完成结点的遍历</li>
+</ul>
+</li>
+<li>顺序存储二叉树的特点:
+<ul>
+<li>顺序二叉树通常只考虑完全二叉树</li>
+<li>第 n 个元素的左子节点为 2 * n + 1</li>
+<li>第 n 个元素的右子节点为 2 * n + 2</li>
+<li>第 n 个元素的父节点为 (n-1) / 2</li>
+<li>n : 表示二叉树中的第几个元素(按 0 开始编号如图所示)</li>
+</ul>
+</li>
+</ul>
+<h2 id="顺序存储二叉树遍历">顺序存储二叉树遍历</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1giuxemndogj30g30gk74l.jpg" alt="QQ截图20200918172104.jpg">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giuxer1j1oj30gp0k174p.jpg" alt="QQ截图20200918172113.jpg"></p>
+<h1 id="线索化二叉树">线索化二叉树</h1>
+<h2 id="问题">问题</h2>
+<ul>
+<li>将数列 {1, 3, 6, 8, 10, 14 } 构建成一颗二叉树. n+1=7
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv2b7vml3j30aj047t8k.jpg" alt="QQ截图20200918201058.jpg"></li>
+<li>当我们对上面的二叉树进行中序遍历时，数列为 {8, 3, 10, 1, 6, 14 } 2)</li>
+<li>但是 6, 8, 10, 14 这几个节点的 左右指针，并没有完全的利用上</li>
+<li>如果我们希望充分的利用 各个节点的左右指针， 让各个节点可以指向自己的前后节点,怎么办?</li>
+<li>解决方案-线索二叉树</li>
+</ul>
+<h2 id="线索二叉树基本介绍">线索二叉树基本介绍</h2>
+<ul>
+<li>利用二叉链表中的空指针域，存放指向 该结点在某种遍历次序下的前驱和后继结点的指针</li>
+<li>这种加上了线索的二叉链表称为线索链表，相应的二叉树称为线索二叉树(Threaded BinaryTree)。根据线索性质 的不同，线索二叉树可分为前序线索二叉树、中序线索二叉树和后序线索二叉树三种</li>
+<li>一个结点的前一个结点，称为前驱结点</li>
+<li>一个结点的后一个结点，称为后继结点</li>
+</ul>
+<h2 id="线索二叉树应用案例">线索二叉树应用案例</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv2dh2op7j30j404vdfw.jpg" alt="QQ截图20200918201309.jpg"></p>
+<ul>
+<li>说明: 当线索化二叉树后，Node 节点的 属性 left 和 right ，有如下情况:
+<ul>
+<li>left 指向的是左子树，也可能是指向的前驱节点. 比如1节点 left 指向的左子树, 而10节点的 left 指向的 就是前驱节点.</li>
+<li>right 指向的是右子树，也可能是指向后继节点，比如1节点 right 指向的是右子树，而10节点的 right 指向 的是后继节点</li>
+<li>因为线索化后，各个结点指向有变化，因此原来的遍历方式不能使用，这时需要使用新的方式遍历 线索化二叉树，各个节点可以通过线型方式遍历，因此无需使用递归方式，这样也提高了遍历的效率。 遍历的次 序应当和中序遍历保持一致</li>
+</ul>
+</li>
+</ul>
+<pre><code>package com.yiguan1573.tree;
+
+public class ThreadedBinaryTree {
+    public static void main(String[] args) {
+        HeroNode root = new HeroNode(1, &quot;tom&quot;);
+        HeroNode node2 = new HeroNode(3, &quot;jack&quot;);
+        HeroNode node3 = new HeroNode(6, &quot;smith&quot;);
+        HeroNode node4 = new HeroNode(8, &quot;mary&quot;);
+        HeroNode node5 = new HeroNode(10, &quot;king&quot;);
+        HeroNode node6 = new HeroNode(14, &quot;dim&quot;);
+
+        root.setLeft(node2);
+        root.setRight(node3);
+        node2.setLeft(node4);
+        node2.setRight(node5);
+        node3.setLeft(node6);
+        Threaded threaded = new Threaded(root);
+        threaded.threadedNodes(root);
+        threaded.threadedList();
+
+    }
+}
+//定义 ThreadedBinaryTree 实现了线索化功能的二叉树
+class Threaded{
+    private HeroNode root;
+    //为了实现线索化，需要创建要给指向当前结点的前驱结点的指针
+    // 在递归进行线索化时，pre 总是保留前一个结点
+    private HeroNode pre = null;
+
+    public Threaded(HeroNode root) {
+        this.root = root;
+    }
+    //遍历线索化二叉树的方法
+    public void threadedList() {
+        HeroNode node = root;
+        while(node != null){
+
+            while(node.getLeftType() == 0){
+                node = node.getLeft();
+            }
+            System.out.println(node);
+            while (node.getRightType() == 1){
+                node = node.getRight();
+                System.out.println(node);
+            }
+            node = node.getRight();
+        }
+    }
+    //编写对二叉树进行中序线索化的方法
+    public void threadedNodes(HeroNode node) {
+        if(node == null){
+            return;
+        }
+        //(一)先线索化左子树
+        threadedNodes(node.getLeft());
+        //(二)线索化当前结点[有难度]
+        //处理当前结点的前驱结点
+        if(node.getLeft() == null){
+            node.setLeft(pre);
+            node.setLeftType(1);
+        }
+        //处理后继结点
+        if(pre != null&amp;&amp;pre.getRight() == null){
+            pre.setRight(node);
+            pre.setRightType(1);
+        }
+        //!!! 每处理一个结点后，让当前结点是下一个结点的前驱结点
+        pre = node;
+        //(三)在线索化右子树
+        threadedNodes(node.getRight());
+    }
+}
+class HeroNode{
+    private int no;
+    private String name;
+    private HeroNode left;
+    private HeroNode right;
+    //说明
+    // 1. 如果 leftType == 0 表示指向的是左子树, 如果 1 则表示指向前驱结点
+    // 2. 如果 rightType == 0 表示指向是右子树, 如果 1 表示指向后继结点
+    private int leftType;
+    private int rightType;
+    public HeroNode(int no, String name) {
+        this.no = no;
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;HeroNode{&quot; +
+                &quot;no=&quot; + no +
+                &quot;, name='&quot; + name + '\'' +
+                '}';
+    }
+
+    public int getNo() {
+        return no;
+    }
+
+    public void setNo(int no) {
+        this.no = no;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public HeroNode getLeft() {
+        return left;
+    }
+
+    public void setLeft(HeroNode left) {
+        this.left = left;
+    }
+
+    public HeroNode getRight() {
+        return right;
+    }
+
+    public void setRight(HeroNode right) {
+        this.right = right;
+    }
+
+    public int getLeftType() {
+        return leftType;
+    }
+
+    public void setLeftType(int leftType) {
+        this.leftType = leftType;
+    }
+
+    public int getRightType() {
+        return rightType;
+    }
+
+    public void setRightType(int rightType) {
+        this.rightType = rightType;
+    }
+
+}
+</code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/707%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/" data-toggle="tooltip" data-placement="top" title="7、建造者模式(设计模式)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/708%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" data-toggle="tooltip" data-placement="top" title="8、适配器模式(设计模式)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

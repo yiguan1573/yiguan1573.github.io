@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="8、函数（Hive）" />
+    <meta property="og:title" content="8、函数（Hive）" />
+    <meta property="twitter:title" content="8、函数（Hive）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>8、函数（Hive）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/1008%E5%87%BD%E6%95%B0/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/hive" title="Hive">
+                            Hive
+                        </a>
+                        
+                    </div>
+                    <h1>8、函数（Hive）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Wednesday, March 9, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#系统内置函数">系统内置函数</a></li>
+    <li><a href="#常用内置函数">常用内置函数</a>
+      <ul>
+        <li><a href="#空字段赋值">空字段赋值</a></li>
+        <li><a href="#case-when-then-else-end">CASE WHEN THEN ELSE END</a></li>
+        <li><a href="#行转列">行转列</a></li>
+        <li><a href="#列转行">列转行</a></li>
+        <li><a href="#窗口函数开窗函数">窗口函数（开窗函数）</a></li>
+        <li><a href="#rank">Rank</a></li>
+        <li><a href="#其他常用函数">其他常用函数</a></li>
+      </ul>
+    </li>
+    <li><a href="#自定义函数">自定义函数</a></li>
+    <li><a href="#自定义-udf-函数">自定义 UDF 函数</a></li>
+    <li><a href="#自定义-udtf-函数">自定义 UDTF 函数</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="系统内置函数"><strong>系统内置函数</strong></h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h11m3n5unuj30ot05xdg4.jpg" alt="QQ截图20220408001507.jpg"></p>
+<h2 id="常用内置函数"><strong>常用内置函数</strong></h2>
+<h3 id="空字段赋值"><strong>空字段赋值</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13aoq4i65j30pt0a4gmb.jpg" alt="QQ截图20220409111102.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13aoxrbp0j30oh0lfaax.jpg" alt="QQ截图20220409111116.jpg"></p>
+<h3 id="case-when-then-else-end"><strong>CASE WHEN THEN ELSE END</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13aq9tju5j30oh0ermxt.jpg" alt="QQ截图20220409111217.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13aqfddd0j30p40h0ab1.jpg" alt="QQ截图20220409111227.jpg"></p>
+<h3 id="行转列"><strong>行转列</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13asjk6qbj30p00j5abp.jpg" alt="QQ截图20220409111436.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13aspyf5xj30qs0t1jtb.jpg" alt="QQ截图20220409111447.jpg"></p>
+<h3 id="列转行"><strong>列转行</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13avzdnypj30ol07m74r.jpg" alt="QQ截图20220409111747.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13aw5f1p4j30q70xj76l.jpg" alt="QQ截图20220409111816.jpg"></p>
+<h3 id="窗口函数开窗函数"><strong>窗口函数（开窗函数）</strong></h3>
+<ul>
+<li>
+<p><strong>窗口函数partition by name order by date后面不需要加窗口的位置，默认窗口即为第一行到当前行</strong></p>
+</li>
+<li>
+<p><strong>窗口函数排序值相同会被认为是同一条数据</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hsd7258tj31t00wi1iu.jpg" alt="20DC41DA2664EE69F028063A2448B8B6.png"></p>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13b0xqi3xj30nz02owei.jpg" alt="QQ截图20220409112230.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13b165og7j30r41210vi.jpg" alt="QQ截图20220409112250.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h13b1crwt6j30qf0xzjva.jpg" alt="QQ截图20220409112301.jpg"></p>
+<h3 id="rank"><strong>Rank</strong></h3>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fgphgnuzj30m102c3ye.jpg" alt="QQ截图20220419234446.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fgpmude1j30rr125mzy.jpg" alt="QQ截图20220419234522.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fgpt0lboj30nx06kjri.jpg" alt="QQ截图20220419234625.jpg"></p>
+<h3 id="其他常用函数">其他常用函数</h3>
+<pre><code>常用日期函数
+unix_timestamp:返回当前或指定时间的时间戳	
+select unix_timestamp();
+select unix_timestamp(&quot;2020-10-28&quot;,'yyyy-MM-dd');
+
+from_unixtime：将时间戳转为日期格式
+select from_unixtime(1603843200);
+
+current_date：当前日期
+select current_date;
+
+current_timestamp：当前的日期加时间
+select current_timestamp;
+
+to_date：抽取日期部分
+select to_date('2020-10-28 12:12:12');
+
+year：获取年
+select year('2020-10-28 12:12:12');
+
+month：获取月
+select month('2020-10-28 12:12:12');
+
+day：获取日
+select day('2020-10-28 12:12:12');
+
+hour：获取时
+select hour('2020-10-28 12:12:12');
+
+minute：获取分
+select minute('2020-10-28 12:12:12');
+
+second：获取秒
+select second('2020-10-28 12:12:12');
+
+weekofyear：当前时间是一年中的第几周
+select weekofyear('2020-10-28 12:12:12');
+
+dayofmonth：当前时间是一个月中的第几天
+select dayofmonth('2020-10-28 12:12:12');
+
+months_between： 两个日期间的月份
+select months_between('2020-04-01','2020-10-28');
+
+add_months：日期加减月
+select add_months('2020-10-28',-3);
+
+datediff：两个日期相差的天数
+select datediff('2020-11-04','2020-10-28');
+
+date_add：日期加天数
+select date_add('2020-10-28',4);
+
+date_sub：日期减天数
+select date_sub('2020-10-28',-4);
+
+last_day：日期的当月的最后一天
+select last_day('2020-02-30');
+
+date_format(): 格式化日期
+select date_format('2020-10-28 12:12:12','yyyy/MM/dd HH:mm:ss');
+
+常用取整函数
+round： 四舍五入
+select round(3.14);
+select round(3.54);
+
+ceil：  向上取整
+select ceil(3.14);
+select ceil(3.54);
+
+floor： 向下取整
+select floor(3.14);
+select floor(3.54);
+
+常用字符串操作函数
+upper： 转大写
+select upper('low');
+
+lower： 转小写
+select lower('low');
+
+length： 长度
+select length(&quot;atguigu&quot;);
+
+trim：  前后去空格
+select trim(&quot; atguigu &quot;);
+
+lpad： 向左补齐，到指定长度
+select lpad('atguigu',9,'g');
+
+rpad：  向右补齐，到指定长度
+select rpad('atguigu',9,'g');
+
+regexp_replace：使用正则表达式匹配目标字符串，匹配成功后替换！
+SELECT regexp_replace('2020/10/25', '/', '-');
+
+集合操作
+size： 集合中元素的个数
+select size(friends) from test3;
+
+map_keys： 返回map中的key
+select map_keys(children) from test3;
+
+map_values: 返回map中的value
+select map_values(children) from test3;
+
+array_contains: 判断array中是否包含某个元素
+select array_contains(friends,'bingbing') from test3;
+
+sort_array： 将array中的元素排序
+select sort_array(friends) from test3;
+
+grouping_set:多维分析
+</code></pre><h2 id="自定义函数"><strong>自定义函数</strong></h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fgrzf1gfj30qg0q275y.jpg" alt="QQ截图20220419234836.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fgs5fr4gj30p507nt95.jpg" alt="QQ截图20220419234849.jpg"></p>
+<h2 id="自定义-udf-函数"><strong>自定义</strong> <strong>UDF</strong> <strong>函数</strong></h2>
+<ul>
+<li>
+<p><strong>需求</strong></p>
+<ul>
+<li>
+<p>自定义一个 UDF 实现计算给定字符串的长度，例如：</p>
+<pre><code>hive(default)&gt; select my_len(&quot;abcd&quot;); 
+4
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p><strong>创建一个</strong> <strong>Maven</strong> <strong>工程</strong> <strong>Hive</strong></p>
+</li>
+<li>
+<p><strong>导入依赖</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.hive<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>hive-exec<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.1.2<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;/dependencies&gt;</span>
+</code></pre></div></li>
+<li>
+<p><strong>创建一个类</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu.hive<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.ql.exec.UDFArgumentException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.ql.exec.UDFArgumentLengthException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.ql.exec.UDFArgumentTypeException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.ql.metadata.HiveException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.ql.udf.generic.GenericUDF<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.serde2.objectinspector.primitive.PrimitiveObjectIn
+    spectorFactory<span style="color:#f92672">;</span>
+<span style="color:#75715e">/**
+</span><span style="color:#75715e">  
+</span><span style="color:#75715e">* 自定义 UDF 函数，需要继承 GenericUDF 类
+</span><span style="color:#75715e">  
+</span><span style="color:#75715e">* 需求: 计算指定字符串的长度
+</span><span style="color:#75715e">  
+</span><span style="color:#75715e">*/</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyStringLength</span> <span style="color:#66d9ef">extends</span> GenericUDF <span style="color:#f92672">{</span>
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @param arguments 输入参数类型的鉴别器对象
+</span><span style="color:#75715e">   
+</span><span style="color:#75715e"> * @return 返回值类型的鉴别器对象
+</span><span style="color:#75715e">   
+</span><span style="color:#75715e"> * @throws UDFArgumentException
+</span><span style="color:#75715e">   
+</span><span style="color:#75715e"> */</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> ObjectInspector <span style="color:#a6e22e">initialize</span><span style="color:#f92672">(</span>ObjectInspector<span style="color:#f92672">[</span><span style="color:#f92672">]</span> arguments<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> UDFArgumentException <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 判断输入参数的个数
+</span><span style="color:#75715e"></span>          
+        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>arguments<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span>1<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> UDFArgumentLengthException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Input Args Length Error!!!&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          <span style="color:#f92672">}</span>
+         <span style="color:#75715e">// 判断输入参数的类型
+</span><span style="color:#75715e"></span>                        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#f92672">!</span>arguments<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getCategory</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>ObjectInspector<span style="color:#f92672">.</span><span style="color:#a6e22e">Category</span><span style="color:#f92672">.</span><span style="color:#a6e22e">PRIMITIVE</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+       <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> UDFArgumentTypeException<span style="color:#f92672">(</span>0<span style="color:#f92672">,</span><span style="color:#e6db74">&#34;Input Args Type Error!!!&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     <span style="color:#f92672">}</span>
+                                                                                          <span style="color:#75715e">//函数本身返回值为 int，需要返回 int 类型的鉴别器对象
+</span><span style="color:#75715e"></span>                                                                                          <span style="color:#66d9ef">return</span> PrimitiveObjectInspectorFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">javaIntObjectInspector</span><span style="color:#f92672">;</span>
+                                                                                        <span style="color:#f92672">}</span>
+  
+                                                                                            <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 函数的逻辑处理
+</span><span style="color:#75715e">       
+</span><span style="color:#75715e">     * @param arguments 输入的参数
+</span><span style="color:#75715e">       
+</span><span style="color:#75715e">     * @return 返回值
+</span><span style="color:#75715e">       
+</span><span style="color:#75715e">     * @throws HiveException
+</span><span style="color:#75715e">       
+</span><span style="color:#75715e">     */</span>
+                                                                                            <span style="color:#a6e22e">@Override</span>
+                                                                                            <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span>DeferredObject<span style="color:#f92672">[</span><span style="color:#f92672">]</span> arguments<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> HiveException <span style="color:#f92672">{</span>
+                                                                                                <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>arguments<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+                                                                                                    <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
+                                                                                                <span style="color:#f92672">}</span>
+                                                                                                <span style="color:#66d9ef">return</span> arguments<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                                                                                            <span style="color:#f92672">}</span>
+                                                                                            <span style="color:#a6e22e">@Override</span>
+                                                                                            <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getDisplayString</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> children<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                                                                                                <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+                                                                                            <span style="color:#f92672">}</span> 
+                                                                                        <span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p><strong>打成</strong> <strong>jar</strong> <strong>包上传到服务器/opt/module/data/myudf.jar</strong></p>
+</li>
+<li>
+<p><strong>将</strong> <strong>jar</strong> <strong>包添加到</strong> <strong>hive</strong> <strong>的</strong> <strong>classpath</strong></p>
+<pre><code>hive (default)&gt; add jar /opt/module/data/myudf.jar;
+</code></pre></li>
+<li>
+<p><strong>创建临时函数与开发好的</strong> <strong>java class</strong> <strong>关联</strong></p>
+<pre><code>hive (default)&gt; create temporary function my_len as &quot;com.atguigu.hive.MyStringLength&quot;;
+</code></pre></li>
+<li>
+<p><strong>即可在</strong> <strong>hql</strong> <strong>中使用自定义的函数</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> ename,my_len(ename) ename_len <span style="color:#66d9ef">from</span> emp;
+</code></pre></div></li>
+</ul>
+<h2 id="自定义-udtf-函数"><strong>自定义</strong> <strong>UDTF</strong> <strong>函数</strong></h2>
+<ul>
+<li>
+<p><strong>需求</strong></p>
+<ul>
+<li>
+<p>自定义一个 UDTF 实现将一个任意分割符的字符串切割成独立的单词，例如：</p>
+<pre><code>hive(default)&gt; select myudtf(&quot;hello,world,hadoop,hive&quot;, &quot;,&quot;);
+hello
+world
+hadoop
+hive
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p><strong>代码实现</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu.udtf<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.ql.exec.UDFArgumentException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.ql.metadata.HiveException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.ql.udf.generic.GenericUDTF<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> 
+    org.apache.hadoop.hive.serde2.objectinspector.ObjectInspectorFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> 
+    org.apache.hadoop.hive.serde2.objectinspector.StructObjectInspector<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> 
+    org.apache.hadoop.hive.serde2.objectinspector.primitive.PrimitiveObjectIn
+    spectorFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.ArrayList<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyUDTF</span> <span style="color:#66d9ef">extends</span> GenericUDTF <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> outList <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> StructObjectInspector <span style="color:#a6e22e">initialize</span><span style="color:#f92672">(</span>StructObjectInspector argOIs<span style="color:#f92672">)</span> 
+        <span style="color:#66d9ef">throws</span> UDFArgumentException <span style="color:#f92672">{</span>
+        <span style="color:#75715e">//1.定义输出数据的列名和类型
+</span><span style="color:#75715e"></span>          
+        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> fieldNames <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        List<span style="color:#f92672">&lt;</span>ObjectInspector<span style="color:#f92672">&gt;</span> fieldOIs <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">//2.添加输出数据的列名和类型
+</span><span style="color:#75715e"></span>          
+        fieldNames<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;lineToWord&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  
+        fieldOIs<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>PrimitiveObjectInspectorFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">javaStringObjectInspector</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> 
+            ObjectInspectorFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getStandardStructObjectInspector</span><span style="color:#f92672">(</span>fieldNames<span style="color:#f92672">,</span> 
+                                                                    fieldOIs<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> HiveException <span style="color:#f92672">{</span>
+  
+        <span style="color:#75715e">//1.获取原始数据
+</span><span style="color:#75715e"></span>          
+        String arg <span style="color:#f92672">=</span> args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">//2.获取数据传入的第二个参数，此处为分隔符
+</span><span style="color:#75715e"></span>          
+        String splitKey <span style="color:#f92672">=</span> args<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">//3.将原始数据按照传入的分隔符进行切分
+</span><span style="color:#75715e"></span>          
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> fields <span style="color:#f92672">=</span> arg<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span>splitKey<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">//4.遍历切分后的结果，并写出
+</span><span style="color:#75715e"></span>          
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String field <span style="color:#f92672">:</span> fields<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">//集合为复用的，首先清空集合
+</span><span style="color:#75715e"></span>              
+            outList<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">//将每一个单词添加至集合
+</span><span style="color:#75715e"></span>              
+            outList<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>field<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">//将集合内容写出
+</span><span style="color:#75715e"></span>              
+            forward<span style="color:#f92672">(</span>outList<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> HiveException <span style="color:#f92672">{</span>
+    <span style="color:#f92672">}</span> 
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p><strong>打成</strong> <strong>jar</strong> <strong>包上传到服务器/opt/module/hive/data/myudtf.jar</strong></p>
+</li>
+<li>
+<p><strong>将</strong> <strong>jar</strong> <strong>包添加到</strong> <strong>hive</strong> <strong>的</strong> <strong>classpath</strong> <strong>下</strong></p>
+<pre><code>hive (default)&gt; add jar /opt/module/hive/data/myudtf.jar;
+</code></pre></li>
+<li>
+<p><strong>创建临时函数与开发好的</strong> <strong>java class</strong> <strong>关联</strong></p>
+<pre><code>hive (default)&gt; create temporary function myudtf as &quot;com.atguigu.hive.MyUDTF&quot;;
+</code></pre></li>
+<li>
+<p><strong>使用自定义的函数</strong></p>
+<pre><code>hive (default)&gt; select myudtf(&quot;hello,world,hadoop,hive&quot;,&quot;,&quot;);
+</code></pre></li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1014hbase-api/" data-toggle="tooltip" data-placement="top" title="4、HBase API（HBase）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1015hbase%E4%BC%98%E5%8C%96/" data-toggle="tooltip" data-placement="top" title="5、HBase优化（HBase）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

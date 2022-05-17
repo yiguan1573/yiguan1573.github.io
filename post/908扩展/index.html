@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="8、React扩展（React）" />
+    <meta property="og:title" content="8、React扩展（React）" />
+    <meta property="twitter:title" content="8、React扩展（React）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>8、React扩展（React）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/908%E6%89%A9%E5%B1%95/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/react" title="React">
+                            React
+                        </a>
+                        
+                    </div>
+                    <h1>8、React扩展（React）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Tuesday, July 20, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-setstate">1. setState</a>
+      <ul>
+        <li><a href="#setstate更新状态的2种写法">setState更新状态的2种写法</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-lazyload">2. lazyLoad</a>
+      <ul>
+        <li><a href="#路由组件的lazyload">路由组件的lazyLoad</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-hooks">3. Hooks</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#4-fragment">4. Fragment</a>
+      <ul>
+        <li><a href="#使用">使用</a></li>
+        <li><a href="#作用">作用</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-context">5. Context</a>
+      <ul>
+        <li><a href="#理解">理解</a></li>
+        <li><a href="#使用-1">使用</a></li>
+        <li><a href="#注意">注意</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-组件优化">6. 组件优化</a>
+      <ul>
+        <li><a href="#component的2个问题">Component的2个问题</a></li>
+        <li><a href="#效率高的做法">效率高的做法</a></li>
+        <li><a href="#原因">原因</a></li>
+        <li><a href="#解决">解决</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-render-props">7. render props</a>
+      <ul>
+        <li><a href="#如何向组件内部动态传入带内容的结构标签">如何向组件内部动态传入带内容的结构(标签)?</a></li>
+        <li><a href="#children-props">children props</a></li>
+        <li><a href="#render-props">render props</a></li>
+      </ul>
+    </li>
+    <li><a href="#8-错误边界">8. 错误边界</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#9-组件通信方式总结">9. 组件通信方式总结</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="1-setstate">1. setState</h2>
+<h3 id="setstate更新状态的2种写法">setState更新状态的2种写法</h3>
+<pre><code>	(1). setState(stateChange, [callback])------对象式的setState
+            1.stateChange为状态改变对象(该对象可以体现出状态的更改)
+            2.callback是可选的回调函数, 它在状态更新完毕、界面也更新后(render调用后)才被调用
+					
+	(2). setState(updater, [callback])------函数式的setState
+            1.updater为返回stateChange对象的函数。
+            2.updater可以接收到state和props。
+            4.callback是可选的回调函数, 它在状态更新、界面也更新后(render调用后)才被调用。
+总结:
+		1.对象式的setState是函数式的setState的简写方式(语法糖)
+		2.使用原则：
+				(1).如果新状态不依赖于原状态 ===&gt; 使用对象方式
+				(2).如果新状态依赖于原状态 ===&gt; 使用函数方式
+				(3).如果需要在setState()执行后获取最新的状态数据, 
+					要在第二个callback函数中读取
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsupd172j8j30g90hrael.jpg" alt="QQ截图20210726220617.png"></p>
+<hr>
+<h2 id="2-lazyload">2. lazyLoad</h2>
+<h3 id="路由组件的lazyload">路由组件的lazyLoad</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">	<span style="color:#75715e">//1.通过React的lazy函数配合import()函数动态加载路由组件 ===&gt; 路由组件代码会被分开打包
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Login</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">lazy</span>(()=&gt;<span style="color:#66d9ef">import</span>(<span style="color:#e6db74">&#39;@/pages/Login&#39;</span>))
+	
+	<span style="color:#75715e">//2.通过&lt;Suspense&gt;指定在加载得到路由打包文件前显示一个自定义loading界面
+</span><span style="color:#75715e"></span>	<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Suspense</span> <span style="color:#a6e22e">fallback</span><span style="color:#f92672">=</span>{<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h1</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">loading</span>.....<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">1</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010">}</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010"></span>
+        <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Switch</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Route</span> <span style="color:#a6e22e">path</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/xxx&#34;</span> <span style="color:#a6e22e">component</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">Xxxx</span>}<span style="color:#f92672">/</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Redirect</span> <span style="color:#a6e22e">to</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/login&#34;</span><span style="color:#f92672">/</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">S</span><span style="color:#960050;background-color:#1e0010">w</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010"></span>
+    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">S</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010"></span>
+</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsupegclrtj30oc0or7f5.jpg" alt="QQ截图20210726220739.png"></p>
+<hr>
+<h2 id="3-hooks">3. Hooks</h2>
+<h4 id="1-react-hookhooks是什么">1. React Hook/Hooks是什么?</h4>
+<pre><code>(1). Hook是React 16.8.0版本增加的新特性/新语法
+(2). 可以让你在函数组件中使用 state 以及其他的 React 特性
+</code></pre><h4 id="2-三个常用的hook">2. 三个常用的Hook</h4>
+<pre><code>(1). State Hook: React.useState()
+(2). Effect Hook: React.useEffect()
+(3). Ref Hook: React.useRef()
+</code></pre><h4 id="3-state-hook">3. State Hook</h4>
+<pre><code>(1). State Hook让函数组件也可以有state状态, 并进行状态数据的读写操作
+(2). 语法: const [xxx, setXxx] = React.useState(initValue)  
+(3). useState()说明:
+        参数: 第一次初始化指定的值在内部作缓存
+        返回值: 包含2个元素的数组, 第1个为内部当前状态值, 第2个为更新状态值的函数
+(4). setXxx()2种写法:
+        setXxx(newValue): 参数为非函数值, 直接指定新的状态值, 内部用其覆盖原来的状态值
+        setXxx(value =&gt; newValue): 参数为函数, 接收原本的状态值, 返回新的状态值, 内部用其覆盖原来的状态值
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsuph08t0xj30jp0fetbr.jpg" alt="QQ截图20210726221006.png"></p>
+<h4 id="4-effect-hook">4. Effect Hook</h4>
+<pre><code>(1). Effect Hook 可以让你在函数组件中执行副作用操作(用于模拟类组件中的生命周期钩子)
+(2). React中的副作用操作:
+        发ajax请求数据获取
+        设置订阅 / 启动定时器
+        手动更改真实DOM
+(3). 语法和说明: 
+        useEffect(() =&gt; { 
+          // 在此可以执行任何带副作用操作
+          return () =&gt; { // 在组件卸载前执行
+            // 在此做一些收尾工作, 比如清除定时器/取消订阅等
+          }
+        }, [stateValue]) // 如果指定的是[], 回调函数只会在第一次render()后执行
+    
+(4). 可以把 useEffect Hook 看做如下三个函数的组合
+        componentDidMount()
+        componentDidUpdate()
+    	componentWillUnmount() 
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsupmqaz36j30l30opn53.jpg" alt="QQ截图20210726221536.png"></p>
+<h4 id="5-ref-hook">5. Ref Hook</h4>
+<pre><code>(1). Ref Hook可以在函数组件中存储/查找组件内的标签或任意其它数据
+(2). 语法: const refContainer = useRef()
+(3). 作用:保存标签对象,功能与React.createRef()一样
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsupob5ka3j30j50n80z9.jpg" alt="QQ截图20210726221708.png"></p>
+<hr>
+<h2 id="4-fragment">4. Fragment</h2>
+<h3 id="使用">使用</h3>
+<pre><code>&lt;Fragment&gt;&lt;Fragment&gt;
+&lt;&gt;&lt;/&gt;
+</code></pre>
+<h3 id="作用">作用</h3>
+<blockquote>
+<p>可以不用必须有一个真实的DOM根标签了，空标签不能添加任何属性，使用Fragment作为在最外层包裹，编译后会自动删掉减少div的嵌套。
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsupou7ovuj30fb07sgn9.jpg" alt="QQ截图20210726221729.png"></p>
+</blockquote>
+<!-- raw HTML omitted -->
+<h2 id="5-context">5. Context</h2>
+<h3 id="理解">理解</h3>
+<blockquote>
+<p>一种组件间通信方式, 常用于【祖组件】与【后代组件】间通信</p>
+</blockquote>
+<h3 id="使用-1">使用</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#ae81ff">1</span>) <span style="color:#a6e22e">创建Context容器对象</span><span style="color:#960050;background-color:#1e0010">：</span>
+	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">XxxContext</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">createContext</span>()  
+	
+<span style="color:#ae81ff">2</span>) <span style="color:#a6e22e">渲染子组时</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">外面包裹xxxContext</span>.<span style="color:#a6e22e">Provider</span>, <span style="color:#a6e22e">通过value属性给后代组件传递数据</span><span style="color:#960050;background-color:#1e0010">：</span>
+	<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">xxxContext</span>.<span style="color:#a6e22e">Provider</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">数据</span>}<span style="color:#f92672">&gt;</span>
+		<span style="color:#a6e22e">子组件</span>
+    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">x</span><span style="color:#960050;background-color:#1e0010">x</span><span style="color:#960050;background-color:#1e0010">x</span><span style="color:#960050;background-color:#1e0010">C</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">x</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">P</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010"></span>
+    
+<span style="color:#ae81ff">3</span>) <span style="color:#a6e22e">后代组件读取数据</span><span style="color:#960050;background-color:#1e0010">：</span>
+
+	<span style="color:#75715e">//第一种方式:仅适用于类组件 
+</span><span style="color:#75715e"></span>	  <span style="color:#66d9ef">static</span> <span style="color:#a6e22e">contextType</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">xxxContext</span>  <span style="color:#75715e">// 声明接收context
+</span><span style="color:#75715e"></span>	  <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">context</span> <span style="color:#75715e">// 读取context中的value数据
+</span><span style="color:#75715e"></span>	  
+	<span style="color:#75715e">//第二种方式: 函数组件与类组件都可以
+</span><span style="color:#75715e"></span>	  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">xxxContext</span>.<span style="color:#a6e22e">Consumer</span><span style="color:#f92672">&gt;</span>
+	    {
+	      <span style="color:#a6e22e">value</span> =&gt; ( <span style="color:#75715e">// value就是context中的value数据
+</span><span style="color:#75715e"></span>	        <span style="color:#a6e22e">要显示的内容</span>
+	      )
+	    }
+	  <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">x</span><span style="color:#960050;background-color:#1e0010">x</span><span style="color:#960050;background-color:#1e0010">x</span><span style="color:#960050;background-color:#1e0010">C</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">x</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">C</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010"></span>
+</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsuprnuwkfj30h60l5jw9.jpg" alt="QQ截图20210726222014.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsupsbibxmj30i50gf42d.jpg" alt="QQ截图20210726222021.png"></p>
+<h3 id="注意">注意</h3>
+<pre><code>在应用开发中一般不用context, 一般都用它的封装react插件
+</code></pre>
+<!-- raw HTML omitted -->
+<h2 id="6-组件优化">6. 组件优化</h2>
+<h3 id="component的2个问题">Component的2个问题</h3>
+<blockquote>
+<ol>
+<li>
+<p>只要执行setState(),即使不改变状态数据, 组件也会重新render() ==&gt; 效率低</p>
+</li>
+<li>
+<p>只当前组件重新render(), 就会自动重新render子组件，纵使子组件没有用到父组件的任何数据 ==&gt; 效率低</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="效率高的做法">效率高的做法</h3>
+<blockquote>
+<p>只有当组件的state或props数据发生改变时才重新render()</p>
+</blockquote>
+<h3 id="原因">原因</h3>
+<blockquote>
+<p>Component中的shouldComponentUpdate()总是返回true</p>
+</blockquote>
+<h3 id="解决">解决</h3>
+<pre><code>办法1: 
+    重写shouldComponentUpdate()方法
+    比较新旧state或props数据, 如果有变化才返回true, 如果没有返回false
+办法2:  
+    使用PureComponent
+    PureComponent重写了shouldComponentUpdate(), 只有state或props数据有变化才返回true
+    注意: 
+        只是进行state和props数据的浅比较, 如果只是数据对象内部数据变了, 返回false  
+        不要直接修改state数据, 而是要产生新数据
+项目中一般使用PureComponent来优化
+</code></pre>
+<!-- raw HTML omitted -->
+<h2 id="7-render-props">7. render props</h2>
+<h3 id="如何向组件内部动态传入带内容的结构标签">如何向组件内部动态传入带内容的结构(标签)?</h3>
+<pre><code>Vue中: 
+    使用slot技术, 也就是通过组件标签体传入结构  &lt;A&gt;&lt;B/&gt;&lt;/A&gt;
+React中:
+    使用children props: 通过组件标签体传入结构
+    使用render props: 通过组件标签属性传入结构,而且可以携带数据，一般用render函数属性
+</code></pre>
+<h3 id="children-props">children props</h3>
+<pre><code>&lt;A&gt;
+  &lt;B&gt;xxxx&lt;/B&gt;
+&lt;/A&gt;
+{this.props.children}
+问题: 如果B组件需要A组件内的数据, ==&gt; 做不到 
+</code></pre>
+<h3 id="render-props">render props</h3>
+<pre><code>&lt;A render={(data) =&gt; &lt;C data={data}&gt;&lt;/C&gt;}&gt;&lt;/A&gt;
+A组件: {this.props.render(内部state数据)}
+C组件: 读取A组件传入的数据显示 {this.props.data} 
+</code></pre>
+<!-- raw HTML omitted -->
+<h2 id="8-错误边界">8. 错误边界</h2>
+<h4 id="理解-1">理解：</h4>
+<p>错误边界(Error boundary)：用来捕获后代组件错误，渲染出备用页面</p>
+<h4 id="特点">特点：</h4>
+<p>只能捕获后代组件生命周期产生的错误，不能捕获自己组件产生的错误和其他组件在合成事件、定时器中产生的错误</p>
+<h5 id="使用方式">使用方式：</h5>
+<p>getDerivedStateFromError配合componentDidCatch</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#75715e">// 生命周期函数，一旦后台组件报错，就会触发
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#a6e22e">getDerivedStateFromError</span>(<span style="color:#a6e22e">error</span>) {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">error</span>);
+    <span style="color:#75715e">// 在render之前触发
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 返回新的state
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> {
+        <span style="color:#a6e22e">hasError</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+    };
+}
+
+<span style="color:#a6e22e">componentDidCatch</span>(<span style="color:#a6e22e">error</span>, <span style="color:#a6e22e">info</span>) {
+    <span style="color:#75715e">// 统计页面的错误。发送请求发送到后台去
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">error</span>, <span style="color:#a6e22e">info</span>);
+}
+</code></pre></div><h2 id="9-组件通信方式总结">9. 组件通信方式总结</h2>
+<h4 id="组件间的关系">组件间的关系：</h4>
+<ul>
+<li>父子组件</li>
+<li>兄弟组件（非嵌套组件）</li>
+<li>祖孙组件（跨级组件）</li>
+</ul>
+<h4 id="几种通信方式">几种通信方式：</h4>
+<pre><code>    1.props：
+        (1).children props
+        (2).render props
+    2.消息订阅-发布：
+        pubs-sub、event等等
+    3.集中式管理：
+        redux、dva等等
+    4.conText:
+        生产者-消费者模式
+</code></pre>
+<h4 id="比较好的搭配方式">比较好的搭配方式：</h4>
+<pre><code>    父子组件：props
+    兄弟组件：消息订阅-发布、集中式管理
+    祖孙组件(跨级组件)：消息订阅-发布、集中式管理、conText(开发用的少，封装插件用的多)
+</code></pre>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/907redux/" data-toggle="tooltip" data-placement="top" title="7、redux（React）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/852springcloud%E8%B8%A9%E5%9D%91%E6%88%96%E7%BB%8F%E9%AA%8C%E8%AE%B0%E5%BD%95/" data-toggle="tooltip" data-placement="top" title="2、springcloud踩坑或经验记录（SpringCloud）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="5、webpack(Vue)" />
+    <meta property="og:title" content="5、webpack(Vue)" />
+    <meta property="twitter:title" content="5、webpack(Vue)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>5、webpack(Vue)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/805webpack/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/vue" title="Vue">
+                            Vue
+                        </a>
+                        
+                    </div>
+                    <h1>5、webpack(Vue)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Tuesday, September 15, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#准备工作">准备工作</a></li>
+    <li><a href="#js文件的打包">js文件的打包</a></li>
+    <li><a href="#使用打包后的文件">使用打包后的文件</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#入口和出口">入口和出口</a></li>
+    <li><a href="#局部安装webpack">局部安装webpack</a></li>
+    <li><a href="#packagejson中定义启动">package.json中定义启动</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#什么是loader">什么是loader</a></li>
+    <li><a href="#准备工作-1">准备工作</a></li>
+    <li><a href="#打包报错信息">打包报错信息</a></li>
+    <li><a href="#css-loader">css-loader</a></li>
+    <li><a href="#style-loader">style-loader</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#准备工作-2">准备工作</a></li>
+    <li><a href="#less-loader">less-loader</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#资源准备阶段">资源准备阶段</a></li>
+    <li><a href="#url-loader">url-loader</a></li>
+    <li><a href="#file-loader">file-loader</a></li>
+    <li><a href="#修改文件名称">修改文件名称</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#引入vuejs">引入vue.js</a></li>
+    <li><a href="#el和template区别">el和template区别</a></li>
+    <li><a href="#vue组件化开发引入">Vue组件化开发引入</a></li>
+    <li><a href="#vue文件封装处理">.vue文件封装处理</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#认识plugin">认识plugin</a></li>
+    <li><a href="#添加版权的plugin">添加版权的Plugin</a></li>
+    <li><a href="#打包html的plugin">打包html的plugin</a></li>
+    <li><a href="#js压缩的plugin">js压缩的Plugin</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="webpack简介">webpack简介</h1>
+<ul>
+<li><strong>从本质上来讲，webpack是一个现代的JavaScript应用的静态模块打包工具</strong>
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1dcqghrfj30t10baq45.jpg" alt="图片1.png"></li>
+<li><strong>前端模块化</strong>
+<ul>
+<li>在ES6之前，我们要想进行模块化开发，就必须借助于其他的工具，让我们可以进行模块化开发。</li>
+<li>并且在通过模块化开发完成了项目后，还需要处理模块间的各种依赖，并且将其进行整合打包。</li>
+<li>webpack其中一个核心就是让我们可能进行模块化开发，并且会帮助我们处理模块间的依赖关系</li>
+<li>不仅仅是JavaScript文件，我们的CSS、图片、json文件等等在webpack中都可以被当做模块来使用</li>
+</ul>
+</li>
+<li><strong>打包</strong>
+<ul>
+<li>就是将webpack中的各种资源模块进行打包合并成一个或多个包(Bundle)</li>
+<li>并且在打包的过程中，还可以对资源进行处理，比如压缩图片，将scss转成css，将ES6语法转成ES5语法，将TypeScript转成JavaScript等等操作</li>
+</ul>
+</li>
+<li><strong>grunt/gulp和webpack的不同</strong>
+<ul>
+<li>grunt/gulp更加强调的是前端流程的自动化，模块化不是它的核心。</li>
+<li>webpack更加强调模块化开发管理，而文件压缩合并、预处理等功能，是他附带的功能</li>
+</ul>
+</li>
+</ul>
+<h1 id="webpack安装">webpack安装</h1>
+<ul>
+<li>安装webpack首先需要安装Node.js，Node.js自带了软件包管理工具npm
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1dimm432j30gc00ma9v.jpg" alt="QQ截图20201125135243.png"></li>
+<li>查看自己的node版本：
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1djl1o02j309101b0pi.jpg" alt="QQ截图20201125135338.png"></li>
+<li>全局安装webpack(这里我先指定版本号3.6.0，因为vue cli2依赖该版本)
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1dk7is7xj306v00tglf.jpg" alt="图片2.png"></li>
+<li>局部安装webpack（&ndash;save-dev是开发时依赖，项目打包后不需要继续使用的）
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1dlaviyuj308l016jr9.jpg" alt="图片3.png"></li>
+<li>为什么全局安装后，还需要局部安装
+<ul>
+<li>在终端直接执行webpack命令，使用的全局安装的webpack</li>
+<li>当在package.json中定义了scripts时，其中包含了webpack命令，那么使用的是局部webpack</li>
+</ul>
+</li>
+</ul>
+<h1 id="webpack起步">webpack起步</h1>
+<h2 id="准备工作">准备工作</h2>
+<ul>
+<li>创建如下文件和文件夹：
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1dqhkpx6j30a304at94.jpg" alt="图片4.png"></li>
+<li>文件和文件夹解析：
+<ul>
+<li>dist文件夹：用于存放之后打包的文件</li>
+<li>src文件夹：用于存放我们写的源文件
+<ul>
+<li>main.js：项目的入口文件</li>
+<li>mathUtils.js：定义了一些数学工具函数，可以在其他地方引用，并且使用</li>
+</ul>
+</li>
+<li>index.html：浏览器打开展示的首页html</li>
+<li>package.json：通过npm init生成的，npm包管理的文件</li>
+</ul>
+</li>
+<li>mathUtils.js文件中的代码
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1dqwijvhj308106cjrg.jpg" alt="图片5.png"></li>
+<li>main.js文件中的代码
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1ds8esp8j308702tt8q.jpg" alt="图片6.png"></li>
+</ul>
+<h2 id="js文件的打包">js文件的打包</h2>
+<ul>
+<li>使用webpack工具，对多个js文件进行打包</li>
+<li>webpack就是一个模块化的打包工具，所以它支持我们代码中写模块化，可以对模块化的代码进行处理</li>
+<li>另外，如果在处理完所有模块之间的关系后，将多个js打包到一个js文件中，引入时就变得非常方便了</li>
+<li>使用webpack的指令打包
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1dw9onhnj307y00vjr7.jpg" alt="图片7.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1dwk5sn0j30jb04hjsj.jpg" alt="图片8.png"></li>
+</ul>
+<h2 id="使用打包后的文件">使用打包后的文件</h2>
+<ul>
+<li>打包后会在dist文件下，生成一个bundle.js文件</li>
+<li>bundle.js文件，是webpack处理了项目直接文件依赖后生成的一个js文件，我们只需要将这个js文件在index.html中引入即可
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1dxnznbrj30l5092gn5.jpg" alt="图片9.png"></li>
+</ul>
+<h1 id="webpack配置">webpack配置</h1>
+<h2 id="入口和出口">入口和出口</h2>
+<ul>
+<li>如果每次使用webpack的命令都需要写上入口和出口作为参数，就非常麻烦</li>
+<li>创建一个webpack.config.js文件，将这两个参数写到配置中，在运行时，直接读取
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1e087pvaj30g905rdgj.jpg" alt="图片10.png"></li>
+</ul>
+<h2 id="局部安装webpack">局部安装webpack</h2>
+<ul>
+<li>因为一个项目往往依赖特定的webpack版本，全局的版本可能很这个项目的webpack版本不一致，导出打包出现问题。所以通常一个项目，都有自己局部的webpack。</li>
+<li>第一步，项目中需要安装自己局部的webpack
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1e44fowjj308u00r3yc.jpg" alt="图片11.png"></li>
+<li>第二步，通过node_modules/.bin/webpack启动webpack打包
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1e4tgchoj306100pwea.jpg" alt="图片12.png"></li>
+</ul>
+<h2 id="packagejson中定义启动">package.json中定义启动</h2>
+<ul>
+<li>可以在package.json的scripts中定义自己的执行脚本</li>
+<li>package.json中的scripts的脚本在执行时，会按照一定的顺序寻找命令对应的位置
+<ul>
+<li>首先，会寻找本地的node_modules/.bin路径中对应的命令</li>
+<li>如果没有找到，会去全局的环境变量中寻找
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1e7072faj30dl09awff.jpg" alt="图片13.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1e7b9g69j304d00tgld.jpg" alt="图片14.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="css-loader的使用">css-loader的使用</h1>
+<h2 id="什么是loader">什么是loader</h2>
+<ul>
+<li>在开发中我们不仅仅有基本的js代码处理，我们也需要加载css、图片，也包括一些高级的将ES6转成ES5代码，将TypeScript转成ES5代码，将scss、less转成css，将.jsx、.vue文件转成js文件等等</li>
+<li>对于webpack本身的能力来说，对于这些转化是不支持的。给webpack扩展对应的loader就可以啦</li>
+<li>loader使用过程
+<ul>
+<li>步骤一：通过npm安装需要使用的loader</li>
+<li>步骤二：在webpack.config.js中的modules关键字下进行配置</li>
+</ul>
+</li>
+<li><strong>大部分loader我们都可以在webpack的官网中找到，并且学习对应的用法</strong></li>
+</ul>
+<h2 id="准备工作-1">准备工作</h2>
+<ul>
+<li>在src目录中，创建一个css文件，其中创建一个normal.css文件。将零散的js文件放在一个js文件夹中。
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1ee1t3l5j30dg080aat.jpg" alt="图片15.png"></li>
+<li>normal.css中的代码非常简单，就是将body设置为red
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1ee9gjsoj306n01rt8j.jpg" alt="图片16.png"></li>
+<li>webpack也不可能找到它，因为我们只有一个入口，webpack会从入口开始查找其他依赖的文件</li>
+<li>在入口文件中引用
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1eehfeetj30ft06m0tt.jpg" alt="图片17.png"></li>
+</ul>
+<h2 id="打包报错信息">打包报错信息</h2>
+<ul>
+<li>重新打包，会出现如下错误：
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1efefw88j30tb089jt8.jpg" alt="图片18.png"></li>
+<li>这个错误告诉我们：加载normal.css文件必须有对应的loader</li>
+</ul>
+<h2 id="css-loader">css-loader</h2>
+<ul>
+<li>在webpack的官方中，我们可以找到如下关于样式的loader使用方法
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1ehq8qt2j30nl0f8gmj.jpg" alt="图片19.png"></li>
+<li>按照官方配置webpack.config.js文件。注意：配置中有一个style-loader，我们并不知道它是什么，所以可以暂时不进行配置</li>
+<li>重新打包项目：运行index.html，你会发现样式并没有生效
+<ul>
+<li>原因是css-loader只负责加载css文件，但是并不负责将css具体样式嵌入到文档中</li>
+<li>这个时候，我们还需要一个style-loader帮助我们处理</li>
+</ul>
+</li>
+</ul>
+<h2 id="style-loader">style-loader</h2>
+<ul>
+<li>安装style-loader
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1fvrc9dhj309g00ya9v.jpg" alt="图片20.png"></li>
+<li>注意：style-loader需要放在css-loader的前面（loader配置是从右往左读）
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1fx3fj7yj30fs09ljsc.jpg" alt="图片21.png"></li>
+</ul>
+<h1 id="less文件处理">less文件处理</h1>
+<h2 id="准备工作-2">准备工作</h2>
+<ul>
+<li>先创建一个less文件，依然放在css文件夹中
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1fz4n3tbj30al05h74i.jpg" alt="图片22.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1fzaqptuj30h90aiwg6.jpg" alt="图片23.png"></li>
+</ul>
+<h2 id="less-loader">less-loader</h2>
+<ul>
+<li>注意：我们这里还安装了less，因为webpack会使用less对less文件进行编译
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1g2vk1ozj30ab00wa9v.jpg" alt="图片24.png"></li>
+<li>修改对应的配置文件，添加一个rules选项，用于处理.less文件
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1g31np7cj30fe05ewet.jpg" alt="图片25.png"></li>
+</ul>
+<h1 id="图片文件处理">图片文件处理</h1>
+<h2 id="资源准备阶段">资源准备阶段</h2>
+<ul>
+<li>在项目中加入两张图片：一张较小的图片test01.jpg(小于8kb)，一张较大的图片test02.jpeg(大于8kb)，之后会针对这两张图片进行不同的处理</li>
+<li>先考虑在css样式中引用图片的情况，所以我更改了normal.css中的样式：
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1g57wvbwj30aa029t8m.jpg" alt="图片26.png"></li>
+<li>现在直接打包，会出现如下问题
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1g5ia1opj30kp074ta2.jpg" alt="图片27.png"></li>
+</ul>
+<h2 id="url-loader">url-loader</h2>
+<ul>
+<li>先安装url-loader
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1g7nnynrj308d00q3yb.jpg" alt="图片28.png"></li>
+<li>修改webpack.config.js配置文件：
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1g7uadl2j308305lwei.jpg" alt="图片29.png"></li>
+<li>再次打包，运行index.html，就会发现我们的背景图片选出了出来。
+<ul>
+<li>而仔细观察，你会发现背景图是通过base64显示出来的</li>
+<li>OK，这也是limit属性的作用，当图片小于8kb时，对图片进行base64编码</li>
+</ul>
+</li>
+</ul>
+<h2 id="file-loader">file-loader</h2>
+<ul>
+<li>大于8kb的图片，会通过file-loader进行处理，但是我们的项目中并没有file-loader，就报以下错误
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1g9c5jj5j30nn05gwfg.jpg" alt="图片30.png"></li>
+<li>安装file-loader
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1g9j8q2kj307s00u0sj.jpg" alt="图片31.png"></li>
+<li>再次打包，就会发现dist文件夹下多了一个图片文件
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1g9qafooj30a701wdfs.jpg" alt="图片32.png"></li>
+</ul>
+<h2 id="修改文件名称">修改文件名称</h2>
+<ul>
+<li>webpack自动帮助我们生成一个非常长的名字
+<ul>
+<li>这是一个32位hash值，目的是防止名字重复</li>
+<li>但是，真实开发中，我们可能对打包的图片名字有一定的要求。比如，将所有的图片放在一个文件夹中，跟上图片原来的名称，同时也要防止重复</li>
+</ul>
+</li>
+<li>可以在options中添加上如下选项：
+<ul>
+<li>img：文件要打包到的文件夹</li>
+<li>name：获取图片原来的名字，放在该位置</li>
+<li>hash:8：为了防止图片名称冲突，依然使用hash，但是我们只保留8位</li>
+<li>ext：使用图片原来的扩展名
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1gdmmlyjj308y026jra.jpg" alt="图片33.png"></li>
+</ul>
+</li>
+<li>但是，我们发现图片并没有显示出来，这是因为图片使用的路径不正确
+<ul>
+<li>默认情况下，webpack会将生成的路径直接返回给使用者</li>
+<li>但是，我们整个程序是打包在dist文件夹下的，所以这里我们需要在路径下再添加一个dist/
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1gduyoi1j30jj05uab3.jpg" alt="图片34.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="babel的使用">babel的使用</h1>
+<ul>
+<li>仔细阅读webpack打包的js文件，发现写的ES6语法并没有转成ES5，那么就意味着可能一些对ES6还不支持的浏览器没有办法很好的运行我们的代码</li>
+<li>如果希望将ES6的语法转成ES5，那么就需要使用babel</li>
+<li>在webpack中，直接使用babel对应的loader就可以了</li>
+</ul>
+<pre><code>npm install --save-dev babel-loader@7 babel-core babel-preset-es2015
+</code></pre><ul>
+<li>配置webpack.config.js文件
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1gftad2ej30bq055glq.jpg" alt="图片35.png"></li>
+<li>重新打包，查看bundle.js文件，发现其中的内容变成了ES5的语法</li>
+</ul>
+<h1 id="webpack配置vue">webpack配置vue</h1>
+<h2 id="引入vuejs">引入vue.js</h2>
+<ul>
+<li>后续是在实际项目中也会使用vue的，所以并不是开发时依赖
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1gi6t07cj306b00vdfm.jpg" alt="图片36.png"></li>
+<li>接下来就可以按照之前学习的方式来使用Vue了</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1gih9f0bj308q044mx4.jpg" alt="图片37.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1gin38lrj30jx0a175g.jpg" alt="图片38.png"></p>
+<ul>
+<li>修改完成后，重新打包，运行程序。但是运行程序，没有出现想要的效果，而且浏览器中有报错
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1gjzbhfbj30zc071dk4.jpg" alt="图片39.png"></li>
+<li>这个错误说的是我们使用的是runtime-only版本的Vue</li>
+<li>Vue不同版本构建，这里要使用runtime-compiler版本
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1ivzb6cej30n102pmyf.jpg" alt="QQ截图20201125165834.png"></li>
+<li>所以我们修改webpack的配置，添加如下内容即可</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1gmarig7j308t02rmx1.jpg" alt="图片40.png"></p>
+<h2 id="el和template区别">el和template区别</h2>
+<ul>
+<li>html模板在之后的开发中，并不希望手动的来频繁修改</li>
+<li>定义template属性：
+<ul>
+<li>将div元素中的{{message}}内容删掉，只保留一个基本的id为div的元素
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1hi4uq05j30bk03kaa3.jpg" alt="图片41.png"></li>
+</ul>
+</li>
+<li>重新打包，运行程序，显示一样的结果和HTML代码结构</li>
+<li>el和template模板的关系
+<ul>
+<li>el用于指定Vue要管理的DOM，可以帮助解析其中的指令、事件监听等等</li>
+<li>如果Vue实例中同时指定了template，那么template模板的内容会替换掉挂载的对应el的模板</li>
+</ul>
+</li>
+<li>这样做之后我们就不需要在以后的开发中再次操作index.html，只需要在template中写入对应的标签即可
+<ul>
+<li>书写template模块非常麻烦怎么办</li>
+<li>之后会将template模板中的内容进行抽离，会分成三部分书写：template、script、style，结构变得非常清晰</li>
+</ul>
+</li>
+</ul>
+<h2 id="vue组件化开发引入">Vue组件化开发引入</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1hlfo0f5j30cm0bigm3.jpg" alt="图片42.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1hlkwrnxj30j50dlwm1.jpg" alt="图片43.png"></p>
+<h2 id="vue文件封装处理">.vue文件封装处理</h2>
+<ul>
+<li>一个组件以一个js对象的形式进行组织和使用的时候是非常不方便的，一方面编写template模块非常的麻烦，另外一方面如果有样式的话，我们写在哪里比较合适呢</li>
+<li>创建一个vue格式的文件，需要vue-loader以及vue-template-compiler处理
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1hqjhm41j30c9097q3d.jpg" alt="图片44.png"></li>
+<li>安装vue-loader和vue-template-compiler</li>
+</ul>
+<pre><code>npm install vue-loader vue-template-compiler --save-dev
+</code></pre><ul>
+<li>修改webpack.config.js的配置文件：
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1hqt1uj2j308c02amx0.jpg" alt="图片45.png"></li>
+<li>vue-loader版本过高需要安装插件，否则会报错
+<ul>
+<li>方法一：加入插件plugins: [new VueLoaderPlugin()//15版本需指定plugin]</li>
+<li>方法二：将版本固定在13
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1j2pms4uj30n10bg0ym.jpg" alt="QQ截图20201125170501.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="plugin的使用">plugin的使用</h1>
+<h2 id="认识plugin">认识plugin</h2>
+<ul>
+<li>plugin是插件的意思，通常是用于对某个现有的架构进行扩展。</li>
+<li>webpack中的插件，就是对webpack现有功能的各种扩展，比如打包优化，文件压缩等等</li>
+<li>loader和plugin区别
+<ul>
+<li>loader主要用于转换某些类型的模块，它是一个转换器。</li>
+<li>plugin是插件，它是对webpack本身的扩展，是一个扩展器</li>
+</ul>
+</li>
+<li>plugin的使用过程：
+<ul>
+<li>步骤一：通过npm安装需要使用的plugins(某些webpack已经内置的插件不需要安装)</li>
+<li>步骤二：在webpack.config.js中的plugins中配置插件</li>
+</ul>
+</li>
+</ul>
+<h2 id="添加版权的plugin">添加版权的Plugin</h2>
+<ul>
+<li>该插件名字叫BannerPlugin，属于webpack自带的插件，为打包的文件添加版权声明</li>
+<li>按照下面的方式来修改webpack.config.js的文件：</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1ikavz4sj30cr04mglu.jpg" alt="图片46.png"></p>
+<ul>
+<li>重新打包程序：查看bundle.js文件的头部，看到如下信息</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1iki07hij30e801k74d.jpg" alt="图片47.png"></p>
+<h2 id="打包html的plugin">打包html的plugin</h2>
+<ul>
+<li>index.html文件是存放在项目的根目录下的，在真实发布项目时，发布的是dist文件夹中的内容，但是dist文件夹中如果没有index.html文件。</li>
+<li>所以，我们需要将index.html文件打包到dist文件夹中，这个时候就可以使用HtmlWebpackPlugin插件</li>
+<li>HtmlWebpackPlugin插件可以为我们做这些事情
+<ul>
+<li>自动生成一个index.html文件(可以指定模板来生成)</li>
+<li>将打包的js文件，自动通过script标签插入到body中</li>
+</ul>
+</li>
+<li>安装HtmlWebpackPlugin插件</li>
+</ul>
+<pre><code>npm install html-webpack-plugin --save-dev
+</code></pre><ul>
+<li>使用插件，修改webpack.config.js文件中plugins部分的内容
+<ul>
+<li>template表示根据什么模板来生成index.html</li>
+<li>需要删除之前在output中添加的publicPath属性，否则插入的script标签中的src可能会有问题
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1it5kxhuj30iq092dka.jpg" alt="QQ截图20201125165546.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1irake8rj30kg02gwfu.jpg" alt="QQ截图20201125165405.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1ioh98mtj30bh034mx8.jpg" alt="图片48.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1iuefq1aj30lg08zn28.jpg" alt="QQ截图20201125165703.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="js压缩的plugin">js压缩的Plugin</h2>
+<ul>
+<li>使用一个第三方的插件uglifyjs-webpack-plugin，并且版本号指定1.1.1，和CLI2保持一致</li>
+</ul>
+<pre><code>npm install uglifyjs-webpack-plugin@1.1.1 --save-dev
+</code></pre><ul>
+<li>修改webpack.config.js文件，使用插件：</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1j40c7lpj30e805pmxn.jpg" alt="图片49.png"></p>
+<h1 id="搭建本地服务器">搭建本地服务器</h1>
+<ul>
+<li>webpack提供了一个可选的本地开发服务器，这个本地服务器基于node.js搭建，内部使用express框架，可以实现我们想要的让浏览器自动刷新显示我们修改后的结果</li>
+<li>安装</li>
+</ul>
+<pre><code>npm install --save-dev webpack-dev-server@2.9.1
+</code></pre><ul>
+<li>devserver也是作为webpack中的一个选项，选项本身可以设置如下属性：
+<ul>
+<li>contentBase：为哪一个文件夹提供本地服务，默认是根文件夹，我们这里要填写./dist</li>
+<li>port：端口号</li>
+<li>inline：页面实时刷新</li>
+<li>historyApiFallback：在SPA页面中，依赖HTML5的history模式</li>
+</ul>
+</li>
+<li>webpack.config.js文件配置修改如下：
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1j7g393rj3085026mx1.jpg" alt="图片50.png"></li>
+<li>可以再配置另外一个scripts：
+<ul>
+<li>&ndash;open参数表示直接打开浏览器
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gl1j7nxq4pj308n00vjr7.jpg" alt="图片51.png"></li>
+</ul>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/804%E6%A8%A1%E5%9D%97%E5%8C%96/" data-toggle="tooltip" data-placement="top" title="4、模块化(Vue)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/806vue-cli/" data-toggle="tooltip" data-placement="top" title="6、Vue CLI(Vue)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

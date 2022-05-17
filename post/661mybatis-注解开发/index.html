@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="11、Mybatis 注解开发(MyBatis)" />
+    <meta property="og:title" content="11、Mybatis 注解开发(MyBatis)" />
+    <meta property="twitter:title" content="11、Mybatis 注解开发(MyBatis)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>11、Mybatis 注解开发(MyBatis)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/661mybatis-%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/mybatis" title="MyBatis">
+                            MyBatis
+                        </a>
+                        
+                    </div>
+                    <h1>11、Mybatis 注解开发(MyBatis)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Friday, August 14, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#编写实体类">编写实体类</a></li>
+    <li><a href="#使用注解方式开发持久层接口">使用注解方式开发持久层接口</a></li>
+    <li><a href="#编写-sqlmapconfig-配置文件">编写 SqlMapConfig 配置文件</a></li>
+    <li><a href="#编写测试方法">编写测试方法</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#复杂关系映射的注解说明">复杂关系映射的注解说明</a></li>
+    <li><a href="#使用注解实现一对一复杂关系映射及延迟加载">使用注解实现一对一复杂关系映射及延迟加载</a></li>
+    <li><a href="#使用注解实现一对多复杂关系映射">使用注解实现一对多复杂关系映射</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#在-sqlmapconfig-中开启二级缓存支持">在 SqlMapConfig 中开启二级缓存支持</a></li>
+    <li><a href="#在持久层接口中使用注解配置二级缓存">在持久层接口中使用注解配置二级缓存</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="mybatis-的常用注解说明">mybatis 的常用注解说明</h1>
+<pre><code>@Insert:实现新增
+@Update:实现更新
+@Delete:实现删除
+@Select:实现查询
+@Result:实现结果集封装
+@Results:可以与@Result 一起使用，封装多个结果集
+@ResultMap:实现引用@Results 定义的封装
+@One:实现一对一结果集封装
+@Many:实现一对多结果集封装
+@SelectProvider: 实现动态 SQL 映射
+@CacheNamespace:实现注解二级缓存的使用
+</code></pre><h1 id="使用-mybatis-注解实现基本-crud">使用 Mybatis 注解实现基本 CRUD</h1>
+<h2 id="编写实体类">编写实体类</h2>
+<pre><code>public class User implements Serializable {
+    private Integer userId;
+    private String userName;
+    private Date userBirthday;
+    private String userSex;
+    private String userAddress;
+    ...
+}
+</code></pre><h2 id="使用注解方式开发持久层接口">使用注解方式开发持久层接口</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv4rgm89zj30qk0gjmyt.jpg" alt="QQ截图20200818181414.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv4rm5c8dj30qt146gp7.jpg" alt="QQ截图20200818181445.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv4rqlqzlj30qj08ujs8.jpg" alt="QQ截图20200818181454.png"></p>
+<h2 id="编写-sqlmapconfig-配置文件">编写 SqlMapConfig 配置文件</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv4sgi5r9j30ql0seq6u.jpg" alt="QQ截图20200818181614.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv4skv2tij30qb06g0tl.jpg" alt="QQ截图20200818181626.png"></p>
+<h2 id="编写测试方法">编写测试方法</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv4tyr3mnj30qq0psmyu.jpg" alt="QQ截图20200818181704.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv4u5q6g4j30qt14d78e.jpg" alt="QQ截图20200818181714.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv4uc29y4j30qb1370wu.jpg" alt="QQ截图20200818181748.png"></p>
+<h1 id="使用注解实现复杂关系映射开发">使用注解实现复杂关系映射开发</h1>
+<h2 id="复杂关系映射的注解说明">复杂关系映射的注解说明</h2>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv4vowij4j30qx0pkgqm.jpg" alt="QQ截图20200818181931.png"></p>
+<h2 id="使用注解实现一对一复杂关系映射及延迟加载">使用注解实现一对一复杂关系映射及延迟加载</h2>
+<ul>
+<li>需求：加载账户信息时并且加载该账户的用户信息，根据情况可实现延迟加载。（注解方式实现）</li>
+<li>添加 User 实体类及 Account 实体类</li>
+</ul>
+<pre><code>public class User implements Serializable {
+    private Integer userId;
+    private String userName;
+    private Date userBirthday;
+    private String userSex;
+    private String userAddress;
+    ...
+}
+
+public class Account implements Serializable {
+    private Integer id;
+    private Integer uid;
+    private Double money;
+    //多对一关系映射：从表方应该包含一个主表方的对象引用
+    private User user;
+    ...
+}
+</code></pre><ul>
+<li>添加账户的持久层接口并使用注解配置
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv4znyo5pj30q00hxmz3.jpg" alt="QQ截图20200818182319.png"></li>
+<li>添加用户的持久层接口并使用注解配置
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv50tbhttj30p90nigo2.jpg" alt="QQ截图20200818182429.png"></li>
+<li>测试一对一关联及延迟加载</li>
+</ul>
+<pre><code>public class AccountTest {
+    @Test
+    public void testFindAll() {
+        List&lt;Account&gt; accounts = accountDao.findAll();
+    }
+}
+</code></pre><h2 id="使用注解实现一对多复杂关系映射">使用注解实现一对多复杂关系映射</h2>
+<ul>
+<li>需求：查询用户信息时，也要查询他的账户列表。使用注解方式实现</li>
+<li>User 实体类加入List&lt;Account&gt;</li>
+</ul>
+<pre><code>public class User implements Serializable {
+    private Integer userId;
+    private String userName;
+    private Date userBirthday;
+    private String userSex;
+    private String userAddress;
+    //一对多关系映射：主表方法应该包含一个从表方的集合引用
+    private List&lt;Account&gt; accounts;
+    ...
+}
+</code></pre><ul>
+<li>编写用户的持久层接口并使用注解配置
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv552lpj5j30qk0ph0vv.jpg" alt="QQ截图20200818182834.png"></li>
+<li>编写账户的持久层接口并使用注解配置</li>
+</ul>
+<pre><code>public interface IAccountDao {
+    /**
+    * 根据用户 id 查询用户下的所有账户
+    * @param userId
+    * @return
+    */
+
+    @Select(&quot;select * from account where uid = #{uid} &quot;)
+    List&lt;Account&gt; findByUid(Integer userId);
+}
+</code></pre><ul>
+<li>添加测试方法
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv56x7tbrj30ql0qkgos.jpg" alt="QQ截图20200818183012.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghv570ykdcj30q50crwfh.jpg" alt="QQ截图20200818183021.png"></li>
+</ul>
+<h1 id="mybatis-基于注解的二级缓存">mybatis 基于注解的二级缓存</h1>
+<h2 id="在-sqlmapconfig-中开启二级缓存支持">在 SqlMapConfig 中开启二级缓存支持</h2>
+<pre><code>&lt;!-- 配置二级缓存 --&gt; 
+&lt;settings&gt;
+    &lt;!-- 开启二级缓存的支持 --&gt; &lt;setting name=&quot;cacheEnabled&quot; value=&quot;true&quot;/&gt;
+&lt;/settings&gt;
+</code></pre><h2 id="在持久层接口中使用注解配置二级缓存">在持久层接口中使用注解配置二级缓存</h2>
+<pre><code>@CacheNamespace(blocking=true)//mybatis 基于注解方式实现配置二级缓存
+public interface IUserDao {}
+</code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/660mybatis-%E7%BC%93%E5%AD%98/" data-toggle="tooltip" data-placement="top" title="10、Mybatis 缓存(MyBatis)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/732%E7%A8%80%E7%96%8F%E6%95%B0%E7%BB%84%E5%92%8C%E9%98%9F%E5%88%97/" data-toggle="tooltip" data-placement="top" title="2、稀疏数组和队列(数据结构与算法)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

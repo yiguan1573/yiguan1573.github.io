@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="mysql数据备份" />
+    <meta property="og:title" content="mysql数据备份" />
+    <meta property="twitter:title" content="mysql数据备份" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>mysql数据备份-yiguan1573</title>
+
+    <link rel="canonical" href="/post/1029mysql%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/datax" title="DataX">
+                            DataX
+                        </a>
+                        
+                        <a class="tag" href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                    </div>
+                    <h1>mysql数据备份</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Sunday, May 8, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#datax">DataX</a></li>
+    <li><a href="#xtrabackup">xtrabackup</a></li>
+    <li><a href="#mysqldump">mysqldump</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="前言">前言</h2>
+<ul>
+<li>公司很久以前的一个库查询太慢，需要做主从复制和读写分离，但是这个库数据量大几百G而且不能停机，所以需要将数据热备份到从库后再做其他操作</li>
+</ul>
+<h2 id="datax">DataX</h2>
+<ul>
+<li>开始想到DataX，它是阿里开源的一个异构数据源离线同步工具，可以在不同的数据库之间同步</li>
+<li>但是后来发现它没有建库建表操作，所以放弃</li>
+<li>使用详情翻看我的博客</li>
+</ul>
+<h2 id="xtrabackup">xtrabackup</h2>
+<ul>
+<li>
+<p><a href="http://rpmfind.net/linux/atrpms/el6-x86_64/atrpms/stable/libev-4.04-2.el6.x86_64.rpm">依赖包下载，下载地址</a></p>
+</li>
+<li>
+<p><a href="https://downloads.percona.com/downloads/Percona-XtraBackup-2.4/Percona-XtraBackup-2.4.21/binary/redhat/7/x86_64/Percona-XtraBackup-2.4.21-r5988af5-el7-x86_64-bundle.tar">Xtrabakcup下载地址</a></p>
+</li>
+<li>
+<p>安装步骤</p>
+<pre><code>[root@k8s-master01 ~]# ls
+libev-4.04-2.el6.x86_64.rpm  Percona-XtraBackup-2.4.21-r5988af5-el7-x86_64-bundle.tar
+[root@k8s-master01 ~]# yum localinstall libev-4.04-2.el6.x86_64.rpm -y
+[root@k8s-master01 ~]# tar xf Percona-XtraBackup-2.4.21-r5988af5-el7-x86_64-bundle.tar 	# 解压完之后出出现三个rpm
+[root@k8s-master01 ~]# yum install percona-xtrabackup-24-2.4.21-1.el7.x86_64.rpm -y 
+</code></pre></li>
+<li>
+<p>修改配置文件/etc/my.cnf，保证[mysqld]模块存在参数datadir=/var/lib/mysql（指向数据目录），因为xtrbackup是根据/etc/my.cnf配置文件来获取需要备份的文件</p>
+</li>
+<li>
+<p>查看是否安装成功</p>
+<pre><code>xtrabackup --version
+innobackupex --version
+</code></pre></li>
+<li>
+<p>全量备份</p>
+<pre><code>innobackupex --user=root --password=****** /home/mysqlbackup/  2&gt;&gt; /home/mysqlbackup/bakcup.log
+#第一个路径保存备份数据，第二个路径保存备份输出信息
+</code></pre></li>
+<li>
+<p>数据还原(需要先关闭数据库，且需要原来存数据的目录清空)</p>
+<pre><code>innobackupex --copy-back /home/mysqlbackup/2021-01-29_11-25-59/
+</code></pre></li>
+<li>
+<p><a href="https://blog.csdn.net/qq_43164571/article/details/113255886">xtrabackup 备份及介绍</a></p>
+</li>
+<li>
+<p>我在两个测试库测试以上步骤，成功同步数据，但是在正式库安装失败。正式库的服务器是redhat6.x，不能使用yum安装，redhat的yum需要注册后才能使用，不然就会报错。</p>
+</li>
+<li>
+<p>没办法只能使用rpm -ivh安装，但是依赖需要自己慢慢安装</p>
+</li>
+<li>
+<p>使用wget下载以下rpm包</p>
+<pre><code>http://mirror.centos.org/centos/7/extras/x86_64/Packages/libev-4.15-7.el7.x86_64.rpm
+http://rpmfind.net/linux/centos/7.9.2009/os/x86_64/Packages/perl-libs-5.16.3-297.el7.x86_64.rpm
+http://rpmfind.net/linux/centos/7.9.2009/os/x86_64/Packages/perl-5.16.3-297.el7.x86_64.rpm
+http://rpmfind.net/linux/centos/7.9.2009/os/x86_64/Packages/perl-Digest-1.17-
+245.el7.noarch.rpm
+http://rpmfind.net/linux/centos/7.9.2009/os/x86_64/Packages/perl-Digest-MD5-2.52-
+3.el7.x86_64.rpm
+http://rpmfind.net/linux/centos/7.9.2009/os/x86_64/Packages/perl-DBI-1.627-
+4.el7.x86_64.rpm
+http://rpmfind.net/linux/centos/7.9.2009/os/x86_64/Packages/perl-DBD-MySQL-4.023
+-6.el7.x86_64.rpm
+https://downloads.percona.com/downloads/Percona-XtraBackup-2.4/Percona-
+XtraBackup-2.4.21/binary/redhat/7/x86_64/percona-xtrabackup-24-2.4.21-
+1.el7.x86_64.rpm
+</code></pre><ul>
+<li>
+<p>其他可能用的到的命令</p>
+<pre><code>#查看某些已经安装的rpm包
+rpm -qa|grep 包名
+#卸载rpm包
+rpm -e --nodeps 包名
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>依次安装</p>
+<pre><code>rpm -ivh libev-4.15-7.el7.x86_64.rpm
+rpm -ivh perl-libs-5.16.3-297.el7.x86_64.rpm
+rpm -ivh perl-5.16.3-299.el7_9.x86_64.rpm
+rpm -ivh perl-Digest-1.17-245.el7.noarch.rpm
+rpm -ivh perl-Digest-MD5-2.52-3.el7.x86_64.rpm
+rpm -ivh perl-DBI-1.627-4.el7.x86_64.rpm --force --nodeps
+rpm -ivh perl-DBD-MySQL-4.023-6.el7.x86_64.rpm
+  
+rpm -ivh percona-xtrabackup-24-2.4.21-1.el7.x86_64.rpm
+</code></pre></li>
+<li>
+<p><a href="https://blog.csdn.net/qq_42944130/article/details/115552325">mysql备份工具Xtrabackup的安装与使用</a></p>
+</li>
+<li>
+<p>我在自己的云服务器按照以上安装成功，但是在正式库的redhat服务器上第一步就报错，说需要GLIBC2.17的依赖，原来该服务器的GLIBC的版本是2.12，所以需要升级</p>
+</li>
+<li>
+<p>经过各种问题成功将GLIBC的版本升级到了2.17（<strong>警告：GLIBC是linux中最底层的api，稍有不慎就会导致系统崩溃，需要提前做好备份</strong>）</p>
+<ul>
+<li><a href="https://blog.csdn.net/llm_hao/article/details/114640644?spm=1001.2101.3001.6650.13&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-13-114640644-blog-89714162.pc_relevant_paycolumn_v3&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-13-114640644-blog-89714162.pc_relevant_paycolumn_v3&amp;utm_relevant_index=17">Linux 安装 glibc 2.17 检查版本</a></li>
+<li><a href="https://blog.csdn.net/qq_37996632/article/details/118619817">RedHat/CentOS安装glibc2.14</a></li>
+<li><a href="https://www.jianshu.com/p/3ed3ee971252">RedHat6.7升级glibc2.15到2.17的过程记录</a></li>
+</ul>
+</li>
+<li>
+<p>升级成功后还是报错需要GLIBC2.17的依赖，我百度到的答案是redhat安装glibc不只需要64位的，还需要安装32位的兼容包，我强制安装后发现不知GLIBC需要升级，GLIBCXX也需要升级，所以放弃这种方法备份</p>
+</li>
+</ul>
+<h2 id="mysqldump">mysqldump</h2>
+<ul>
+<li>
+<p>新建dump.sh</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>mysqldump -h192.168.2.101 -uroot -p***** --single-transaction -C -A --force|mysql -h192.168.2.102 -uroot -p****
+</code></pre></div></li>
+<li>
+<p>更改权限</p>
+<pre><code>chmod 777
+</code></pre></li>
+<li>
+<p>运行</p>
+<pre><code>nohup ./dump.sh &gt; dump.log 2&gt;&amp;1 &amp;
+</code></pre><p>注意：关闭会话时使用exit，否则程序会被关闭</p>
+</li>
+<li>
+<p>参考</p>
+<ul>
+<li><a href="https://blog.csdn.net/carefree2005/article/details/113762170">Mysql之mysqldump工具</a></li>
+<li><a href="https://blog.csdn.net/fei321321/article/details/119171134">mysql跨服务器导出导入数据</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1919543">mysqldump备份失败案例一则</a></li>
+<li><a href="https://tsov.net/uupee/24843/">mysqldump备份失败以及解决方法汇总</a></li>
+</ul>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1027%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" data-toggle="tooltip" data-placement="top" title="11、高级特性（ActiveMQ）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1030springsecurity%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/" data-toggle="tooltip" data-placement="top" title="1、SpringSecurity 框架简介（SpringSecurity）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="2、Kafka快速入门（Kafka）" />
+    <meta property="og:title" content="2、Kafka快速入门（Kafka）" />
+    <meta property="twitter:title" content="2、Kafka快速入门（Kafka）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>2、Kafka快速入门（Kafka）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/912kafka%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/kafka" title="Kafka">
+                            Kafka
+                        </a>
+                        
+                    </div>
+                    <h1>2、Kafka快速入门（Kafka）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Monday, October 11, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装部署">安装部署</a></li>
+    <li><a href="#kafka-命令行操作">Kafka 命令行操作</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="安装部署">安装部署</h2>
+<ul>
+<li>
+<p>集群规划</p>
+<p>hadoop102    hadoop103   hadoop104</p>
+<p>zk 					zk 					zk</p>
+<p>kafka 			 kafka 				kafka</p>
+</li>
+<li>
+<p>jar包下载</p>
+<p><a href="http://kafka.apache.org/downloads.html">官网下载</a></p>
+</li>
+<li>
+<p>集群部署</p>
+<ul>
+<li>
+<p>解压安装包</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ tar -zxvf kafka_2.11-0.11.0.0.tgz -C /opt/module/
+</code></pre></div></li>
+<li>
+<p>修改解压后的文件名称</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ mv kafka_2.11-0.11.0.0/ kafka
+</code></pre></div></li>
+<li>
+<p>在/opt/module/kafka 目录下创建 logs 文件夹</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ mkdir logs
+</code></pre></div></li>
+<li>
+<p>修改配置文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ cd config/
+<span style="color:#f92672">[</span>atguigu@hadoop102 config<span style="color:#f92672">]</span>$ vi server.properties
+</code></pre></div></li>
+<li>
+<p>输入一下内容</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#broker 的全局唯一编号，不能重复</span>
+broker.id<span style="color:#f92672">=</span>0
+<span style="color:#75715e">#删除 topic 功能使能</span>
+delete.topic.enable<span style="color:#f92672">=</span>true
+<span style="color:#75715e">#处理网络请求的线程数量</span>
+num.network.threads<span style="color:#f92672">=</span>3
+<span style="color:#75715e">#用来处理磁盘 IO 的现成数量</span>
+num.io.threads<span style="color:#f92672">=</span>8
+<span style="color:#75715e">#发送套接字的缓冲区大小</span>
+socket.send.buffer.bytes<span style="color:#f92672">=</span>102400
+<span style="color:#75715e">#接收套接字的缓冲区大小</span>
+socket.receive.buffer.bytes<span style="color:#f92672">=</span>102400
+<span style="color:#75715e">#请求套接字的缓冲区大小</span>
+socket.request.max.bytes<span style="color:#f92672">=</span>104857600
+<span style="color:#75715e">#kafka 运行日志存放的路径</span>
+log.dirs<span style="color:#f92672">=</span>/opt/module/kafka/logs
+<span style="color:#75715e">#topic 在当前 broker 上的分区个数</span>
+num.partitions<span style="color:#f92672">=</span>1
+<span style="color:#75715e">#用来恢复和清理 data 下数据的线程数量</span>
+num.recovery.threads.per.data.dir<span style="color:#f92672">=</span>1
+<span style="color:#75715e">#segment 文件保留的最长时间，超时将被删除</span>
+log.retention.hours<span style="color:#f92672">=</span>168
+<span style="color:#75715e">#配置连接 Zookeeper 集群地址</span>
+zookeeper.connect<span style="color:#f92672">=</span>hadoop102:2181,hadoop103:2181,hadoop104:2181
+</code></pre></div></li>
+<li>
+<p>配置环境变量</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ sudo vi /etc/profile
+<span style="color:#75715e">#KAFKA_HOME</span>
+export KAFKA_HOME<span style="color:#f92672">=</span>/opt/module/kafka
+export PATH<span style="color:#f92672">=</span>$PATH:$KAFKA_HOME/bin
+<span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ source /etc/profile
+</code></pre></div></li>
+<li>
+<p>分发安装包(注意：分发之后记得配置其他机器的环境变量)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ xsync kafka/
+</code></pre></div></li>
+<li>
+<p>分别在 hadoop103 和 hadoop104 上修改配置文件/opt/module/kafka/config/server.properties中的 broker.id=1、broker.id=2 <strong>(注：broker.id 不得重复)</strong></p>
+</li>
+<li>
+<p>启动集群 (依次在 hadoop102、hadoop103、hadoop104 节点上启动 kafka)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-server-start.sh -daemon config/server.properties
+<span style="color:#f92672">[</span>atguigu@hadoop103 kafka<span style="color:#f92672">]</span>$ bin/kafka-server-start.sh -daemon config/server.properties
+<span style="color:#f92672">[</span>atguigu@hadoop104 kafka<span style="color:#f92672">]</span>$ bin/kafka-server-start.sh -daemon config/server.properties
+</code></pre></div></li>
+<li>
+<p>关闭集群</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-server-stop.sh stop
+<span style="color:#f92672">[</span>atguigu@hadoop103 kafka<span style="color:#f92672">]</span>$ bin/kafka-server-stop.sh stop
+<span style="color:#f92672">[</span>atguigu@hadoop104 kafka<span style="color:#f92672">]</span>$ bin/kafka-server-stop.sh stop
+</code></pre></div></li>
+<li>
+<p>kafka 群起脚本</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">case</span> $1 in
+<span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+<span style="color:#66d9ef">for</span> i in cloud1 cloud2 cloud3
+<span style="color:#66d9ef">do</span>
+echo ---------- kafka  $i 启动 ------------ssh $i <span style="color:#e6db74">&#34;/opt/kafka/kafka_2.11-0.11.0.0/bin/kafka-server-start.sh -daemon /opt/kafka/kafka_2.11-0.11.0.0/config/server.properties&#34;</span>
+<span style="color:#66d9ef">done</span>
+<span style="color:#f92672">}</span>;;
+<span style="color:#e6db74">&#34;stop&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+<span style="color:#66d9ef">for</span> i in cloud1 cloud2 cloud3
+<span style="color:#66d9ef">do</span>
+echo ---------- kafka $i 停止 ------------ 
+ssh $i <span style="color:#e6db74">&#34;/opt/kafka/kafka_2.11-0.11.0.0/bin/kafka-server-stop.sh stop&#34;</span>
+<span style="color:#66d9ef">done</span>
+<span style="color:#f92672">}</span>;;
+<span style="color:#66d9ef">esac</span>
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h2 id="kafka-命令行操作">Kafka 命令行操作</h2>
+<ul>
+<li>
+<p>查看当前服务器中的所有 topic</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-topics.sh --zookeeper hadoop102:2181 --list
+</code></pre></div></li>
+<li>
+<p>创建 topic</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-topics.sh --zookeeper hadoop102:2181 --create --replication-factor <span style="color:#ae81ff">3</span> --partitions <span style="color:#ae81ff">1</span> --topic first
+</code></pre></div><p><strong>选项说明：</strong></p>
+<p>&ndash;topic 定义 topic 名</p>
+<p>&ndash;replication-factor 定义副本数</p>
+<p>&ndash;partitions 定义分区数</p>
+</li>
+<li>
+<p>删除 topic</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-topics.sh --zookeeper hadoop102:2181 --delete --topic first
+</code></pre></div><p><strong>需要 server.properties 中设置 delete.topic.enable=true 否则只是标记删除。</strong></p>
+</li>
+<li>
+<p>发送消息</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-console-producer.sh --broker-list hadoop102:9092 --topic first
+&gt;hello world
+&gt;atguigu atguigu
+</code></pre></div></li>
+<li>
+<p>消费消息</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-console-consumer.sh <span style="color:#ae81ff">\ </span>--zookeeper hadoop102:2181 --topic first
+<span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-console-consumer.sh --topic first --bootstrap-server cloud1:9092
+<span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-console-consumer.sh --topic first --bootstrap-server cloud1:9092 --from-beginning
+</code></pre></div><p>&ndash;from-beginning：会把主题中以往所有的数据都读取出来。</p>
+</li>
+<li>
+<p>查看某个 Topic 的详情</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-topics.sh --zookeeper hadoop102:2181 --describe --topic first
+</code></pre></div></li>
+<li>
+<p>修改分区数</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-topics.sh --zookeeper hadoop102:2181 --alter --topic first --partitions 6
+</code></pre></div></li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/895%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%94%81/" data-toggle="tooltip" data-placement="top" title="5、多线程锁（JUC）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/896callable%E6%8E%A5%E5%8F%A3/" data-toggle="tooltip" data-placement="top" title="6、Callable接口（JUC）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

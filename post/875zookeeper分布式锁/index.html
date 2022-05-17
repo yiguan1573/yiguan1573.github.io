@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="5、ZooKeeper 分布式（Zookeeper）" />
+    <meta property="og:title" content="5、ZooKeeper 分布式（Zookeeper）" />
+    <meta property="twitter:title" content="5、ZooKeeper 分布式（Zookeeper）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>5、ZooKeeper 分布式（Zookeeper）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/875zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/zookeeper" title="Zookeeper">
+                            Zookeeper
+                        </a>
+                        
+                    </div>
+                    <h1>5、ZooKeeper 分布式（Zookeeper）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Tuesday, October 5, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#curator-框架实现分布式锁案例">Curator 框架实现分布式锁案例</a></li>
+  </ul>
+</nav>
+                
+                <ul>
+<li><strong>概念</strong>
+<ul>
+<li>比如说&quot;进程 1&quot;在使用该资源的时候，会先去获得锁，&ldquo;进程 1&quot;获得锁以后会对该资源 保持独占，这样其他进程就无法访问该资源，&ldquo;进程 1&quot;用完该资源以后就将锁释放掉，让其 他进程来获得锁，那么通过这个锁机制，我们就能保证了分布式系统中多个进程能够有序的 访问该临界资源。那么我们把这个分布式环境下的这个锁叫作分布式锁。</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkz72ninoj312e0fztgd.jpg" alt="QQ截图20211019221154.png"></p>
+<h2 id="curator-框架实现分布式锁案例">Curator 框架实现分布式锁案例</h2>
+<ul>
+<li>
+<p>原生的 Java API 开发存在的问题</p>
+<ul>
+<li>会话连接是异步的，需要自己去处理。比如使用 CountDownLatch</li>
+<li>Watch 需要重复注册，不然就不能生效</li>
+<li>开发的复杂性还是比较高的</li>
+<li>不支持多节点删除和创建。需要自己去递归</li>
+</ul>
+</li>
+<li>
+<p>Curator 是一个专门解决分布式锁的框架，解决了原生 JavaAPI 开发分布式遇到的问题。</p>
+<ul>
+<li><a href="https://curator.apache.org/index.html">详情请查看官方文档</a></li>
+</ul>
+</li>
+<li>
+<p>Curator 案例实操</p>
+<ul>
+<li>
+<p>添加依赖</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+     <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.curator<span style="color:#f92672">&lt;/groupId&gt;</span>
+     <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>curator-framework<span style="color:#f92672">&lt;/artifactId&gt;</span>
+     <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.3.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+     <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.curator<span style="color:#f92672">&lt;/groupId&gt;</span>
+     <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>curator-recipes<span style="color:#f92672">&lt;/artifactId&gt;</span>
+     <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.3.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+     <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.curator<span style="color:#f92672">&lt;/groupId&gt;</span>
+     <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>curator-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
+     <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.3.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div></li>
+<li>
+<p>代码实现</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu.lock<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.curator.RetryPolicy<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.curator.framework.CuratorFramework<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.curator.framework.CuratorFrameworkFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> 
+org.apache.curator.framework.recipes.locks.InterProcessLock<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> 
+org.apache.curator.framework.recipes.locks.InterProcessMutex<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.curator.retry.ExponentialBackoffRetry<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CuratorLockTest</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> String rootNode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/locks&#34;</span><span style="color:#f92672">;</span>
+     <span style="color:#75715e">// zookeeper server 列表
+</span><span style="color:#75715e"></span>        
+    <span style="color:#66d9ef">private</span> String connectString <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hadoop102:2181,hadoop103:2181,hadoop104:2181&#34;</span><span style="color:#f92672">;</span>
+     <span style="color:#75715e">// connection 超时时间
+</span><span style="color:#75715e"></span>        
+     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> connectionTimeout <span style="color:#f92672">=</span> 2000<span style="color:#f92672">;</span>
+     <span style="color:#75715e">// session 超时时间
+</span><span style="color:#75715e"></span>        
+     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> sessionTimeout <span style="color:#f92672">=</span> 2000<span style="color:#f92672">;</span>
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">new</span> CuratorLockTest<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">test</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     <span style="color:#f92672">}</span>
+     <span style="color:#75715e">// 测试
+</span><span style="color:#75715e"></span>        
+     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         <span style="color:#75715e">// 创建分布式锁 1
+</span><span style="color:#75715e"></span>             
+        <span style="color:#66d9ef">final</span> InterProcessLock lock1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InterProcessMutex<span style="color:#f92672">(</span>getCuratorFramework<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> rootNode<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 创建分布式锁 2
+</span><span style="color:#75715e"></span>             
+        <span style="color:#66d9ef">final</span> InterProcessLock lock2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InterProcessMutex<span style="color:#f92672">(</span>getCuratorFramework<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> rootNode<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+         <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+             <span style="color:#a6e22e">@Override</span>
+             <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                 <span style="color:#75715e">// 获取锁对象
+</span><span style="color:#75715e"></span>                     
+                 <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                    lock1<span style="color:#f92672">.</span><span style="color:#a6e22e">acquire</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;线程 1 获取锁&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#75715e">// 测试锁重入
+</span><span style="color:#75715e"></span>                         
+                    lock1<span style="color:#f92672">.</span><span style="color:#a6e22e">acquire</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;线程 1 再次获取锁&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>5 <span style="color:#f92672">*</span> 1000<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    lock1<span style="color:#f92672">.</span><span style="color:#a6e22e">release</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;线程 1 释放锁&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    lock1<span style="color:#f92672">.</span><span style="color:#a6e22e">release</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;线程 1 再次释放锁&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                 <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                 <span style="color:#f92672">}</span>
+             <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+         <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+             <span style="color:#a6e22e">@Override</span>
+             <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                 <span style="color:#75715e">// 获取锁对象
+</span><span style="color:#75715e"></span>                     
+                 <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                     lock2<span style="color:#f92672">.</span><span style="color:#a6e22e">acquire</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                     System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;线程 2 获取锁&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                     <span style="color:#75715e">// 测试锁重入
+</span><span style="color:#75715e"></span>                         
+                     lock2<span style="color:#f92672">.</span><span style="color:#a6e22e">acquire</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;线程 2 再次获取锁&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>5 <span style="color:#f92672">*</span> 1000<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    lock2<span style="color:#f92672">.</span><span style="color:#a6e22e">release</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;线程 2 释放锁&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    lock2<span style="color:#f92672">.</span><span style="color:#a6e22e">release</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                     System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;线程 2 再次释放锁&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                 <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                 <span style="color:#f92672">}</span>
+             <span style="color:#f92672">}</span>
+         <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+     <span style="color:#f92672">}</span>
+        
+     <span style="color:#75715e">// 分布式锁初始化
+</span><span style="color:#75715e"></span>        
+     <span style="color:#66d9ef">public</span> CuratorFramework <span style="color:#a6e22e">getCuratorFramework</span> <span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+        <span style="color:#75715e">//重试策略，初试时间 3 秒，重试 3 次
+</span><span style="color:#75715e"></span>             
+        RetryPolicy policy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ExponentialBackoffRetry<span style="color:#f92672">(</span>3000<span style="color:#f92672">,</span> 3<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">//通过工厂创建 Curator
+</span><span style="color:#75715e"></span>             
+        CuratorFramework client <span style="color:#f92672">=</span> CuratorFrameworkFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+             <span style="color:#f92672">.</span><span style="color:#a6e22e">connectString</span><span style="color:#f92672">(</span>connectString<span style="color:#f92672">)</span>
+             <span style="color:#f92672">.</span><span style="color:#a6e22e">connectionTimeoutMs</span><span style="color:#f92672">(</span>connectionTimeout<span style="color:#f92672">)</span>
+             <span style="color:#f92672">.</span><span style="color:#a6e22e">sessionTimeoutMs</span><span style="color:#f92672">(</span>sessionTimeout<span style="color:#f92672">)</span>
+             <span style="color:#f92672">.</span><span style="color:#a6e22e">retryPolicy</span><span style="color:#f92672">(</span>policy<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">//开启连接
+</span><span style="color:#75715e"></span>             
+        client<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;zookeeper 初始化完成...&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> client<span style="color:#f92672">;</span>
+     <span style="color:#f92672">}</span> 
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p>观察控制台变化：</p>
+<pre><code>线程 1 获取锁
+线程 1 再次获取锁
+线程 1 释放锁
+线程 1 再次释放锁
+线程 2 获取锁
+线程 2 再次获取锁
+线程 2 释放锁
+线程 2 再次释放锁
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/feiying0canglang/article/details/113409146">Zookeeper原理&ndash;分布式锁</a></p>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/874%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%A8%E6%80%81%E4%B8%8A%E4%B8%8B%E7%BA%BF%E7%9B%91%E5%90%AC%E6%A1%88%E4%BE%8B/" data-toggle="tooltip" data-placement="top" title="4、服务器动态上下线监听案例（Zookeeper）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/876%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="6、面试问题（Zookeeper）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

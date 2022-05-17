@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="5、事务操作(Spring)" />
+    <meta property="og:title" content="5、事务操作(Spring)" />
+    <meta property="twitter:title" content="5、事务操作(Spring)" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>5、事务操作(Spring)-yiguan1573</title>
+
+    <link rel="canonical" href="/post/625%E4%BA%8B%E5%8A%A1%E6%93%8D%E4%BD%9C/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                    </div>
+                    <h1>5、事务操作(Spring)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Thursday, July 23, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么事务">什么事务</a></li>
+  </ul>
+</nav>
+                
+                <h1 id="概念">概念</h1>
+<h2 id="什么事务">什么事务</h2>
+<ul>
+<li>事务是数据库操作最基本单元，逻辑上一组操作，要么都成功，如果有一个失败所有操
+作都失败</li>
+<li>典型场景：银行转账
+<ul>
+<li>lucy 转账 100 元 给 mary</li>
+<li>lucy 少 100，mary 多 100</li>
+</ul>
+</li>
+<li>事务四个特性（ACID）
+<ul>
+<li>原子性</li>
+<li>一致性</li>
+<li>隔离性</li>
+<li>持久性</li>
+</ul>
+</li>
+</ul>
+<h1 id="搭建事务操作环境">搭建事务操作环境</h1>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8vv4an6sj30nw0a2ab4.jpg" alt="QQ截图20200730122508.png"></p>
+<ol>
+<li>创建数据库表，添加记录
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8vvpjq1jj30bi02yt8s.jpg" alt="QQ截图20200730122545.png"></li>
+<li>创建 service，搭建 dao，完成对象创建和注入关系<br>
+service 注入 dao，在 dao 注入 JdbcTemplate，在 JdbcTemplate 注入 DataSource</li>
+</ol>
+<pre><code>@Service
+public class UserService {
+    //注入 dao
+    @Autowired
+    private UserDao userDao; 
+}
+@Repository
+public class UserDaoImpl implements UserDao {
+    @Autowired
+    private JdbcTemplate jdbcTemplate; 
+}
+</code></pre><ol start="3">
+<li>在 dao 创建两个方法：多钱和少钱的方法，在 service 创建方法（转账的方法）</li>
+</ol>
+<pre><code>@Repository
+public class UserDaoImpl implements UserDao {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    //lucy 转账 100 给 mary
+    //少钱
+    @Override
+    public void reduceMoney() {
+        String sql = &quot;update t_account set money=money-? where username=?&quot;;
+        jdbcTemplate.update(sql,100,&quot;lucy&quot;);
+    }
+    //多钱
+    @Override
+    public void addMoney() {
+        String sql = &quot;update t_account set money=money+? where username=?&quot;;
+        jdbcTemplate.update(sql,100,&quot;mary&quot;);
+    } 
+}
+@Service
+public class UserService {
+    //注入 dao
+    @Autowired
+    private UserDao userDao;
+    //转账的方法
+    public void accountMoney() {
+        //lucy 少 100
+        userDao.reduceMoney();
+        //mary 多 100
+        userDao.addMoney();
+    } 
+}
+</code></pre><ol start="4">
+<li>上面代码，如果正常执行没有问题的，但是如果代码执行过程中出现异常，有问题
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8vzfkf58j30o60fjq59.jpg" alt="QQ截图20200730122920.png"><br>
+（1）上面问题如何解决呢？使用事务进行解决<br>
+（2）事务操作过程
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8w0flyisj30qb0patde.jpg" alt="QQ截图20200730123017.png"></li>
+</ol>
+<h1 id="spring-事务管理介绍">Spring 事务管理介绍</h1>
+<ol>
+<li>事务添加到 JavaEE 三层结构里面 Service 层（业务逻辑层）</li>
+<li>在 Spring 进行事务管理操作
+<ul>
+<li>有两种方式：编程式事务管理和声明式事务管理（使用）</li>
+</ul>
+</li>
+<li>声明式事务管理
+<ul>
+<li>基于注解方式（使用）</li>
+<li>基于 xml 配置文件方式</li>
+</ul>
+</li>
+<li>在 Spring 进行声明式事务管理，底层使用 AOP 原理</li>
+<li>Spring 事务管理 API
+<ul>
+<li>提供一个接口，代表事务管理器，这个接口针对不同的框架提供不同的实现类
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8w2hzh33j30t80ccgsr.jpg" alt="QQ截图20200730123217.png"></li>
+</ul>
+</li>
+</ol>
+<h1 id="注解声明式事务管理">注解声明式事务管理</h1>
+<ol>
+<li>在 spring 配置文件配置事务管理器</li>
+</ol>
+<pre><code>&lt;!--创建事务管理器--&gt; &lt;bean id=&quot;transactionManager&quot; 
+class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+    &lt;!--注入数据源--&gt;
+    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><ol start="2">
+<li>在 spring 配置文件，开启事务注解
+<ul>
+<li>在 spring 配置文件引入名称空间 tx</li>
+</ul>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot; 
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+xmlns:context=&quot;http://www.springframework.org/schema/context&quot; 
+xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot; 
+xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot; 
+xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans.xsd 
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context.xsd 
+http://www.springframework.org/schema/aop 
+http://www.springframework.org/schema/aop/spring-aop.xsd 
+http://www.springframework.org/schema/tx 
+http://www.springframework.org/schema/tx/spring-tx.xsd&quot;&gt;
+</code></pre><ul>
+<li>开启事务注解</li>
+</ul>
+<pre><code>&lt;!--开启事务注解--&gt; &lt;tx:annotation-driven transactionmanager=&quot;transactionManager&quot;&gt;&lt;/tx:annotation-driven&gt;
+</code></pre></li>
+<li>在 service 类上面（或者 service 类里面方法上面）添加事务注解
+<ul>
+<li>@Transactional，这个注解添加到类上面，也可以添加方法上面</li>
+<li>如果把这个注解添加类上面，这个类里面所有的方法都添加事务</li>
+<li>如果把这个注解添加方法上面，为这个方法添加事务</li>
+</ul>
+</li>
+</ol>
+<pre><code>@Service
+@Transactional
+public class UserService {}
+</code></pre><h1 id="声明式事务管理参数配置">声明式事务管理参数配置</h1>
+<ol>
+<li>在 service 类上面添加注解@Transactional，在这个注解里面可以配置事务相关参数
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8w6bmcsyj30ol097dhi.jpg" alt="QQ截图20200730123558.png"></li>
+<li>propagation：事务传播行为
+<ul>
+<li>多事务方法直接进行调用，这个过程中事务是如何进行管理的
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8w7569fwj30sv0cujts.jpg" alt="QQ截图20200730123645.png">
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8w7z05zqj30t20nxqko.jpg" alt="QQ截图20200730123732.png"></li>
+</ul>
+</li>
+<li>ioslation：事务隔离级别
+<ul>
+<li>事务有特性成为隔离性，多事务操作之间不会产生影响。不考虑隔离性产生很多问题</li>
+<li>有三个读问题：脏读、不可重复读、虚（幻）读</li>
+<li>脏读：一个未提交事务读取到另一个未提交事务的数据
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8w8spyb2j30qj0ahmxz.jpg" alt="QQ截图20200730123820.png"></li>
+<li>不可重复读：一个未提交事务读取到另一提交事务修改数据
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8w9ejm9bj30rh0a8dgn.jpg" alt="QQ截图20200730123855.png"></li>
+<li>虚读：一个未提交事务读取到另一提交事务添加数据</li>
+<li>解决：通过设置事务隔离级别，解决读问题
+<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh8waaz8uqj30sw0gldk5.jpg" alt="QQ截图20200730123947.png"></li>
+</ul>
+</li>
+<li>timeout：超时时间
+<ul>
+<li>事务需要在一定时间内进行提交，如果不提交进行回滚</li>
+<li>默认值是 -1 ，设置时间以秒单位进行计算</li>
+</ul>
+</li>
+<li>readOnly：是否只读
+<ul>
+<li>读：查询操作，写：添加修改删除操作</li>
+<li>readOnly 默认值 false，表示可以查询，可以添加修改删除操作</li>
+<li>设置 readOnly 值是 true，设置成 true 之后，只能查询</li>
+</ul>
+</li>
+<li>rollbackFor：回滚
+<ul>
+<li>设置出现哪些异常进行事务回滚</li>
+</ul>
+</li>
+<li>noRollbackFor：不回滚
+<ul>
+<li>设置出现哪些异常不进行事务回滚</li>
+</ul>
+</li>
+</ol>
+<h1 id="xml-声明式事务管理">XML 声明式事务管理</h1>
+<ul>
+<li>在 spring 配置文件中进行配置
+<ul>
+<li>第一步 配置事务管理器</li>
+<li>第二步 配置通知</li>
+<li>第三步 配置切入点和切面</li>
+</ul>
+</li>
+</ul>
+<pre><code>&lt;!--1 创建事务管理器--&gt; &lt;bean id=&quot;transactionManager&quot; 
+class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+    &lt;!--注入数据源--&gt;
+    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+&lt;!--2 配置通知--&gt; 
+&lt;tx:advice id=&quot;txadvice&quot;&gt;
+    &lt;!--配置事务参数--&gt;
+    &lt;tx:attributes&gt;
+        &lt;!--指定哪种规则的方法上面添加事务--&gt;
+        &lt;tx:method name=&quot;accountMoney&quot; propagation=&quot;REQUIRED&quot;/&gt;
+        &lt;!--&lt;tx:method name=&quot;account*&quot;/&gt;--&gt;
+    &lt;/tx:attributes&gt;
+&lt;/tx:advice&gt;
+&lt;!--3 配置切入点和切面--&gt; 
+&lt;aop:config&gt;
+    &lt;!--配置切入点--&gt;
+    &lt;aop:pointcut id=&quot;pt&quot; expression=&quot;execution(* 
+com.atguigu.spring5.service.UserService.*(..))&quot;/&gt;
+    &lt;!--配置切面--&gt;
+    &lt;aop:advisor advice-ref=&quot;txadvice&quot; pointcut-ref=&quot;pt&quot;/&gt;
+&lt;/aop:config&gt;
+</code></pre><h1 id="完全注解声明式事务管理">完全注解声明式事务管理</h1>
+<ol>
+<li>创建配置类，使用配置类替代 xml 配置文件</li>
+</ol>
+<pre><code>@Configuration //配置类
+@ComponentScan(basePackages = &quot;com.atguigu&quot;) //组件扫描
+@EnableTransactionManagement //开启事务
+public class TxConfig {
+    //创建数据库连接池
+    @Bean
+    public DruidDataSource getDruidDataSource() {
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setDriverClassName(&quot;com.mysql.jdbc.Driver&quot;);
+        dataSource.setUrl(&quot;jdbc:mysql:///user_db&quot;);
+        dataSource.setUsername(&quot;root&quot;);
+        dataSource.setPassword(&quot;root&quot;);
+        return dataSource;
+    }
+    //创建 JdbcTemplate 对象
+    @Bean
+    public JdbcTemplate getJdbcTemplate(DataSource dataSource) {
+        //到 ioc 容器中根据类型找到 dataSource
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        //注入 dataSource
+        jdbcTemplate.setDataSource(dataSource);
+        return jdbcTemplate;
+    }
+ //创建事务管理器
+ @Bean
+    public DataSourceTransactionManager 
+getDataSourceTransactionManager(DataSource dataSource) {
+    DataSourceTransactionManager transactionManager = new 
+DataSourceTransactionManager();
+    transactionManager.setDataSource(dataSource);
+    return transactionManager;
+    } 
+}
+</code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/624jdbctemplate/" data-toggle="tooltip" data-placement="top" title="4、JdbcTemplate(Spring)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/626spring5-%E6%A1%86%E6%9E%B6%E6%96%B0%E5%8A%9F%E8%83%BD/" data-toggle="tooltip" data-placement="top" title="6、Spring5 框架新功能(Spring)">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

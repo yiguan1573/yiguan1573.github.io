@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+	
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="2、Hive安装（Hive）" />
+    <meta property="og:title" content="2、Hive安装（Hive）" />
+    <meta property="twitter:title" content="2、Hive安装（Hive）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>2、Hive安装（Hive）-yiguan1573</title>
+
+    <link rel="canonical" href="/post/1002hive%E5%AE%89%E8%A3%85/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/#">图书</a></li>
+                    
+                        <li><a href="/#">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/hive" title="Hive">
+                            Hive
+                        </a>
+                        
+                    </div>
+                    <h1>2、Hive安装（Hive）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;亿观&#34;
+                         
+                        on 
+                        Wednesday, March 2, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2></h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#hive-安装地址">Hive 安装地址</a></li>
+    <li><a href="#hive-安装部署">Hive 安装部署</a>
+      <ul>
+        <li><a href="#安装-hive">安装 Hive</a></li>
+        <li><a href="#启动并使用-hive">启动并使用 Hive</a></li>
+      </ul>
+    </li>
+    <li><a href="#hive-元数据配置到-mysql">Hive 元数据配置到 MySQL</a>
+      <ul>
+        <li><a href="#拷贝驱动">拷贝驱动</a></li>
+        <li><a href="#配置-metastore-到-mysql">配置 Metastore 到 MySQL</a></li>
+        <li><a href="#再次启动-hive">再次启动 Hive</a></li>
+        <li><a href="#使用元数据服务的方式访问-hive">使用元数据服务的方式访问 Hive</a></li>
+        <li><a href="#使用-jdbc-方式访问-hive">使用 JDBC 方式访问 Hive</a></li>
+      </ul>
+    </li>
+    <li><a href="#hive-常用交互命令">Hive 常用交互命令</a></li>
+    <li><a href="#hive-其他命令操作">Hive 其他命令操作</a></li>
+    <li><a href="#hive-常见属性配置">Hive 常见属性配置</a>
+      <ul>
+        <li><a href="#hive-运行日志信息配置">Hive 运行日志信息配置</a></li>
+        <li><a href="#打印-当前库-和-表头">打印 当前库 和 表头</a></li>
+        <li><a href="#参数配置方式">参数配置方式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="hive-安装地址"><strong>Hive</strong> <strong>安装地址</strong></h2>
+<ul>
+<li>
+<p><strong>Hive</strong> <strong>官网地址</strong></p>
+<p><a href="http://hive.apache.org/">http://hive.apache.org/</a></p>
+</li>
+<li>
+<p><strong>文档查看地址</strong></p>
+<p><a href="https://cwiki.apache.org/confluence/display/Hive/GettingStarted">https://cwiki.apache.org/confluence/display/Hive/GettingStarted</a></p>
+</li>
+<li>
+<p><strong>下载地址</strong></p>
+<p><a href="http://archive.apache.org/dist/hive/">http://archive.apache.org/dist/hive/</a></p>
+</li>
+<li>
+<p><strong>github</strong> <strong>地址</strong></p>
+<p><a href="https://github.com/apache/hive">https://github.com/apache/hive</a></p>
+</li>
+</ul>
+<h2 id="hive-安装部署"><strong>Hive</strong> <strong>安装部署</strong></h2>
+<h3 id="安装-hive"><strong>安装</strong> <strong>Hive</strong></h3>
+<ul>
+<li>
+<p><strong>把</strong> <strong>apache-hive-3.1.2-bin.tar.gz</strong> <strong>上传到</strong> <strong>linux</strong> <strong>的</strong>/opt/software <strong>目录下</strong></p>
+</li>
+<li>
+<p><strong>解压</strong> <strong>apache-hive-3.1.2-bin.tar.gz</strong> <strong>到</strong>/opt/module/目录下面</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ tar -zxvf /opt/software/apache-hive-3.1.2-bin.tar.gz -C /opt/module/
+</code></pre></div></li>
+<li>
+<p><strong>修改</strong> <strong>apache-hive-3.1.2-bin.tar.gz</strong> <strong>的名称为</strong> <strong>hive</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ mv /opt/module/apache-hive-3.1.2-bin/ /opt/module/hive
+</code></pre></div></li>
+<li>
+<p><strong>修改</strong>/etc/profile.d/my_env.sh，添加环境变量</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ sudo vim /etc/profile.d/my_env.sh
+</code></pre></div></li>
+<li>
+<p><strong>添加内容</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#HIVE_HOME</span>
+export HIVE_HOME<span style="color:#f92672">=</span>/opt/module/hive
+export PATH<span style="color:#f92672">=</span>$PATH:$HIVE_HOME/bin
+</code></pre></div></li>
+<li>
+<p><strong>解决日志</strong> <strong>Jar</strong> <strong>包冲突</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ mv $HIVE_HOME/lib/log4j-slf4j-impl-2.10.0.jar $HIVE_HOME/lib/log4j-slf4j-impl-2.10.0.bak
+</code></pre></div></li>
+<li>
+<p><strong>初始化元数据库</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hive<span style="color:#f92672">]</span>$ bin/schematool -dbType derby -initSchema
+</code></pre></div></li>
+</ul>
+<h3 id="启动并使用-hive"><strong>启动并使用</strong> <strong>Hive</strong></h3>
+<ul>
+<li>
+<p><strong>启动</strong> <strong>Hive</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hive<span style="color:#f92672">]</span>$ bin/hive
+</code></pre></div></li>
+<li>
+<p><strong>使用</strong> <strong>Hive</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive&gt; show databases;
+hive&gt; show tables;
+hive&gt; create table test<span style="color:#f92672">(</span>id int<span style="color:#f92672">)</span>;
+hive&gt; insert into test values<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>;
+hive&gt; <span style="color:#66d9ef">select</span> * from test;
+</code></pre></div></li>
+<li>
+<p><strong>在</strong> <strong>CRT</strong> <strong>窗口中开启另一个窗口开启</strong> <strong>Hive</strong>，在/tmp/atguigu目录下监控 <strong>hive.log</strong> <strong>文件</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Caused by: ERROR XSDB6: Another instance of Derby may have already booted 
+the database /opt/module/hive/metastore_db.
+ at org.apache.derby.iapi.error.StandardException.newException<span style="color:#f92672">(</span>Unknown Source<span style="color:#f92672">)</span>
+ at org.apache.derby.iapi.error.StandardException.newException<span style="color:#f92672">(</span>UnknownSource<span style="color:#f92672">)</span>
+ at org.apache.derby.impl.store.raw.data.BaseDataFileFactory.privGetJBMSLockOnDB<span style="color:#f92672">(</span>Unknown Source<span style="color:#f92672">)</span>
+ at org.apache.derby.impl.store.raw.data.BaseDataFileFactory.run<span style="color:#f92672">(</span>Unknown Source<span style="color:#f92672">)</span>
+...
+</code></pre></div></li>
+<li>
+<p><strong>原因在于 Hive 默认使用的元数据库为 derby，开启 Hive 之后就会占用元数据库，且不与其他客户端共享数据，所以我们需要将 Hive 的元数据地址改为 MySQL。</strong></p>
+</li>
+</ul>
+<h2 id="hive-元数据配置到-mysql"><strong>Hive</strong> <strong>元数据配置到</strong> <strong>MySQL</strong></h2>
+<h3 id="拷贝驱动"><strong>拷贝驱动</strong></h3>
+<ul>
+<li>
+<p>将 MySQL 的 JDBC 驱动拷贝到 Hive 的 lib 目录下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ cp /opt/software/mysql-connector-java-5.1.37.jar $HIVE_HOME/lib
+</code></pre></div></li>
+</ul>
+<h3 id="配置-metastore-到-mysql"><strong>配置</strong> <strong>Metastore</strong> <strong>到</strong> <strong>MySQL</strong></h3>
+<ul>
+<li>
+<p><strong>在</strong>$HIVE_HOME/conf <strong>目录下新建</strong> <strong>hive-site.xml</strong> <strong>文件</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ vim $HIVE_HOME/conf/hive-site.xml
+</code></pre></div><p>添加如下内容</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<span style="color:#75715e">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
+<span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> jdbc 连接的 URL </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>javax.jdo.option.ConnectionURL<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>jdbc:mysql://hadoop102:3306/metastore?useSSL=false<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> jdbc 连接的 Driver</span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>javax.jdo.option.ConnectionDriverName<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>com.mysql.jdbc.Driver<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> jdbc 连接的 username</span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>javax.jdo.option.ConnectionUserName<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>root<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> jdbc 连接的 password </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>javax.jdo.option.ConnectionPassword<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>000000<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> Hive 元数据存储版本的验证 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.metastore.schema.verification<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>false<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">元数据存储授权</span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.metastore.event.db.notification.api.auth<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>false<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> Hive 默认在 HDFS 的工作目录 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.metastore.warehouse.dir<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>/user/hive/warehouse<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+<span style="color:#f92672">&lt;/configuration&gt;</span>
+</code></pre></div></li>
+<li>
+<p><strong>登陆</strong> <strong>MySQL</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ mysql -uroot -p000000
+</code></pre></div></li>
+<li>
+<p><strong>新建</strong> <strong>Hive</strong> <strong>元数据库</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mysql&gt; create database metastore;
+mysql&gt; quit;
+</code></pre></div></li>
+<li>
+<p><strong>初始化</strong> <strong>Hive</strong> <strong>元数据库</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ schematool -initSchema -dbType mysql -verbose
+</code></pre></div></li>
+</ul>
+<h3 id="再次启动-hive"><strong>再次启动</strong> <strong>Hive</strong></h3>
+<ul>
+<li>
+<p><strong>启动</strong> <strong>Hive</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hive<span style="color:#f92672">]</span>$ bin/hive
+</code></pre></div></li>
+<li>
+<p><strong>使用</strong> <strong>Hive</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive&gt; show databases;
+hive&gt; show tables;
+hive&gt; create table test <span style="color:#f92672">(</span>id int<span style="color:#f92672">)</span>;
+hive&gt; insert into test values<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>;
+hive&gt; <span style="color:#66d9ef">select</span> * from test;
+</code></pre></div></li>
+<li>
+<p><strong>在</strong> <strong>CRT</strong> <strong>窗口中开启另一个窗口开启</strong> <strong>Hive</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive&gt; show databases;
+hive&gt; show tables;
+hive&gt; <span style="color:#66d9ef">select</span> * from aa;
+</code></pre></div></li>
+</ul>
+<h3 id="使用元数据服务的方式访问-hive"><strong>使用元数据服务的方式访问</strong> <strong>Hive</strong></h3>
+<ul>
+<li>
+<p><strong>在</strong> <strong>hive-site.xml</strong> <strong>文件中添加如下配置信息</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 指定存储元数据要连接的地址 </span><span style="color:#75715e">--&gt;</span>
+<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.metastore.uris<span style="color:#f92672">&lt;/name&gt;</span>
+    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>thrift://hadoop102:9083<span style="color:#f92672">&lt;/value&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+</code></pre></div></li>
+<li>
+<p><strong>启动</strong> <strong>metastore</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop202 hive<span style="color:#f92672">]</span>$ hive --service metastore
+2020-04-24 16:58:08: Starting Hive Metastore Server
+注意: 启动后窗口不能再操作，需打开一个新的 shell 窗口做别的操作
+</code></pre></div></li>
+<li>
+<p><strong>启动</strong> <strong>hive</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop202 hive<span style="color:#f92672">]</span>$ bin/hive
+</code></pre></div></li>
+</ul>
+<h3 id="使用-jdbc-方式访问-hive"><strong>使用</strong> <strong>JDBC</strong> <strong>方式访问</strong> <strong>Hive</strong></h3>
+<ul>
+<li>
+<p><strong>在</strong> <strong>hive-site.xml</strong> <strong>文件中添加如下配置信息</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 指定 hiveserver2 连接的 host </span><span style="color:#75715e">--&gt;</span>
+<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.server2.thrift.bind.host<span style="color:#f92672">&lt;/name&gt;</span>
+    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>hadoop102<span style="color:#f92672">&lt;/value&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+<span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 指定 hiveserver2 连接的端口号 </span><span style="color:#75715e">--&gt;</span>
+<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.server2.thrift.port<span style="color:#f92672">&lt;/name&gt;</span>
+    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>10000<span style="color:#f92672">&lt;/value&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+</code></pre></div></li>
+<li>
+<p><strong>启动</strong> <strong>hiveserver2</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hive<span style="color:#f92672">]</span>$ bin/hive --service hiveserver2
+</code></pre></div></li>
+<li>
+<p><strong>启动</strong> <strong>beeline</strong> <strong>客户端</strong>（需要多等待一会）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hive<span style="color:#f92672">]</span>$ bin/beeline -u jdbc:hive2://hadoop102:10000 -n atguigu
+</code></pre></div></li>
+<li>
+<p><strong>看到如下界面</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Connecting to jdbc:hive2://hadoop102:10000
+Connected to: Apache Hive <span style="color:#f92672">(</span>version 3.1.2<span style="color:#f92672">)</span>
+Driver: Hive JDBC <span style="color:#f92672">(</span>version 3.1.2<span style="color:#f92672">)</span>
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+Beeline version 3.1.2 by Apache Hive
+0: jdbc:hive2://hadoop102:10000&gt;
+</code></pre></div></li>
+<li>
+<p><strong>编写</strong> <strong>hive</strong> <strong>服务启动脚本（了解）</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>HIVE_LOG_DIR<span style="color:#f92672">=</span>$HIVE_HOME/logs
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> ! -d $HIVE_LOG_DIR <span style="color:#f92672">]</span>
+<span style="color:#66d9ef">then</span>
+mkdir -p $HIVE_LOG_DIR
+<span style="color:#66d9ef">fi</span><span style="color:#75715e">#检查进程是否运行正常，参数 1 为</span>
+<span style="color:#f92672">{</span>
+pid<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>ps -ef 2&gt;/dev/null | grep -v grep | grep -i $1 | awk <span style="color:#e6db74">&#39;{print $2}&#39;</span><span style="color:#66d9ef">)</span>
+ppid<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>netstat -nltp 2&gt;/dev/null | grep $2 | awk <span style="color:#e6db74">&#39;{print $7}&#39;</span> | cut -d <span style="color:#e6db74">&#39;/&#39;</span> -f 1<span style="color:#66d9ef">)</span>
+echo $pid
+<span style="color:#f92672">[</span><span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$pid<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span>~ <span style="color:#e6db74">&#34;</span>$ppid<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span><span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$ppid<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#66d9ef">return</span> 1
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">function</span> hive_start<span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<span style="color:#f92672">{</span>
+metapid<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>check_process HiveMetastore 9083<span style="color:#66d9ef">)</span>
+cmd<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">nohup hive --service metastore &gt;</span>$HIVE_LOG_DIR<span style="color:#e6db74">/metastore.log 2&gt;&amp;1 &amp;</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">[</span> -z <span style="color:#e6db74">&#34;</span>$metapid<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> eval $cmd <span style="color:#f92672">||</span> echo <span style="color:#e6db74">&#34;Metastroe 服务已启动&#34;</span>
+server2pid<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>check_process HiveServer2 10000<span style="color:#66d9ef">)</span>
+cmd<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">nohup hiveserver2 &gt;</span>$HIVE_LOG_DIR<span style="color:#e6db74">/hiveServer2.log 2&gt;&amp;1 &amp;</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">[</span> -z <span style="color:#e6db74">&#34;</span>$server2pid<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> eval $cmd <span style="color:#f92672">||</span> echo <span style="color:#e6db74">&#34;HiveServer2 服务已启动&#34;</span> <span style="color:#f92672">}</span>
+<span style="color:#66d9ef">function</span> hive_stop<span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<span style="color:#f92672">{</span>
+metapid<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>check_process HiveMetastore 9083<span style="color:#66d9ef">)</span>
+<span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$metapid<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> kill $metapid <span style="color:#f92672">||</span> echo <span style="color:#e6db74">&#34;Metastore 服务未启动&#34;</span>
+server2pid<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>check_process HiveServer2 10000<span style="color:#66d9ef">)</span>
+<span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$server2pid<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> kill $server2pid <span style="color:#f92672">||</span> echo <span style="color:#e6db74">&#34;HiveServer2 服务未启动&#34;</span> <span style="color:#f92672">}</span>
+<span style="color:#66d9ef">case</span> $1 in
+<span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">)</span>
+hive_start
+;;
+<span style="color:#e6db74">&#34;stop&#34;</span><span style="color:#f92672">)</span>
+hive_stop
+;;
+<span style="color:#e6db74">&#34;restart&#34;</span><span style="color:#f92672">)</span>
+hive_stop
+sleep 2
+hive_start
+;;
+<span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">)</span>
+check_process HiveMetastore <span style="color:#ae81ff">9083</span> &gt;/dev/null <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;Metastore 服务运行正常&#34;</span> <span style="color:#f92672">||</span> echo <span style="color:#e6db74">&#34;Metastore 服务运行异常&#34;</span>
+check_process HiveServer2 <span style="color:#ae81ff">10000</span> &gt;/dev/null <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;HiveServer2 服务运行正常&#34;</span> <span style="color:#f92672">||</span> echo <span style="color:#e6db74">&#34;HiveServer2 服务运行异常&#34;</span>
+;;
+*<span style="color:#f92672">)</span>
+echo Invalid Args!
+echo <span style="color:#e6db74">&#39;Usage: &#39;</span><span style="color:#66d9ef">$(</span>basename $0<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39; start|stop|restart|status&#39;</span>
+;;
+<span style="color:#66d9ef">esac</span>
+</code></pre></div></li>
+</ul>
+<h2 id="hive-常用交互命令"><strong>Hive</strong> <strong>常用交互命令</strong></h2>
+<ul>
+<li>
+<p>-e 不进入 <strong>hive</strong> <strong>的交互窗口执行</strong> <strong>sql</strong> <strong>语句</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hive<span style="color:#f92672">]</span>$ bin/hive -e <span style="color:#e6db74">&#34;select id from student;&#34;</span>
+</code></pre></div></li>
+<li>
+<p>-f <strong>执行脚本中</strong> <strong>sql</strong> <strong>语句</strong></p>
+<ul>
+<li>
+<p>在/opt/module/hive/下创建 datas 目录并在 datas 目录下创建 hivef.sql 文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 datas<span style="color:#f92672">]</span>$ touch hivef.sql
+</code></pre></div></li>
+<li>
+<p>文件中写入正确的 sql 语句</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">select</span> *from student;
+</code></pre></div></li>
+<li>
+<p>执行文件中的 sql 语句</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hive<span style="color:#f92672">]</span>$ bin/hive -f /opt/module/hive/datas/hivef.sql
+</code></pre></div></li>
+<li>
+<p>执行文件中的 sql 语句并将结果写入文件中</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hive<span style="color:#f92672">]</span>$ bin/hive -f /opt/module/hive/datas/hivef.sql &gt; /opt/module/datas/hive_result.txt
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h2 id="hive-其他命令操作"><strong>Hive</strong> <strong>其他命令操作</strong></h2>
+<ul>
+<li>
+<p><strong>退出</strong> <strong>hive</strong> <strong>窗口：</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt;exit;
+hive<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt;quit;
+</code></pre></div></li>
+<li>
+<p><strong>在</strong> <strong>hive cli</strong> <strong>命令窗口中如何查看</strong> <strong>hdfs</strong> <strong>文件系统</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt;dfs -ls /;
+</code></pre></div></li>
+<li>
+<p><strong>查看在</strong> <strong>hive</strong> <strong>中输入的所有历史命令</strong></p>
+<ul>
+<li>
+<p>进入到当前用户的根目录 /root 或/home/atguigu</p>
+</li>
+<li>
+<p>查看. hivehistory 文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguig2u@hadoop102 ~<span style="color:#f92672">]</span>$ cat .hivehistory
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h2 id="hive-常见属性配置"><strong>Hive</strong> <strong>常见属性配置</strong></h2>
+<h3 id="hive-运行日志信息配置"><strong>Hive</strong> <strong>运行日志信息配置</strong></h3>
+<ul>
+<li>
+<p><strong>Hive</strong> <strong>的</strong> <strong>log</strong> <strong>默认存放在</strong>**/tmp/atguigu/hive.log** **目录下（当前用户名下）**</p>
+</li>
+<li>
+<p><strong>修改</strong> <strong>hive</strong> <strong>的</strong> <strong>log</strong> <strong>存放日志到</strong>/opt/module/hive/logs</p>
+<ul>
+<li>
+<p>修改/opt/module/hive/conf/hive-log4j2.properties.template 文件名称为hive-log4j2.properties</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 conf<span style="color:#f92672">]</span>$ pwd
+/opt/module/hive/conf
+<span style="color:#f92672">[</span>atguigu@hadoop102 conf<span style="color:#f92672">]</span>$ mv hive-log4j2.properties.template hive-log4j2.properties
+</code></pre></div></li>
+<li>
+<p>在 hive-log4j2.properties 文件中修改 log 存放位置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive.log.dir<span style="color:#f92672">=</span>/opt/module/hive/logs
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="打印-当前库-和-表头"><strong>打印 当前库 和 表头</strong></h3>
+<ul>
+<li>
+<p>在 hive-site.xml 中加入如下两个配置:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.cli.print.header<span style="color:#f92672">&lt;/name&gt;</span>
+    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/value&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.cli.print.current.db<span style="color:#f92672">&lt;/name&gt;</span>
+    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/value&gt;</span>
+<span style="color:#f92672">&lt;/property&gt;</span>
+</code></pre></div></li>
+</ul>
+<h3 id="参数配置方式"><strong>参数配置方式</strong></h3>
+<ul>
+<li>
+<p><strong>查看当前所有的配置信息</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive&gt;set;
+</code></pre></div></li>
+<li>
+<p><strong>参数的配置三种方式</strong></p>
+<ul>
+<li>
+<p>配置文件方式</p>
+<ul>
+<li>默认配置文件：hive-default.xml</li>
+<li>用户自定义配置文件：hive-site.xml</li>
+<li>注意：用户自定义配置会覆盖默认配置。另外，Hive 也会读入 Hadoop 的配置，因为 Hive是作为 Hadoop 的客户端启动的，Hive 的配置会覆盖 Hadoop 的配置。配置文件的设定对本机启动的所有 Hive 进程都有效。</li>
+</ul>
+</li>
+<li>
+<p>命令行参数方式</p>
+<ul>
+<li>
+<p>启动 Hive 时，可以在命令行添加-hiveconf param=value 来设定参数。</p>
+</li>
+<li>
+<p>例如</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop103 hive<span style="color:#f92672">]</span>$ bin/hive -hiveconf mapred.reduce.tasks<span style="color:#f92672">=</span>10;
+</code></pre></div></li>
+<li>
+<p>注意：仅对本次 hive 启动有效</p>
+</li>
+<li>
+<p>查看参数设置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; set mapred.reduce.tasks;
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>参数声明方式</p>
+<ul>
+<li>
+<p>可以在 HQL 中使用 SET 关键字设定参数</p>
+</li>
+<li>
+<p>例如</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; set mapred.reduce.tasks<span style="color:#f92672">=</span>100;
+</code></pre></div></li>
+<li>
+<p>注意：仅对本次 hive 启动有效。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>上述三种设定方式的优先级依次递增。即配置文件&lt;命令行参数&lt;参数声明。注意某些系统级的参数，例如 log4j 相关的设定，必须用前两种方式设定，因为那些参数的读取在会话建立以前已经完成了。</p>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1001hive%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" data-toggle="tooltip" data-placement="top" title="1、Hive基本概念（Hive）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1003hive%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" data-toggle="tooltip" data-placement="top" title="3、Hive数据类型（Hive）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>朋友</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                 
+                   
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
