@@ -13,8 +13,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
-    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    <meta property="og:image" content="http://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="http://yiguan1573.gitee.io//img/01.jpg" />
     
 
     
@@ -217,9 +217,221 @@
                 <header>
                     <h2></h2>
                 </header>
-                <nav id="TableOfContents"></nav>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#创建项目">创建项目</a></li>
+    <li><a href="#运行项目">运行项目</a></li>
+    <li><a href="#权限管理中的相关概念">权限管理中的相关概念</a></li>
+    <li><a href="#添加一个控制器进行访问">添加一个控制器进行访问</a></li>
+    <li><a href="#springsecurity-基本原理">SpringSecurity 基本原理</a></li>
+    <li><a href="#userdetailsservice-接口讲解">UserDetailsService 接口讲解</a></li>
+    <li><a href="#passwordencoder-接口讲解">PasswordEncoder 接口讲解</a></li>
+  </ul>
+</nav>
                 
-                
+                <h2 id="创建项目"><strong>创建项目</strong></h2>
+<ul>
+<li>
+<p>新建springboot工程</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3shhjdxj30mv0fk0su.jpg" alt="QQ截图20220519225410.jpg"></p>
+</li>
+<li>
+<p>增加依赖</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-security<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div></li>
+<li>
+<p>添加一个配置类：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SecurityConfigextends</span> WebSecurityConfigurerAdapter <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span>HttpSecurity http<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        http<span style="color:#f92672">.</span><span style="color:#a6e22e">formLogin</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#75715e">// 表单登录
+</span><span style="color:#75715e"></span>              
+            <span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+            <span style="color:#f92672">.</span><span style="color:#a6e22e">authorizeRequests</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#75715e">// 认证配置
+</span><span style="color:#75715e"></span>              
+            <span style="color:#f92672">.</span><span style="color:#a6e22e">anyRequest</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#75715e">// 任何请求
+</span><span style="color:#75715e"></span>              
+            <span style="color:#f92672">.</span><span style="color:#a6e22e">authenticated</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 都需要身份验证
+</span><span style="color:#75715e"></span>          
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+<h2 id="运行项目"><strong>运行项目</strong></h2>
+<ul>
+<li>
+<p>访问 localhost:8080</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3x1onzjj30mu09s0sm.jpg" alt="QQ截图20220519225839.jpg"></p>
+<p>默认的用户名：user</p>
+<p>密码在项目启动的时候在控制台会打印，<strong>注意每次启动的时候密码都回发生变化</strong></p>
+</li>
+<li>
+<p>输入用户名，密码，这样表示可以访问了，404 表示我们没有这个控制器，但是我们可以</p>
+<p>访问了。</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3y8ks33j30mh076jsb.jpg" alt="QQ截图20220519225944.jpg"></p>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3z0mgujj30nb05rq39.jpg" alt="QQ截图20220519230034.jpg"></p>
+<h2 id="权限管理中的相关概念"><strong>权限管理中的相关概念</strong></h2>
+<ul>
+<li>
+<p><strong>主体</strong></p>
+<ul>
+<li>
+<p>英文单词：principal</p>
+</li>
+<li>
+<p>使用系统的用户或设备或从其他系统远程登录的用户等等。简单说就是谁使用系</p>
+<p>统谁就是主体。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>认证</strong></p>
+<ul>
+<li>英文单词：authentication</li>
+<li>权限管理系统确认一个主体的身份，允许主体进入系统。简单说就是“主体”证明自己是谁。</li>
+<li>笼统的认为就是以前所做的登录操作。</li>
+</ul>
+</li>
+<li>
+<p><strong>授权</strong></p>
+<ul>
+<li>
+<p>英文单词：authorization</p>
+</li>
+<li>
+<p>将操作系统的“权力”“授予”“主体”，这样主体就具备了操作系统中特定功能的能力。</p>
+</li>
+<li>
+<p>所以简单来说，授权就是给用户分配权限。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="添加一个控制器进行访问"><strong>添加一个控制器进行访问</strong></h2>
+<ul>
+<li>登录后即可访问</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu.controller<span style="color:#f92672">;</span>
+<span style="color:#a6e22e">@Controller</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IndexController</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;index&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@ResponseBody</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">index</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;success&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> 
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="springsecurity-基本原理">SpringSecurity 基本原理</h2>
+<ul>
+<li>SpringSecurity 本质是一个过滤器链</li>
+<li>代码底层流程，重点看三个过滤器
+<ul>
+<li>FilterSecurityInterceptor：是一个方法级的权限过滤器, 基本位于过滤链的最底部</li>
+<li>ExceptionTranslationFilter：是个异常过滤器，用来处理在认证授权过程中抛出的异常</li>
+<li>UsernamePasswordAuthenticationFilter ：对/login 的 POST 请求做拦截，校验表单中用户名，密码</li>
+</ul>
+</li>
+</ul>
+<h2 id="userdetailsservice-接口讲解">UserDetailsService 接口讲解</h2>
+<ul>
+<li>
+<p>当什么也没有配置的时候，账号和密码是由 Spring Security 定义生成的。而在实际项目中账号和密码都是从数据库中查询出来的。 所以我们要通过自定义逻辑控制认证逻辑。</p>
+</li>
+<li>
+<p>如果需要自定义逻辑时，只需要实现 UserDetailsService 接口即可。接口定义如下：</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e4hwl77sj30m50ck0tj.jpg" alt="QQ截图20220519231841.jpg"></p>
+</li>
+<li>
+<p>返回值 UserDetails，这个类是系统默认的用户“<strong>主体</strong>”</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 表示获取登录用户所有权限
+</span><span style="color:#75715e"></span>  
+Collection<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> GrantedAuthority<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAuthorities</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  
+<span style="color:#75715e">// 表示获取密码
+</span><span style="color:#75715e"></span>  
+String <span style="color:#a6e22e">getPassword</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  
+<span style="color:#75715e">// 表示获取用户名
+</span><span style="color:#75715e"></span>  
+String <span style="color:#a6e22e">getUsername</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  
+<span style="color:#75715e">// 表示判断账户是否过期
+</span><span style="color:#75715e"></span>  
+<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAccountNonExpired</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  
+<span style="color:#75715e">// 表示判断账户是否被锁定
+</span><span style="color:#75715e"></span>  
+<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAccountNonLocked</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  
+<span style="color:#75715e">// 表示凭证{密码}是否过期
+</span><span style="color:#75715e"></span>  
+<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isCredentialsNonExpired</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  
+<span style="color:#75715e">// 表示当前用户是否可用
+</span><span style="color:#75715e"></span>  
+<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isEnabled</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div></li>
+<li>
+<p>以后我们只需要使用 User 这个实体类即可</p>
+<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e4no63n0j30ln0ajgmf.jpg" alt="QQ截图20220519232414.jpg"></p>
+<p><strong>方法参数</strong> <strong>username</strong></p>
+<p>表示用户名。此值是客户端表单传递过来的数据。默认情况下必须叫 username，否则无</p>
+<p>法接收。</p>
+</li>
+</ul>
+<h2 id="passwordencoder-接口讲解">PasswordEncoder 接口讲解</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 表示把参数按照特定的解析规则进行解析
+</span><span style="color:#75715e"></span>
+String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</span>CharSequence rawPassword<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#75715e">// 表示验证从存储中获取的编码密码与编码后提交的原始密码是否匹配。如果密码匹配，则返回 true；如果不匹配，则返回 false。第一个参数表示需要被解析的密码。第二个参数表示存储的密码。
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">matches</span><span style="color:#f92672">(</span>CharSequence rawPassword<span style="color:#f92672">,</span> String encodedPassword<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#75715e">// 表示如果解析的密码能够再次进行解析且达到更安全的结果则返回 true，否则返回false。默认返回 false。
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">default</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">upgradeEncoding</span><span style="color:#f92672">(</span>String encodedPassword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>
+<p>接口实现类</p>
+<ul>
+<li>BCryptPasswordEncoder 是 Spring Security 官方推荐的密码解析器，平时多使用这个解析</li>
+</ul>
+<p>器。</p>
+<ul>
+<li>BCryptPasswordEncoder 是对 bcrypt 强散列方法的具体实现。是基于 Hash 算法实现的单</li>
+</ul>
+<p>向加密。可以通过 strength 控制加密强度，默认 10.</p>
+</li>
+<li>
+<p>案例</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test01</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 创建密码解析器
+</span><span style="color:#75715e"></span>      
+    BCryptPasswordEncoder bCryptPasswordEncoder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> 
+        BCryptPasswordEncoder<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 对密码进行加密
+</span><span style="color:#75715e"></span>      
+    String atguigu <span style="color:#f92672">=</span> bCryptPasswordEncoder<span style="color:#f92672">.</span><span style="color:#a6e22e">encode</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 打印加密之后的数据
+</span><span style="color:#75715e"></span>      
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;加密之后数据：\t&#34;</span><span style="color:#f92672">+</span>atguigu<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">//判断原字符加密后和加密之前是否匹配
+</span><span style="color:#75715e"></span>      
+    <span style="color:#66d9ef">boolean</span> result <span style="color:#f92672">=</span> bCryptPasswordEncoder<span style="color:#f92672">.</span><span style="color:#a6e22e">matches</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">,</span> atguigu<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 打印比较结果
+</span><span style="color:#75715e"></span>      
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;比较结果：\t&#34;</span><span style="color:#f92672">+</span>result<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+
 
                 
 
@@ -408,6 +620,12 @@
                         
                         <a href="/tags/mysql" title="mysql">
                             mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/netty" title="netty">
+                            netty
                         </a>
                         
                         

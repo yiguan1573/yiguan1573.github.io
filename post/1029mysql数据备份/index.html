@@ -13,8 +13,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
-    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    <meta property="og:image" content="http://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="http://yiguan1573.gitee.io//img/01.jpg" />
     
 
     
@@ -274,8 +274,16 @@ innobackupex --version
 #第一个路径保存备份数据，第二个路径保存备份输出信息
 </code></pre></li>
 <li>
+<p>在恢复前，需要使用&ndash;apply-log参数合并数据文件，确保数据的一致性，后面跟上备份的数据目录</p>
+<pre><code>innobackupex --apply-log ./2022-05-25_19-22-32
+</code></pre></li>
+<li>
 <p>数据还原(需要先关闭数据库，且需要原来存数据的目录清空)</p>
 <pre><code>innobackupex --copy-back /home/mysqlbackup/2021-01-29_11-25-59/
+</code></pre></li>
+<li>
+<p>修改数据目录所有者，后面跟上数据目录</p>
+<pre><code>chown -R mysql:mysql /data/mysql5.7/data
 </code></pre></li>
 <li>
 <p><a href="https://blog.csdn.net/qq_43164571/article/details/113255886">xtrabackup 备份及介绍</a></p>
@@ -357,6 +365,25 @@ rpm -ivh percona-xtrabackup-24-2.4.21-1.el7.x86_64.rpm
 <p>运行</p>
 <pre><code>nohup ./dump.sh &gt; dump.log 2&gt;&amp;1 &amp;
 </code></pre><p>注意：关闭会话时使用exit，否则程序会被关闭</p>
+</li>
+<li>
+<p>可能出现的错误</p>
+<ul>
+<li>
+<p>the user specified as a definer ('***'@'%') does not exits</p>
+<ul>
+<li>这是由于迁移视图时该用户没有权限，只需要添加权限即可</li>
+</ul>
+<pre><code>grant all privileges on *.* to xxx@'%' identified by &quot;.&quot;;
+flush privileges
+</code></pre></li>
+<li>
+<p>中断连接</p>
+<ul>
+<li>在/etc/my.conf修改配置参数max_allowed_packet大小然后重启</li>
+</ul>
+</li>
+</ul>
 </li>
 <li>
 <p>参考</p>
@@ -557,6 +584,12 @@ rpm -ivh percona-xtrabackup-24-2.4.21-1.el7.x86_64.rpm
                         
                         <a href="/tags/mysql" title="mysql">
                             mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/netty" title="netty">
+                            netty
                         </a>
                         
                         
