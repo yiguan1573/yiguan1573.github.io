@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>6、SpringBoot与数据访问(SpringBoot)-yiguan1573</title>
+    <title>6、SpringBoot与数据访问(SpringBoot) | yiguan1573</title>
 
     <link rel="canonical" href="/post/606springboot%E4%B8%8E%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>6、SpringBoot与数据访问(SpringBoot)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Saturday, June 27, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Saturday, June 27, 2020
+                            
+                                <span id="/post/606springboot%E4%B8%8E%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,44 +340,22 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#1jdbc">1、JDBC</a></li>
-    <li><a href="#2整合druid数据源">2、整合Druid数据源</a></li>
-    <li><a href="#3整合mybatis">3、整合MyBatis</a>
-      <ul>
-        <li><a href="#4注解版">4）、注解版</a></li>
-        <li><a href="#5配置文件版">5）、配置文件版</a></li>
-      </ul>
-    </li>
-    <li><a href="#4整合springdata-jpa">4、整合SpringData JPA</a>
-      <ul>
-        <li><a href="#1springdata简介">1）、SpringData简介</a></li>
-        <li><a href="#2整合springdata-jpa">2）、整合SpringData JPA</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-                
                 <h2 id="1jdbc">1、JDBC</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-			<span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-			<span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-jdbc<span style="color:#f92672">&lt;/artifactId&gt;</span>
-		<span style="color:#f92672">&lt;/dependency&gt;</span>
-		<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-			<span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>mysql<span style="color:#f92672">&lt;/groupId&gt;</span>
-			<span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>mysql-connector-java<span style="color:#f92672">&lt;/artifactId&gt;</span>
-			<span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>runtime<span style="color:#f92672">&lt;/scope&gt;</span>
-		<span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">spring:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+			<span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+			<span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-jdbc<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+		<span style="color:#ff79c6">&lt;/dependency&gt;</span>
+		<span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+			<span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>mysql<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+			<span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>mysql-connector-java<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+			<span style="color:#ff79c6">&lt;scope</span><span style="color:#ff79c6">&gt;</span>runtime<span style="color:#ff79c6">&lt;/scope&gt;</span>
+		<span style="color:#ff79c6">&lt;/dependency&gt;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">spring:
   datasource:
-    <span style="color:#66d9ef">username</span>: root
-    <span style="color:#66d9ef">password</span>: <span style="color:#ae81ff">123456</span>
-    <span style="color:#66d9ef">url</span>: jdbc:mysql://<span style="color:#ae81ff">192.168</span><span style="color:#ae81ff">.15</span><span style="color:#ae81ff">.22</span>:<span style="color:#ae81ff">3306</span>/jdbc
-    <span style="color:#66d9ef">driver-class-name</span>: com.mysql.jdbc.Driver
+    <span style="color:#ff79c6">username</span>: root
+    <span style="color:#ff79c6">password</span>: <span style="color:#bd93f9">123456</span>
+    <span style="color:#ff79c6">url</span>: jdbc:mysql://<span style="color:#bd93f9">192.168</span><span style="color:#bd93f9">.15</span><span style="color:#bd93f9">.22</span>:<span style="color:#bd93f9">3306</span>/jdbc
+    <span style="color:#ff79c6">driver-class-name</span>: com.mysql.jdbc.Driver
 </code></pre></div><p>效果：</p>
 <p>​	默认是用org.apache.tomcat.jdbc.pool.DataSource作为数据源；</p>
 <p>​	数据源的相关配置都在DataSourceProperties里面；</p>
@@ -261,20 +365,20 @@
 <p>2、SpringBoot默认可以支持；</p>
 <pre><code>org.apache.tomcat.jdbc.pool.DataSource、HikariDataSource、BasicDataSource、
 </code></pre><p>3、自定义数据源类型</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
-</span><span style="color:#75715e"> * Generic DataSource configuration.
-</span><span style="color:#75715e"> */</span>
-<span style="color:#a6e22e">@ConditionalOnMissingBean</span><span style="color:#f92672">(</span>DataSource<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@ConditionalOnProperty</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;spring.datasource.type&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Generic</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * Generic DataSource configuration.
+</span><span style="color:#6272a4"> */</span>
+@ConditionalOnMissingBean<span style="color:#ff79c6">(</span>DataSource<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span>
+@ConditionalOnProperty<span style="color:#ff79c6">(</span>name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;spring.datasource.type&#34;</span><span style="color:#ff79c6">)</span>
+<span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Generic</span> <span style="color:#ff79c6">{</span>
 
-   <span style="color:#a6e22e">@Bean</span>
-   <span style="color:#66d9ef">public</span> DataSource <span style="color:#a6e22e">dataSource</span><span style="color:#f92672">(</span>DataSourceProperties properties<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-       <span style="color:#75715e">//使用DataSourceBuilder创建数据源，利用反射创建响应type的数据源，并且绑定相关属性
-</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">return</span> properties<span style="color:#f92672">.</span><span style="color:#a6e22e">initializeDataSourceBuilder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-   <span style="color:#f92672">}</span>
+   @Bean
+   <span style="color:#8be9fd;font-style:italic">public</span> DataSource <span style="color:#50fa7b">dataSource</span><span style="color:#ff79c6">(</span>DataSourceProperties properties<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+       <span style="color:#6272a4">//使用DataSourceBuilder创建数据源，利用反射创建响应type的数据源，并且绑定相关属性
+</span><span style="color:#6272a4"></span>      <span style="color:#ff79c6">return</span> properties<span style="color:#ff79c6">.</span><span style="color:#50fa7b">initializeDataSourceBuilder</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">build</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+   <span style="color:#ff79c6">}</span>
 
-<span style="color:#f92672">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><p>4、<strong>DataSourceInitializer：ApplicationListener</strong>；</p>
 <p>​	作用：</p>
 <p>​		1）、runSchemaScripts();运行建表语句；</p>
@@ -288,142 +392,148 @@
       指定位置
 </code></pre><p>5、操作数据库：自动配置了JdbcTemplate操作数据库</p>
 <h2 id="2整合druid数据源">2、整合Druid数据源</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">导入druid数据源
-<span style="color:#a6e22e">@Configuration</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DruidConfig</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">导入druid数据源
+@Configuration
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DruidConfig</span> <span style="color:#ff79c6">{</span>
 
-    <span style="color:#a6e22e">@ConfigurationProperties</span><span style="color:#f92672">(</span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;spring.datasource&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#a6e22e">@Bean</span>
-    <span style="color:#66d9ef">public</span> DataSource <span style="color:#a6e22e">druid</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-       <span style="color:#66d9ef">return</span>  <span style="color:#66d9ef">new</span> DruidDataSource<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    @ConfigurationProperties<span style="color:#ff79c6">(</span>prefix <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;spring.datasource&#34;</span><span style="color:#ff79c6">)</span>
+    @Bean
+    <span style="color:#8be9fd;font-style:italic">public</span> DataSource <span style="color:#50fa7b">druid</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+       <span style="color:#ff79c6">return</span>  <span style="color:#ff79c6">new</span> DruidDataSource<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
 
-    <span style="color:#75715e">//配置Druid的监控
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">//1、配置一个管理后台的Servlet
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@Bean</span>
-    <span style="color:#66d9ef">public</span> ServletRegistrationBean <span style="color:#a6e22e">statViewServlet</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        ServletRegistrationBean bean <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServletRegistrationBean<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> StatViewServlet<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/druid/*&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span>String<span style="color:#f92672">&gt;</span> initParams <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#6272a4">//配置Druid的监控
+</span><span style="color:#6272a4"></span>    <span style="color:#6272a4">//1、配置一个管理后台的Servlet
+</span><span style="color:#6272a4"></span>    @Bean
+    <span style="color:#8be9fd;font-style:italic">public</span> ServletRegistrationBean <span style="color:#50fa7b">statViewServlet</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        ServletRegistrationBean bean <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ServletRegistrationBean<span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> StatViewServlet<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;/druid/*&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Map<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">,</span>String<span style="color:#ff79c6">&gt;</span> initParams <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HashMap<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-        initParams<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;loginUsername&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;admin&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        initParams<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;loginPassword&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;123456&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        initParams<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;allow&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#75715e">//默认就是允许所有访问
-</span><span style="color:#75715e"></span>        initParams<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;deny&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;192.168.15.21&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        initParams<span style="color:#ff79c6">.</span><span style="color:#50fa7b">put</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;loginUsername&#34;</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;admin&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        initParams<span style="color:#ff79c6">.</span><span style="color:#50fa7b">put</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;loginPassword&#34;</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;123456&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        initParams<span style="color:#ff79c6">.</span><span style="color:#50fa7b">put</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;allow&#34;</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//默认就是允许所有访问
+</span><span style="color:#6272a4"></span>        initParams<span style="color:#ff79c6">.</span><span style="color:#50fa7b">put</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;deny&#34;</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;192.168.15.21&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-        bean<span style="color:#f92672">.</span><span style="color:#a6e22e">setInitParameters</span><span style="color:#f92672">(</span>initParams<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">return</span> bean<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+        bean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setInitParameters</span><span style="color:#ff79c6">(</span>initParams<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> bean<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
 
 
-    <span style="color:#75715e">//2、配置一个web监控的filter
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@Bean</span>
-    <span style="color:#66d9ef">public</span> FilterRegistrationBean <span style="color:#a6e22e">webStatFilter</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        FilterRegistrationBean bean <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FilterRegistrationBean<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        bean<span style="color:#f92672">.</span><span style="color:#a6e22e">setFilter</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> WebStatFilter<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#6272a4">//2、配置一个web监控的filter
+</span><span style="color:#6272a4"></span>    @Bean
+    <span style="color:#8be9fd;font-style:italic">public</span> FilterRegistrationBean <span style="color:#50fa7b">webStatFilter</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        FilterRegistrationBean bean <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> FilterRegistrationBean<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        bean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setFilter</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> WebStatFilter<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-        Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span>String<span style="color:#f92672">&gt;</span> initParams <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        initParams<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;exclusions&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;*.js,*.css,/druid/*&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Map<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">,</span>String<span style="color:#ff79c6">&gt;</span> initParams <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HashMap<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        initParams<span style="color:#ff79c6">.</span><span style="color:#50fa7b">put</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;exclusions&#34;</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;*.js,*.css,/druid/*&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-        bean<span style="color:#f92672">.</span><span style="color:#a6e22e">setInitParameters</span><span style="color:#f92672">(</span>initParams<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        bean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setInitParameters</span><span style="color:#ff79c6">(</span>initParams<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-        bean<span style="color:#f92672">.</span><span style="color:#a6e22e">setUrlPatterns</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/*&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        bean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setUrlPatterns</span><span style="color:#ff79c6">(</span>Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">asList</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/*&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-        <span style="color:#66d9ef">return</span>  bean<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+        <span style="color:#ff79c6">return</span>  bean<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 
 </code></pre></div><h2 id="3整合mybatis">3、整合MyBatis</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">		<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-			<span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.mybatis.spring.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-			<span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>mybatis-spring-boot-starter<span style="color:#f92672">&lt;/artifactId&gt;</span>
-			<span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.3.1<span style="color:#f92672">&lt;/version&gt;</span>
-		<span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggqte7quo7j30s407r0ua.jpg" alt="QQ截图20200714211925.png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">		<span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+			<span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.mybatis.spring.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+			<span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>mybatis-spring-boot-starter<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+			<span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>1.3.1<span style="color:#ff79c6">&lt;/version&gt;</span>
+		<span style="color:#ff79c6">&lt;/dependency&gt;</span>
+</code></pre></div><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggqte7quo7j30s407r0ua.jpg" alt="QQ截图20200714211925.png">
+
+</p>
 <p>步骤：</p>
 <p>​	1）、配置数据源相关属性（见上一节Druid）</p>
 <p>​	2）、给数据库建表</p>
 <p>​	3）、创建JavaBean</p>
 <h3 id="4注解版">4）、注解版</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//指定这是一个操作数据库的mapper
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Mapper</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">DepartmentMapper</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">//指定这是一个操作数据库的mapper
+</span><span style="color:#6272a4"></span>@Mapper
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">interface</span> <span style="color:#50fa7b">DepartmentMapper</span> <span style="color:#ff79c6">{</span>
 
-    <span style="color:#a6e22e">@Select</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;select * from department where id=#{id}&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> Department <span style="color:#a6e22e">getDeptById</span><span style="color:#f92672">(</span>Integer id<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    @Select<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;select * from department where id=#{id}&#34;</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> Department <span style="color:#50fa7b">getDeptById</span><span style="color:#ff79c6">(</span>Integer id<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-    <span style="color:#a6e22e">@Delete</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;delete from department where id=#{id}&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">deleteDeptById</span><span style="color:#f92672">(</span>Integer id<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    @Delete<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;delete from department where id=#{id}&#34;</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">deleteDeptById</span><span style="color:#ff79c6">(</span>Integer id<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-    <span style="color:#a6e22e">@Options</span><span style="color:#f92672">(</span>useGeneratedKeys <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span>keyProperty <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#a6e22e">@Insert</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;insert into department(departmentName) values(#{departmentName})&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">insertDept</span><span style="color:#f92672">(</span>Department department<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    @Options<span style="color:#ff79c6">(</span>useGeneratedKeys <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">,</span>keyProperty <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;id&#34;</span><span style="color:#ff79c6">)</span>
+    @Insert<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;insert into department(departmentName) values(#{departmentName})&#34;</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">insertDept</span><span style="color:#ff79c6">(</span>Department department<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-    <span style="color:#a6e22e">@Update</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;update department set departmentName=#{departmentName} where id=#{id}&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">updateDept</span><span style="color:#f92672">(</span>Department department<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+    @Update<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;update department set departmentName=#{departmentName} where id=#{id}&#34;</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">updateDept</span><span style="color:#ff79c6">(</span>Department department<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><p>问题：</p>
 <p>自定义MyBatis的配置规则；给容器中添加一个ConfigurationCustomizer；</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@org.springframework.context.annotation.Configuration</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyBatisConfig</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@org.springframework.context.annotation.Configuration
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">MyBatisConfig</span> <span style="color:#ff79c6">{</span>
 
-    <span style="color:#a6e22e">@Bean</span>
-    <span style="color:#66d9ef">public</span> ConfigurationCustomizer <span style="color:#a6e22e">configurationCustomizer</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ConfigurationCustomizer<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+    @Bean
+    <span style="color:#8be9fd;font-style:italic">public</span> ConfigurationCustomizer <span style="color:#50fa7b">configurationCustomizer</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> ConfigurationCustomizer<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
 
-            <span style="color:#a6e22e">@Override</span>
-            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">customize</span><span style="color:#f92672">(</span>Configuration configuration<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapUnderscoreToCamelCase</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">使用MapperScan批量扫描所有的Mapper接口<span style="color:#960050;background-color:#1e0010">；</span>
-<span style="color:#a6e22e">@MapperScan</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;com.atguigu.springboot.mapper&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@SpringBootApplication</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpringBoot06DataMybatisApplication</span> <span style="color:#f92672">{</span>
+            @Override
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">customize</span><span style="color:#ff79c6">(</span>Configuration configuration<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                configuration<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setMapUnderscoreToCamelCase</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">使用MapperScan批量扫描所有的Mapper接口；
+@MapperScan<span style="color:#ff79c6">(</span>value <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;com.atguigu.springboot.mapper&#34;</span><span style="color:#ff79c6">)</span>
+@SpringBootApplication
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">SpringBoot06DataMybatisApplication</span> <span style="color:#ff79c6">{</span>
 
-	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-		SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>SpringBoot06DataMybatisApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-	<span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+	<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+		SpringApplication<span style="color:#ff79c6">.</span><span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span>SpringBoot06DataMybatisApplication<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> args<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+	<span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="5配置文件版">5）、配置文件版</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">mybatis:
-  <span style="color:#66d9ef">config-location</span>: classpath:mybatis/mybatis-config.xml 指定全局配置文件的位置
-  <span style="color:#66d9ef">mapper-locations</span>: classpath:mybatis/mapper/<span style="color:#75715e">*.xml</span>  指定sql映射文件的位置
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">mybatis:
+  <span style="color:#ff79c6">config-location</span>: classpath:mybatis/mybatis-config.xml 指定全局配置文件的位置
+  <span style="color:#ff79c6">mapper-locations</span>: classpath:mybatis/mapper/<span style="color:#ff79c6">*.xml</span>  指定sql映射文件的位置
 </code></pre></div><p>更多使用参照</p>
 <p><a href="http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/">http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/</a></p>
 <h2 id="4整合springdata-jpa">4、整合SpringData JPA</h2>
 <h3 id="1springdata简介">1）、SpringData简介</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggqtepf3gsj30re0e2ac0.jpg" alt="QQ截图20200714212001.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggqtepf3gsj30re0e2ac0.jpg" alt="QQ截图20200714212001.png">
+
+</p>
 <h3 id="2整合springdata-jpa">2）、整合SpringData JPA</h3>
 <p>JPA:ORM（Object Relational Mapping）；</p>
 <p>1）、编写一个实体类（bean）和数据表进行映射，并且配置好映射关系；</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//使用JPA注解配置映射关系
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Entity</span> <span style="color:#75715e">//告诉JPA这是一个实体类（和数据表映射的类）
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Table</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;tbl_user&#34;</span><span style="color:#f92672">)</span> <span style="color:#75715e">//@Table来指定和哪个数据表对应;如果省略默认表名就是user；
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">//使用JPA注解配置映射关系
+</span><span style="color:#6272a4"></span>@Entity <span style="color:#6272a4">//告诉JPA这是一个实体类（和数据表映射的类）
+</span><span style="color:#6272a4"></span>@Table<span style="color:#ff79c6">(</span>name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;tbl_user&#34;</span><span style="color:#ff79c6">)</span> <span style="color:#6272a4">//@Table来指定和哪个数据表对应;如果省略默认表名就是user；
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">User</span> <span style="color:#ff79c6">{</span>
 
-    <span style="color:#a6e22e">@Id</span> <span style="color:#75715e">//这是一个主键
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@GeneratedValue</span><span style="color:#f92672">(</span>strategy <span style="color:#f92672">=</span> GenerationType<span style="color:#f92672">.</span><span style="color:#a6e22e">IDENTITY</span><span style="color:#f92672">)</span><span style="color:#75715e">//自增主键
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> Integer id<span style="color:#f92672">;</span>
+    @Id <span style="color:#6272a4">//这是一个主键
+</span><span style="color:#6272a4"></span>    @GeneratedValue<span style="color:#ff79c6">(</span>strategy <span style="color:#ff79c6">=</span> GenerationType<span style="color:#ff79c6">.</span><span style="color:#50fa7b">IDENTITY</span><span style="color:#ff79c6">)</span><span style="color:#6272a4">//自增主键
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">private</span> Integer id<span style="color:#ff79c6">;</span>
 
-    <span style="color:#a6e22e">@Column</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;last_name&#34;</span><span style="color:#f92672">,</span>length <span style="color:#f92672">=</span> 50<span style="color:#f92672">)</span> <span style="color:#75715e">//这是和数据表对应的一个列
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> String lastName<span style="color:#f92672">;</span>
-    <span style="color:#a6e22e">@Column</span> <span style="color:#75715e">//省略默认列名就是属性名
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> String email<span style="color:#f92672">;</span>
+    @Column<span style="color:#ff79c6">(</span>name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;last_name&#34;</span><span style="color:#ff79c6">,</span>length <span style="color:#ff79c6">=</span> 50<span style="color:#ff79c6">)</span> <span style="color:#6272a4">//这是和数据表对应的一个列
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">private</span> String lastName<span style="color:#ff79c6">;</span>
+    @Column <span style="color:#6272a4">//省略默认列名就是属性名
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">private</span> String email<span style="color:#ff79c6">;</span>
 </code></pre></div><p>2）、编写一个Dao接口来操作实体类对应的数据表（Repository）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//继承JpaRepository来完成对数据库的操作
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserRepository</span> <span style="color:#66d9ef">extends</span> JpaRepository<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">,</span>Integer<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">//继承JpaRepository来完成对数据库的操作
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">interface</span> <span style="color:#50fa7b">UserRepository</span> <span style="color:#8be9fd;font-style:italic">extends</span> JpaRepository<span style="color:#ff79c6">&lt;</span>User<span style="color:#ff79c6">,</span>Integer<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+<span style="color:#ff79c6">}</span>
 
 </code></pre></div><p>3）、基本的配置JpaProperties</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">spring</span>:  
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#ff79c6">spring</span>:  
  jpa:
     hibernate:
-<span style="color:#75715e">#     更新或者创建数据表结构</span>
-      <span style="color:#66d9ef">ddl-auto</span>: update
-<span style="color:#75715e">#    控制台显示SQL</span>
-    <span style="color:#66d9ef">show-sql</span>: <span style="color:#66d9ef">true</span>
+<span style="color:#6272a4">#     更新或者创建数据表结构</span>
+      <span style="color:#ff79c6">ddl-auto</span>: update
+<span style="color:#6272a4">#    控制台显示SQL</span>
+    <span style="color:#ff79c6">show-sql</span>: <span style="color:#ff79c6">true</span>
 </code></pre></div>
 
                 
@@ -443,13 +553,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -748,16 +872,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -770,48 +884,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -821,7 +931,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -841,7 +963,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -859,7 +981,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -871,12 +993,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>6、排序算法(数据结构与算法)-yiguan1573</title>
+    <title>6、排序算法(数据结构与算法) | yiguan1573</title>
 
     <link rel="canonical" href="/post/736%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>6、排序算法(数据结构与算法)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Wednesday, August 19, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Wednesday, August 19, 2020
+                            
+                                <span id="/post/736%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,32 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#时间复杂度">时间复杂度</a></li>
-    <li><a href="#常见的时间复杂度">常见的时间复杂度</a></li>
-    <li><a href="#平均时间复杂度和最坏时间复杂度">平均时间复杂度和最坏时间复杂度</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#归并排序介绍">归并排序介绍</a></li>
-    <li><a href="#示意图1-基本思想">示意图1-基本思想</a></li>
-    <li><a href="#示意图-2-合并相邻有序子序列">示意图 2-合并相邻有序子序列</a></li>
-    <li><a href="#代码">代码</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#基数排序桶排序介绍">基数排序(桶排序)介绍</a></li>
-    <li><a href="#基数排序基本思想">基数排序基本思想</a></li>
-    <li><a href="#基数排序图文说明">基数排序图文说明</a></li>
-    <li><a href="#基数排序代码实现">基数排序代码实现</a></li>
-    <li><a href="#基数排序的说明">基数排序的说明</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="排序算法的介绍">排序算法的介绍</h1>
 <ul>
 <li>排序也称排序算法(Sort Algorithm)，排序是将一组数据，依指定的顺序进行排列的过程。</li>
@@ -249,7 +349,10 @@
 <li>内部排序: 指将需要处理的所有数据都加载到内部存储器(内存)中进行排序</li>
 <li>外部排序法： 数据量过大，无法全部加载到内存中，需要借助外部存储(文件等)进行排序</li>
 <li>常见的排序算法分类(见右图)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginlq01cpfj30cc06wweh.jpg" alt="QQ截图20200912091758.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginlq01cpfj30cc06wweh.jpg" alt="QQ截图20200912091758.jpg">
+
+</li>
 </ul>
 <h1 id="算法的时间复杂度">算法的时间复杂度</h1>
 <h2 id="时间复杂度">时间复杂度</h2>
@@ -292,7 +395,10 @@
 </li>
 <li>
 <p><strong>常见的时间复杂度对应的图:</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginlu8sqavj30gy060jrd.jpg" alt="QQ截图20200912092204.jpg"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginlu8sqavj30gy060jrd.jpg" alt="QQ截图20200912092204.jpg">
+
+</p>
 </li>
 <li>
 <p><strong>说明</strong></p>
@@ -303,7 +409,10 @@
 </li>
 <li>
 <p>对数阶 O(log2n)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginlvshw5bj30js07et98.jpg" alt="QQ截图20200912092334.jpg"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginlvshw5bj30js07et98.jpg" alt="QQ截图20200912092334.jpg">
+
+</p>
 </li>
 </ul>
 <h2 id="平均时间复杂度和最坏时间复杂度">平均时间复杂度和最坏时间复杂度</h2>
@@ -311,7 +420,10 @@
 <li>平均时间复杂度是指所有可能的输入实例均以等概率出现的情况下，该算法的运行时间。</li>
 <li>最坏情况下的时间复杂度称最坏时间复杂度。一般讨论的时间复杂度均是最坏情况下的时间复杂度。这样做的 原因是：最坏情况下的时间复杂度是算法在任何输入实例上运行时间的界限，这就保证了算法的运行时间不会 比最坏情况更长。</li>
 <li>平均时间复杂度和最坏时间复杂度是否一致，和算法有关(如图:)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginlxr9vfwj30bl07pjrt.jpg" alt="QQ截图20200912092510.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginlxr9vfwj30bl07pjrt.jpg" alt="QQ截图20200912092510.jpg">
+
+</li>
 </ul>
 <h1 id="算法的空间复杂度简介">算法的空间复杂度简介</h1>
 <ul>
@@ -323,7 +435,10 @@
 <ul>
 <li>冒泡排序（Bubble Sorting）的基本思想是：通过对待排序序列从前向后（从下标较小的元素开始）,依次比较 相邻元素的值，若发现逆序则交换，使值较大的元素逐渐从前移向后部，就象水底下的气泡一样逐渐向上冒</li>
 <li>优化： 因为排序的过程中，各元素不断接近自己的位置，如果一趟比较下来没有进行过交换，就说明序列有序，因此要在 排序过程中设置一个标志 flag 判断元素是否进行过交换。从而减少不必要的比较。(这里说的优化，可以在冒泡排 序写好后，在进行)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginlzhr3jtj30i509sq34.jpg" alt="QQ截图20200912092704.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginlzhr3jtj30i509sq34.jpg" alt="QQ截图20200912092704.jpg">
+
+</li>
 </ul>
 <pre><code>public static void bubble(int[] str){
         int temp = 0;
@@ -350,8 +465,14 @@
 <li>选择式排序也属于内部排序法，是从欲排序的数据中，按指定的规则选出某一元素，再依规定交换位置后达到 排序的目的</li>
 <li>选择排序（select sorting）也是一种简单的排序方法。它的基本思想是：第一次从 arr[0]~arr[n-1]中选取最小值， 与 arr[0]交换，第二次从 arr[1]~arr[n-1]中选取最小值，与 arr[1]交换，第三次从 arr[2]~arr[n-1]中选取最小值，与 arr[2] 交换，…，第 i 次从 arr[i-1]~arr[n-1]中选取最小值，与 arr[i-1]交换，…, 第 n-1 次从 arr[n-2]~arr[n-1]中选取最小值， 与 arr[n-2]交换，总共通过 n-1 次，得到一个按排序码从小到大排列的有序序列</li>
 <li>思路分析图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginm1fsvm9j30dc07cwek.jpg" alt="QQ截图20200912092857.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginm1ubpghj30dw05smxc.jpg" alt="QQ截图20200912092921.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginm1fsvm9j30dc07cwek.jpg" alt="QQ截图20200912092857.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginm1ubpghj30dw05smxc.jpg" alt="QQ截图20200912092921.jpg">
+
+</li>
 <li>代码</li>
 </ul>
 <pre><code>public static void select(int[] str){
@@ -374,7 +495,10 @@
 <li>插入式排序属于内部排序法，是对于欲排序的元素以插入的方式找寻该元素的适当位置，以达到排序的目的</li>
 <li>插入排序（Insertion Sorting）的基本思想是：把 n 个待排序的元素看成为一个有序表和一个无序表，开始时有 序表中只包含一个元素，无序表中包含有 n-1 个元素，排序过程中每次从无序表中取出第一个元素，把它的排 序码依次与有序表元素的排序码进行比较，将它插入到有序表中的适当位置，使之成为新的有序表</li>
 <li>思路图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginm7gpc5nj30d9071t8q.jpg" alt="QQ截图20200912093447.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginm7gpc5nj30d9071t8q.jpg" alt="QQ截图20200912093447.jpg">
+
+</li>
 <li>代码</li>
 </ul>
 <pre><code>public static void insert(int[] arr){
@@ -393,13 +517,22 @@
 </code></pre><h1 id="希尔排序">希尔排序</h1>
 <ul>
 <li>简单插入排序存在的问题
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginmojtulcj30f205b748.jpg" alt="QQ截图20200912095112.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginmojtulcj30f205b748.jpg" alt="QQ截图20200912095112.jpg">
+
+</li>
 <li>结论: 当需要插入的数是较小的数时，后移的次数明显增多，对效率有影响</li>
 <li>希尔排序是希尔（Donald Shell）于 1959 年提出的一种排序算法。希尔排序也是一种插入排序，它是简单插入排序经过改进之后的一个更高效的版本，也称为缩小增量排序</li>
 <li>希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含 的关键词越来越多，当增量减至 1 时，整个文件恰被分成一组，算法便终止</li>
 <li>思路图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginmplpxt3j30dz0d4gma.jpg" alt="QQ截图20200912095213.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginmqps7ekj30dz02kmx5.jpg" alt="QQ截图20200912095317.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginmplpxt3j30dz0d4gma.jpg" alt="QQ截图20200912095213.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginmqps7ekj30dz02kmx5.jpg" alt="QQ截图20200912095317.jpg">
+
+</li>
 <li>代码</li>
 </ul>
 <pre><code>public static void shell(int[] arr){
@@ -425,7 +558,10 @@
 <li>
 <ul>
 <li>思路图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginmrad9rhj30f30gj751.jpg" alt="QQ截图20200912095349.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ginmrad9rhj30f30gj751.jpg" alt="QQ截图20200912095349.jpg">
+
+</li>
 </ul>
 </li>
 <li>代码</li>
@@ -462,14 +598,32 @@
 <li>归并排序（MERGE-SORT）是利用归并的思想实现的排序方法，该算法采用经典的分治（divide-and-conquer） 策略（分治法将问题分(divide)成一些小的问题然后递归求解，而治(conquer)的阶段则将分的阶段得到的各答案&quot;修 补&quot;在一起，即分而治之)</li>
 </ul>
 <h2 id="示意图1-基本思想">示意图1-基本思想</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotqcl4pdj30dv08st8y.jpg" alt="QQ截图20200913104044.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotqcl4pdj30dv08st8y.jpg" alt="QQ截图20200913104044.jpg">
+
+</p>
 <h2 id="示意图-2-合并相邻有序子序列">示意图 2-合并相邻有序子序列</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotqynsmmj30l5078jrp.jpg" alt="QQ截图20200913104121.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotqynsmmj30l5078jrp.jpg" alt="QQ截图20200913104121.jpg">
+
+</p>
 <h2 id="代码">代码</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1giots2y888j30i60d6jrj.jpg" alt="QQ截图20200913104152.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giots8r09ij30ie0k2dgm.jpg" alt="QQ截图20200913104200.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotsdo5zlj30j70k5jrt.jpg" alt="QQ截图20200913104208.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotsi96yoj30gb0740sl.jpg" alt="QQ截图20200913104217.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giots2y888j30i60d6jrj.jpg" alt="QQ截图20200913104152.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giots8r09ij30ie0k2dgm.jpg" alt="QQ截图20200913104200.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotsdo5zlj30j70k5jrt.jpg" alt="QQ截图20200913104208.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotsi96yoj30gb0740sl.jpg" alt="QQ截图20200913104217.jpg">
+
+</p>
 <h1 id="基数排序">基数排序</h1>
 <h2 id="基数排序桶排序介绍">基数排序(桶排序)介绍</h2>
 <ul>
@@ -483,12 +637,27 @@
 <li>将所有待比较数值统一为同样的数位长度，数位较短的数前面补零。然后，从最低位开始，依次进行一次排序。 这样从最低位排序一直到最高位排序完成以后, 数列就变成一个有序序列</li>
 </ul>
 <h2 id="基数排序图文说明">基数排序图文说明</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotud27d2j30k50eodh2.jpg" alt="QQ截图20200913104428.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotuikkkyj30j705qaa8.jpg" alt="QQ截图20200913104434.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotud27d2j30k50eodh2.jpg" alt="QQ截图20200913104428.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotuikkkyj30j705qaa8.jpg" alt="QQ截图20200913104434.jpg">
+
+</p>
 <h2 id="基数排序代码实现">基数排序代码实现</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotw2gdfcj30gu03n746.jpg" alt="QQ截图20200913104515.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotwhh200j30jr0jat9i.jpg" alt="QQ截图20200913104522.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotwun01tj30i30k1q41.jpg" alt="QQ截图20200913104531.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotw2gdfcj30gu03n746.jpg" alt="QQ截图20200913104515.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotwhh200j30jr0jat9i.jpg" alt="QQ截图20200913104522.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotwun01tj30i30k1q41.jpg" alt="QQ截图20200913104531.jpg">
+
+</p>
 <h2 id="基数排序的说明">基数排序的说明</h2>
 <ul>
 <li>基数排序是对传统桶排序的扩展，速度很快.</li>
@@ -497,10 +666,16 @@
 <li>有负数的数组，我们不用基数排序来进行排序, 如果要支持负数，参考: <a href="https://code.i-harness.com/zh-CN/q/e98fa9">https://code.i-harness.com/zh-CN/q/e98fa9</a></li>
 </ul>
 <h1 id="常用排序算法总结和对比">常用排序算法总结和对比</h1>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotycv808j30fr09gt9i.jpg" alt="QQ截图20200913104827.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotycv808j30fr09gt9i.jpg" alt="QQ截图20200913104827.jpg">
+
+</p>
 <ul>
 <li>相关术语解释
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotyt1i0xj30hh08ngm0.jpg" alt="QQ截图20200913104854.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giotyt1i0xj30hh08ngm0.jpg" alt="QQ截图20200913104854.jpg">
+
+</li>
 </ul>
 
 
@@ -521,13 +696,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -826,16 +1015,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -848,48 +1027,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -899,7 +1074,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -919,7 +1106,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -937,7 +1124,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -949,12 +1136,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

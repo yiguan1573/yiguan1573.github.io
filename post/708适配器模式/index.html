@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>8、适配器模式(设计模式)-yiguan1573</title>
+    <title>8、适配器模式(设计模式) | yiguan1573</title>
 
     <link rel="canonical" href="/post/708%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>8、适配器模式(设计模式)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Saturday, August 22, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Saturday, August 22, 2020
+                            
+                                <span id="/post/708%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,32 +340,13 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#基本介绍-1">基本介绍</a></li>
-    <li><a href="#应用实例说明">应用实例说明</a></li>
-    <li><a href="#类适配器模式注意事项和细节">类适配器模式注意事项和细节</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#对象适配器模式介绍">对象适配器模式介绍</a></li>
-    <li><a href="#对象适配器模式应用实例">对象适配器模式应用实例</a></li>
-    <li><a href="#对象适配器模式注意事项和细节">对象适配器模式注意事项和细节</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#接口适配器模式介绍">接口适配器模式介绍</a></li>
-    <li><a href="#案例">案例</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="现实生活中的适配器例子">现实生活中的适配器例子</h1>
 <ul>
 <li>泰国插座用的是两孔的（欧标），可以买个多功能转换插头 (适配器) ，这样就可以使用了
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8ozhf440j30pv086dkn.jpg" alt="QQ截图20200830114730.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8ozhf440j30pv086dkn.jpg" alt="QQ截图20200830114730.png">
+
+</li>
 </ul>
 <h1 id="基本介绍">基本介绍</h1>
 <ul>
@@ -253,7 +360,10 @@
 <li>从用户的角度看不到被适配者，是解耦的</li>
 <li>用户调用适配器转化出来的目标接口方法，适配器再调用被适配者的相关接口方法</li>
 <li>用户收到反馈结果，感觉只是和目标接口交互，如图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8p0mmh8fj30o206gafc.jpg" alt="QQ截图20200830114838.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8p0mmh8fj30o206gafc.jpg" alt="QQ截图20200830114838.png">
+
+</li>
 </ul>
 <h1 id="类适配器模式">类适配器模式</h1>
 <h2 id="基本介绍-1">基本介绍</h2>
@@ -267,7 +377,10 @@
 </li>
 <li>
 <p>思路分析(类图)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8p1r3xsdj30o607f77g.jpg" alt="QQ截图20200830114942.png"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8p1r3xsdj30o607f77g.jpg" alt="QQ截图20200830114942.png">
+
+</p>
 </li>
 <li>
 <p>代码实现</p>
@@ -351,7 +464,10 @@ public class VoltageAdapter extends Voltage220V implements IVoltage5V {
 </ul>
 </li>
 <li>思路分析(类图)：只需修改适配器即可, 如下:
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pay82nzj30qc08hn0s.jpg" alt="QQ截图20200830115833.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pay82nzj30qc08hn0s.jpg" alt="QQ截图20200830115833.png">
+
+</li>
 <li>代码实现</li>
 </ul>
 <pre><code>public class Client {
@@ -435,7 +551,10 @@ public class VoltageAdapter	implements IVoltage5V {
 <h2 id="案例">案例</h2>
 <ul>
 <li>思路分析(类图)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pimt6e1j30hm06zabh.jpg" alt="QQ截图20200830120523.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pimt6e1j30hm06zabh.jpg" alt="QQ截图20200830120523.png">
+
+</li>
 <li>代码</li>
 </ul>
 <pre><code>package com.atguigu.adapter.interfaceadapter;
@@ -481,8 +600,14 @@ public class Client {
 可以看到处理器的类型不同，有多重实现方式，那么调用方式就不是确定的，如果需要直接调用 Controller 方法，需要调用的时候就得不断是使用 if else 来进行判断是哪一种子类然后执行。那么如果后面要扩展 Controller， 就得修改原来的代码，这样违背了 OCP 原则。</li>
 <li>代码分析+Debug 源码</li>
 <li>动手写 SpringMVC 通过适配器设计模式获取到对应的 Controller 的源码
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pmzvkecj30q003ytd0.jpg" alt="QQ截图20200830121007.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pnb2i1mj30pz0ckafb.jpg" alt="QQ截图20200830121025.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pmzvkecj30q003ytd0.jpg" alt="QQ截图20200830121007.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi8pnb2i1mj30pz0ckafb.jpg" alt="QQ截图20200830121025.png">
+
+</li>
 </ul>
 <h1 id="适配器模式的注意事项和细节">适配器模式的注意事项和细节</h1>
 <ul>
@@ -512,13 +637,27 @@ public class Client {
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -817,16 +956,6 @@ public class Client {
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -839,48 +968,44 @@ public class Client {
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -890,7 +1015,19 @@ public class Client {
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -910,7 +1047,7 @@ public class Client {
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -928,7 +1065,7 @@ public class Client {
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -940,12 +1077,76 @@ public class Client {
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

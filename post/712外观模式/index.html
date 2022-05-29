@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>12、外观模式(设计模式)-yiguan1573</title>
+    <title>12、外观模式(设计模式) | yiguan1573</title>
 
     <link rel="canonical" href="/post/712%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>12、外观模式(设计模式)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Wednesday, August 26, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Wednesday, August 26, 2020
+                            
+                                <span id="/post/712%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,16 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#传统方式解决影院管理说明">传统方式解决影院管理说明</a></li>
-    <li><a href="#外观模式应用实例">外观模式应用实例</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="影院管理项目">影院管理项目</h1>
 <ul>
 <li>组建一个家庭影院：DVD 播放器、投影仪、自动屏幕、环绕立体声、爆米花机,要求完成使用家庭影院的功能，其过程为：
@@ -233,7 +349,10 @@
 </li>
 </ul>
 <h1 id="传统方式解决影院管理">传统方式解决影院管理</h1>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpebwod5j30h407d74m.jpg" alt="QQ截图20200906100614.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpebwod5j30h407d74m.jpg" alt="QQ截图20200906100614.jpg">
+
+</p>
 <h1 id="传统方式解决影院管理问题分析">传统方式解决影院管理问题分析</h1>
 <ul>
 <li>在 ClientTest 的 main 方法中，创建各个子系统的对象，并直接去调用子系统(对象)相关方法，会造成调用过程混乱，没有清晰的过程</li>
@@ -248,7 +367,10 @@ ready, play, pause, end )，用来访问子系统中的一群接口</li>
 <li>外观模式通过定义一个一致的接口，用以屏蔽内部子系统的细节，使得调用端只需跟这个接口发生调用，而无需关心这个子系统的内部细节</li>
 </ul>
 <h1 id="外观模式原理类图">外观模式原理类图</h1>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpgqlrvuj309m03wt8l.jpg" alt="QQ截图20200906100837.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpgqlrvuj309m03wt8l.jpg" alt="QQ截图20200906100837.jpg">
+
+</p>
 <ul>
 <li>对类图说明(分类外观模式的角色)
 <ol>
@@ -264,31 +386,73 @@ ready, play, pause, end )，用来访问子系统中的一群接口</li>
 <li>外观模式可以理解为转换一群接口，客户只要调用一个接口，而不用调用多个接口才能达到目的。比如：在 pc 上安装软件的时候经常有一键安装选项（省去选择安装目录、安装的组件等等），还有就是手机的重启功能（把关机和启动合为一个操作）。</li>
 <li>外观模式就是解决多个复杂接口带来的使用困难，起到简化用户操作的作用</li>
 <li>示意图说明
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpitkqskj3097068q2v.jpg" alt="QQ截图20200906101037.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpitkqskj3097068q2v.jpg" alt="QQ截图20200906101037.jpg">
+
+</li>
 </ul>
 <h2 id="外观模式应用实例">外观模式应用实例</h2>
 <ul>
 <li>思路分析和图解(类图)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpji44k1j308o04w0so.jpg" alt="QQ截图20200906101117.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpji44k1j308o04w0so.jpg" alt="QQ截图20200906101117.jpg">
+
+</li>
 <li>代码实现
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpntt1zxj30jt09t0sz.jpg" alt="QQ截图20200906101307.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpnxz9drj30jf0kijrs.jpg" alt="QQ截图20200906101322.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpo3n84yj30er0k374w.jpg" alt="QQ截图20200906101348.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpo8rf1sj30fp0kgdg5.jpg" alt="QQ截图20200906101409.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpod2myfj30ga0k93yq.jpg" alt="QQ截图20200906101422.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpohl3l6j30fk0k7t93.jpg" alt="QQ截图20200906101433.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpolxu5mj30fo0kb74i.jpg" alt="QQ截图20200906101442.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigporbtvkj30e70kcmxe.jpg" alt="QQ截图20200906101451.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpov7wx3j30gj0k5wex.jpg" alt="QQ截图20200906101506.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpoycf3xj30cs03qmx0.jpg" alt="QQ截图20200906101512.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpntt1zxj30jt09t0sz.jpg" alt="QQ截图20200906101307.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpnxz9drj30jf0kijrs.jpg" alt="QQ截图20200906101322.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpo3n84yj30er0k374w.jpg" alt="QQ截图20200906101348.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpo8rf1sj30fp0kgdg5.jpg" alt="QQ截图20200906101409.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpod2myfj30ga0k93yq.jpg" alt="QQ截图20200906101422.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpohl3l6j30fk0k7t93.jpg" alt="QQ截图20200906101433.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpolxu5mj30fo0kb74i.jpg" alt="QQ截图20200906101442.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigporbtvkj30e70kcmxe.jpg" alt="QQ截图20200906101451.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpov7wx3j30gj0k5wex.jpg" alt="QQ截图20200906101506.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpoycf3xj30cs03qmx0.jpg" alt="QQ截图20200906101512.jpg">
+
+</li>
 </ul>
 <h1 id="外观模式在-mybatis-框架应用的源码分析">外观模式在 MyBatis 框架应用的源码分析</h1>
 <ul>
 <li>MyBatis 中的 Configuration 去创建 MetaObject	对象使用到外观模式</li>
 <li>代码分析+Debug 源码+示意图</li>
 <li>对源码中使用到的外观模式的角色类图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpq1cvtmj30fv05xt99.jpg" alt="QQ截图20200906101727.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpq61zhdj30dr07lmx9.jpg" alt="QQ截图20200906101732.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpq1cvtmj30fv05xt99.jpg" alt="QQ截图20200906101727.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigpq61zhdj30dr07lmx9.jpg" alt="QQ截图20200906101732.jpg">
+
+</li>
 </ul>
 <h1 id="外观模式的注意事项和细节">外观模式的注意事项和细节</h1>
 <ul>
@@ -318,13 +482,27 @@ ready, play, pause, end )，用来访问子系统中的一群接口</li>
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -623,16 +801,6 @@ ready, play, pause, end )，用来访问子系统中的一群接口</li>
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -645,48 +813,44 @@ ready, play, pause, end )，用来访问子系统中的一群接口</li>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -696,7 +860,19 @@ ready, play, pause, end )，用来访问子系统中的一群接口</li>
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -716,7 +892,7 @@ ready, play, pause, end )，用来访问子系统中的一群接口</li>
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -734,7 +910,7 @@ ready, play, pause, end )，用来访问子系统中的一群接口</li>
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -746,12 +922,76 @@ ready, play, pause, end )，用来访问子系统中的一群接口</li>
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

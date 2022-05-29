@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>1、MinIO安装（MinIO）-yiguan1573</title>
+    <title>1、MinIO安装（MinIO） | yiguan1573</title>
 
     <link rel="canonical" href="/post/982minio%E5%AE%89%E8%A3%85/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>1、MinIO安装（MinIO）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Wednesday, March 30, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Wednesday, March 30, 2022
+                            
+                                <span id="/post/982minio%E5%AE%89%E8%A3%85/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,64 +340,54 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#第一步-创建文件夹">第一步 创建文件夹</a></li>
-    <li><a href="#第二步-wget下载安装包">第二步 wget下载安装包</a></li>
-    <li><a href="#第三步-赋权限">第三步 赋权限</a></li>
-    <li><a href="#第四步-防火墙开启-9000-端口">第四步 防火墙开启 9000 端口</a></li>
-    <li><a href="#第五步-启动minio">第五步 启动minio</a></li>
-    <li><a href="#第六步-使用web页面">第六步 使用web页面</a></li>
-    <li><a href="#在启动前设置账号和密码">在启动前设置账号和密码</a></li>
-    <li><a href="#web页面的使用">WEB页面的使用</a></li>
-    <li><a href="#minio组织架构">minio组织架构</a></li>
-    <li><a href="#docker安装">docker安装</a></li>
-    <li><a href="#参考">参考</a></li>
-  </ul>
-</nav>
-                
                 <h2 id="第一步-创建文件夹">第一步 创建文件夹</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd /opt
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#8be9fd;font-style:italic">cd</span> /opt
 mikdir MinIO
-<span style="color:#75715e">#用于存放数据</span>
+<span style="color:#6272a4">#用于存放数据</span>
 mikdir -p MinIO/data
-cd MinIO 
-<span style="color:#75715e">#日志</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> MinIO 
+<span style="color:#6272a4">#日志</span>
 touch minio.log
 </code></pre></div><h2 id="第二步-wget下载安装包">第二步 wget下载安装包</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">wget https://dl.min.io/server/minio/release/linux-amd64/minio
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">wget https://dl.min.io/server/minio/release/linux-amd64/minio
 </code></pre></div><ul>
 <li>这时虚拟机报错如下</li>
 </ul>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugh1428bj30kl03ftc8.jpg" alt="QQ截图20220401194120.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugh1428bj30kl03ftc8.jpg" alt="QQ截图20220401194120.png">
+
+</p>
 <ul>
 <li>要么安装证书要么加入参数</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">wget --no-check-certificate https://dl.min.io/server/minio/release/linux-amd64/minio
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">wget --no-check-certificate https://dl.min.io/server/minio/release/linux-amd64/minio
 </code></pre></div><ul>
 <li>下载完毕</li>
 </ul>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugkalbmoj30n308jn36.jpg" alt="QQ截图20220401194434.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugkalbmoj30n308jn36.jpg" alt="QQ截图20220401194434.png">
+
+</p>
 <h2 id="第三步-赋权限">第三步 赋权限</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">chmod <span style="color:#ae81ff">777</span> minio
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">chmod <span style="color:#bd93f9">777</span> minio
 </code></pre></div><h2 id="第四步-防火墙开启-9000-端口">第四步 防火墙开启 9000 端口</h2>
 <ul>
 <li>开启端口</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">firewall-cmd --zone<span style="color:#f92672">=</span>public --add-port<span style="color:#f92672">=</span>9000/tcp --permanent
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">firewall-cmd --zone<span style="color:#ff79c6">=</span>public --add-port<span style="color:#ff79c6">=</span>9000/tcp --permanent
 </code></pre></div><ul>
 <li>重启防火墙</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl restart firewalld
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl restart firewalld
 </code></pre></div><h2 id="第五步-启动minio">第五步 启动minio</h2>
 <ul>
 <li>
 <p>如果直接启动会报以下错误</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./minio server ./data/
-</code></pre></div><p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugp1wolcj30mp08lagf.jpg" alt="QQ截图20220401194908.png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./minio server ./data/
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugp1wolcj30mp08lagf.jpg" alt="QQ截图20220401194908.png">
+
+</p>
 </li>
 <li>
 <p><strong>上面的报红：检测到Linux内核版本早于4.0.0版本，此内核版本存在一些已知的潜在性能问题。MinIO建议至少4.x.x以上linux内核版本以获得最佳性能</strong></p>
@@ -281,14 +397,17 @@ touch minio.log
 </li>
 <li>
 <p><strong>后台的启动</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">nohup /opt/MinIO/minio server  /opt/MinIO/data --console-address <span style="color:#e6db74">&#34;:9000&#34;</span> &gt; /opt/MinIO/minio.log 2&gt;&amp;<span style="color:#ae81ff">1</span> &amp;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">nohup /opt/MinIO/minio server  /opt/MinIO/data --console-address <span style="color:#f1fa8c">&#34;:9000&#34;</span> &gt; /opt/MinIO/minio.log 2&gt;&amp;<span style="color:#bd93f9">1</span> &amp;
 </code></pre></div><ul>
 <li>
 <p>发现没有启动起来</p>
 </li>
 <li>
 <p>查看日志</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0uhb1yc6xj30gs01m751.jpg" alt="QQ截图20220401201017.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0uhb1yc6xj30gs01m751.jpg" alt="QQ截图20220401201017.png">
+
+</p>
 </li>
 <li>
 <p>这是因为minio区分了Console和API两个服务的端口。原来都是共同使用9000，现在需要在启动命令中映射两个端口</p>
@@ -297,26 +416,29 @@ touch minio.log
 </li>
 <li>
 <p><strong>正确的启动，其中9000是web服务的端口，9010是API的端口</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">nohup /opt/MinIO/minio server  /opt/MinIO/data --console-address <span style="color:#e6db74">&#34;:9000&#34;</span> --address <span style="color:#e6db74">&#34;:9010&#34;</span> &gt; /opt/MinIO/minio.log 2&gt;&amp;<span style="color:#ae81ff">1</span> &amp;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">nohup /opt/MinIO/minio server  /opt/MinIO/data --console-address <span style="color:#f1fa8c">&#34;:9000&#34;</span> --address <span style="color:#f1fa8c">&#34;:9010&#34;</span> &gt; /opt/MinIO/minio.log 2&gt;&amp;<span style="color:#bd93f9">1</span> &amp;
 </code></pre></div></li>
 </ul>
 <h2 id="第六步-使用web页面">第六步 使用web页面</h2>
 <ul>
 <li>
 <p>打开浏览器http://192.168.10.101:9000/login</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugyy66evj319n0m8wqf.jpg" alt="QQ截图20220401195837.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ugyy66evj319n0m8wqf.jpg" alt="QQ截图20220401195837.png">
+
+</p>
 </li>
 <li>
 <p>在/opt/MinIO/data里的隐藏文件夹可查看默认账号密码</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat data/.minio.sys/config/config.json
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat data/.minio.sys/config/config.json
 </code></pre></div><p>默认账号密码如下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#f92672">&#34;key&#34;</span>:<span style="color:#e6db74">&#34;access_key&#34;</span>,
-    <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;minioadmin&#34;</span>
-}<span style="color:#960050;background-color:#1e0010">,</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#ff79c6">&#34;key&#34;</span>:<span style="color:#f1fa8c">&#34;access_key&#34;</span>,
+    <span style="color:#ff79c6">&#34;value&#34;</span>:<span style="color:#f1fa8c">&#34;minioadmin&#34;</span>
+},
 {
-    <span style="color:#f92672">&#34;key&#34;</span>:<span style="color:#e6db74">&#34;secret_key&#34;</span>,
-    <span style="color:#f92672">&#34;value&#34;</span>:<span style="color:#e6db74">&#34;minioadmin&#34;</span>
+    <span style="color:#ff79c6">&#34;key&#34;</span>:<span style="color:#f1fa8c">&#34;secret_key&#34;</span>,
+    <span style="color:#ff79c6">&#34;value&#34;</span>:<span style="color:#f1fa8c">&#34;minioadmin&#34;</span>
 }
 </code></pre></div></li>
 </ul>
@@ -324,30 +446,45 @@ touch minio.log
 <ul>
 <li>
 <p>在配置文件下加以下配置</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /etc/profile
-</code></pre></div><p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ui6cklj2j30hp08idjg.jpg" alt="QQ截图20220401203802.png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /etc/profile
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ui6cklj2j30hp08idjg.jpg" alt="QQ截图20220401203802.png">
+
+</p>
 <ul>
 <li>
 <p>注意需要设置的账号和密码有位数要求，不符合要求会启动失败</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ui73fuoaj30lg024myk.jpg" alt="QQ截图20220401203516.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ui73fuoaj30lg024myk.jpg" alt="QQ截图20220401203516.png">
+
+</p>
 </li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">source /etc/profile
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#8be9fd;font-style:italic">source</span> /etc/profile
 </code></pre></div></li>
 </ul>
 <h2 id="web页面的使用">WEB页面的使用</h2>
 <ul>
 <li>
 <p>建桶</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0uid7xxhhj31fz0gyn4a.jpg" alt="QQ截图20220401204344.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0uid7xxhhj31fz0gyn4a.jpg" alt="QQ截图20220401204344.png">
+
+</p>
 </li>
 <li>
 <p>上传文件</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0uidp57s8j31g80iwq8u.jpg" alt="QQ截图20220401204726.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0uidp57s8j31g80iwq8u.jpg" alt="QQ截图20220401204726.png">
+
+</p>
 </li>
 <li>
 <p>点击文件打开右侧详情，点击share出现文件地址</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ujdum37ej31fq0og47a.jpg" alt="QQ截图20220401204905.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h0ujdum37ej31fq0og47a.jpg" alt="QQ截图20220401204905.png">
+
+</p>
 </li>
 <li>
 <p>其他使用如下</p>
@@ -396,13 +533,27 @@ touch minio.log
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -701,16 +852,6 @@ touch minio.log
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -723,48 +864,44 @@ touch minio.log
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -774,7 +911,19 @@ touch minio.log
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -794,7 +943,7 @@ touch minio.log
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -812,7 +961,7 @@ touch minio.log
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -824,12 +973,76 @@ touch minio.log
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>11、高级特性（ActiveMQ）-yiguan1573</title>
+    <title>11、高级特性（ActiveMQ） | yiguan1573</title>
 
     <link rel="canonical" href="/post/1027%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>11、高级特性（ActiveMQ）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Saturday, May 7, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Saturday, May 7, 2022
+                            
+                                <span id="/post/1027%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,23 +340,14 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#异步投递">异步投递</a></li>
-    <li><a href="#延迟投递和定时投递">延迟投递和定时投递</a></li>
-    <li><a href="#消息消费的重试机制">消息消费的重试机制</a></li>
-    <li><a href="#死信队列">死信队列</a></li>
-  </ul>
-</nav>
-                
                 <h2 id="异步投递">异步投递</h2>
 <ul>
 <li>
 <p>异步投递是什么</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216i0a6drj30s40amgmz.jpg" alt="QQ截图20220508183539.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216i0a6drj30s40amgmz.jpg" alt="QQ截图20220508183539.jpg">
+
+</p>
 <ul>
 <li>
 <p><a href="http://activemq.apache.org/async-sends">官网介绍</a></p>
@@ -252,106 +369,112 @@
 </li>
 <li>
 <p>代码实现</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216k3ncxtj30rn0augmr.jpg" alt="QQ截图20220508183741.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216k3ncxtj30rn0augmr.jpg" alt="QQ截图20220508183741.jpg">
+
+</p>
 </li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.activemq.demo<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.activemq.demo<span style="color:#ff79c6">;</span>
 
-<span style="color:#f92672">import</span> org.apache.activemq.ActiveMQConnection<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.jms.*<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.ActiveMQConnection<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.*<span style="color:#ff79c6">;</span>
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jms_TX_Producer</span> <span style="color:#f92672">{</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Jms_TX_Producer</span> <span style="color:#ff79c6">{</span>
 
-    <span style="color:#75715e">// 方式1-3种方式任选一种
-</span><span style="color:#75715e"></span>    
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;tcp://118.24.20.3:61626?jms.useAsyncSend=true&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Async&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#6272a4">// 方式1-3种方式任选一种
+</span><span style="color:#6272a4"></span>    
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_URL <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;tcp://118.24.20.3:61626?jms.useAsyncSend=true&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;Async&#34;</span><span style="color:#ff79c6">;</span>
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException <span style="color:#f92672">{</span>
-        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ActiveMQConnectionFactory<span style="color:#f92672">(</span>ACTIVEMQ_URL<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">// 方式2
-</span><span style="color:#75715e"></span>        
-        activeMQConnectionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">setUseAsyncSend</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Connection connection <span style="color:#f92672">=</span> activeMQConnectionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">// 方式3
-</span><span style="color:#75715e"></span>        
-        <span style="color:#f92672">(</span><span style="color:#f92672">(</span>ActiveMQConnection<span style="color:#f92672">)</span>connection<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setUseAsyncSend</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Session session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> Session<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        MessageProducer producer <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createProducer</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 3<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                TextMessage textMessage <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createTextMessage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;tx msg--&#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                producer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>textMessage<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;消息发送完成&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
-            producer<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> JMSException <span style="color:#ff79c6">{</span>
+        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ActiveMQConnectionFactory<span style="color:#ff79c6">(</span>ACTIVEMQ_URL<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">// 方式2
+</span><span style="color:#6272a4"></span>        
+        activeMQConnectionFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setUseAsyncSend</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Connection connection <span style="color:#ff79c6">=</span> activeMQConnectionFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createConnection</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">// 方式3
+</span><span style="color:#6272a4"></span>        
+        <span style="color:#ff79c6">(</span><span style="color:#ff79c6">(</span>ActiveMQConnection<span style="color:#ff79c6">)</span>connection<span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setUseAsyncSend</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Session session <span style="color:#ff79c6">=</span> connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createSession</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">false</span><span style="color:#ff79c6">,</span> Session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">AUTO_ACKNOWLEDGE</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Queue queue <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createQueue</span><span style="color:#ff79c6">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        MessageProducer producer <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createProducer</span><span style="color:#ff79c6">(</span>queue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span> i <span style="color:#ff79c6">&lt;</span> 3<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">+</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                TextMessage textMessage <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createTextMessage</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;tx msg--&#34;</span> <span style="color:#ff79c6">+</span> i<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                producer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">send</span><span style="color:#ff79c6">(</span>textMessage<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;消息发送完成&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+            producer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><ul>
 <li>
 <p>异步发送如何确认发送成功</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216l2desxj30qc083mxr.jpg" alt="QQ截图20220508183837.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216l2desxj30qc083mxr.jpg" alt="QQ截图20220508183837.jpg">
+
+</p>
 <ul>
 <li>
 <p>下面演示异步发送的回调</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.activemq.demo<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.activemq.demo<span style="color:#ff79c6">;</span>
     
-<span style="color:#f92672">import</span> org.apache.activemq.ActiveMQConnection<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.activemq.ActiveMQMessageProducer<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.activemq.AsyncCallback<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.ActiveMQConnection<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.ActiveMQMessageProducer<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.AsyncCallback<span style="color:#ff79c6">;</span>
     
-<span style="color:#f92672">import</span> javax.jms.*<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.util.UUID<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.*<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.util.UUID<span style="color:#ff79c6">;</span>
     
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jms_TX_Producer</span> <span style="color:#f92672">{</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Jms_TX_Producer</span> <span style="color:#ff79c6">{</span>
     
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_URL <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#ff79c6">;</span>
     
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Async&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;Async&#34;</span><span style="color:#ff79c6">;</span>
     
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException <span style="color:#f92672">{</span>
-        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ActiveMQConnectionFactory<span style="color:#f92672">(</span>ACTIVEMQ_URL<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        activeMQConnectionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">setUseAsyncSend</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Connection connection <span style="color:#f92672">=</span> activeMQConnectionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Session session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> Session<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        ActiveMQMessageProducer activeMQMessageProducer <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>ActiveMQMessageProducer<span style="color:#f92672">)</span>session<span style="color:#f92672">.</span><span style="color:#a6e22e">createProducer</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 3<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                TextMessage textMessage <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createTextMessage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;tx msg--&#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">setJMSMessageID</span><span style="color:#f92672">(</span>UUID<span style="color:#f92672">.</span><span style="color:#a6e22e">randomUUID</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;orderAtguigu&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                <span style="color:#66d9ef">final</span> String  msgId <span style="color:#f92672">=</span> textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">getJMSMessageID</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                activeMQMessageProducer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>textMessage<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> AsyncCallback<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onSuccess</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;成功发送消息Id:&#34;</span><span style="color:#f92672">+</span>msgId<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                    <span style="color:#f92672">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> JMSException <span style="color:#ff79c6">{</span>
+        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ActiveMQConnectionFactory<span style="color:#ff79c6">(</span>ACTIVEMQ_URL<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        activeMQConnectionFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setUseAsyncSend</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Connection connection <span style="color:#ff79c6">=</span> activeMQConnectionFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createConnection</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Session session <span style="color:#ff79c6">=</span> connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createSession</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">false</span><span style="color:#ff79c6">,</span> Session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">AUTO_ACKNOWLEDGE</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Queue queue <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createQueue</span><span style="color:#ff79c6">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        ActiveMQMessageProducer activeMQMessageProducer <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>ActiveMQMessageProducer<span style="color:#ff79c6">)</span>session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createProducer</span><span style="color:#ff79c6">(</span>queue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span> i <span style="color:#ff79c6">&lt;</span> 3<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">+</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                TextMessage textMessage <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createTextMessage</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;tx msg--&#34;</span> <span style="color:#ff79c6">+</span> i<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setJMSMessageID</span><span style="color:#ff79c6">(</span>UUID<span style="color:#ff79c6">.</span><span style="color:#50fa7b">randomUUID</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">+</span><span style="color:#f1fa8c">&#34;orderAtguigu&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#8be9fd;font-style:italic">final</span> String  msgId <span style="color:#ff79c6">=</span> textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getJMSMessageID</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                activeMQMessageProducer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">send</span><span style="color:#ff79c6">(</span>textMessage<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> AsyncCallback<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onSuccess</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;成功发送消息Id:&#34;</span><span style="color:#ff79c6">+</span>msgId<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">}</span>
     
-                    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onException</span><span style="color:#f92672">(</span>JMSException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;失败发送消息Id:&#34;</span><span style="color:#f92672">+</span>msgId<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                    <span style="color:#f92672">}</span>
-                <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;消息发送完成&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
-            activeMQMessageProducer<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+                    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onException</span><span style="color:#ff79c6">(</span>JMSException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;失败发送消息Id:&#34;</span><span style="color:#ff79c6">+</span>msgId<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">}</span>
+                <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;消息发送完成&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+            activeMQMessageProducer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 </li>
@@ -360,20 +483,29 @@
 <ul>
 <li>
 <p><a href="http://activemq.apache.org/delay-and-schedule-message-delivery.html">官网文档</a></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216mlmjivj30q30bywfq.jpg" alt="QQ截图20220508183958.jpg"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216mqfjb2j30nc05mjrg.jpg" alt="QQ截图20220508184004.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216mlmjivj30q30bywfq.jpg" alt="QQ截图20220508183958.jpg">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216mqfjb2j30nc05mjrg.jpg" alt="QQ截图20220508184004.jpg">
+
+</p>
 </li>
 <li>
 <p>修改配置文件并重启</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216n6up2kj30ri03nweh.jpg" alt="QQ截图20220508184040.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216n6up2kj30ri03nweh.jpg" alt="QQ截图20220508184040.jpg">
+
+</p>
 <ul>
 <li>
 <p>在activemq.xml添加如下灰色背景代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;/bean&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;/bean&gt;</span>
     
-<span style="color:#f92672">&lt;broker</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://activemq.apache.org/schema/core&#34;</span> <span style="color:#a6e22e">brokerName=</span><span style="color:#e6db74">&#34;localhost&#34;</span> <span style="color:#a6e22e">dataDirectory=</span><span style="color:#e6db74">&#34;${activemq.data}&#34;</span>  <span style="color:#a6e22e">schedulerSupport=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#f92672">&gt;</span>
+<span style="color:#ff79c6">&lt;broker</span> <span style="color:#50fa7b">xmlns=</span><span style="color:#f1fa8c">&#34;http://activemq.apache.org/schema/core&#34;</span> <span style="color:#50fa7b">brokerName=</span><span style="color:#f1fa8c">&#34;localhost&#34;</span> <span style="color:#50fa7b">dataDirectory=</span><span style="color:#f1fa8c">&#34;${activemq.data}&#34;</span>  <span style="color:#50fa7b">schedulerSupport=</span><span style="color:#f1fa8c">&#34;true&#34;</span> <span style="color:#ff79c6">&gt;</span>
     
-    <span style="color:#f92672">&lt;destinationPolicy</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#ff79c6">&lt;destinationPolicy</span><span style="color:#ff79c6">&gt;</span>
 </code></pre></div></li>
 <li>
 <p>之后重启activemq</p>
@@ -385,96 +517,96 @@
 <ul>
 <li>生产者代码</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.activemq.demo<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.activemq.demo<span style="color:#ff79c6">;</span>
   
-<span style="color:#f92672">import</span> org.apache.activemq.*<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.jms.*<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.util.UUID<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.*<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.*<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.util.UUID<span style="color:#ff79c6">;</span>
   
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jms_TX_Producer</span> <span style="color:#f92672">{</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Jms_TX_Producer</span> <span style="color:#ff79c6">{</span>
   
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_URL <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#ff79c6">;</span>
   
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Schedule01&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;Schedule01&#34;</span><span style="color:#ff79c6">;</span>
   
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException <span style="color:#f92672">{</span>
-        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ActiveMQConnectionFactory<span style="color:#f92672">(</span>ACTIVEMQ_URL<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Connection connection <span style="color:#f92672">=</span> activeMQConnectionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Session session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> Session<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        MessageProducer messageProducer <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createProducer</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">long</span> delay <span style="color:#f92672">=</span>  10<span style="color:#f92672">*</span>1000<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">long</span> period <span style="color:#f92672">=</span> 5<span style="color:#f92672">*</span>1000<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> repeat <span style="color:#f92672">=</span> 3 <span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 3<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                TextMessage textMessage <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createTextMessage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;tx msg--&#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                <span style="color:#75715e">// 延迟的时间
-</span><span style="color:#75715e"></span>                  
-                textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">setLongProperty</span><span style="color:#f92672">(</span>ScheduledMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">AMQ_SCHEDULED_DELAY</span><span style="color:#f92672">,</span> delay<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                <span style="color:#75715e">// 重复投递的时间间隔
-</span><span style="color:#75715e"></span>                  
-                textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">setLongProperty</span><span style="color:#f92672">(</span>ScheduledMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">AMQ_SCHEDULED_PERIOD</span><span style="color:#f92672">,</span> period<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                <span style="color:#75715e">// 重复投递的次数
-</span><span style="color:#75715e"></span>                  
-                textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">setIntProperty</span><span style="color:#f92672">(</span>ScheduledMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">AMQ_SCHEDULED_REPEAT</span><span style="color:#f92672">,</span> repeat<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                <span style="color:#75715e">// 此处的意思：该条消息，等待10秒，之后每5秒发送一次，重复发送3次。
-</span><span style="color:#75715e"></span>                  
-                messageProducer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>textMessage<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;消息发送完成&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
-            messageProducer<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> JMSException <span style="color:#ff79c6">{</span>
+        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ActiveMQConnectionFactory<span style="color:#ff79c6">(</span>ACTIVEMQ_URL<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Connection connection <span style="color:#ff79c6">=</span> activeMQConnectionFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createConnection</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Session session <span style="color:#ff79c6">=</span> connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createSession</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">false</span><span style="color:#ff79c6">,</span> Session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">AUTO_ACKNOWLEDGE</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Queue queue <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createQueue</span><span style="color:#ff79c6">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        MessageProducer messageProducer <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createProducer</span><span style="color:#ff79c6">(</span>queue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">long</span> delay <span style="color:#ff79c6">=</span>  10<span style="color:#ff79c6">*</span>1000<span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">long</span> period <span style="color:#ff79c6">=</span> 5<span style="color:#ff79c6">*</span>1000<span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> repeat <span style="color:#ff79c6">=</span> 3 <span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span> i <span style="color:#ff79c6">&lt;</span> 3<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">+</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                TextMessage textMessage <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createTextMessage</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;tx msg--&#34;</span> <span style="color:#ff79c6">+</span> i<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">// 延迟的时间
+</span><span style="color:#6272a4"></span>                  
+                textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setLongProperty</span><span style="color:#ff79c6">(</span>ScheduledMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">AMQ_SCHEDULED_DELAY</span><span style="color:#ff79c6">,</span> delay<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">// 重复投递的时间间隔
+</span><span style="color:#6272a4"></span>                  
+                textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setLongProperty</span><span style="color:#ff79c6">(</span>ScheduledMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">AMQ_SCHEDULED_PERIOD</span><span style="color:#ff79c6">,</span> period<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">// 重复投递的次数
+</span><span style="color:#6272a4"></span>                  
+                textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setIntProperty</span><span style="color:#ff79c6">(</span>ScheduledMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">AMQ_SCHEDULED_REPEAT</span><span style="color:#ff79c6">,</span> repeat<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">// 此处的意思：该条消息，等待10秒，之后每5秒发送一次，重复发送3次。
+</span><span style="color:#6272a4"></span>                  
+                messageProducer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">send</span><span style="color:#ff79c6">(</span>textMessage<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;消息发送完成&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+            messageProducer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><ul>
 <li>消费者代码</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.activemq.demo<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.activemq.demo<span style="color:#ff79c6">;</span>
   
-<span style="color:#f92672">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.jms.*<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.*<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
   
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jms_TX_Consumer</span> <span style="color:#f92672">{</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Jms_TX_Consumer</span> <span style="color:#ff79c6">{</span>
   
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_URL <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#ff79c6">;</span>
   
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Schedule01&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;Schedule01&#34;</span><span style="color:#ff79c6">;</span>
   
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException<span style="color:#f92672">,</span> IOException <span style="color:#f92672">{</span>
-        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ActiveMQConnectionFactory<span style="color:#f92672">(</span>ACTIVEMQ_URL<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Connection connection <span style="color:#f92672">=</span> activeMQConnectionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Session session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> Session<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        MessageConsumer messageConsumer <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createConsumer</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        messageConsumer<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessageListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MessageListener<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> JMSException<span style="color:#ff79c6">,</span> IOException <span style="color:#ff79c6">{</span>
+        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ActiveMQConnectionFactory<span style="color:#ff79c6">(</span>ACTIVEMQ_URL<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Connection connection <span style="color:#ff79c6">=</span> activeMQConnectionFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createConnection</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Session session <span style="color:#ff79c6">=</span> connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createSession</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">false</span><span style="color:#ff79c6">,</span> Session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">AUTO_ACKNOWLEDGE</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Queue queue <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createQueue</span><span style="color:#ff79c6">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        MessageConsumer messageConsumer <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createConsumer</span><span style="color:#ff79c6">(</span>queue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        messageConsumer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setMessageListener</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> MessageListener<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
   
-            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onMessage</span><span style="color:#f92672">(</span>Message message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>message <span style="color:#66d9ef">instanceof</span> TextMessage<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-                        TextMessage textMessage <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TextMessage<span style="color:#f92672">)</span> message<span style="color:#f92672">;</span>
-                        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;***消费者接收到的消息:   &#34;</span> <span style="color:#f92672">+</span> textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                        textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">acknowledge</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;出现异常，消费失败，放弃消费&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                    <span style="color:#f92672">}</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">in</span><span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        messageConsumer<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onMessage</span><span style="color:#ff79c6">(</span>Message message<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">instanceof</span> TextMessage<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                        TextMessage textMessage <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>TextMessage<span style="color:#ff79c6">)</span> message<span style="color:#ff79c6">;</span>
+                        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;***消费者接收到的消息:   &#34;</span> <span style="color:#ff79c6">+</span> textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getText</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                        textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">acknowledge</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;出现异常，消费失败，放弃消费&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">}</span>
+                <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">in</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">read</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        messageConsumer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 <h2 id="消息消费的重试机制">消息消费的重试机制</h2>
@@ -507,7 +639,10 @@
 <p><strong>属性说明</strong></p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216s65wyuj30s90a1jso.jpg" alt="QQ截图20220508184526.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216s65wyuj30s90a1jso.jpg" alt="QQ截图20220508184526.jpg">
+
+</p>
 <ul>
 <li>
 <p><strong>代码验证</strong></p>
@@ -517,103 +652,109 @@
 </li>
 <li>
 <p>消费者。开启事务，却没有commit。重启消费者，前6次都能收到消息，到第7次，不会再收到消息。代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.activemq.demo<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.activemq.demo<span style="color:#ff79c6">;</span>
     
-<span style="color:#f92672">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.jms.*<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.*<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
     
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jms_TX_Consumer</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dead01&#34;</span><span style="color:#f92672">;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Jms_TX_Consumer</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_URL <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;dead01&#34;</span><span style="color:#ff79c6">;</span>
     
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException<span style="color:#f92672">,</span> IOException <span style="color:#f92672">{</span>
-        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ActiveMQConnectionFactory<span style="color:#f92672">(</span>ACTIVEMQ_URL<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Connection connection <span style="color:#f92672">=</span> activeMQConnectionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">final</span> Session session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> Session<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        MessageConsumer messageConsumer <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createConsumer</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        messageConsumer<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessageListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MessageListener<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onMessage</span><span style="color:#f92672">(</span>Message message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>message <span style="color:#66d9ef">instanceof</span> TextMessage<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    TextMessage textMessage <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TextMessage<span style="color:#f92672">)</span> message<span style="color:#f92672">;</span>
-                    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-                        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;***消费者接收到的消息:   &#34;</span> <span style="color:#f92672">+</span> textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                        <span style="color:#75715e">//session.commit();
-</span><span style="color:#75715e"></span>                            
-                    <span style="color:#f92672">}</span><span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-                        e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                    <span style="color:#f92672">}</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">//关闭资源
-</span><span style="color:#75715e"></span>            
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">in</span><span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        messageConsumer<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> JMSException<span style="color:#ff79c6">,</span> IOException <span style="color:#ff79c6">{</span>
+        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ActiveMQConnectionFactory<span style="color:#ff79c6">(</span>ACTIVEMQ_URL<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Connection connection <span style="color:#ff79c6">=</span> activeMQConnectionFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createConnection</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd;font-style:italic">final</span> Session session <span style="color:#ff79c6">=</span> connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createSession</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">,</span> Session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">AUTO_ACKNOWLEDGE</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Queue queue <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createQueue</span><span style="color:#ff79c6">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        MessageConsumer messageConsumer <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createConsumer</span><span style="color:#ff79c6">(</span>queue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        messageConsumer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setMessageListener</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> MessageListener<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onMessage</span><span style="color:#ff79c6">(</span>Message message<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">instanceof</span> TextMessage<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    TextMessage textMessage <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>TextMessage<span style="color:#ff79c6">)</span> message<span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;***消费者接收到的消息:   &#34;</span> <span style="color:#ff79c6">+</span> textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getText</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                        <span style="color:#6272a4">//session.commit();
+</span><span style="color:#6272a4"></span>                            
+                    <span style="color:#ff79c6">}</span><span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+                        e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">}</span>
+                <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//关闭资源
+</span><span style="color:#6272a4"></span>            
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">in</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">read</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        messageConsumer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>activemq管理后台。多了一个名为ActiveMQ.DLQ队列，里面多了3条消息</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216t99ghaj30r006mq3a.jpg" alt="QQ截图20220508184630.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216t99ghaj30r006mq3a.jpg" alt="QQ截图20220508184630.jpg">
+
+</p>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>代码修改默认参数</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.activemq.demo<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.activemq.demo<span style="color:#ff79c6">;</span>
   
-<span style="color:#f92672">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.activemq.RedeliveryPolicy<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.jms.*<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.ActiveMQConnectionFactory<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.RedeliveryPolicy<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.*<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
   
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jms_TX_Consumer</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dead01&#34;</span><span style="color:#f92672">;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Jms_TX_Consumer</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_URL <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;tcp://118.24.20.3:61626&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> String ACTIVEMQ_QUEUE_NAME <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;dead01&#34;</span><span style="color:#ff79c6">;</span>
   
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException<span style="color:#f92672">,</span> IOException <span style="color:#f92672">{</span>
-        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ActiveMQConnectionFactory<span style="color:#f92672">(</span>ACTIVEMQ_URL<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">// 修改默认参数，设置消息消费重试3次
-</span><span style="color:#75715e"></span>          
-        RedeliveryPolicy redeliveryPolicy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RedeliveryPolicy<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        redeliveryPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">setMaximumRedeliveries</span><span style="color:#f92672">(</span>3<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        activeMQConnectionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">setRedeliveryPolicy</span><span style="color:#f92672">(</span>redeliveryPolicy<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Connection connection <span style="color:#f92672">=</span> activeMQConnectionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">final</span> Session session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> Session<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        MessageConsumer messageConsumer <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createConsumer</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        messageConsumer<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessageListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MessageListener<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onMessage</span><span style="color:#f92672">(</span>Message message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>message <span style="color:#66d9ef">instanceof</span> TextMessage<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    TextMessage textMessage <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TextMessage<span style="color:#f92672">)</span> message<span style="color:#f92672">;</span>
-                    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-                        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;***消费者接收到的消息:   &#34;</span> <span style="color:#f92672">+</span> textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                        <span style="color:#75715e">//session.commit();
-</span><span style="color:#75715e"></span>                          
-                    <span style="color:#f92672">}</span><span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-                        e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                    <span style="color:#f92672">}</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">in</span><span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        messageConsumer<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> JMSException<span style="color:#ff79c6">,</span> IOException <span style="color:#ff79c6">{</span>
+        ActiveMQConnectionFactory activeMQConnectionFactory <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ActiveMQConnectionFactory<span style="color:#ff79c6">(</span>ACTIVEMQ_URL<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">// 修改默认参数，设置消息消费重试3次
+</span><span style="color:#6272a4"></span>          
+        RedeliveryPolicy redeliveryPolicy <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> RedeliveryPolicy<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        redeliveryPolicy<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setMaximumRedeliveries</span><span style="color:#ff79c6">(</span>3<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        activeMQConnectionFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setRedeliveryPolicy</span><span style="color:#ff79c6">(</span>redeliveryPolicy<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Connection connection <span style="color:#ff79c6">=</span> activeMQConnectionFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createConnection</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd;font-style:italic">final</span> Session session <span style="color:#ff79c6">=</span> connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createSession</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">,</span> Session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">AUTO_ACKNOWLEDGE</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Queue queue <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createQueue</span><span style="color:#ff79c6">(</span>ACTIVEMQ_QUEUE_NAME<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        MessageConsumer messageConsumer <span style="color:#ff79c6">=</span> session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createConsumer</span><span style="color:#ff79c6">(</span>queue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        messageConsumer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setMessageListener</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> MessageListener<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">onMessage</span><span style="color:#ff79c6">(</span>Message message<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>message <span style="color:#ff79c6">instanceof</span> TextMessage<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    TextMessage textMessage <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>TextMessage<span style="color:#ff79c6">)</span> message<span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;***消费者接收到的消息:   &#34;</span> <span style="color:#ff79c6">+</span> textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getText</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                        <span style="color:#6272a4">//session.commit();
+</span><span style="color:#6272a4"></span>                          
+                    <span style="color:#ff79c6">}</span><span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+                        e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">}</span>
+                <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">in</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">read</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        messageConsumer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        session<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        connection<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>整合spring</strong></p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216ubtmruj30rj0f5766.jpg" alt="QQ截图20220508184730.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216ubtmruj30rj0f5766.jpg" alt="QQ截图20220508184730.jpg">
+
+</p>
 <h2 id="死信队列">死信队列</h2>
 <ul>
 <li>
@@ -621,8 +762,14 @@
 </li>
 <li>
 <p>死信队列：异常消息规避处理的集合，主要处理失败的消息</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216vgbysqj30rv07374q.jpg" alt="QQ截图20220508184825.jpg"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216vkff2fj30s00daq45.jpg" alt="QQ截图20220508184836.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216vgbysqj30rv07374q.jpg" alt="QQ截图20220508184825.jpg">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h216vkff2fj30s00daq45.jpg" alt="QQ截图20220508184836.jpg">
+
+</p>
 </li>
 <li>
 <p><strong>死信队列的配置（一般采用默认）</strong></p>
@@ -630,21 +777,33 @@
 <li>
 <p><strong>sharedDeadLetterStrategy</strong></p>
 <p>不管是queue还是topic，失败的消息都放到这个队列中。下面修改activemq.xml的配置，可以达到修改队列的名字。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2170zp6ckj30mf076glw.jpg" alt="QQ截图20220508185355.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2170zp6ckj30mf076glw.jpg" alt="QQ截图20220508185355.jpg">
+
+</p>
 </li>
 <li>
 <p><strong>individualDeadLetterStrategy</strong></p>
 <p>可以为queue和topic单独指定两个死信队列。还可以为某个话题，单独指定一个死信队列</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h21723euzgj30st0qugno.jpg" alt="QQ截图20220508185459.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h21723euzgj30st0qugno.jpg" alt="QQ截图20220508185459.jpg">
+
+</p>
 </li>
 <li>
 <p><strong>自动删除过期消息</strong></p>
 <p>过期消息是值生产者指定的过期时间，超过这个时间的消息</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2172t5jmxj30ro06gt8y.jpg" alt="QQ截图20220508185540.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2172t5jmxj30ro06gt8y.jpg" alt="QQ截图20220508185540.jpg">
+
+</p>
 </li>
 <li>
 <p><strong>存放非持久消息到死信队列中</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2173q7cdxj30ry0bgt9l.jpg" alt="QQ截图20220508185633.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2173q7cdxj30ry0bgt9l.jpg" alt="QQ截图20220508185633.jpg">
+
+</p>
 </li>
 </ul>
 </li>
@@ -668,13 +827,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -973,16 +1146,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -995,48 +1158,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1046,7 +1205,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1066,7 +1237,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1084,7 +1255,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1096,12 +1267,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

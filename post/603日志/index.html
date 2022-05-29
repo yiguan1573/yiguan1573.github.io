@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>3、日志(SpringBoot)-yiguan1573</title>
+    <title>3、日志(SpringBoot) | yiguan1573</title>
 
     <link rel="canonical" href="/post/603%E6%97%A5%E5%BF%97/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>3、日志(SpringBoot)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Wednesday, June 24, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Wednesday, June 24, 2020
+                            
+                                <span id="/post/603%E6%97%A5%E5%BF%97/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -213,29 +339,6 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#1日志框架">1、日志框架</a></li>
-    <li><a href="#2slf4j使用">2、SLF4j使用</a>
-      <ul>
-        <li><a href="#1如何在系统中使用slf4j---httpswwwslf4jorg">1、如何在系统中使用SLF4j   </a></li>
-        <li><a href="#2遗留问题">2、遗留问题</a></li>
-      </ul>
-    </li>
-    <li><a href="#3springboot日志关系">3、SpringBoot日志关系</a></li>
-    <li><a href="#4日志使用">4、日志使用；</a>
-      <ul>
-        <li><a href="#1默认配置">1、默认配置</a></li>
-        <li><a href="#2指定配置">2、指定配置</a></li>
-      </ul>
-    </li>
-    <li><a href="#5切换日志框架">5、切换日志框架</a></li>
-  </ul>
-</nav>
                 
                 <h2 id="1日志框架">1、日志框架</h2>
 <p>小张；开发一个大型系统；</p>
@@ -271,85 +374,103 @@
 <h3 id="1如何在系统中使用slf4j---httpswwwslf4jorg">1、如何在系统中使用SLF4j   <a href="https://www.slf4j.org">https://www.slf4j.org</a></h3>
 <p>以后开发的时候，日志记录方法的调用，不应该来直接调用日志的实现类，而是调用日志抽象层里面的方法；</p>
 <p>给系统里面导入slf4j的jar和  logback的实现jar</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.slf4j.Logger<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.slf4j.LoggerFactory<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">import</span> org.slf4j.Logger<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.slf4j.LoggerFactory<span style="color:#ff79c6">;</span>
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloWorld</span> <span style="color:#f92672">{</span>
-  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Logger logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>HelloWorld<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello World&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-  <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">HelloWorld</span> <span style="color:#ff79c6">{</span>
+  <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    Logger logger <span style="color:#ff79c6">=</span> LoggerFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getLogger</span><span style="color:#ff79c6">(</span>HelloWorld<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    logger<span style="color:#ff79c6">.</span><span style="color:#50fa7b">info</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Hello World&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+  <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><p>图示；</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggiuvet2ozj30sh0fo78w.jpg" alt="QQ截图20200708000605.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggiuvet2ozj30sh0fo78w.jpg" alt="QQ截图20200708000605.png">
+
+</p>
 <p>每一个日志的实现框架都有自己的配置文件。使用slf4j以后，<strong>配置文件还是做成日志实现框架自己本身的配置文件；</strong></p>
 <h3 id="2遗留问题">2、遗留问题</h3>
 <p>a（slf4j+logback）: Spring（commons-logging）、Hibernate（jboss-logging）、MyBatis、xxxx</p>
 <p>统一日志记录，即使是别的框架和我一起统一使用slf4j进行输出？</p>
-<p><img src="images/legacy.png" alt=""></p>
+<p>
+  <img src="images/legacy.png" alt="">
+
+</p>
 <p><strong>如何让系统中所有的日志都统一到slf4j；</strong></p>
 <p>1、将系统中其他日志框架先排除出去；</p>
 <p>2、用中间包来替换原有的日志框架；</p>
 <p>3、我们导入slf4j其他的实现</p>
 <h2 id="3springboot日志关系">3、SpringBoot日志关系</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">		<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-			<span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-			<span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter<span style="color:#f92672">&lt;/artifactId&gt;</span>
-		<span style="color:#f92672">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">		<span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+			<span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+			<span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+		<span style="color:#ff79c6">&lt;/dependency&gt;</span>
 </code></pre></div><p>SpringBoot使用它来做日志功能；</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">	<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-			<span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-			<span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-logging<span style="color:#f92672">&lt;/artifactId&gt;</span>
-		<span style="color:#f92672">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">	<span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+			<span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+			<span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-logging<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+		<span style="color:#ff79c6">&lt;/dependency&gt;</span>
 </code></pre></div><p>底层依赖关系</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggko6hqzpjj312e0hgq5q.jpg" alt="QQ截图20200709134541.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggko6hqzpjj312e0hgq5q.jpg" alt="QQ截图20200709134541.png">
+
+</p>
 <p>总结：</p>
 <p>​	1）、SpringBoot底层也是使用slf4j+logback的方式进行日志记录</p>
 <p>​	2）、SpringBoot也把其他的日志都替换成了slf4j；</p>
 <p>​	3）、中间替换包？</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;rawtypes&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LogFactory</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@SuppressWarnings<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;rawtypes&#34;</span><span style="color:#ff79c6">)</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">abstract</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">LogFactory</span> <span style="color:#ff79c6">{</span>
 
-    <span style="color:#66d9ef">static</span> String UNSUPPORTED_OPERATION_IN_JCL_OVER_SLF4J <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://www.slf4j.org/codes.html#unsupported_operation_in_jcl_over_slf4j&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#8be9fd;font-style:italic">static</span> String UNSUPPORTED_OPERATION_IN_JCL_OVER_SLF4J <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;http://www.slf4j.org/codes.html#unsupported_operation_in_jcl_over_slf4j&#34;</span><span style="color:#ff79c6">;</span>
 
-    <span style="color:#66d9ef">static</span> LogFactory logFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SLF4JLogFactory<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggkoa4ou4tj30hc096abl.jpg" alt="QQ截图20200709134906.png"></p>
+    <span style="color:#8be9fd;font-style:italic">static</span> LogFactory logFactory <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> SLF4JLogFactory<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+</code></pre></div><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggkoa4ou4tj30hc096abl.jpg" alt="QQ截图20200709134906.png">
+
+</p>
 <p>​	4）、如果我们要引入其他框架？一定要把这个框架的默认日志依赖移除掉？</p>
 <p>​			Spring框架用的是commons-logging；</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">		<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-			<span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
-			<span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
-			<span style="color:#f92672">&lt;exclusions</span><span style="color:#f92672">&gt;</span>
-				<span style="color:#f92672">&lt;exclusion</span><span style="color:#f92672">&gt;</span>
-					<span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>commons-logging<span style="color:#f92672">&lt;/groupId&gt;</span>
-					<span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>commons-logging<span style="color:#f92672">&lt;/artifactId&gt;</span>
-				<span style="color:#f92672">&lt;/exclusion&gt;</span>
-			<span style="color:#f92672">&lt;/exclusions&gt;</span>
-		<span style="color:#f92672">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">		<span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+			<span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+			<span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-core<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+			<span style="color:#ff79c6">&lt;exclusions</span><span style="color:#ff79c6">&gt;</span>
+				<span style="color:#ff79c6">&lt;exclusion</span><span style="color:#ff79c6">&gt;</span>
+					<span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>commons-logging<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+					<span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>commons-logging<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+				<span style="color:#ff79c6">&lt;/exclusion&gt;</span>
+			<span style="color:#ff79c6">&lt;/exclusions&gt;</span>
+		<span style="color:#ff79c6">&lt;/dependency&gt;</span>
 </code></pre></div><p><strong>SpringBoot能自动适配所有的日志，而且底层使用slf4j+logback的方式记录日志，引入其他框架的时候，只需要把这个框架依赖的日志框架排除掉即可；</strong></p>
 <h2 id="4日志使用">4、日志使用；</h2>
 <h3 id="1默认配置">1、默认配置</h3>
 <p>SpringBoot默认帮我们配置好了日志；</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#75715e">//记录器
-</span><span style="color:#75715e"></span>	Logger logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>getClass<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-	<span style="color:#a6e22e">@Test</span>
-	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">contextLoads</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-		<span style="color:#75715e">//System.out.println();
-</span><span style="color:#75715e"></span>
-		<span style="color:#75715e">//日志的级别；
-</span><span style="color:#75715e"></span>		<span style="color:#75715e">//由低到高   trace&lt;debug&lt;info&lt;warn&lt;error
-</span><span style="color:#75715e"></span>		<span style="color:#75715e">//可以调整输出的日志级别；日志就只会在这个级别以以后的高级别生效
-</span><span style="color:#75715e"></span>		logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;这是trace日志...&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-		logger<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;这是debug日志...&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-		<span style="color:#75715e">//SpringBoot默认给我们使用的是info级别的，没有指定级别的就用SpringBoot默认规定的级别；root级别
-</span><span style="color:#75715e"></span>		logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;这是info日志...&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-		logger<span style="color:#f92672">.</span><span style="color:#a6e22e">warn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;这是warn日志...&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-		logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;这是error日志...&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#6272a4">//记录器
+</span><span style="color:#6272a4"></span>	Logger logger <span style="color:#ff79c6">=</span> LoggerFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getLogger</span><span style="color:#ff79c6">(</span>getClass<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+	@Test
+	<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">contextLoads</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+		<span style="color:#6272a4">//System.out.println();
+</span><span style="color:#6272a4"></span>
+		<span style="color:#6272a4">//日志的级别；
+</span><span style="color:#6272a4"></span>		<span style="color:#6272a4">//由低到高   trace&lt;debug&lt;info&lt;warn&lt;error
+</span><span style="color:#6272a4"></span>		<span style="color:#6272a4">//可以调整输出的日志级别；日志就只会在这个级别以以后的高级别生效
+</span><span style="color:#6272a4"></span>		logger<span style="color:#ff79c6">.</span><span style="color:#50fa7b">trace</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;这是trace日志...&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+		logger<span style="color:#ff79c6">.</span><span style="color:#50fa7b">debug</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;这是debug日志...&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+		<span style="color:#6272a4">//SpringBoot默认给我们使用的是info级别的，没有指定级别的就用SpringBoot默认规定的级别；root级别
+</span><span style="color:#6272a4"></span>		logger<span style="color:#ff79c6">.</span><span style="color:#50fa7b">info</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;这是info日志...&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+		logger<span style="color:#ff79c6">.</span><span style="color:#50fa7b">warn</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;这是warn日志...&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+		logger<span style="color:#ff79c6">.</span><span style="color:#50fa7b">error</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;这是error日志...&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
 
-	<span style="color:#f92672">}</span>
-</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggkp2wbfudj30r807s3zv.jpg" alt="QQ截图20200709141632.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggkp49eef2j30o20oq0ut.jpg" alt="QQ截图20200709141649.png"></p>
+	<span style="color:#ff79c6">}</span>
+</code></pre></div><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggkp2wbfudj30r807s3zv.jpg" alt="QQ截图20200709141632.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggkp49eef2j30o20oq0ut.jpg" alt="QQ截图20200709141649.png">
+
+</p>
 <pre><code>      日志输出格式：
     		%d表示日期时间，
     		%thread表示线程名，
@@ -375,8 +496,14 @@ logging.path=/spring/log
 logging.pattern.console=%d{yyyy-MM-dd} [%thread] %-5level %logger{50} - %msg%n
 # 指定文件中日志输出的格式
 logging.pattern.file=%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} ==== %msg%n
-</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggkpgu92boj30p503kjrk.jpg" alt="QQ截图20200709142951.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggkphqt5dvj30w1060dfz.jpg" alt="QQ截图20200709143013.png">
+</code></pre><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggkpgu92boj30p503kjrk.jpg" alt="QQ截图20200709142951.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggkphqt5dvj30w1060dfz.jpg" alt="QQ截图20200709143013.png">
+
+
 | logging.file | logging.path | Example  | Description             |
 | &mdash;&mdash;&mdash;&mdash; | &mdash;&mdash;&mdash;&mdash; | &mdash;&mdash;&ndash; | &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash; |
 | (none)       | (none)       |          | 只在控制台输出                 |
@@ -408,72 +535,72 @@ logging.pattern.file=%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} =
 </table>
 <p>logback.xml：直接就被日志框架识别了；</p>
 <p><strong>logback-spring.xml</strong>：日志框架就不直接加载日志的配置项，由SpringBoot解析日志配置，可以使用SpringBoot的高级Profile功能</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;springProfile</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;staging&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> configuration to be enabled when the &#34;staging&#34; profile is active </span><span style="color:#75715e">--&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;springProfile</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;staging&#34;</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> configuration to be enabled when the &#34;staging&#34; profile is active </span><span style="color:#6272a4">--&gt;</span>
   	可以指定某段配置只在某个环境下生效
-<span style="color:#f92672">&lt;/springProfile&gt;</span>
+<span style="color:#ff79c6">&lt;/springProfile&gt;</span>
 
 </code></pre></div><p>如：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;stdout&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">
-</span><span style="color:#75715e">        日志输出格式：
-</span><span style="color:#75715e">			%d表示日期时间，
-</span><span style="color:#75715e">			%thread表示线程名，
-</span><span style="color:#75715e">			%</span><span style="color:#75715e">-</span><span style="color:#75715e">5level：级别从左显示5个字符宽度
-</span><span style="color:#75715e">			%logger{50} 表示logger名字最长50个字符，否则按照句点分割。 
-</span><span style="color:#75715e">			%msg：日志消息，
-</span><span style="color:#75715e">			%n是换行符
-</span><span style="color:#75715e">        </span><span style="color:#75715e">--&gt;</span>
-        <span style="color:#f92672">&lt;layout</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.classic.PatternLayout&#34;</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;springProfile</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;dev&#34;</span><span style="color:#f92672">&gt;</span>
-                <span style="color:#f92672">&lt;pattern</span><span style="color:#f92672">&gt;</span>%d{yyyy-MM-dd HH:mm:ss.SSS} ----&gt; [%thread] ---&gt; %-5level %logger{50} - %msg%n<span style="color:#f92672">&lt;/pattern&gt;</span>
-            <span style="color:#f92672">&lt;/springProfile&gt;</span>
-            <span style="color:#f92672">&lt;springProfile</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;!dev&#34;</span><span style="color:#f92672">&gt;</span>
-                <span style="color:#f92672">&lt;pattern</span><span style="color:#f92672">&gt;</span>%d{yyyy-MM-dd HH:mm:ss.SSS} ==== [%thread] ==== %-5level %logger{50} - %msg%n<span style="color:#f92672">&lt;/pattern&gt;</span>
-            <span style="color:#f92672">&lt;/springProfile&gt;</span>
-        <span style="color:#f92672">&lt;/layout&gt;</span>
-    <span style="color:#f92672">&lt;/appender&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;appender</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;stdout&#34;</span> <span style="color:#50fa7b">class=</span><span style="color:#f1fa8c">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4">
+</span><span style="color:#6272a4">        日志输出格式：
+</span><span style="color:#6272a4">			%d表示日期时间，
+</span><span style="color:#6272a4">			%thread表示线程名，
+</span><span style="color:#6272a4">			%</span><span style="color:#6272a4">-</span><span style="color:#6272a4">5level：级别从左显示5个字符宽度
+</span><span style="color:#6272a4">			%logger{50} 表示logger名字最长50个字符，否则按照句点分割。 
+</span><span style="color:#6272a4">			%msg：日志消息，
+</span><span style="color:#6272a4">			%n是换行符
+</span><span style="color:#6272a4">        </span><span style="color:#6272a4">--&gt;</span>
+        <span style="color:#ff79c6">&lt;layout</span> <span style="color:#50fa7b">class=</span><span style="color:#f1fa8c">&#34;ch.qos.logback.classic.PatternLayout&#34;</span><span style="color:#ff79c6">&gt;</span>
+            <span style="color:#ff79c6">&lt;springProfile</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;dev&#34;</span><span style="color:#ff79c6">&gt;</span>
+                <span style="color:#ff79c6">&lt;pattern</span><span style="color:#ff79c6">&gt;</span>%d{yyyy-MM-dd HH:mm:ss.SSS} ----&gt; [%thread] ---&gt; %-5level %logger{50} - %msg%n<span style="color:#ff79c6">&lt;/pattern&gt;</span>
+            <span style="color:#ff79c6">&lt;/springProfile&gt;</span>
+            <span style="color:#ff79c6">&lt;springProfile</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;!dev&#34;</span><span style="color:#ff79c6">&gt;</span>
+                <span style="color:#ff79c6">&lt;pattern</span><span style="color:#ff79c6">&gt;</span>%d{yyyy-MM-dd HH:mm:ss.SSS} ==== [%thread] ==== %-5level %logger{50} - %msg%n<span style="color:#ff79c6">&lt;/pattern&gt;</span>
+            <span style="color:#ff79c6">&lt;/springProfile&gt;</span>
+        <span style="color:#ff79c6">&lt;/layout&gt;</span>
+    <span style="color:#ff79c6">&lt;/appender&gt;</span>
 </code></pre></div><p>如果使用logback.xml作为日志配置文件，还要使用profile功能，会有以下错误</p>
 <p><code>no applicable action for [springProfile]</code></p>
 <h2 id="5切换日志框架">5、切换日志框架</h2>
 <p>可以按照slf4j的日志适配图，进行相关的切换；</p>
 <p>slf4j+log4j的方式；</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-  <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
-  <span style="color:#f92672">&lt;exclusions</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;exclusion</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>logback-classic<span style="color:#f92672">&lt;/artifactId&gt;</span>
-      <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>ch.qos.logback<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;/exclusion&gt;</span>
-    <span style="color:#f92672">&lt;exclusion</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>log4j-over-slf4j<span style="color:#f92672">&lt;/artifactId&gt;</span>
-      <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.slf4j<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;/exclusion&gt;</span>
-  <span style="color:#f92672">&lt;/exclusions&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+  <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+  <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-web<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+  <span style="color:#ff79c6">&lt;exclusions</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;exclusion</span><span style="color:#ff79c6">&gt;</span>
+      <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>logback-classic<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+      <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>ch.qos.logback<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+    <span style="color:#ff79c6">&lt;/exclusion&gt;</span>
+    <span style="color:#ff79c6">&lt;exclusion</span><span style="color:#ff79c6">&gt;</span>
+      <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>log4j-over-slf4j<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+      <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.slf4j<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+    <span style="color:#ff79c6">&lt;/exclusion&gt;</span>
+  <span style="color:#ff79c6">&lt;/exclusions&gt;</span>
+<span style="color:#ff79c6">&lt;/dependency&gt;</span>
 
-<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.slf4j<span style="color:#f92672">&lt;/groupId&gt;</span>
-  <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>slf4j-log4j12<span style="color:#f92672">&lt;/artifactId&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+  <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.slf4j<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+  <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>slf4j-log4j12<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+<span style="color:#ff79c6">&lt;/dependency&gt;</span>
 
 </code></pre></div><p>切换为log4j2</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">   <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;exclusions</span><span style="color:#f92672">&gt;</span>
-                <span style="color:#f92672">&lt;exclusion</span><span style="color:#f92672">&gt;</span>
-                    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-logging<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-                <span style="color:#f92672">&lt;/exclusion&gt;</span>
-            <span style="color:#f92672">&lt;/exclusions&gt;</span>
-        <span style="color:#f92672">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">   <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+            <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+            <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-web<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+            <span style="color:#ff79c6">&lt;exclusions</span><span style="color:#ff79c6">&gt;</span>
+                <span style="color:#ff79c6">&lt;exclusion</span><span style="color:#ff79c6">&gt;</span>
+                    <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-logging<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+                    <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+                <span style="color:#ff79c6">&lt;/exclusion&gt;</span>
+            <span style="color:#ff79c6">&lt;/exclusions&gt;</span>
+        <span style="color:#ff79c6">&lt;/dependency&gt;</span>
 
-<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-  <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-log4j2<span style="color:#f92672">&lt;/artifactId&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+  <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+  <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-log4j2<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+<span style="color:#ff79c6">&lt;/dependency&gt;</span>
 </code></pre></div>
 
                 
@@ -493,13 +620,27 @@ logging.pattern.file=%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} =
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -798,16 +939,6 @@ logging.pattern.file=%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} =
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -820,48 +951,44 @@ logging.pattern.file=%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} =
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -871,7 +998,19 @@ logging.pattern.file=%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} =
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -891,7 +1030,7 @@ logging.pattern.file=%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} =
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -909,7 +1048,7 @@ logging.pattern.file=%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} =
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -921,12 +1060,76 @@ logging.pattern.file=%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} =
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>10、树结构实际应用(数据结构与算法)-yiguan1573</title>
+    <title>10、树结构实际应用(数据结构与算法) | yiguan1573</title>
 
     <link rel="canonical" href="/post/740%E6%A0%91%E7%BB%93%E6%9E%84%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>10、树结构实际应用(数据结构与算法)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Sunday, August 23, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Sunday, August 23, 2020
+                            
+                                <span id="/post/740%E6%A0%91%E7%BB%93%E6%9E%84%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,44 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#堆排序基本介绍">堆排序基本介绍</a></li>
-    <li><a href="#堆排序基本思想">堆排序基本思想</a></li>
-    <li><a href="#堆排序步骤图解说明">堆排序步骤图解说明</a></li>
-    <li><a href="#堆排序代码实现">堆排序代码实现</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#基本介绍">基本介绍</a></li>
-    <li><a href="#赫夫曼树几个重要概念和举例说明">赫夫曼树几个重要概念和举例说明</a></li>
-    <li><a href="#赫夫曼树创建思路图解">赫夫曼树创建思路图解</a></li>
-    <li><a href="#赫夫曼树的代码实现">赫夫曼树的代码实现</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#基本介绍-1">基本介绍</a></li>
-    <li><a href="#步骤">步骤</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#二叉排序树介绍">二叉排序树介绍</a></li>
-    <li><a href="#二叉排序树创建和遍历">二叉排序树创建和遍历</a></li>
-    <li><a href="#二叉排序树的删除">二叉排序树的删除</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#看一个案例说明二叉排序树可能的问题">看一个案例(说明二叉排序树可能的问题)</a></li>
-    <li><a href="#基本介绍-2">基本介绍</a></li>
-    <li><a href="#应用案例-单旋转左旋转">应用案例-单旋转(左旋转)</a></li>
-    <li><a href="#应用案例-单旋转右旋转">应用案例-单旋转(右旋转)</a></li>
-    <li><a href="#应用案例-双旋转">应用案例-双旋转</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="堆排序">堆排序</h1>
 <h2 id="堆排序基本介绍">堆排序基本介绍</h2>
 <ul>
@@ -259,9 +347,15 @@
 <li>堆是具有以下性质的完全二叉树：每个结点的值都大于或等于其左右孩子结点的值，称为大顶堆, 注意 : 没有要求结点的左孩子的值和右孩子的值的大小关系。</li>
 <li>每个结点的值都小于或等于其左右孩子结点的值，称为小顶堆</li>
 <li>大顶堆举例说明
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4hw92ugj30j90500sy.jpg" alt="QQ截图20200918212606.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4hw92ugj30j90500sy.jpg" alt="QQ截图20200918212606.jpg">
+
+</li>
 <li>小顶堆举例说明
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4i157qgj30fm04q748.jpg" alt="QQ截图20200918212627.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4i157qgj30fm04q748.jpg" alt="QQ截图20200918212627.jpg">
+
+</li>
 <li>一般升序采用大顶堆，降序采用小顶堆</li>
 </ul>
 <h2 id="堆排序基本思想">堆排序基本思想</h2>
@@ -272,10 +366,22 @@
 <li>然后将剩余 n-1 个元素重新构造成一个堆，这样会得到 n 个元素的次小值。如此反复执行，便能得到一个有序 序列了</li>
 </ol>
 <h2 id="堆排序步骤图解说明">堆排序步骤图解说明</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4kbe283j30j20jedgl.jpg" alt="QQ截图20200918212810.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4kgi7b9j30jt0jbmy5.jpg" alt="QQ截图20200918212830.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4kkaktej30j90jot9l.jpg" alt="QQ截图20200918212836.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4ko837jj30io0j174u.jpg" alt="QQ截图20200918212850.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4kbe283j30j20jedgl.jpg" alt="QQ截图20200918212810.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4kgi7b9j30jt0jbmy5.jpg" alt="QQ截图20200918212830.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4kkaktej30j90jot9l.jpg" alt="QQ截图20200918212836.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giv4ko837jj30io0j174u.jpg" alt="QQ截图20200918212850.jpg">
+
+</p>
 <h2 id="堆排序代码实现">堆排序代码实现</h2>
 <pre><code>package com.yiguan1573.tree;
 
@@ -331,7 +437,10 @@ public class HeapSort {
 <li>结点的权及带权路径长度：若将树中结点赋给一个有着某种含义的数值，则这个数值称为该结点的权。结 点的带权路径长度为：从根结点到该结点之间的路径长度与该结点的权的乘积</li>
 <li>树的带权路径长度：树的带权路径长度规定为所有叶子结点的带权路径长度之和，记为 WPL(weighted path length) ,权值越大的结点离根结点越近的二叉树才是最优二叉树。</li>
 <li>WPL 最小的就是赫夫曼树
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giw2er5mdcj30hc05uweo.jpg" alt="QQ截图20200919165944.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giw2er5mdcj30hc05uweo.jpg" alt="QQ截图20200919165944.jpg">
+
+</li>
 </ul>
 <h2 id="赫夫曼树创建思路图解">赫夫曼树创建思路图解</h2>
 <ul>
@@ -342,7 +451,10 @@ public class HeapSort {
 <li>组成一颗新的二叉树, 该新的二叉树的根节点的权值是前面两颗二叉树根节点权值的和</li>
 <li>再将这颗新的二叉树，以根节点的权值大小 再次排序,不断重复 1-2-3-4 的步骤，直到数列中，所有的数 据都被处理，就得到一颗赫夫曼树</li>
 <li>图解:
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giw2huwvzaj30ag07ajrh.jpg" alt="QQ截图20200919170257.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giw2huwvzaj30ag07ajrh.jpg" alt="QQ截图20200919170257.jpg">
+
+</li>
 </ol>
 </li>
 </ul>
@@ -422,17 +534,26 @@ class HuffmanNode implements Comparable&lt;HuffmanNode&gt;{
 <li>取出根节点权值最小的两颗二叉树</li>
 <li>组成一颗新的二叉树, 该新的二叉树的根节点的权值是前面两颗二叉树根节点权值的和</li>
 <li>再将这颗新的二叉树，以根节点的权值大小 再次排序， 不断重复 1-2-3-4 的步骤，直到数列中，所有的数据都被处理， 就得到一颗赫夫曼树
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giw4jcbvdhj30dp06fmxb.jpg" alt="QQ截图20200919181335.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giw4jcbvdhj30dp06fmxb.jpg" alt="QQ截图20200919181335.jpg">
+
+</li>
 </ol>
 <h1 id="二叉排序树">二叉排序树</h1>
 <h2 id="二叉排序树介绍">二叉排序树介绍</h2>
 <ul>
 <li>二叉排序树：BST: (Binary Sort(Search) Tree), 对于二叉排序树的任何一个非叶子节点，要求左子节点的值比当 前节点的值小，右子节点的值比当前节点的值大。</li>
 <li>特别说明：如果有相同的值，可以将该节点放在左子节点或右子节点
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giw4q7yml5j30gn04yt8l.jpg" alt="QQ截图20200919182012.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giw4q7yml5j30gn04yt8l.jpg" alt="QQ截图20200919182012.jpg">
+
+</li>
 </ul>
 <h2 id="二叉排序树创建和遍历">二叉排序树创建和遍历</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1giw4u1w3jsj30k206ot90.jpg" alt="QQ截图20200919182351.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giw4u1w3jsj30k206ot90.jpg" alt="QQ截图20200919182351.jpg">
+
+</p>
 <pre><code>package com.yiguan1573.tree;
 
 public class SortTree {
@@ -524,8 +645,14 @@ class Node2{
 </li>
 <li>
 <p><strong>对删除结点的各种情况的思路分析:</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giwe8cpd12j30ic0d7wf2.jpg" alt="QQ截图20200919234850.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1giwe8hkawrj30ib0epgm3.jpg" alt="QQ截图20200919234859.jpg"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giwe8cpd12j30ic0d7wf2.jpg" alt="QQ截图20200919234850.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1giwe8hkawrj30ib0epgm3.jpg" alt="QQ截图20200919234859.jpg">
+
+</p>
 </li>
 <li>
 <p><strong>在node类中加入方法</strong></p>
@@ -652,10 +779,16 @@ public void delNode(int value){
 <li>平衡二叉树也叫平衡二叉搜索树（Self-balancing binary search tree）又被称为 AVL 树， 可以保证查询效率较高。</li>
 <li>具有以下特点：它是一 棵空树或它的左右两个子树的高度差的绝对值不超过 1，并且左右两个子树都是一棵 平衡二叉树。平衡二叉树的常用实现方法有红黑树、AVL、替罪羊树、Treap、伸展树等。</li>
 <li>举例说明, 看看下面哪些 AVL 树, 为什么?
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gix9nihujhj30do03p3yd.jpg" alt="QQ截图20200920175547.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gix9nihujhj30do03p3yd.jpg" alt="QQ截图20200920175547.jpg">
+
+</li>
 </ul>
 <h2 id="应用案例-单旋转左旋转">应用案例-单旋转(左旋转)</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gix9o4zklkj30l807daan.jpg" alt="QQ截图20200920175645.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gix9o4zklkj30l807daan.jpg" alt="QQ截图20200920175645.jpg">
+
+</p>
 <pre><code>public void leftRotate(){
     //创建新的结点，以当前根结点的值
     Node3 temp = new Node3(this.value);
@@ -671,7 +804,10 @@ public void delNode(int value){
     this.left = temp;
 }
 </code></pre><h2 id="应用案例-单旋转右旋转">应用案例-单旋转(右旋转)</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gix9onfwtqj30lb05vgm5.jpg" alt="QQ截图20200920175715.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gix9onfwtqj30lb05vgm5.jpg" alt="QQ截图20200920175715.jpg">
+
+</p>
 <pre><code>public void rightRotate(){
     Node3 temp = new Node3(this.value);
     temp.left = this.left.right;
@@ -683,7 +819,10 @@ public void delNode(int value){
 </code></pre><h2 id="应用案例-双旋转">应用案例-双旋转</h2>
 <ul>
 <li>前面的两个数列，进行单旋转(即一次旋转)就可以将非平衡二叉树转成平衡二叉树,但是在某些情况下，单旋转 不能完成平衡二叉树的转换。比如数列int[] arr = { 10, 11, 7, 6, 8, 9 }; 运行原来的代码可以看到，并没有转成 AVL 树.
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gixaczn385j30iq09tgmi.jpg" alt="QQ截图20200920182037.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gixaczn385j30iq09tgmi.jpg" alt="QQ截图20200920182037.jpg">
+
+</li>
 </ul>
 <pre><code>package com.yiguan1573.tree;
 
@@ -849,13 +988,27 @@ class Node3 {
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -1154,16 +1307,6 @@ class Node3 {
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -1176,48 +1319,44 @@ class Node3 {
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1227,7 +1366,19 @@ class Node3 {
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1247,7 +1398,7 @@ class Node3 {
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1265,7 +1416,7 @@ class Node3 {
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1277,12 +1428,76 @@ class Node3 {
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

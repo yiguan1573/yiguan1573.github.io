@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>2、HDFS（Hadoop）-yiguan1573</title>
+    <title>2、HDFS（Hadoop） | yiguan1573</title>
 
     <link rel="canonical" href="/post/922hdfs/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>2、HDFS（Hadoop）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Thursday, October 21, 2021
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Thursday, October 21, 2021
+                            
+                                <span id="/post/922hdfs/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -213,55 +339,6 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#hdfs概述">HDFS概述</a>
-      <ul>
-        <li><a href="#背景及定义">背景及定义</a></li>
-        <li><a href="#hdfs优缺点">HDFS优缺点</a></li>
-        <li><a href="#hdfs组成架构">HDFS组成架构</a></li>
-        <li><a href="#hdfs文件块大小">HDFS文件块大小</a></li>
-      </ul>
-    </li>
-    <li><a href="#hdfs的shell操作">HDFS的Shell操作</a>
-      <ul>
-        <li><a href="#基本语法">基本语法</a></li>
-        <li><a href="#命令大全">命令大全</a></li>
-        <li><a href="#常用命令">常用命令</a></li>
-      </ul>
-    </li>
-    <li><a href="#hdfs的api操作">HDFS的API操作</a>
-      <ul>
-        <li><a href="#客户端环境准备">客户端环境准备</a></li>
-        <li><a href="#hdfs的api操作案例">HDFS的API操作案例</a></li>
-      </ul>
-    </li>
-    <li><a href="#hdfs的读写流程">HDFS的读写流程</a>
-      <ul>
-        <li><a href="#写数据流程">写数据流程</a></li>
-        <li><a href="#hdfs读取流程">HDFS读取流程</a></li>
-      </ul>
-    </li>
-    <li><a href="#namenode和secondarynamenode">NameNode和SecondaryNameNode</a>
-      <ul>
-        <li><a href="#nn和2nn工作制">NN和2NN工作制</a></li>
-        <li><a href="#fsimage-和-edits解析">Fsimage 和 Edits解析</a></li>
-        <li><a href="#cheekpoint时间设置">CheekPoint时间设置</a></li>
-      </ul>
-    </li>
-    <li><a href="#datanode">DataNode</a>
-      <ul>
-        <li><a href="#datanode工作机制">DataNode工作机制</a></li>
-        <li><a href="#数据完整性">数据完整性</a></li>
-        <li><a href="#掉线时限参数设置">掉线时限参数设置</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
                 
                 <h2 id="hdfs概述">HDFS概述</h2>
 <h3 id="背景及定义">背景及定义</h3>
@@ -288,22 +365,40 @@
 <ul>
 <li>
 <p><strong>优点</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wusjstwj30nz0bfjv7.jpg" alt="QQ截图20211102165858.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wusjstwj30nz0bfjv7.jpg" alt="QQ截图20211102165858.png">
+
+</p>
 </li>
 <li>
 <p><strong>缺点</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wv24gc4j30ni0b7q71.jpg" alt="QQ截图20211102165907.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wv24gc4j30ni0b7q71.jpg" alt="QQ截图20211102165907.png">
+
+</p>
 </li>
 </ul>
 <h3 id="hdfs组成架构">HDFS组成架构</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wwhopkzj30ox0bajvj.jpg" alt="QQ截图20211102170120.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wwnkng6j30nx0aun0d.jpg" alt="QQ截图20211102170130.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wwhopkzj30ox0bajvj.jpg" alt="QQ截图20211102170120.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wwnkng6j30nx0aun0d.jpg" alt="QQ截图20211102170130.png">
+
+</p>
 <h3 id="hdfs文件块大小">HDFS文件块大小</h3>
 <ul>
 <li>
 <p>机械磁盘设置为128M，固态设置为256M</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wyqhkg0j30l50cgwi8.jpg" alt="QQ截图20211102170255.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wyxm0qwj30n508rn09.jpg" alt="QQ截图20211102170304.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wyqhkg0j30l50cgwi8.jpg" alt="QQ截图20211102170255.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0wyxm0qwj30n508rn09.jpg" alt="QQ截图20211102170304.png">
+
+</p>
 </li>
 </ul>
 <h2 id="hdfs的shell操作">HDFS的Shell操作</h2>
@@ -312,36 +407,36 @@
 <li>hadoop fs 具体命令  或  hdfs dfs 具体命令，两个是完全相同的。</li>
 </ul>
 <h3 id="命令大全">命令大全</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ bin/hadoop fs
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ bin/hadoop fs
 
-<span style="color:#f92672">[</span>-appendToFile &lt;localsrc&gt; ... &lt;dst&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-cat <span style="color:#f92672">[</span>-ignoreCrc<span style="color:#f92672">]</span> &lt;src&gt; ...<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-chgrp <span style="color:#f92672">[</span>-R<span style="color:#f92672">]</span> GROUP PATH...<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-chmod <span style="color:#f92672">[</span>-R<span style="color:#f92672">]</span> &lt;MODE<span style="color:#f92672">[</span>,MODE<span style="color:#f92672">]</span>... | OCTALMODE&gt; PATH...<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-chown <span style="color:#f92672">[</span>-R<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>OWNER<span style="color:#f92672">]</span><span style="color:#f92672">[</span>:<span style="color:#f92672">[</span>GROUP<span style="color:#f92672">]</span><span style="color:#f92672">]</span> PATH...<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-copyFromLocal <span style="color:#f92672">[</span>-f<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-p<span style="color:#f92672">]</span> &lt;localsrc&gt; ... &lt;dst&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-copyToLocal <span style="color:#f92672">[</span>-p<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-ignoreCrc<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-crc<span style="color:#f92672">]</span> &lt;src&gt; ... &lt;localdst&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-count <span style="color:#f92672">[</span>-q<span style="color:#f92672">]</span> &lt;path&gt; ...<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-cp <span style="color:#f92672">[</span>-f<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-p<span style="color:#f92672">]</span> &lt;src&gt; ... &lt;dst&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-df <span style="color:#f92672">[</span>-h<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>&lt;path&gt; ...<span style="color:#f92672">]</span><span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-du <span style="color:#f92672">[</span>-s<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-h<span style="color:#f92672">]</span> &lt;path&gt; ...<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-get <span style="color:#f92672">[</span>-p<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-ignoreCrc<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-crc<span style="color:#f92672">]</span> &lt;src&gt; ... &lt;localdst&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-getmerge <span style="color:#f92672">[</span>-nl<span style="color:#f92672">]</span> &lt;src&gt; &lt;localdst&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-help <span style="color:#f92672">[</span>cmd ...<span style="color:#f92672">]</span><span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-ls <span style="color:#f92672">[</span>-d<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-h<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-R<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>&lt;path&gt; ...<span style="color:#f92672">]</span><span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-mkdir <span style="color:#f92672">[</span>-p<span style="color:#f92672">]</span> &lt;path&gt; ...<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-moveFromLocal &lt;localsrc&gt; ... &lt;dst&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-moveToLocal &lt;src&gt; &lt;localdst&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-mv &lt;src&gt; ... &lt;dst&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-put <span style="color:#f92672">[</span>-f<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-p<span style="color:#f92672">]</span> &lt;localsrc&gt; ... &lt;dst&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-rm <span style="color:#f92672">[</span>-f<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-r|-R<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-skipTrash<span style="color:#f92672">]</span> &lt;src&gt; ...<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-rmdir <span style="color:#f92672">[</span>--ignore-fail-on-non-empty<span style="color:#f92672">]</span> &lt;dir&gt; ...<span style="color:#f92672">]</span>
-&lt;acl_spec&gt; &lt;path&gt;<span style="color:#f92672">]</span><span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-setrep <span style="color:#f92672">[</span>-R<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-w<span style="color:#f92672">]</span> &lt;rep&gt; &lt;path&gt; ...<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-stat <span style="color:#f92672">[</span>format<span style="color:#f92672">]</span> &lt;path&gt; ...<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-tail <span style="color:#f92672">[</span>-f<span style="color:#f92672">]</span> &lt;file&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-test -<span style="color:#f92672">[</span>defsz<span style="color:#f92672">]</span> &lt;path&gt;<span style="color:#f92672">]</span>
-        <span style="color:#f92672">[</span>-text <span style="color:#f92672">[</span>-ignoreCrc<span style="color:#f92672">]</span> &lt;src&gt; ...<span style="color:#f92672">]</span>
+<span style="color:#ff79c6">[</span>-appendToFile &lt;localsrc&gt; ... &lt;dst&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-cat <span style="color:#ff79c6">[</span>-ignoreCrc<span style="color:#ff79c6">]</span> &lt;src&gt; ...<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-chgrp <span style="color:#ff79c6">[</span>-R<span style="color:#ff79c6">]</span> GROUP PATH...<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-chmod <span style="color:#ff79c6">[</span>-R<span style="color:#ff79c6">]</span> &lt;MODE<span style="color:#ff79c6">[</span>,MODE<span style="color:#ff79c6">]</span>... | OCTALMODE&gt; PATH...<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-chown <span style="color:#ff79c6">[</span>-R<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>OWNER<span style="color:#ff79c6">]</span><span style="color:#ff79c6">[</span>:<span style="color:#ff79c6">[</span>GROUP<span style="color:#ff79c6">]</span><span style="color:#ff79c6">]</span> PATH...<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-copyFromLocal <span style="color:#ff79c6">[</span>-f<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-p<span style="color:#ff79c6">]</span> &lt;localsrc&gt; ... &lt;dst&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-copyToLocal <span style="color:#ff79c6">[</span>-p<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-ignoreCrc<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-crc<span style="color:#ff79c6">]</span> &lt;src&gt; ... &lt;localdst&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-count <span style="color:#ff79c6">[</span>-q<span style="color:#ff79c6">]</span> &lt;path&gt; ...<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-cp <span style="color:#ff79c6">[</span>-f<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-p<span style="color:#ff79c6">]</span> &lt;src&gt; ... &lt;dst&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-df <span style="color:#ff79c6">[</span>-h<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>&lt;path&gt; ...<span style="color:#ff79c6">]</span><span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-du <span style="color:#ff79c6">[</span>-s<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-h<span style="color:#ff79c6">]</span> &lt;path&gt; ...<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-get <span style="color:#ff79c6">[</span>-p<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-ignoreCrc<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-crc<span style="color:#ff79c6">]</span> &lt;src&gt; ... &lt;localdst&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-getmerge <span style="color:#ff79c6">[</span>-nl<span style="color:#ff79c6">]</span> &lt;src&gt; &lt;localdst&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-help <span style="color:#ff79c6">[</span>cmd ...<span style="color:#ff79c6">]</span><span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-ls <span style="color:#ff79c6">[</span>-d<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-h<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-R<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>&lt;path&gt; ...<span style="color:#ff79c6">]</span><span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-mkdir <span style="color:#ff79c6">[</span>-p<span style="color:#ff79c6">]</span> &lt;path&gt; ...<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-moveFromLocal &lt;localsrc&gt; ... &lt;dst&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-moveToLocal &lt;src&gt; &lt;localdst&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-mv &lt;src&gt; ... &lt;dst&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-put <span style="color:#ff79c6">[</span>-f<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-p<span style="color:#ff79c6">]</span> &lt;localsrc&gt; ... &lt;dst&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-rm <span style="color:#ff79c6">[</span>-f<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-r|-R<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-skipTrash<span style="color:#ff79c6">]</span> &lt;src&gt; ...<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-rmdir <span style="color:#ff79c6">[</span>--ignore-fail-on-non-empty<span style="color:#ff79c6">]</span> &lt;dir&gt; ...<span style="color:#ff79c6">]</span>
+&lt;acl_spec&gt; &lt;path&gt;<span style="color:#ff79c6">]</span><span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-setrep <span style="color:#ff79c6">[</span>-R<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>-w<span style="color:#ff79c6">]</span> &lt;rep&gt; &lt;path&gt; ...<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-stat <span style="color:#ff79c6">[</span>format<span style="color:#ff79c6">]</span> &lt;path&gt; ...<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-tail <span style="color:#ff79c6">[</span>-f<span style="color:#ff79c6">]</span> &lt;file&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-test -<span style="color:#ff79c6">[</span>defsz<span style="color:#ff79c6">]</span> &lt;path&gt;<span style="color:#ff79c6">]</span>
+        <span style="color:#ff79c6">[</span>-text <span style="color:#ff79c6">[</span>-ignoreCrc<span style="color:#ff79c6">]</span> &lt;src&gt; ...<span style="color:#ff79c6">]</span>
 </code></pre></div><h3 id="常用命令">常用命令</h3>
 <ul>
 <li>
@@ -349,57 +444,75 @@
 <ul>
 <li>
 <p>启动Hadoop集群</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ sbin/start-dfs.sh
-<span style="color:#f92672">[</span>atguigu@hadoop103 hadoop-3.1.3<span style="color:#f92672">]</span>$ sbin/start-yarn.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ sbin/start-dfs.sh
+<span style="color:#ff79c6">[</span>atguigu@hadoop103 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ sbin/start-yarn.sh
 </code></pre></div></li>
 <li>
 <p>-help：输出这个命令参数</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop fs -help rm
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ hadoop fs -help rm
 </code></pre></div></li>
 <li>
 <p>创建/sanguo文件夹</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop fs -mkdir /sanguo
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ hadoop fs -mkdir /sanguo
 </code></pre></div></li>
 </ul>
 </li>
 <li>
 <p><strong>上传</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0xw7z70sj30pm0l8al7.jpg" alt="QQ截图20211102173551.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0xw7z70sj30pm0l8al7.jpg" alt="QQ截图20211102173551.png">
+
+</p>
 </li>
 <li>
 <p><strong>下载</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0xwqcg5hj30ot05stc4.jpg" alt="QQ截图20211102173624.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0xwqcg5hj30ot05stc4.jpg" alt="QQ截图20211102173624.png">
+
+</p>
 </li>
 <li>
 <p><strong>HDFS直接操作</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0xz2noc7j30p90t7e1j.jpg" alt="QQ截图20211102173821.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0xz9i73oj30os05wn0z.jpg" alt="QQ截图20211102173838.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0xz2noc7j30p90t7e1j.jpg" alt="QQ截图20211102173821.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw0xz9i73oj30os05wn0z.jpg" alt="QQ截图20211102173838.png">
+
+</p>
 </li>
 </ul>
 <h2 id="hdfs的api操作">HDFS的API操作</h2>
 <h3 id="客户端环境准备">客户端环境准备</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw1zzwm23nj30pv0f3459.jpg" alt="QQ截图20211103153316.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2004ysatj30oq0r9tlh.jpg" alt="QQ截图20211103153404.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw1zzwm23nj30pv0f3459.jpg" alt="QQ截图20211103153316.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2004ysatj30oq0r9tlh.jpg" alt="QQ截图20211103153404.png">
+
+</p>
 <ol start="4">
 <li>在IDEA中创建一个Maven工程HdfsClientDemo，并导入相应的依赖坐标+日志添加</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.hadoop<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>hadoop-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.1.3<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
-    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>junit<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>junit<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.12<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
-    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.slf4j<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>slf4j-log4j12<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.7.30<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
-<span style="color:#f92672">&lt;/dependencies&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;dependencies</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.apache.hadoop<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+        <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>hadoop-client<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+        <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>3.1.3<span style="color:#ff79c6">&lt;/version&gt;</span>
+    <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+    <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>junit<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+        <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>junit<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+        <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>4.12<span style="color:#ff79c6">&lt;/version&gt;</span>
+    <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+    <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.slf4j<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+        <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>slf4j-log4j12<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+        <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>1.7.30<span style="color:#ff79c6">&lt;/version&gt;</span>
+    <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+<span style="color:#ff79c6">&lt;/dependencies&gt;</span>
 </code></pre></div><p>在项目的src/main/resources目录下，新建一个文件，命名为“log4j.properties”，在文件中填入</p>
 <pre><code class="language-properties" data-lang="properties">log4j.rootLogger=INFO, stdout  
 log4j.appender.stdout=org.apache.log4j.ConsoleAppender  
@@ -415,28 +528,28 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 <ol start="6">
 <li>
 <p>创建HdfsClient类</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HdfsClient</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">HdfsClient</span> <span style="color:#ff79c6">{</span>
    
-    <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testMkdirs</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> URISyntaxException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+    @Test
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testMkdirs</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> URISyntaxException<span style="color:#ff79c6">,</span> InterruptedException <span style="color:#ff79c6">{</span>
    
-        <span style="color:#75715e">// 1 获取文件系统
-</span><span style="color:#75715e"></span>           
-        Configuration configuration <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#6272a4">// 1 获取文件系统
+</span><span style="color:#6272a4"></span>           
+        Configuration configuration <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Configuration<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
    
-        <span style="color:#75715e">// FileSystem fs = FileSystem.get(new URI(&#34;hdfs://hadoop102:8020&#34;), configuration);
-</span><span style="color:#75715e"></span>           
-        FileSystem fs <span style="color:#f92672">=</span> FileSystem<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> URI<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">,</span><span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#6272a4">// FileSystem fs = FileSystem.get(new URI(&#34;hdfs://hadoop102:8020&#34;), configuration);
+</span><span style="color:#6272a4"></span>           
+        FileSystem fs <span style="color:#ff79c6">=</span> FileSystem<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> URI<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> configuration<span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;atguigu&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
    
-        <span style="color:#75715e">// 2 创建目录
-</span><span style="color:#75715e"></span>           
-        fs<span style="color:#f92672">.</span><span style="color:#a6e22e">mkdirs</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/xiyou/huaguoshan/&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#6272a4">// 2 创建目录
+</span><span style="color:#6272a4"></span>           
+        fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">mkdirs</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/xiyou/huaguoshan/&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
    
-        <span style="color:#75715e">// 3 关闭资源
-</span><span style="color:#75715e"></span>           
-        fs<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+        <span style="color:#6272a4">// 3 关闭资源
+</span><span style="color:#6272a4"></span>           
+        fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ol>
 <ol start="7">
@@ -450,167 +563,167 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 <ul>
 <li><strong>文件上传</strong></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testCopyFromLocalFile</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException<span style="color:#f92672">,</span> URISyntaxException <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Test
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testCopyFromLocalFile</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> InterruptedException<span style="color:#ff79c6">,</span> URISyntaxException <span style="color:#ff79c6">{</span>
 
-    <span style="color:#75715e">// 1 获取文件系统
-</span><span style="color:#75715e"></span>    
-    Configuration configuration <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dfs.replication&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;2&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    FileSystem fs <span style="color:#f92672">=</span> FileSystem<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> URI<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#6272a4">// 1 获取文件系统
+</span><span style="color:#6272a4"></span>    
+    Configuration configuration <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Configuration<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    configuration<span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;dfs.replication&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;2&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    FileSystem fs <span style="color:#ff79c6">=</span> FileSystem<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> URI<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> configuration<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;atguigu&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-    <span style="color:#75715e">// 2 上传文件
-</span><span style="color:#75715e"></span>    
-    fs<span style="color:#f92672">.</span><span style="color:#a6e22e">copyFromLocalFile</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d:/sunwukong.txt&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/xiyou/huaguoshan&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#6272a4">// 2 上传文件
+</span><span style="color:#6272a4"></span>    
+    fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">copyFromLocalFile</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;d:/sunwukong.txt&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/xiyou/huaguoshan&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-    <span style="color:#75715e">// 3 关闭资源
-</span><span style="color:#75715e"></span>    
-    fs<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#960050;background-color:#1e0010">｝</span>
+    <span style="color:#6272a4">// 3 关闭资源
+</span><span style="color:#6272a4"></span>    
+    fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+｝
 </code></pre></div><p>将hdfs-site.xml拷贝到项目的resources资源目录下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#75715e">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#ff79c6">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
 
-<span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-	<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-		<span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.replication<span style="color:#f92672">&lt;/name&gt;</span>
-         <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>1<span style="color:#f92672">&lt;/value&gt;</span>
-	<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;/configuration&gt;</span>
+<span style="color:#ff79c6">&lt;configuration</span><span style="color:#ff79c6">&gt;</span>
+	<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+		<span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.replication<span style="color:#ff79c6">&lt;/name&gt;</span>
+         <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>1<span style="color:#ff79c6">&lt;/value&gt;</span>
+	<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;/configuration&gt;</span>
 </code></pre></div><p>参数优先级排序：（1）客户端代码中设置的值 &gt;（2）ClassPath下的用户自定义配置文件 &gt;（3）然后是服务器的自定义配置（xxx-site.xml） &gt;（4）服务器的默认配置（xxx-default.xml）</p>
 <ul>
 <li>
 <p><strong>文件下载</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testCopyToLocalFile</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException<span style="color:#f92672">,</span> URISyntaxException<span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Test
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testCopyToLocalFile</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> InterruptedException<span style="color:#ff79c6">,</span> URISyntaxException<span style="color:#ff79c6">{</span>
   
-    <span style="color:#75715e">// 1 获取文件系统
-</span><span style="color:#75715e"></span>      
-    Configuration configuration <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    FileSystem fs <span style="color:#f92672">=</span> FileSystem<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> URI<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#6272a4">// 1 获取文件系统
+</span><span style="color:#6272a4"></span>      
+    Configuration configuration <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Configuration<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    FileSystem fs <span style="color:#ff79c6">=</span> FileSystem<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> URI<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> configuration<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;atguigu&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
       
-    <span style="color:#75715e">// 2 执行下载操作
-</span><span style="color:#75715e"></span>      
-    <span style="color:#75715e">// boolean delSrc 指是否将原文件删除
-</span><span style="color:#75715e"></span>      
-    <span style="color:#75715e">// Path src 指要下载的文件路径
-</span><span style="color:#75715e"></span>      
-    <span style="color:#75715e">// Path dst 指将文件下载到的路径
-</span><span style="color:#75715e"></span>      
-    <span style="color:#75715e">// boolean useRawLocalFileSystem 是否开启文件校验
-</span><span style="color:#75715e"></span>      
-    fs<span style="color:#f92672">.</span><span style="color:#a6e22e">copyToLocalFile</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/xiyou/huaguoshan/sunwukong.txt&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d:/sunwukong2.txt&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#6272a4">// 2 执行下载操作
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#6272a4">// boolean delSrc 指是否将原文件删除
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#6272a4">// Path src 指要下载的文件路径
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#6272a4">// Path dst 指将文件下载到的路径
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#6272a4">// boolean useRawLocalFileSystem 是否开启文件校验
+</span><span style="color:#6272a4"></span>      
+    fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">copyToLocalFile</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">false</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/xiyou/huaguoshan/sunwukong.txt&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;d:/sunwukong2.txt&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
       
-    <span style="color:#75715e">// 3 关闭资源
-</span><span style="color:#75715e"></span>      
-    fs<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#6272a4">// 3 关闭资源
+</span><span style="color:#6272a4"></span>      
+    fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><p>注意：如果执行上面代码，下载不了文件，有可能是你电脑的微软支持的运行库少，需要安装一下微软运行库。</p>
 </li>
 <li>
 <p><strong>文件更名和移动</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testRename</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException<span style="color:#f92672">,</span> URISyntaxException<span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Test
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testRename</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> InterruptedException<span style="color:#ff79c6">,</span> URISyntaxException<span style="color:#ff79c6">{</span>
   
-  <span style="color:#75715e">// 1 获取文件系统
-</span><span style="color:#75715e"></span>      
-  Configuration configuration <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-  FileSystem fs <span style="color:#f92672">=</span> FileSystem<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> URI<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> 
+  <span style="color:#6272a4">// 1 获取文件系统
+</span><span style="color:#6272a4"></span>      
+  Configuration configuration <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Configuration<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+  FileSystem fs <span style="color:#ff79c6">=</span> FileSystem<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> URI<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> configuration<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;atguigu&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> 
   		
-  <span style="color:#75715e">// 2 修改文件名称
-</span><span style="color:#75715e"></span>      
-  fs<span style="color:#f92672">.</span><span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/xiyou/huaguoshan/sunwukong.txt&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/xiyou/huaguoshan/meihouwang.txt&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#6272a4">// 2 修改文件名称
+</span><span style="color:#6272a4"></span>      
+  fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">rename</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/xiyou/huaguoshan/sunwukong.txt&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/xiyou/huaguoshan/meihouwang.txt&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   		
-  <span style="color:#75715e">// 3 关闭资源
-</span><span style="color:#75715e"></span>      
-  fs<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+  <span style="color:#6272a4">// 3 关闭资源
+</span><span style="color:#6272a4"></span>      
+  fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>删除文件和目录</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDelete</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException<span style="color:#f92672">,</span> URISyntaxException<span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Test
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testDelete</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> InterruptedException<span style="color:#ff79c6">,</span> URISyntaxException<span style="color:#ff79c6">{</span>
   
-  <span style="color:#75715e">// 1 获取文件系统
-</span><span style="color:#75715e"></span>      
-  Configuration configuration <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-  FileSystem fs <span style="color:#f92672">=</span> FileSystem<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> URI<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#6272a4">// 1 获取文件系统
+</span><span style="color:#6272a4"></span>      
+  Configuration configuration <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Configuration<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+  FileSystem fs <span style="color:#ff79c6">=</span> FileSystem<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> URI<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> configuration<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;atguigu&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   		
-  <span style="color:#75715e">// 2 执行删除
-</span><span style="color:#75715e"></span>      
-  fs<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/xiyou&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#6272a4">// 2 执行删除
+</span><span style="color:#6272a4"></span>      
+  fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">delete</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/xiyou&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   		
-  <span style="color:#75715e">// 3 关闭资源
-</span><span style="color:#75715e"></span>      
-  fs<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+  <span style="color:#6272a4">// 3 关闭资源
+</span><span style="color:#6272a4"></span>      
+  fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>文件详情查看</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testListFiles</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException<span style="color:#f92672">,</span> URISyntaxException <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Test
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testListFiles</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> InterruptedException<span style="color:#ff79c6">,</span> URISyntaxException <span style="color:#ff79c6">{</span>
   
-  <span style="color:#75715e">// 1获取文件系统
-</span><span style="color:#75715e"></span>      
-  Configuration configuration <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-  FileSystem fs <span style="color:#f92672">=</span> FileSystem<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> URI<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#6272a4">// 1获取文件系统
+</span><span style="color:#6272a4"></span>      
+  Configuration configuration <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Configuration<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+  FileSystem fs <span style="color:#ff79c6">=</span> FileSystem<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> URI<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> configuration<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;atguigu&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-  <span style="color:#75715e">// 2 获取文件详情
-</span><span style="color:#75715e"></span>      
-  RemoteIterator<span style="color:#f92672">&lt;</span>LocatedFileStatus<span style="color:#f92672">&gt;</span> listFiles <span style="color:#f92672">=</span> fs<span style="color:#f92672">.</span><span style="color:#a6e22e">listFiles</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#6272a4">// 2 获取文件详情
+</span><span style="color:#6272a4"></span>      
+  RemoteIterator<span style="color:#ff79c6">&lt;</span>LocatedFileStatus<span style="color:#ff79c6">&gt;</span> listFiles <span style="color:#ff79c6">=</span> fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">listFiles</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-  <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>listFiles<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-      LocatedFileStatus fileStatus <span style="color:#f92672">=</span> listFiles<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span>listFiles<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hasNext</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+      LocatedFileStatus fileStatus <span style="color:#ff79c6">=</span> listFiles<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;========&#34;</span> <span style="color:#f92672">+</span> fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getPath</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;=========&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getPermission</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getOwner</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getGroup</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getLen</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getModificationTime</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getReplication</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getBlockSize</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getPath</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;========&#34;</span> <span style="color:#ff79c6">+</span> fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPath</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;=========&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPermission</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getOwner</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getGroup</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getLen</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getModificationTime</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getReplication</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getBlockSize</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPath</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-      <span style="color:#75715e">// 获取块信息
-</span><span style="color:#75715e"></span>          
-      BlockLocation<span style="color:#f92672">[</span><span style="color:#f92672">]</span> blockLocations <span style="color:#f92672">=</span> fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getBlockLocations</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>blockLocations<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-  <span style="color:#f92672">}</span>
-  <span style="color:#75715e">// 3 关闭资源
-</span><span style="color:#75715e"></span>      
-  fs<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+      <span style="color:#6272a4">// 获取块信息
+</span><span style="color:#6272a4"></span>          
+      BlockLocation<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> blockLocations <span style="color:#ff79c6">=</span> fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getBlockLocations</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>blockLocations<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+  <span style="color:#ff79c6">}</span>
+  <span style="color:#6272a4">// 3 关闭资源
+</span><span style="color:#6272a4"></span>      
+  fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>文件和文件夹判断</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testListStatus</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException<span style="color:#f92672">,</span> URISyntaxException<span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Test
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testListStatus</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> InterruptedException<span style="color:#ff79c6">,</span> URISyntaxException<span style="color:#ff79c6">{</span>
   
-    <span style="color:#75715e">// 1 获取文件配置信息
-</span><span style="color:#75715e"></span>      
-    Configuration configuration <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Configuration<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    FileSystem fs <span style="color:#f92672">=</span> FileSystem<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> URI<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#6272a4">// 1 获取文件配置信息
+</span><span style="color:#6272a4"></span>      
+    Configuration configuration <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Configuration<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    FileSystem fs <span style="color:#ff79c6">=</span> FileSystem<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> URI<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hdfs://hadoop102:8020&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> configuration<span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;atguigu&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-    <span style="color:#75715e">// 2 判断是文件还是文件夹
-</span><span style="color:#75715e"></span>      
-    FileStatus<span style="color:#f92672">[</span><span style="color:#f92672">]</span> listStatus <span style="color:#f92672">=</span> fs<span style="color:#f92672">.</span><span style="color:#a6e22e">listStatus</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#6272a4">// 2 判断是文件还是文件夹
+</span><span style="color:#6272a4"></span>      
+    FileStatus<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> listStatus <span style="color:#ff79c6">=</span> fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">listStatus</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>FileStatus fileStatus <span style="color:#f92672">:</span> listStatus<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>FileStatus fileStatus <span style="color:#ff79c6">:</span> listStatus<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
   
-        <span style="color:#75715e">// 如果是文件
-</span><span style="color:#75715e"></span>          
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">isFile</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;f:&#34;</span><span style="color:#f92672">+</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getPath</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d:&#34;</span><span style="color:#f92672">+</span>fileStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">getPath</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
+        <span style="color:#6272a4">// 如果是文件
+</span><span style="color:#6272a4"></span>          
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">isFile</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;f:&#34;</span><span style="color:#ff79c6">+</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPath</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;d:&#34;</span><span style="color:#ff79c6">+</span>fileStatus<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPath</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
   
-    <span style="color:#75715e">// 3 关闭资源
-</span><span style="color:#75715e"></span>      
-    fs<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#6272a4">// 3 关闭资源
+</span><span style="color:#6272a4"></span>      
+    fs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 <h2 id="hdfs的读写流程">HDFS的读写流程</h2>
@@ -618,7 +731,10 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 <ul>
 <li>
 <p><strong>文件写入</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw23kin7bkj30qq0c9jx0.jpg" alt="QQ截图20211103173744.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw23kin7bkj30qq0c9jx0.jpg" alt="QQ截图20211103173744.png">
+
+</p>
 <ol>
 <li>客户端通过Distributed FileSystem模块向NameNode请求上传文件，NameNode检查目标文件是否已存在，父目录是否存在。</li>
 <li>NameNode返回是否可以上传。</li>
@@ -638,7 +754,10 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 <p><strong>节点距离：两个节点到达最近的共同祖先的距离总和。</strong></p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw23yasf4zj30q30btgov.jpg" alt="QQ截图20211103175052.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw23yasf4zj30q30btgov.jpg" alt="QQ截图20211103175052.png">
+
+</p>
 </li>
 <li>
 <p><strong>机架感知（副本存储节点选择）</strong></p>
@@ -649,7 +768,10 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 </li>
 <li>
 <p>副本节点选择</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2417667ij30pr0bddjp.jpg" alt="QQ截图20211103175348.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2417667ij30pr0bddjp.jpg" alt="QQ截图20211103175348.png">
+
+</p>
 </li>
 </ul>
 </li>
@@ -667,7 +789,10 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 </li>
 <li>
 <p>客户端以Packet为单位接收，先在本地缓存，然后写入目标文件。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw243aopotj30t10cpn0t.jpg" alt="QQ截图20211103175552.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw243aopotj30t10cpn0t.jpg" alt="QQ截图20211103175552.png">
+
+</p>
 </li>
 </ol>
 <h2 id="namenode和secondarynamenode">NameNode和SecondaryNameNode</h2>
@@ -676,7 +801,10 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 <p>​	首先，我们做个假设，如果存储在NameNode节点的磁盘中，因为经常需要进行随机访问，还有响应客户请求，必然是效率过低。因此，元数据需要存放在内存中。但如果只存在内存中，一旦断电，元数据丢失，整个集群就无法工作了。<strong>因此产生在磁盘中备份元数据的FsImage。</strong></p>
 <p>​	这样又会带来新的问题，当在内存中的元数据更新时，如果同时更新FsImage，就会导致效率过低，但如果不更新，就会发生一致性问题，一旦NameNode节点断电，就会产生数据丢失。**因此，引入Edits文件（只进行追加操作，效率很高）。每当元数据有更新或者添加元数据时，修改内存中的元数据并追加到Edits中。**这样，一旦NameNode节点断电，可以通过FsImage和Edits的合并，合成元数据。</p>
 <p>​	但是，如果长时间添加数据到Edits中，会导致该文件数据过大，效率降低，而且一旦断电，恢复元数据需要的时间过长。因此，需要定期进行FsImage和Edits的合并，如果这个操作由NameNode节点完成，又会效率过低。<strong>因此，引入一个新的节点SecondaryNamenode，专门用于FsImage和Edits的合并。</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wgs7bv1j30ob0d2teg.jpg" alt="QQ截图20211104101716.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wgs7bv1j30ob0d2teg.jpg" alt="QQ截图20211104101716.png">
+
+</p>
 <ul>
 <li>
 <p>第一阶段：NameNode启动</p>
@@ -702,38 +830,56 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 </li>
 </ul>
 <h3 id="fsimage-和-edits解析">Fsimage 和 Edits解析</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wh85axej30pj0bdju8.jpg" alt="QQ截图20211104101734.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wivvikij30pz0j3dp6.jpg" alt="QQ截图20211104101831.png"></p>
-<p>​		<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wj4hlnvj30o812rtsl.jpg" alt="QQ截图20211104101854.png">	<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wjy3z7mj30ne12eto3.jpg" alt="QQ截图20211104101909.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wk4x6nmj30nw0fpqaa.jpg" alt="QQ截图20211104101926.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wh85axej30pj0bdju8.jpg" alt="QQ截图20211104101734.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wivvikij30pz0j3dp6.jpg" alt="QQ截图20211104101831.png">
+
+</p>
+<p>​		
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wj4hlnvj30o812rtsl.jpg" alt="QQ截图20211104101854.png">
+
+	
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wjy3z7mj30ne12eto3.jpg" alt="QQ截图20211104101909.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2wk4x6nmj30nw0fpqaa.jpg" alt="QQ截图20211104101926.png">
+
+</p>
 <h3 id="cheekpoint时间设置">CheekPoint时间设置</h3>
 <ul>
 <li>
 <p>通常情况下，SecondaryNameNode每隔一小时执行一次。</p>
 <p>​	[hdfs-default.xml]</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.namenode.checkpoint.period<span style="color:#f92672">&lt;/name&gt;</span>
-  <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>3600s<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+  <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.namenode.checkpoint.period<span style="color:#ff79c6">&lt;/name&gt;</span>
+  <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>3600s<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 <li>
 <p>一分钟检查一次操作次数，当操作次数达到1百万时，SecondaryNameNode执行一次。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.namenode.checkpoint.txns<span style="color:#f92672">&lt;/name&gt;</span>
-  <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>1000000<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>操作动作次数<span style="color:#f92672">&lt;/description&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+  <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.namenode.checkpoint.txns<span style="color:#ff79c6">&lt;/name&gt;</span>
+  <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>1000000<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;description</span><span style="color:#ff79c6">&gt;</span>操作动作次数<span style="color:#ff79c6">&lt;/description&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
   
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.namenode.checkpoint.check.period<span style="color:#f92672">&lt;/name&gt;</span>
-  <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>60s<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span> 1分钟检查一次操作次数<span style="color:#f92672">&lt;/description&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+  <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.namenode.checkpoint.check.period<span style="color:#ff79c6">&lt;/name&gt;</span>
+  <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>60s<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;description</span><span style="color:#ff79c6">&gt;</span> 1分钟检查一次操作次数<span style="color:#ff79c6">&lt;/description&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 </ul>
 <h2 id="datanode">DataNode</h2>
 <h3 id="datanode工作机制">DataNode工作机制</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2xwl1dxyj30mz0az42d.jpg" alt="QQ截图20211104110722.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2xwl1dxyj30mz0az42d.jpg" alt="QQ截图20211104110722.png">
+
+</p>
 <ul>
 <li>
 <p>一个数据块在DataNode上以文件形式存储在磁盘上，包括两个文件，一个是数据本身，一个是元数据包括数据块的长度，块数据的校验和，以及时间戳。</p>
@@ -741,20 +887,20 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 <li>
 <p>DataNode启动后向NameNode注册，通过后，周期性（6小时）的向NameNode上报所有的块信息。</p>
 <p>DN向NN汇报当前解读信息的时间间隔，默认6小时；</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.blockreport.intervalMsec<span style="color:#f92672">&lt;/name&gt;</span>
-  <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>21600000<span style="color:#f92672">&lt;/value&gt;</span>
-  <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>Determines block reporting interval in milliseconds.<span style="color:#f92672">&lt;/description&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+  <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.blockreport.intervalMsec<span style="color:#ff79c6">&lt;/name&gt;</span>
+  <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>21600000<span style="color:#ff79c6">&lt;/value&gt;</span>
+  <span style="color:#ff79c6">&lt;description</span><span style="color:#ff79c6">&gt;</span>Determines block reporting interval in milliseconds.<span style="color:#ff79c6">&lt;/description&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div><p>DN扫描自己节点块信息列表的时间，默认6小时</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.datanode.directoryscan.interval<span style="color:#f92672">&lt;/name&gt;</span>
-  <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>21600s<span style="color:#f92672">&lt;/value&gt;</span>
-  <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>Interval in seconds for Datanode to scan data directories and reconcile the difference between blocks in memory and on the disk.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+  <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.datanode.directoryscan.interval<span style="color:#ff79c6">&lt;/name&gt;</span>
+  <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>21600s<span style="color:#ff79c6">&lt;/value&gt;</span>
+  <span style="color:#ff79c6">&lt;description</span><span style="color:#ff79c6">&gt;</span>Interval in seconds for Datanode to scan data directories and reconcile the difference between blocks in memory and on the disk.
   Support multiple time unit suffix(case insensitive), as described
   in dfs.heartbeat.interval.
-  <span style="color:#f92672">&lt;/description&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+  <span style="color:#ff79c6">&lt;/description&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 <li>
 <p>心跳是每3秒一次，心跳返回结果带有NameNode给该DataNode的命令如复制块数据到另一台机器，或删除某个数据块。如果超过10分钟没有收到某个DataNode的心跳，则认为该节点不可用。</p>
@@ -774,21 +920,27 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 <p>（5）DataNode在其文件创建后周期验证CheckSum。</p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2xyukaezj30nf0c1gpg.jpg" alt="QQ截图20211104110932.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2xyukaezj30nf0c1gpg.jpg" alt="QQ截图20211104110932.png">
+
+</p>
 <h3 id="掉线时限参数设置">掉线时限参数设置</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2xzqhs6tj30om0aktb7.jpg" alt="QQ截图20211104111023.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gw2xzqhs6tj30om0aktb7.jpg" alt="QQ截图20211104111023.png">
+
+</p>
 <ul>
 <li>需要注意的是hdfs-site.xml 配置文件中的heartbeat.recheck.interval的单位为毫秒，dfs.heartbeat.interval的单位为秒。</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.namenode.heartbeat.recheck-interval<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>300000<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.namenode.heartbeat.recheck-interval<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>300000<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.heartbeat.interval<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>3<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.heartbeat.interval<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>3<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div>
 
                 
@@ -808,13 +960,27 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -1113,16 +1279,6 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -1135,48 +1291,44 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1186,7 +1338,19 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1206,7 +1370,7 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1224,7 +1388,7 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1236,12 +1400,76 @@ log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>10、Spring Boot与消息(SpringBoot)-yiguan1573</title>
+    <title>10、Spring Boot与消息(SpringBoot) | yiguan1573</title>
 
     <link rel="canonical" href="/post/610spring-boot%E4%B8%8E%E6%B6%88%E6%81%AF/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>10、Spring Boot与消息(SpringBoot)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Wednesday, July 1, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Wednesday, July 1, 2020
+                            
+                                <span id="/post/610spring-boot%E4%B8%8E%E6%B6%88%E6%81%AF/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -213,21 +339,6 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#1-核心概念">1. 核心概念</a></li>
-    <li><a href="#2-运行机制">2. 运行机制</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#1-环境准备">1. 环境准备</a></li>
-    <li><a href="#2-rabbitmq的使用">2. RabbitMQ的使用</a></li>
-  </ul>
-</nav>
                 
                 <h1 id="消息简介">消息简介</h1>
 <p><strong>消息代理规范</strong></p>
@@ -253,14 +364,23 @@
 <ol>
 <li>异步处理<br>
 用户注册操作和消息处理并行，提高响应速度
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggvhyker9ej30ic0i7q4y.jpg" alt="QQ截图20200718223133.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggvhyker9ej30ic0i7q4y.jpg" alt="QQ截图20200718223133.png">
+
+</li>
 <li>应用解耦<br>
 在下单时库存系统不能正常使用。也不影响正常下单，因为下单后，订单系统写入消息队列就不再关心其他的后续操作了。实现订单系统与库存系统的应用解耦
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggvhzforz9j30c70bkq3k.jpg" alt="QQ截图20200718223233.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggvhzforz9j30c70bkq3k.jpg" alt="QQ截图20200718223233.png">
+
+</li>
 <li>流量削峰<br>
 用户的请求，服务器接收后，首先写入消息队列。假如消息队列长度超过最大数量，则直接抛弃用户请求或跳转到错误页面<br>
 秒杀业务根据消息队列中的请求信息，再做后续处理
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggvi06z2q0j30gz04waag.jpg" alt="QQ截图20200718223320.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggvi06z2q0j30gz04waag.jpg" alt="QQ截图20200718223320.png">
+
+</li>
 </ol>
 <hr>
 <h1 id="rabbitmq">RabbitMQ</h1>
@@ -337,7 +457,10 @@ AMQP 中增加了Exchange 和 Binding 的角色， Binding 决定交换器的消
 <ul>
 <li>将路由键和某个模式进行匹配，此时队列需要绑定到一个模式上。它将路由键和绑定键的字符串切分成单词，这些单词之间用点隔开。</li>
 <li>识别通配符： # 匹配 0 个或多个单词， *匹配一个单词
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggvi754yvmj30hm090tar.jpg" alt="QQ截图20200718223958.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ggvi754yvmj30hm090tar.jpg" alt="QQ截图20200718223958.png">
+
+</li>
 </ul>
 </li>
 </ol>
@@ -365,46 +488,46 @@ spring.rabbitmq.host=192.168.31.162
 </code></pre><h2 id="2-rabbitmq的使用">2. RabbitMQ的使用</h2>
 <p>RabbitAutoConfiguration中有内部类RabbitTemplateConfiguration,在该类中向容器中分别导入了RabbitTemplate和AmqpAdmin<br>
 在测试类中分别注入</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a6e22e">@Autowired</span>
-   <span style="color:#66d9ef">private</span> RabbitTemplate rabbitTemplate<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    @Autowired
+   <span style="color:#8be9fd;font-style:italic">private</span> RabbitTemplate rabbitTemplate<span style="color:#ff79c6">;</span>
 
-   <span style="color:#a6e22e">@Autowired</span>
-   <span style="color:#66d9ef">private</span> AmqpAdmin amqpAdmin<span style="color:#f92672">;</span>
+   @Autowired
+   <span style="color:#8be9fd;font-style:italic">private</span> AmqpAdmin amqpAdmin<span style="color:#ff79c6">;</span>
 </code></pre></div><ul>
 <li><strong>RabbitTemplate消息发送处理组件</strong><br>
 可用来发送和接收消息</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//发送消息
-</span><span style="color:#75715e"></span>rabbitTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">convertAndSend</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;amq.direct&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;ustc&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;aaaa&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      Book book <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Book<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      book<span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;西游记&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      book<span style="color:#f92672">.</span><span style="color:#a6e22e">setPrice</span><span style="color:#f92672">(</span>23<span style="color:#f92672">.</span><span style="color:#a6e22e">2f</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#75715e">//Book要实现Serializable接口
-</span><span style="color:#75715e"></span>      rabbitTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">convertAndSend</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;amq.direct&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;ustc&#34;</span><span style="color:#f92672">,</span>book<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">//发送消息
+</span><span style="color:#6272a4"></span>rabbitTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">convertAndSend</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;amq.direct&#34;</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;ustc&#34;</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;aaaa&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      Book book <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Book<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      book<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setName</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;西游记&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      book<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setPrice</span><span style="color:#ff79c6">(</span>23<span style="color:#ff79c6">.</span><span style="color:#50fa7b">2f</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#6272a4">//Book要实现Serializable接口
+</span><span style="color:#6272a4"></span>      rabbitTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">convertAndSend</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;amq.direct&#34;</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;ustc&#34;</span><span style="color:#ff79c6">,</span>book<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 
-<span style="color:#75715e">//接收消息
-</span><span style="color:#75715e"></span>Object o <span style="color:#f92672">=</span> rabbitTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">receiveAndConvert</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ustc&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>o<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>  <span style="color:#75715e">//class cn.edu.ustc.springboot.bean.Book
-</span><span style="color:#75715e"></span>      System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>o<span style="color:#f92672">)</span><span style="color:#f92672">;</span>			<span style="color:#75715e">//Book{name=&#39;西游记&#39;, price=23.2}
+<span style="color:#6272a4">//接收消息
+</span><span style="color:#6272a4"></span>Object o <span style="color:#ff79c6">=</span> rabbitTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">receiveAndConvert</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;ustc&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>o<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>  <span style="color:#6272a4">//class cn.edu.ustc.springboot.bean.Book
+</span><span style="color:#6272a4"></span>      System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>o<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>			<span style="color:#6272a4">//Book{name=&#39;西游记&#39;, price=23.2}
 </span></code></pre></div><p>默认的消息转化器是SimpleMessageConverter，对于对象以jdk序列化方式存储，若要以Json方式存储对象，就要自定义消息转换器</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AmqpConfig</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Bean</span>
-    <span style="color:#66d9ef">public</span> MessageConverter <span style="color:#a6e22e">messageConverter</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">//在容器中导入Json的消息转换器
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Jackson2JsonMessageConverter<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">AmqpConfig</span> <span style="color:#ff79c6">{</span>
+    @Bean
+    <span style="color:#8be9fd;font-style:italic">public</span> MessageConverter <span style="color:#50fa7b">messageConverter</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//在容器中导入Json的消息转换器
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> Jackson2JsonMessageConverter<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><ul>
 <li><strong>AmqpAdmin管理组件</strong><br>
 ​ 可用于创建和删除exchange、binding和queue</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//创建Direct类型的Exchange
-</span><span style="color:#75715e"></span>amqpAdmin<span style="color:#f92672">.</span><span style="color:#a6e22e">declareExchange</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> DirectExchange<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;admin.direct&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#75715e">//创建Queue
-</span><span style="color:#75715e"></span>amqpAdmin<span style="color:#f92672">.</span><span style="color:#a6e22e">declareQueue</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Queue<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;admin.test&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#75715e">//将创建的队列与Exchange绑定
-</span><span style="color:#75715e"></span>amqpAdmin<span style="color:#f92672">.</span><span style="color:#a6e22e">declareBinding</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Binding<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;admin.test&#34;</span><span style="color:#f92672">,</span> Binding<span style="color:#f92672">.</span><span style="color:#a6e22e">DestinationType</span><span style="color:#f92672">.</span><span style="color:#a6e22e">QUEUE</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;admin.direct&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;admin.test&#34;</span><span style="color:#f92672">,</span><span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">//创建Direct类型的Exchange
+</span><span style="color:#6272a4"></span>amqpAdmin<span style="color:#ff79c6">.</span><span style="color:#50fa7b">declareExchange</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> DirectExchange<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;admin.direct&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#6272a4">//创建Queue
+</span><span style="color:#6272a4"></span>amqpAdmin<span style="color:#ff79c6">.</span><span style="color:#50fa7b">declareQueue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Queue<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;admin.test&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#6272a4">//将创建的队列与Exchange绑定
+</span><span style="color:#6272a4"></span>amqpAdmin<span style="color:#ff79c6">.</span><span style="color:#50fa7b">declareBinding</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Binding<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;admin.test&#34;</span><span style="color:#ff79c6">,</span> Binding<span style="color:#ff79c6">.</span><span style="color:#50fa7b">DestinationType</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">QUEUE</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;admin.direct&#34;</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;admin.test&#34;</span><span style="color:#ff79c6">,</span><span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 </code></pre></div><ul>
 <li><strong>消息的监听</strong>
 <ul>
@@ -413,24 +536,24 @@ spring.rabbitmq.host=192.168.31.162
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BookService</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@RabbitListener</span><span style="color:#f92672">(</span>queues <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;admin.test&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">receive1</span><span style="color:#f92672">(</span>Book book<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;收到消息：&#34;</span><span style="color:#f92672">+</span>book<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Service
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">BookService</span> <span style="color:#ff79c6">{</span>
+    @RabbitListener<span style="color:#ff79c6">(</span>queues <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">{</span><span style="color:#f1fa8c">&#34;admin.test&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">receive1</span><span style="color:#ff79c6">(</span>Book book<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;收到消息：&#34;</span><span style="color:#ff79c6">+</span>book<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
 
-    <span style="color:#a6e22e">@RabbitListener</span><span style="color:#f92672">(</span>queues <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;admin.test&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">receive1</span><span style="color:#f92672">(</span>Object object<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;收到消息：&#34;</span><span style="color:#f92672">+</span>object<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">//收到消息：class org.springframework.amqp.core.Message
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+    @RabbitListener<span style="color:#ff79c6">(</span>queues <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">{</span><span style="color:#f1fa8c">&#34;admin.test&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">receive1</span><span style="color:#ff79c6">(</span>Object object<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;收到消息：&#34;</span><span style="color:#ff79c6">+</span>object<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//收到消息：class org.springframework.amqp.core.Message
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
     
-    <span style="color:#a6e22e">@RabbitListener</span><span style="color:#f92672">(</span>queues <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;admin.test&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">receive2</span><span style="color:#f92672">(</span>Message message<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;收到消息&#34;</span><span style="color:#f92672">+</span>message<span style="color:#f92672">.</span><span style="color:#a6e22e">getHeaders</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;---&#34;</span><span style="color:#f92672">+</span>message<span style="color:#f92672">.</span><span style="color:#a6e22e">getPayload</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    @RabbitListener<span style="color:#ff79c6">(</span>queues <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">{</span><span style="color:#f1fa8c">&#34;admin.test&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">receive2</span><span style="color:#ff79c6">(</span>Message message<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;收到消息&#34;</span><span style="color:#ff79c6">+</span>message<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getHeaders</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">+</span><span style="color:#f1fa8c">&#34;---&#34;</span><span style="color:#ff79c6">+</span>message<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPayload</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div>
 
                 
@@ -450,13 +573,27 @@ spring.rabbitmq.host=192.168.31.162
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -755,16 +892,6 @@ spring.rabbitmq.host=192.168.31.162
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -777,48 +904,44 @@ spring.rabbitmq.host=192.168.31.162
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -828,7 +951,19 @@ spring.rabbitmq.host=192.168.31.162
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -848,7 +983,7 @@ spring.rabbitmq.host=192.168.31.162
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -866,7 +1001,7 @@ spring.rabbitmq.host=192.168.31.162
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -878,12 +1013,76 @@ spring.rabbitmq.host=192.168.31.162
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

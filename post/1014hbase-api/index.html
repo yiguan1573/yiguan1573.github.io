@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>4、HBase API（HBase）-yiguan1573</title>
+    <title>4、HBase API（HBase） | yiguan1573</title>
 
     <link rel="canonical" href="/post/1014hbase-api/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>4、HBase API（HBase）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Tuesday, March 8, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Tuesday, March 8, 2022
+                            
+                                <span id="/post/1014hbase-api/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,225 +340,190 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#环境准备">环境准备</a></li>
-    <li><a href="#hbaseapi">HBaseAPI</a>
-      <ul>
-        <li><a href="#获取-configuration-对象">获取 Configuration 对象</a></li>
-        <li><a href="#判断表是否存在">判断表是否存在</a></li>
-        <li><a href="#创建表">创建表</a></li>
-        <li><a href="#删除表">删除表</a></li>
-        <li><a href="#向表中插入数据">向表中插入数据</a></li>
-        <li><a href="#删除多行数据">删除多行数据</a></li>
-        <li><a href="#获取所有数据">获取所有数据</a></li>
-        <li><a href="#获取某一行数据">获取某一行数据</a></li>
-        <li><a href="#获取某一行指定列族列的数据">获取某一行指定“列族:列”的数据</a></li>
-      </ul>
-    </li>
-    <li><a href="#mapreduce">MapReduce</a>
-      <ul>
-        <li><a href="#官方-hbase-mapreduce">官方 HBase-MapReduce</a></li>
-        <li><a href="#自定义-hbase-mapreduce1">自定义 HBase-MapReduce1</a></li>
-        <li><a href="#自定义-hbase-mapreduce2">自定义 Hbase-MapReduce2</a></li>
-      </ul>
-    </li>
-    <li><a href="#与-hive-的集成">与 Hive 的集成</a>
-      <ul>
-        <li><a href="#hbase-与-hive-的对比">HBase 与 Hive 的对比</a></li>
-        <li><a href="#hbase-与-hive-集成使用">HBase 与 Hive 集成使用</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-                
                 <h2 id="环境准备">环境准备</h2>
 <ul>
 <li>
 <p>新建项目后在 pom.xml 中添加依赖：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.hbase<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>hbase-server<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.3.1<span style="color:#f92672">&lt;/version&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.hbase<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>hbase-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.3.1<span style="color:#f92672">&lt;/version&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.apache.hbase<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+    <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>hbase-server<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+    <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>1.3.1<span style="color:#ff79c6">&lt;/version&gt;</span>
+<span style="color:#ff79c6">&lt;/dependency&gt;</span>
+<span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.apache.hbase<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+    <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>hbase-client<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+    <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>1.3.1<span style="color:#ff79c6">&lt;/version&gt;</span>
+<span style="color:#ff79c6">&lt;/dependency&gt;</span>
 </code></pre></div></li>
 </ul>
 <h2 id="hbaseapi">HBaseAPI</h2>
 <h3 id="获取-configuration-对象">获取 Configuration 对象</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Configuration conf<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">static</span><span style="color:#f92672">{</span>
-    <span style="color:#75715e">//使用 HBaseConfiguration 的单例方法实例化
-</span><span style="color:#75715e"></span>    
-    conf <span style="color:#f92672">=</span> HBaseConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    conf<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hbase.zookeeper.quorum&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;192.166.9.102&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    conf<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hbase.zookeeper.property.clientPort&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;2181&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> Configuration conf<span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">static</span><span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//使用 HBaseConfiguration 的单例方法实例化
+</span><span style="color:#6272a4"></span>    
+    conf <span style="color:#ff79c6">=</span> HBaseConfiguration<span style="color:#ff79c6">.</span><span style="color:#50fa7b">create</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    conf<span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hbase.zookeeper.quorum&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;192.166.9.102&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    conf<span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hbase.zookeeper.property.clientPort&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;2181&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="判断表是否存在">判断表是否存在</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isTableExist</span><span style="color:#f92672">(</span>String tableName<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> MasterNotRunningException<span style="color:#f92672">,</span>
-ZooKeeperConnectionException<span style="color:#f92672">,</span> IOException<span style="color:#f92672">{</span>
-    <span style="color:#75715e">//在 HBase 中管理、访问表需要先创建 HBaseAdmin 对象
-</span><span style="color:#75715e"></span>    
-    <span style="color:#75715e">//Connection connection = ConnectionFactory.createConnection(conf);
-</span><span style="color:#75715e"></span>    
-    <span style="color:#75715e">//HBaseAdmin admin = (HBaseAdmin) connection.getAdmin();
-</span><span style="color:#75715e"></span>    
-    HBaseAdmin admin <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HBaseAdmin<span style="color:#f92672">(</span>conf<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">return</span> admin<span style="color:#f92672">.</span><span style="color:#a6e22e">tableExists</span><span style="color:#f92672">(</span>tableName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">isTableExist</span><span style="color:#ff79c6">(</span>String tableName<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> MasterNotRunningException<span style="color:#ff79c6">,</span>
+ZooKeeperConnectionException<span style="color:#ff79c6">,</span> IOException<span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//在 HBase 中管理、访问表需要先创建 HBaseAdmin 对象
+</span><span style="color:#6272a4"></span>    
+    <span style="color:#6272a4">//Connection connection = ConnectionFactory.createConnection(conf);
+</span><span style="color:#6272a4"></span>    
+    <span style="color:#6272a4">//HBaseAdmin admin = (HBaseAdmin) connection.getAdmin();
+</span><span style="color:#6272a4"></span>    
+    HBaseAdmin admin <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HBaseAdmin<span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">return</span> admin<span style="color:#ff79c6">.</span><span style="color:#50fa7b">tableExists</span><span style="color:#ff79c6">(</span>tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="创建表">创建表</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">createTable</span><span style="color:#f92672">(</span>String tableName<span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> columnFamily<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> MasterNotRunningException<span style="color:#f92672">,</span> ZooKeeperConnectionException<span style="color:#f92672">,</span> IOException<span style="color:#f92672">{</span>
-    HBaseAdmin admin <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HBaseAdmin<span style="color:#f92672">(</span>conf<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//判断表是否存在
-</span><span style="color:#75715e"></span>    
-    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>isTableExist<span style="color:#f92672">(</span>tableName<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;表&#34;</span> <span style="color:#f92672">+</span> tableName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;已存在&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">//System.exit(0);
-</span><span style="color:#75715e"></span>        
-    <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span><span style="color:#f92672">{</span>
-        <span style="color:#75715e">//创建表属性对象,表名需要转字节
-</span><span style="color:#75715e"></span>        
-        HTableDescriptor descriptor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> 
-            HTableDescriptor<span style="color:#f92672">(</span>TableName<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>tableName<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">//创建多个列族
-</span><span style="color:#75715e"></span>        
-        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>String cf <span style="color:#f92672">:</span> columnFamily<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-            descriptor<span style="color:#f92672">.</span><span style="color:#a6e22e">addFamily</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HColumnDescriptor<span style="color:#f92672">(</span>cf<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#75715e">//根据对表的配置，创建表
-</span><span style="color:#75715e"></span>        
-        admin<span style="color:#f92672">.</span><span style="color:#a6e22e">createTable</span><span style="color:#f92672">(</span>descriptor<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;表&#34;</span> <span style="color:#f92672">+</span> tableName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;创建成功！&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">createTable</span><span style="color:#ff79c6">(</span>String tableName<span style="color:#ff79c6">,</span> String<span style="color:#ff79c6">.</span><span style="color:#ff79c6">.</span><span style="color:#ff79c6">.</span> columnFamily<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> MasterNotRunningException<span style="color:#ff79c6">,</span> ZooKeeperConnectionException<span style="color:#ff79c6">,</span> IOException<span style="color:#ff79c6">{</span>
+    HBaseAdmin admin <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HBaseAdmin<span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//判断表是否存在
+</span><span style="color:#6272a4"></span>    
+    <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>isTableExist<span style="color:#ff79c6">(</span>tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;表&#34;</span> <span style="color:#ff79c6">+</span> tableName <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;已存在&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//System.exit(0);
+</span><span style="color:#6272a4"></span>        
+    <span style="color:#ff79c6">}</span><span style="color:#ff79c6">else</span><span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//创建表属性对象,表名需要转字节
+</span><span style="color:#6272a4"></span>        
+        HTableDescriptor descriptor <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> 
+            HTableDescriptor<span style="color:#ff79c6">(</span>TableName<span style="color:#ff79c6">.</span><span style="color:#50fa7b">valueOf</span><span style="color:#ff79c6">(</span>tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//创建多个列族
+</span><span style="color:#6272a4"></span>        
+        <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>String cf <span style="color:#ff79c6">:</span> columnFamily<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            descriptor<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addFamily</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> HColumnDescriptor<span style="color:#ff79c6">(</span>cf<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#6272a4">//根据对表的配置，创建表
+</span><span style="color:#6272a4"></span>        
+        admin<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createTable</span><span style="color:#ff79c6">(</span>descriptor<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;表&#34;</span> <span style="color:#ff79c6">+</span> tableName <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;创建成功！&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="删除表">删除表</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dropTable</span><span style="color:#f92672">(</span>String tableName<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> MasterNotRunningException<span style="color:#f92672">,</span>
-ZooKeeperConnectionException<span style="color:#f92672">,</span> IOException<span style="color:#f92672">{</span>
-    HBaseAdmin admin <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HBaseAdmin<span style="color:#f92672">(</span>conf<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>isTableExist<span style="color:#f92672">(</span>tableName<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        admin<span style="color:#f92672">.</span><span style="color:#a6e22e">disableTable</span><span style="color:#f92672">(</span>tableName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        admin<span style="color:#f92672">.</span><span style="color:#a6e22e">deleteTable</span><span style="color:#f92672">(</span>tableName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;表&#34;</span> <span style="color:#f92672">+</span> tableName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;删除成功！&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span><span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;表&#34;</span> <span style="color:#f92672">+</span> tableName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;不存在！&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">dropTable</span><span style="color:#ff79c6">(</span>String tableName<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> MasterNotRunningException<span style="color:#ff79c6">,</span>
+ZooKeeperConnectionException<span style="color:#ff79c6">,</span> IOException<span style="color:#ff79c6">{</span>
+    HBaseAdmin admin <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HBaseAdmin<span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>isTableExist<span style="color:#ff79c6">(</span>tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        admin<span style="color:#ff79c6">.</span><span style="color:#50fa7b">disableTable</span><span style="color:#ff79c6">(</span>tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        admin<span style="color:#ff79c6">.</span><span style="color:#50fa7b">deleteTable</span><span style="color:#ff79c6">(</span>tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;表&#34;</span> <span style="color:#ff79c6">+</span> tableName <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;删除成功！&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span><span style="color:#ff79c6">else</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;表&#34;</span> <span style="color:#ff79c6">+</span> tableName <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;不存在！&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="向表中插入数据">向表中插入数据</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addRowData</span><span style="color:#f92672">(</span>String tableName<span style="color:#f92672">,</span> String rowKey<span style="color:#f92672">,</span> 
-                              String columnFamily<span style="color:#f92672">,</span> String
-                              column<span style="color:#f92672">,</span> String value<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">{</span>
-    <span style="color:#75715e">//创建 HTable 对象
-</span><span style="color:#75715e"></span>    
-    HTable hTable <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HTable<span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> tableName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//向表中插入数据
-</span><span style="color:#75715e"></span>    
-    Put put <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Put<span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>rowKey<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//向 Put 对象中组装数据
-</span><span style="color:#75715e"></span>    
-    put<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>columnFamily<span style="color:#f92672">)</span><span style="color:#f92672">,</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>column<span style="color:#f92672">)</span><span style="color:#f92672">,</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>value<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    hTable<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>put<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    hTable<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;插入数据成功&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">addRowData</span><span style="color:#ff79c6">(</span>String tableName<span style="color:#ff79c6">,</span> String rowKey<span style="color:#ff79c6">,</span> 
+                              String columnFamily<span style="color:#ff79c6">,</span> String
+                              column<span style="color:#ff79c6">,</span> String value<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//创建 HTable 对象
+</span><span style="color:#6272a4"></span>    
+    HTable hTable <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HTable<span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">,</span> tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//向表中插入数据
+</span><span style="color:#6272a4"></span>    
+    Put put <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Put<span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>rowKey<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//向 Put 对象中组装数据
+</span><span style="color:#6272a4"></span>    
+    put<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>columnFamily<span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>column<span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>value<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    hTable<span style="color:#ff79c6">.</span><span style="color:#50fa7b">put</span><span style="color:#ff79c6">(</span>put<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    hTable<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;插入数据成功&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="删除多行数据">删除多行数据</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteMultiRow</span><span style="color:#f92672">(</span>String tableName<span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> rows<span style="color:#f92672">)</span> 
-    <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">{</span>
-    HTable hTable <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HTable<span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> tableName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    List<span style="color:#f92672">&lt;</span>Delete<span style="color:#f92672">&gt;</span> deleteList <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Delete<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>String row <span style="color:#f92672">:</span> rows<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        Delete delete <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Delete<span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>row<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        deleteList<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>delete<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    hTable<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">(</span>deleteList<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    hTable<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">deleteMultiRow</span><span style="color:#ff79c6">(</span>String tableName<span style="color:#ff79c6">,</span> String<span style="color:#ff79c6">.</span><span style="color:#ff79c6">.</span><span style="color:#ff79c6">.</span> rows<span style="color:#ff79c6">)</span> 
+    <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">{</span>
+    HTable hTable <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HTable<span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">,</span> tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    List<span style="color:#ff79c6">&lt;</span>Delete<span style="color:#ff79c6">&gt;</span> deleteList <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ArrayList<span style="color:#ff79c6">&lt;</span>Delete<span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>String row <span style="color:#ff79c6">:</span> rows<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        Delete delete <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Delete<span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>row<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        deleteList<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>delete<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    hTable<span style="color:#ff79c6">.</span><span style="color:#50fa7b">delete</span><span style="color:#ff79c6">(</span>deleteList<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    hTable<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="获取所有数据">获取所有数据</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getAllRows</span><span style="color:#f92672">(</span>String tableName<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">{</span>
-    HTable hTable <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HTable<span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> tableName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//得到用于扫描 region 的对象
-</span><span style="color:#75715e"></span>    
-    Scan scan <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Scan<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//使用 HTable 得到 resultcanner 实现类的对象
-</span><span style="color:#75715e"></span>    
-    ResultScanner resultScanner <span style="color:#f92672">=</span> hTable<span style="color:#f92672">.</span><span style="color:#a6e22e">getScanner</span><span style="color:#f92672">(</span>scan<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>Result result <span style="color:#f92672">:</span> resultScanner<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        Cell<span style="color:#f92672">[</span><span style="color:#f92672">]</span> cells <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">rawCells</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>Cell cell <span style="color:#f92672">:</span> cells<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-            <span style="color:#75715e">//得到 rowkey
-</span><span style="color:#75715e"></span>            
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 行 键 :&#34;</span> <span style="color:#f92672">+</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneRow</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#75715e">//得到列族
-</span><span style="color:#75715e"></span>            
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 列 族 &#34;</span> <span style="color:#f92672">+</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneFamily</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 列 :&#34;</span> <span style="color:#f92672">+</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneQualifier</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 值 :&#34;</span> <span style="color:#f92672">+</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneValue</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> 
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">getAllRows</span><span style="color:#ff79c6">(</span>String tableName<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">{</span>
+    HTable hTable <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HTable<span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">,</span> tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//得到用于扫描 region 的对象
+</span><span style="color:#6272a4"></span>    
+    Scan scan <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Scan<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//使用 HTable 得到 resultcanner 实现类的对象
+</span><span style="color:#6272a4"></span>    
+    ResultScanner resultScanner <span style="color:#ff79c6">=</span> hTable<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getScanner</span><span style="color:#ff79c6">(</span>scan<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>Result result <span style="color:#ff79c6">:</span> resultScanner<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        Cell<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> cells <span style="color:#ff79c6">=</span> result<span style="color:#ff79c6">.</span><span style="color:#50fa7b">rawCells</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>Cell cell <span style="color:#ff79c6">:</span> cells<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//得到 rowkey
+</span><span style="color:#6272a4"></span>            
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 行 键 :&#34;</span> <span style="color:#ff79c6">+</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneRow</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">//得到列族
+</span><span style="color:#6272a4"></span>            
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 列 族 &#34;</span> <span style="color:#ff79c6">+</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneFamily</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 列 :&#34;</span> <span style="color:#ff79c6">+</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneQualifier</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 值 :&#34;</span> <span style="color:#ff79c6">+</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneValue</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> 
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="获取某一行数据">获取某一行数据</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">IOException<span style="color:#f92672">{</span>
-    HTable table <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HTable<span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> tableName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    Get get <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Get<span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>rowKey<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//get.setMaxVersions();显示所有版本
-</span><span style="color:#75715e"></span>    
-    <span style="color:#75715e">//get.setTimeStamp();显示指定时间戳的版本
-</span><span style="color:#75715e"></span>    
-    Result result <span style="color:#f92672">=</span> table<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>get<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>Cell cell <span style="color:#f92672">:</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">rawCells</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 行 键 :&#34;</span> <span style="color:#f92672">+</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>result<span style="color:#f92672">.</span><span style="color:#a6e22e">getRow</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 列 族 &#34;</span> <span style="color:#f92672">+</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneFamily</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 列 :&#34;</span> <span style="color:#f92672">+</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneQualifier</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 值 :&#34;</span> <span style="color:#f92672">+</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneValue</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;时间戳:&#34;</span> <span style="color:#f92672">+</span> cell<span style="color:#f92672">.</span><span style="color:#a6e22e">getTimestamp</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">IOException<span style="color:#ff79c6">{</span>
+    HTable table <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HTable<span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">,</span> tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    Get get <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Get<span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>rowKey<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//get.setMaxVersions();显示所有版本
+</span><span style="color:#6272a4"></span>    
+    <span style="color:#6272a4">//get.setTimeStamp();显示指定时间戳的版本
+</span><span style="color:#6272a4"></span>    
+    Result result <span style="color:#ff79c6">=</span> table<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span>get<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>Cell cell <span style="color:#ff79c6">:</span> result<span style="color:#ff79c6">.</span><span style="color:#50fa7b">rawCells</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 行 键 :&#34;</span> <span style="color:#ff79c6">+</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>result<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRow</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 列 族 &#34;</span> <span style="color:#ff79c6">+</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneFamily</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 列 :&#34;</span> <span style="color:#ff79c6">+</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneQualifier</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 值 :&#34;</span> <span style="color:#ff79c6">+</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneValue</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;时间戳:&#34;</span> <span style="color:#ff79c6">+</span> cell<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getTimestamp</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="获取某一行指定列族列的数据">获取某一行指定“列族:列”的数据</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getRowQualifier</span><span style="color:#f92672">(</span>String tableName<span style="color:#f92672">,</span> String rowKey<span style="color:#f92672">,</span> 
-                                   String family<span style="color:#f92672">,</span> String
-                                   qualifier<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">{</span>
-    HTable table <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HTable<span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> tableName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    Get get <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Get<span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>rowKey<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    get<span style="color:#f92672">.</span><span style="color:#a6e22e">addColumn</span><span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>family<span style="color:#f92672">)</span><span style="color:#f92672">,</span> 
-                  Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>qualifier<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    Result result <span style="color:#f92672">=</span> table<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>get<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>Cell cell <span style="color:#f92672">:</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">rawCells</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 行 键 :&#34;</span> <span style="color:#f92672">+</span> 
-                           Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>result<span style="color:#f92672">.</span><span style="color:#a6e22e">getRow</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 列 族 &#34;</span> <span style="color:#f92672">+</span> 
-                           Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneFamily</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 列 :&#34;</span> <span style="color:#f92672">+</span> 
-                           Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneQualifier</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; 值 :&#34;</span> <span style="color:#f92672">+</span> 
-                           Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneValue</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">getRowQualifier</span><span style="color:#ff79c6">(</span>String tableName<span style="color:#ff79c6">,</span> String rowKey<span style="color:#ff79c6">,</span> 
+                                   String family<span style="color:#ff79c6">,</span> String
+                                   qualifier<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">{</span>
+    HTable table <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> HTable<span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">,</span> tableName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    Get get <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Get<span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>rowKey<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    get<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addColumn</span><span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>family<span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> 
+                  Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>qualifier<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    Result result <span style="color:#ff79c6">=</span> table<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span>get<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>Cell cell <span style="color:#ff79c6">:</span> result<span style="color:#ff79c6">.</span><span style="color:#50fa7b">rawCells</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 行 键 :&#34;</span> <span style="color:#ff79c6">+</span> 
+                           Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>result<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRow</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 列 族 &#34;</span> <span style="color:#ff79c6">+</span> 
+                           Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneFamily</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 列 :&#34;</span> <span style="color:#ff79c6">+</span> 
+                           Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneQualifier</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; 值 :&#34;</span> <span style="color:#ff79c6">+</span> 
+                           Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneValue</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h2 id="mapreduce"><strong>MapReduce</strong></h2>
 <p>通过 HBase 的相关 JavaAPI，我们可以实现伴随 HBase 操作的 MapReduce 过程，比如使用MapReduce 将数据从本地文件系统导入到 HBase 的表中，比如我们从 HBase 中读取一些原始数据后使用 MapReduce 做数据分析。</p>
 <h3 id="官方-hbase-mapreduce">官方 HBase-MapReduce</h3>
 <ul>
 <li>
 <p>查看 HBase 的 MapReduce 任务的执行</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ bin/hbase mapredcp
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ bin/hbase mapredcp
 </code></pre></div></li>
 <li>
 <p>环境变量的导入</p>
 <ul>
 <li>
 <p>执行环境变量的导入（临时生效，在命令行执行下述操作）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ export HBASE_HOME<span style="color:#f92672">=</span>/opt/module/hbase
-$ export HADOOP_HOME<span style="color:#f92672">=</span>/opt/module/hadoop-2.7.2
-$ export HADOOP_CLASSPATH<span style="color:#f92672">=</span><span style="color:#e6db74">`</span><span style="color:#e6db74">${</span>HBASE_HOME<span style="color:#e6db74">}</span>/bin/hbase mapredcp<span style="color:#e6db74">`</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">HBASE_HOME</span><span style="color:#ff79c6">=</span>/opt/module/hbase
+$ <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">HADOOP_HOME</span><span style="color:#ff79c6">=</span>/opt/module/hadoop-2.7.2
+$ <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">HADOOP_CLASSPATH</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">`</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">HBASE_HOME</span><span style="color:#f1fa8c">}</span>/bin/hbase mapredcp<span style="color:#f1fa8c">`</span>
 </code></pre></div></li>
 <li>
 <p>永久生效：在/etc/profile 配置</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export HBASE_HOME<span style="color:#f92672">=</span>/opt/module/hbase
-export HADOOP_HOME<span style="color:#f92672">=</span>/opt/module/hadoop-2.7.2
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">HBASE_HOME</span><span style="color:#ff79c6">=</span>/opt/module/hbase
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">HADOOP_HOME</span><span style="color:#ff79c6">=</span>/opt/module/hadoop-2.7.2
 </code></pre></div><p><strong>并在 hadoop-env.sh 中配置：（注意：在 for 循环之后配）</strong></p>
 <p>export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/opt/module/hbase/lib/*</p>
 </li>
@@ -443,7 +534,7 @@ export HADOOP_HOME<span style="color:#f92672">=</span>/opt/module/hadoop-2.7.2
 <ul>
 <li>
 <p>案例一：统计 Student 表中有多少行数据</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ /opt/module/hadoop-2.7.2/bin/yarn jar lib/hbase-server-1.3.1.jar rowcounter student
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ /opt/module/hadoop-2.7.2/bin/yarn jar lib/hbase-server-1.3.1.jar rowcounter student
 </code></pre></div></li>
 <li>
 <p>案例二：使用 MapReduce 将本地数据导入到 HBase</p>
@@ -484,127 +575,127 @@ hdfs://hadoop102:9000/input_fruit
 </li>
 <li>
 <p>构建 ReadFruitMapper 类，用于读取 fruit 表中的数据</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.Cell<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.CellUtil<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.client.Put<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.client.Result<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.io.ImmutableBytesWritable<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.mapreduce.TableMapper<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.util.Bytes<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ReadFruitMapper</span> <span style="color:#66d9ef">extends</span> 
-    TableMapper<span style="color:#f92672">&lt;</span>ImmutableBytesWritable<span style="color:#f92672">,</span> Put<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>ImmutableBytesWritable key<span style="color:#f92672">,</span> Result value<span style="color:#f92672">,</span> 
-                       Context context<span style="color:#f92672">)</span> 
-        <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
-        <span style="color:#75715e">//将 fruit 的 name 和 color 提取出来，相当于将每一行数据读取出来放入到 Put对象中。
-</span><span style="color:#75715e"></span>          
-            Put put <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Put<span style="color:#f92672">(</span>key<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">//遍历添加 column 行
-</span><span style="color:#75715e"></span>          
-        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>Cell cell<span style="color:#f92672">:</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">rawCells</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-            <span style="color:#75715e">//添加/克隆列族:info
-</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;info&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneFamily</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-                <span style="color:#75715e">//添加/克隆列：name
-</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneQualifier</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
-                                <span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-                    <span style="color:#75715e">//将该列 cell 加入到 put 对象中
-</span><span style="color:#75715e"></span>                      
-                    put<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                    <span style="color:#75715e">//添加/克隆列:color
-</span><span style="color:#75715e"></span>                      
-                <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span> 
-                    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;color&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>CellUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">cloneQualifier</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
-                    <span style="color:#f92672">{</span>
-                        <span style="color:#75715e">//向该列 cell 加入到 put 对象中
-</span><span style="color:#75715e"></span>                          
-                        put<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>cell<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                    <span style="color:#f92672">}</span> 
-            <span style="color:#f92672">}</span> 
-        <span style="color:#f92672">}</span>
-        <span style="color:#75715e">//将从 fruit 读取到的每行数据写入到 context 中作为 map 的输出
-</span><span style="color:#75715e"></span>          
-        context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> put<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.atguigu<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.Cell<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.CellUtil<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.client.Put<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.client.Result<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.io.ImmutableBytesWritable<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.mapreduce.TableMapper<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.util.Bytes<span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ReadFruitMapper</span> <span style="color:#8be9fd;font-style:italic">extends</span> 
+    TableMapper<span style="color:#ff79c6">&lt;</span>ImmutableBytesWritable<span style="color:#ff79c6">,</span> Put<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">map</span><span style="color:#ff79c6">(</span>ImmutableBytesWritable key<span style="color:#ff79c6">,</span> Result value<span style="color:#ff79c6">,</span> 
+                       Context context<span style="color:#ff79c6">)</span> 
+        <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> InterruptedException <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//将 fruit 的 name 和 color 提取出来，相当于将每一行数据读取出来放入到 Put对象中。
+</span><span style="color:#6272a4"></span>          
+            Put put <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Put<span style="color:#ff79c6">(</span>key<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//遍历添加 column 行
+</span><span style="color:#6272a4"></span>          
+        <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>Cell cell<span style="color:#ff79c6">:</span> value<span style="color:#ff79c6">.</span><span style="color:#50fa7b">rawCells</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//添加/克隆列族:info
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;info&#34;</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneFamily</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+                <span style="color:#6272a4">//添加/克隆列：name
+</span><span style="color:#6272a4"></span>                <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;name&#34;</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneQualifier</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span>
+                                <span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+                    <span style="color:#6272a4">//将该列 cell 加入到 put 对象中
+</span><span style="color:#6272a4"></span>                      
+                    put<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#6272a4">//添加/克隆列:color
+</span><span style="color:#6272a4"></span>                      
+                <span style="color:#ff79c6">}</span><span style="color:#ff79c6">else</span> 
+                    <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;color&#34;</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span>CellUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">cloneQualifier</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span>
+                    <span style="color:#ff79c6">{</span>
+                        <span style="color:#6272a4">//向该列 cell 加入到 put 对象中
+</span><span style="color:#6272a4"></span>                          
+                        put<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>cell<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">}</span> 
+            <span style="color:#ff79c6">}</span> 
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#6272a4">//将从 fruit 读取到的每行数据写入到 context 中作为 map 的输出
+</span><span style="color:#6272a4"></span>          
+        context<span style="color:#ff79c6">.</span><span style="color:#50fa7b">write</span><span style="color:#ff79c6">(</span>key<span style="color:#ff79c6">,</span> put<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>构建 WriteFruitMRReducer 类，用于将读取到的 fruit 表中的数据写入到 fruit_mr 表中</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu.Hbase_mr<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.Hbase.client.Put<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.Hbase.io.ImmutableBytesWritable<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.Hbase.mapreduce.TableReducer<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.io.NullWritable<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WriteFruitMRReducer</span> <span style="color:#66d9ef">extends</span> 
-    TableReducer<span style="color:#f92672">&lt;</span>ImmutableBytesWritable<span style="color:#f92672">,</span> Put<span style="color:#f92672">,</span> NullWritable<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reduce</span><span style="color:#f92672">(</span>ImmutableBytesWritable key<span style="color:#f92672">,</span> Iterable<span style="color:#f92672">&lt;</span>Put<span style="color:#f92672">&gt;</span> 
-                          values<span style="color:#f92672">,</span> Context context<span style="color:#f92672">)</span> 
-        <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
-        <span style="color:#75715e">//读出来的每一行数据写入到 fruit_mr 表中
-</span><span style="color:#75715e"></span>          
-        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>Put put<span style="color:#f92672">:</span> values<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-            context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>NullWritable<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> put<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.atguigu.Hbase_mr<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.Hbase.client.Put<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.Hbase.io.ImmutableBytesWritable<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.Hbase.mapreduce.TableReducer<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.io.NullWritable<span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">WriteFruitMRReducer</span> <span style="color:#8be9fd;font-style:italic">extends</span> 
+    TableReducer<span style="color:#ff79c6">&lt;</span>ImmutableBytesWritable<span style="color:#ff79c6">,</span> Put<span style="color:#ff79c6">,</span> NullWritable<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span>ImmutableBytesWritable key<span style="color:#ff79c6">,</span> Iterable<span style="color:#ff79c6">&lt;</span>Put<span style="color:#ff79c6">&gt;</span> 
+                          values<span style="color:#ff79c6">,</span> Context context<span style="color:#ff79c6">)</span> 
+        <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> InterruptedException <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//读出来的每一行数据写入到 fruit_mr 表中
+</span><span style="color:#6272a4"></span>          
+        <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>Put put<span style="color:#ff79c6">:</span> values<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            context<span style="color:#ff79c6">.</span><span style="color:#50fa7b">write</span><span style="color:#ff79c6">(</span>NullWritable<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> put<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>构建 Fruit2FruitMRRunner extends Configured implements Tool 用于组装运行 Job</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//组装 Job
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    <span style="color:#75715e">//得到 Configuration
-</span><span style="color:#75715e"></span>      
-    Configuration conf <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getConf</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//创建 Job 任务
-</span><span style="color:#75715e"></span>      
-    Job job <span style="color:#f92672">=</span> Job<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    job<span style="color:#f92672">.</span><span style="color:#a6e22e">setJarByClass</span><span style="color:#f92672">(</span>Fruit2FruitMRRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//配置 Job
-</span><span style="color:#75715e"></span>      
-    Scan scan <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Scan<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    scan<span style="color:#f92672">.</span><span style="color:#a6e22e">setCacheBlocks</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    scan<span style="color:#f92672">.</span><span style="color:#a6e22e">setCaching</span><span style="color:#f92672">(</span>500<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//设置 Mapper，注意导入的是 mapreduce 包下的，不是 mapred 包下的，后者是老版本
-</span><span style="color:#75715e"></span>      
-    TableMapReduceUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">initTableMapperJob</span><span style="color:#f92672">(</span>
-        <span style="color:#e6db74">&#34;fruit&#34;</span><span style="color:#f92672">,</span> <span style="color:#75715e">//数据源的表名
-</span><span style="color:#75715e"></span>          
-        scan<span style="color:#f92672">,</span> <span style="color:#75715e">//scan 扫描控制器
-</span><span style="color:#75715e"></span>          
-        ReadFruitMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span><span style="color:#75715e">//设置 Mapper 类
-</span><span style="color:#75715e"></span>          
-        ImmutableBytesWritable<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span><span style="color:#75715e">//设置 Mapper 输出 key 类型
-</span><span style="color:#75715e"></span>          
-        Put<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span><span style="color:#75715e">//设置 Mapper 输出 value 值类型
-</span><span style="color:#75715e"></span>          
-        job<span style="color:#75715e">//设置给哪个 JOB
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//设置 Reducer
-</span><span style="color:#75715e"></span>      
-    TableMapReduceUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">initTableReducerJob</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;fruit_mr&#34;</span><span style="color:#f92672">,</span> 
-                                           WriteFruitMRReducer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> job<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//设置 Reduce 数量，最少 1 个
-</span><span style="color:#75715e"></span>      
-    job<span style="color:#f92672">.</span><span style="color:#a6e22e">setNumReduceTasks</span><span style="color:#f92672">(</span>1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">boolean</span> isSuccess <span style="color:#f92672">=</span> job<span style="color:#f92672">.</span><span style="color:#a6e22e">waitForCompletion</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#f92672">!</span>isSuccess<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IOException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Job running with error&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">return</span> isSuccess <span style="color:#f92672">?</span> 0 <span style="color:#f92672">:</span> 1<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">//组装 Job
+</span><span style="color:#6272a4"></span>  
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//得到 Configuration
+</span><span style="color:#6272a4"></span>      
+    Configuration conf <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getConf</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//创建 Job 任务
+</span><span style="color:#6272a4"></span>      
+    Job job <span style="color:#ff79c6">=</span> Job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getInstance</span><span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSimpleName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setJarByClass</span><span style="color:#ff79c6">(</span>Fruit2FruitMRRunner<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//配置 Job
+</span><span style="color:#6272a4"></span>      
+    Scan scan <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Scan<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    scan<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setCacheBlocks</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">false</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    scan<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setCaching</span><span style="color:#ff79c6">(</span>500<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//设置 Mapper，注意导入的是 mapreduce 包下的，不是 mapred 包下的，后者是老版本
+</span><span style="color:#6272a4"></span>      
+    TableMapReduceUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">initTableMapperJob</span><span style="color:#ff79c6">(</span>
+        <span style="color:#f1fa8c">&#34;fruit&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#6272a4">//数据源的表名
+</span><span style="color:#6272a4"></span>          
+        scan<span style="color:#ff79c6">,</span> <span style="color:#6272a4">//scan 扫描控制器
+</span><span style="color:#6272a4"></span>          
+        ReadFruitMapper<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span><span style="color:#6272a4">//设置 Mapper 类
+</span><span style="color:#6272a4"></span>          
+        ImmutableBytesWritable<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span><span style="color:#6272a4">//设置 Mapper 输出 key 类型
+</span><span style="color:#6272a4"></span>          
+        Put<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span><span style="color:#6272a4">//设置 Mapper 输出 value 值类型
+</span><span style="color:#6272a4"></span>          
+        job<span style="color:#6272a4">//设置给哪个 JOB
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//设置 Reducer
+</span><span style="color:#6272a4"></span>      
+    TableMapReduceUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">initTableReducerJob</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;fruit_mr&#34;</span><span style="color:#ff79c6">,</span> 
+                                           WriteFruitMRReducer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> job<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//设置 Reduce 数量，最少 1 个
+</span><span style="color:#6272a4"></span>      
+    job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setNumReduceTasks</span><span style="color:#ff79c6">(</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd">boolean</span> isSuccess <span style="color:#ff79c6">=</span> job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">waitForCompletion</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">!</span>isSuccess<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IOException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Job running with error&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">return</span> isSuccess <span style="color:#ff79c6">?</span> 0 <span style="color:#ff79c6">:</span> 1<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>主函数中调用运行该 Job 任务</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span> String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args <span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
-    Configuration conf <span style="color:#f92672">=</span> HbaseConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">int</span> status <span style="color:#f92672">=</span> ToolRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Fruit2FruitMRRunner<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> args<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>status<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span> String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args <span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception<span style="color:#ff79c6">{</span>
+    Configuration conf <span style="color:#ff79c6">=</span> HbaseConfiguration<span style="color:#ff79c6">.</span><span style="color:#50fa7b">create</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd">int</span> status <span style="color:#ff79c6">=</span> ToolRunner<span style="color:#ff79c6">.</span><span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> Fruit2FruitMRRunner<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> args<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">exit</span><span style="color:#ff79c6">(</span>status<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>打包运行任务</p>
@@ -621,109 +712,109 @@ com.z.Hbase.mr1.Fruit2FruitMRRunner
 </li>
 <li>
 <p>构建 ReadFruitFromHDFSMapper 于读取 HDFS 中的文件数据</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.client.Put<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.io.ImmutableBytesWritable<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.util.Bytes<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.io.LongWritable<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.io.Text<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.mapreduce.Mapper<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ReadFruitFromHDFSMapper</span> <span style="color:#66d9ef">extends</span> Mapper<span style="color:#f92672">&lt;</span>LongWritable<span style="color:#f92672">,</span>
-Text<span style="color:#f92672">,</span> ImmutableBytesWritable<span style="color:#f92672">,</span> Put<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>LongWritable key<span style="color:#f92672">,</span> Text value<span style="color:#f92672">,</span> Context 
-                       context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
-        <span style="color:#75715e">//从 HDFS 中读取的数据
-</span><span style="color:#75715e"></span>          
-        String lineValue <span style="color:#f92672">=</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">//读取出来的每行数据使用\t 进行分割，存于 String 数组
-</span><span style="color:#75715e"></span>          
-        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> values <span style="color:#f92672">=</span> lineValue<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\t&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">//根据数据中值的含义取值
-</span><span style="color:#75715e"></span>          
-        String rowKey <span style="color:#f92672">=</span> values<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
-        String name <span style="color:#f92672">=</span> values<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
-        String color <span style="color:#f92672">=</span> values<span style="color:#f92672">[</span>2<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">//初始化 rowKey
-</span><span style="color:#75715e"></span>          
-        ImmutableBytesWritable rowKeyWritable <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> 
-            ImmutableBytesWritable<span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>rowKey<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">//初始化 put 对象
-</span><span style="color:#75715e"></span>          
-        Put put <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Put<span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>rowKey<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">//参数分别:列族、列、值 
-</span><span style="color:#75715e"></span>          
-        put<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;info&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> 
-                Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>name<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> 
-        put<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;info&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;color&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> 
-                Bytes<span style="color:#f92672">.</span><span style="color:#a6e22e">toBytes</span><span style="color:#f92672">(</span>color<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.atguigu<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.client.Put<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.io.ImmutableBytesWritable<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.util.Bytes<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.io.LongWritable<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.io.Text<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.mapreduce.Mapper<span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ReadFruitFromHDFSMapper</span> <span style="color:#8be9fd;font-style:italic">extends</span> Mapper<span style="color:#ff79c6">&lt;</span>LongWritable<span style="color:#ff79c6">,</span>
+Text<span style="color:#ff79c6">,</span> ImmutableBytesWritable<span style="color:#ff79c6">,</span> Put<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">map</span><span style="color:#ff79c6">(</span>LongWritable key<span style="color:#ff79c6">,</span> Text value<span style="color:#ff79c6">,</span> Context 
+                       context<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> InterruptedException <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//从 HDFS 中读取的数据
+</span><span style="color:#6272a4"></span>          
+        String lineValue <span style="color:#ff79c6">=</span> value<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//读取出来的每行数据使用\t 进行分割，存于 String 数组
+</span><span style="color:#6272a4"></span>          
+        String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> values <span style="color:#ff79c6">=</span> lineValue<span style="color:#ff79c6">.</span><span style="color:#50fa7b">split</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;\t&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//根据数据中值的含义取值
+</span><span style="color:#6272a4"></span>          
+        String rowKey <span style="color:#ff79c6">=</span> values<span style="color:#ff79c6">[</span>0<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+        String name <span style="color:#ff79c6">=</span> values<span style="color:#ff79c6">[</span>1<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+        String color <span style="color:#ff79c6">=</span> values<span style="color:#ff79c6">[</span>2<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//初始化 rowKey
+</span><span style="color:#6272a4"></span>          
+        ImmutableBytesWritable rowKeyWritable <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> 
+            ImmutableBytesWritable<span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>rowKey<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//初始化 put 对象
+</span><span style="color:#6272a4"></span>          
+        Put put <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Put<span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>rowKey<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//参数分别:列族、列、值 
+</span><span style="color:#6272a4"></span>          
+        put<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;info&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;name&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> 
+                Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> 
+        put<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;info&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;color&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> 
+                Bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toBytes</span><span style="color:#ff79c6">(</span>color<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> 
   
-        context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>rowKeyWritable<span style="color:#f92672">,</span> put<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+        context<span style="color:#ff79c6">.</span><span style="color:#50fa7b">write</span><span style="color:#ff79c6">(</span>rowKeyWritable<span style="color:#ff79c6">,</span> put<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>构建 WriteFruitMRFromTxtReducer 类</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.z.Hbase.mr2<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.client.Put<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.io.ImmutableBytesWritable<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.hbase.mapreduce.TableReducer<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.hadoop.io.NullWritable<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WriteFruitMRFromTxtReducer</span> <span style="color:#66d9ef">extends</span> 
-    TableReducer<span style="color:#f92672">&lt;</span>ImmutableBytesWritable<span style="color:#f92672">,</span> Put<span style="color:#f92672">,</span> NullWritable<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reduce</span><span style="color:#f92672">(</span>ImmutableBytesWritable key<span style="color:#f92672">,</span> Iterable<span style="color:#f92672">&lt;</span>Put<span style="color:#f92672">&gt;</span> 
-                          values<span style="color:#f92672">,</span> Context context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException 
-    <span style="color:#f92672">{</span>
-        <span style="color:#75715e">//读出来的每一行数据写入到 fruit_hdfs 表中
-</span><span style="color:#75715e"></span>          
-        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>Put put<span style="color:#f92672">:</span> values<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-            context<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>NullWritable<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> put<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> 
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.z.Hbase.mr2<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.client.Put<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.io.ImmutableBytesWritable<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.hbase.mapreduce.TableReducer<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.hadoop.io.NullWritable<span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">WriteFruitMRFromTxtReducer</span> <span style="color:#8be9fd;font-style:italic">extends</span> 
+    TableReducer<span style="color:#ff79c6">&lt;</span>ImmutableBytesWritable<span style="color:#ff79c6">,</span> Put<span style="color:#ff79c6">,</span> NullWritable<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span>ImmutableBytesWritable key<span style="color:#ff79c6">,</span> Iterable<span style="color:#ff79c6">&lt;</span>Put<span style="color:#ff79c6">&gt;</span> 
+                          values<span style="color:#ff79c6">,</span> Context context<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> InterruptedException 
+    <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//读出来的每一行数据写入到 fruit_hdfs 表中
+</span><span style="color:#6272a4"></span>          
+        <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>Put put<span style="color:#ff79c6">:</span> values<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            context<span style="color:#ff79c6">.</span><span style="color:#50fa7b">write</span><span style="color:#ff79c6">(</span>NullWritable<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> put<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> 
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>创建 Txt2FruitRunner 组装 Job</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    <span style="color:#75715e">//得到 Configuration
-</span><span style="color:#75715e"></span>      
-    Configuration conf <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getConf</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//创建 Job 任务
-</span><span style="color:#75715e"></span>      
-    Job job <span style="color:#f92672">=</span> Job<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    job<span style="color:#f92672">.</span><span style="color:#a6e22e">setJarByClass</span><span style="color:#f92672">(</span>Txt2FruitRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    Path inPath <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> 
-        Path<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hdfs://hadoop102:9000/input_fruit/fruit.tsv&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    FileInputFormat<span style="color:#f92672">.</span><span style="color:#a6e22e">addInputPath</span><span style="color:#f92672">(</span>job<span style="color:#f92672">,</span> inPath<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//设置 Mapper
-</span><span style="color:#75715e"></span>      
-    job<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapperClass</span><span style="color:#f92672">(</span>ReadFruitFromHDFSMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    job<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapOutputKeyClass</span><span style="color:#f92672">(</span>ImmutableBytesWritable<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    job<span style="color:#f92672">.</span><span style="color:#a6e22e">setMapOutputValueClass</span><span style="color:#f92672">(</span>Put<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//设置 Reducer
-</span><span style="color:#75715e"></span>      
-    TableMapReduceUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">initTableReducerJob</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;fruit_mr&#34;</span><span style="color:#f92672">,</span> 
-                                           WriteFruitMRFromTxtReducer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> job<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//设置 Reduce 数量，最少 1 个
-</span><span style="color:#75715e"></span>      
-    job<span style="color:#f92672">.</span><span style="color:#a6e22e">setNumReduceTasks</span><span style="color:#f92672">(</span>1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">boolean</span> isSuccess <span style="color:#f92672">=</span> job<span style="color:#f92672">.</span><span style="color:#a6e22e">waitForCompletion</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#f92672">!</span>isSuccess<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IOException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Job running with error&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">return</span> isSuccess <span style="color:#f92672">?</span> 0 <span style="color:#f92672">:</span> 1<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//得到 Configuration
+</span><span style="color:#6272a4"></span>      
+    Configuration conf <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getConf</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//创建 Job 任务
+</span><span style="color:#6272a4"></span>      
+    Job job <span style="color:#ff79c6">=</span> Job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getInstance</span><span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSimpleName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setJarByClass</span><span style="color:#ff79c6">(</span>Txt2FruitRunner<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    Path inPath <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> 
+        Path<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hdfs://hadoop102:9000/input_fruit/fruit.tsv&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    FileInputFormat<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addInputPath</span><span style="color:#ff79c6">(</span>job<span style="color:#ff79c6">,</span> inPath<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//设置 Mapper
+</span><span style="color:#6272a4"></span>      
+    job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setMapperClass</span><span style="color:#ff79c6">(</span>ReadFruitFromHDFSMapper<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setMapOutputKeyClass</span><span style="color:#ff79c6">(</span>ImmutableBytesWritable<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setMapOutputValueClass</span><span style="color:#ff79c6">(</span>Put<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//设置 Reducer
+</span><span style="color:#6272a4"></span>      
+    TableMapReduceUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">initTableReducerJob</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;fruit_mr&#34;</span><span style="color:#ff79c6">,</span> 
+                                           WriteFruitMRFromTxtReducer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span> job<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//设置 Reduce 数量，最少 1 个
+</span><span style="color:#6272a4"></span>      
+    job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setNumReduceTasks</span><span style="color:#ff79c6">(</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd">boolean</span> isSuccess <span style="color:#ff79c6">=</span> job<span style="color:#ff79c6">.</span><span style="color:#50fa7b">waitForCompletion</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">!</span>isSuccess<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IOException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Job running with error&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">return</span> isSuccess <span style="color:#ff79c6">?</span> 0 <span style="color:#ff79c6">:</span> 1<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>调用执行 Job</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    Configuration conf <span style="color:#f92672">=</span> HBaseConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">int</span> status <span style="color:#f92672">=</span> ToolRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>conf<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Txt2FruitRunner<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>args<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>status<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception <span style="color:#ff79c6">{</span>
+    Configuration conf <span style="color:#ff79c6">=</span> HBaseConfiguration<span style="color:#ff79c6">.</span><span style="color:#50fa7b">create</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd">int</span> status <span style="color:#ff79c6">=</span> ToolRunner<span style="color:#ff79c6">.</span><span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span>conf<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> Txt2FruitRunner<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span>args<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">exit</span><span style="color:#ff79c6">(</span>status<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>打包运行</p>
@@ -732,7 +823,10 @@ Text<span style="color:#f92672">,</span> ImmutableBytesWritable<span style="colo
 </ul>
 <h2 id="与-hive-的集成">与 Hive 的集成</h2>
 <h3 id="hbase-与-hive-的对比">HBase 与 Hive 的对比</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1ruu01j4qj30qc0hw763.jpg" alt="QQ截图20220430165953.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1ruu01j4qj30qc0hw763.jpg" alt="QQ截图20220430165953.jpg">
+
+</p>
 <h3 id="hbase-与-hive-集成使用">HBase 与 Hive 集成使用</h3>
 <ul>
 <li>
@@ -753,17 +847,17 @@ ln -s $HBASE_HOME/lib/hbase-hadoop-compat-1.3.1.jar $HIVE_HOME/lib/hbase-hadoop-
 </code></pre></li>
 <li>
 <p>同时在 hive-site.xml 中修改 zookeeper 的属性，如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.zookeeper.quorum<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>hadoop102,hadoop103,hadoop104<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>The list of ZooKeeper servers to talk to. This is 
-        only needed for read/write locks.<span style="color:#f92672">&lt;/description&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.zookeeper.client.port<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>2181<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>The port of ZooKeeper servers to talk to. This is only needed for read/write locks.<span style="color:#f92672">&lt;/description&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hive.zookeeper.quorum<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>hadoop102,hadoop103,hadoop104<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;description</span><span style="color:#ff79c6">&gt;</span>The list of ZooKeeper servers to talk to. This is 
+        only needed for read/write locks.<span style="color:#ff79c6">&lt;/description&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hive.zookeeper.client.port<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>2181<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;description</span><span style="color:#ff79c6">&gt;</span>The port of ZooKeeper servers to talk to. This is only needed for read/write locks.<span style="color:#ff79c6">&lt;/description&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 <li>
 <p>案例一</p>
@@ -773,50 +867,50 @@ ln -s $HBASE_HOME/lib/hbase-hadoop-compat-1.3.1.jar $HIVE_HOME/lib/hbase-hadoop-
 </li>
 <li>
 <p>在 Hive 中创建表同时关联 HBase</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> hive_hbase_emp_table(
-    empno int,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">CREATE</span> <span style="color:#ff79c6">TABLE</span> hive_hbase_emp_table(
+    empno <span style="color:#8be9fd;font-style:italic">int</span>,
     ename string,
     job string,
-    mgr int,
+    mgr <span style="color:#8be9fd;font-style:italic">int</span>,
     hiredate string,
     sal double,
     comm double,
-    deptno int)
-STORED <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">org.apache.hadoop.hive.hbase.HBaseStorageHandler</span><span style="color:#e6db74">&#39;</span>
-<span style="color:#66d9ef">WITH</span> SERDEPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hbase.columns.mapping</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">:key,info:ename,info:job,info:mgr,info:hiredate,info:sal,info:comm,info:deptno</span><span style="color:#e6db74">&#34;</span>)
-TBLPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hbase.table.name</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hbase_emp_table</span><span style="color:#e6db74">&#34;</span>);
+    deptno <span style="color:#8be9fd;font-style:italic">int</span>)
+STORED <span style="color:#ff79c6">BY</span> <span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">org.apache.hadoop.hive.hbase.HBaseStorageHandler</span><span style="color:#f1fa8c">&#39;</span>
+<span style="color:#ff79c6">WITH</span> SERDEPROPERTIES (<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">hbase.columns.mapping</span><span style="color:#f1fa8c">&#34;</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">:key,info:ename,info:job,info:mgr,info:hiredate,info:sal,info:comm,info:deptno</span><span style="color:#f1fa8c">&#34;</span>)
+TBLPROPERTIES (<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">hbase.table.name</span><span style="color:#f1fa8c">&#34;</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">hbase_emp_table</span><span style="color:#f1fa8c">&#34;</span>);
 </code></pre></div><p><strong>提示：完成之后，可以分别进入 Hive 和 HBase 查看，都生成了对应的表</strong></p>
 </li>
 <li>
 <p>在 Hive 中创建临时中间表，用于 load 文件中的数据</p>
 <p>提示：不能将数据直接 load 进 Hive 所关联 HBase 的那张表中</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> emp(
-    empno int,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">CREATE</span> <span style="color:#ff79c6">TABLE</span> emp(
+    empno <span style="color:#8be9fd;font-style:italic">int</span>,
     ename string,
     job string,
-    mgr int,
+    mgr <span style="color:#8be9fd;font-style:italic">int</span>,
     hiredate string,
     sal double,
     comm double,
-    deptno int)
-<span style="color:#66d9ef">row</span> format delimited fields terminated <span style="color:#66d9ef">by</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">\t</span><span style="color:#e6db74">&#39;</span>;
+    deptno <span style="color:#8be9fd;font-style:italic">int</span>)
+<span style="color:#ff79c6">row</span> format delimited fields terminated <span style="color:#ff79c6">by</span> <span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">\t</span><span style="color:#f1fa8c">&#39;</span>;
 </code></pre></div></li>
 <li>
 <p>向 Hive 中间表中 load 数据</p>
 </li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">load</span> <span style="color:#66d9ef">data</span> <span style="color:#66d9ef">local</span> inpath <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/home/admin/softwares/data/emp.txt</span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">into</span> <span style="color:#66d9ef">table</span> emp;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">load</span> <span style="color:#ff79c6">data</span> <span style="color:#ff79c6">local</span> inpath <span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">/home/admin/softwares/data/emp.txt</span><span style="color:#f1fa8c">&#39;</span> <span style="color:#ff79c6">into</span> <span style="color:#ff79c6">table</span> emp;
 </code></pre></div><ul>
 <li>
 <p>通过 insert 命令将中间表中的数据导入到 Hive 关联 Hbase 的那张表中</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> <span style="color:#66d9ef">table</span> hive_hbase_emp_table <span style="color:#66d9ef">select</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">from</span> emp;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">insert</span> <span style="color:#ff79c6">into</span> <span style="color:#ff79c6">table</span> hive_hbase_emp_table <span style="color:#ff79c6">select</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">from</span> emp;
 </code></pre></div></li>
 <li>
 <p>查看 Hive 以及关联的 HBase 表中是否已经成功的同步插入了数据</p>
 <ul>
 <li>
 <p>Hive：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">from</span> hive_hbase_emp_table;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">select</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">from</span> hive_hbase_emp_table;
 </code></pre></div></li>
 <li>
 <p>HBase：</p>
@@ -837,23 +931,23 @@ TBLPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db7
 </li>
 <li>
 <p>在 Hive 中创建外部表</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">EXTERNAL</span> <span style="color:#66d9ef">TABLE</span> relevance_hbase_emp(
-    empno int,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">CREATE</span> <span style="color:#ff79c6">EXTERNAL</span> <span style="color:#ff79c6">TABLE</span> relevance_hbase_emp(
+    empno <span style="color:#8be9fd;font-style:italic">int</span>,
     ename string,
     job string,
-    mgr int,
+    mgr <span style="color:#8be9fd;font-style:italic">int</span>,
     hiredate string,
     sal double,
     comm double,
-    deptno int)
-STORED <span style="color:#66d9ef">BY</span> 
-<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">org.apache.hadoop.hive.hbase.HBaseStorageHandler</span><span style="color:#e6db74">&#39;</span>
-<span style="color:#66d9ef">WITH</span> SERDEPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hbase.columns.mapping</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">:key,info:ename,info:job,info:mgr,info:hiredate,info:sal,info:comm,info:deptno</span><span style="color:#e6db74">&#34;</span>)
-TBLPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hbase.table.name</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hbase_emp_table</span><span style="color:#e6db74">&#34;</span>);
+    deptno <span style="color:#8be9fd;font-style:italic">int</span>)
+STORED <span style="color:#ff79c6">BY</span> 
+<span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">org.apache.hadoop.hive.hbase.HBaseStorageHandler</span><span style="color:#f1fa8c">&#39;</span>
+<span style="color:#ff79c6">WITH</span> SERDEPROPERTIES (<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">hbase.columns.mapping</span><span style="color:#f1fa8c">&#34;</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">:key,info:ename,info:job,info:mgr,info:hiredate,info:sal,info:comm,info:deptno</span><span style="color:#f1fa8c">&#34;</span>)
+TBLPROPERTIES (<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">hbase.table.name</span><span style="color:#f1fa8c">&#34;</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">hbase_emp_table</span><span style="color:#f1fa8c">&#34;</span>);
 </code></pre></div></li>
 <li>
 <p>关联后就可以使用 Hive 函数进行一些分析操作了</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">from</span> relevance_hbase_emp;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">select</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">from</span> relevance_hbase_emp;
 </code></pre></div></li>
 </ul>
 </li>
@@ -877,13 +971,27 @@ TBLPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db7
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -1182,16 +1290,6 @@ TBLPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db7
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -1204,48 +1302,44 @@ TBLPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db7
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1255,7 +1349,19 @@ TBLPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db7
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1275,7 +1381,7 @@ TBLPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db7
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1293,7 +1399,7 @@ TBLPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db7
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1305,12 +1411,76 @@ TBLPROPERTIES (<span style="color:#e6db74">&#34;</span><span style="color:#e6db7
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

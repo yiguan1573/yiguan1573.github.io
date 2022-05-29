@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>2、Doker详解（Docker）-yiguan1573</title>
+    <title>2、Doker详解（Docker） | yiguan1573</title>
 
     <link rel="canonical" href="/post/883docker%E8%AF%A6%E8%A7%A3/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -188,15 +178,151 @@
                     <h1>2、Doker详解（Docker）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Friday, September 10, 2021
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Friday, September 10, 2021
+                            
+                                <span id="/post/883docker%E8%AF%A6%E8%A7%A3/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -218,53 +344,13 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#概述">概述</a></li>
-    <li><a href="#docker三要素">Docker三要素</a></li>
-    <li><a href="#centos7安装docker步骤">CentOS7安装Docker步骤</a></li>
-    <li><a href="#底层原理">底层原理</a></li>
-    <li><a href="#docker常用命令">Docker常用命令</a>
-      <ul>
-        <li><a href="#帮助命令">帮助命令</a></li>
-        <li><a href="#镜像命令">镜像命令</a></li>
-        <li><a href="#容器命令">容器命令</a></li>
-      </ul>
-    </li>
-    <li><a href="#docker镜像">Docker镜像</a>
-      <ul>
-        <li><a href="#unionfs-联合文件系统">UnionFS (联合文件系统)</a></li>
-        <li><a href="#docker镜像加载原理">Docker镜像加载原理</a></li>
-        <li><a href="#分层的镜像">分层的镜像</a></li>
-        <li><a href="#docker镜像commit操作">Docker镜像Commit操作</a></li>
-      </ul>
-    </li>
-    <li><a href="#容器数据卷">容器数据卷</a>
-      <ul>
-        <li><a href="#简介">简介</a></li>
-        <li><a href="#容器里添加数据卷">容器里添加数据卷</a></li>
-        <li><a href="#数据卷容器">数据卷容器</a></li>
-      </ul>
-    </li>
-    <li><a href="#dockerfile解析">DockerFile解析</a>
-      <ul>
-        <li><a href="#简介-1">简介</a></li>
-        <li><a href="#dockerfile构建过程解析">DockerFile构建过程解析</a></li>
-        <li><a href="#dockerfile体系结构保留字指令">DockerFile体系结构(保留字指令)</a></li>
-        <li><a href="#案例">案例</a></li>
-      </ul>
-    </li>
-    <li><a href="#本地镜像发布到阿里云">本地镜像发布到阿里云</a></li>
-  </ul>
-</nav>
-                
                 <h2 id="概述">概述</h2>
 <ul>
 <li>开发需要清楚的告诉运维部署团队，用的全部配置文件+所有软件环境。不过，即便如此，仍然常常发生部署失败的状况。Docker镜 像的设计，使得Docker得以打过去「程序即应用」的观念。透过镜像(images)将作业系统核心除外，运作应用程式所需要的系统环境，由下而上打包，达到应用程式跨平台间的无缝接轨运作。
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5oatpzh3j60q00bxn1102.jpg" alt="QQ截图20211006163118.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5oatpzh3j60q00bxn1102.jpg" alt="QQ截图20211006163118.png">
+
+</li>
 <li>Docker是基于Go语言实现的云开源项目。Docker的主要目标是通过对应用组件的封装、分发、部署、运行等生命期的管理，使用户的APP (可以是一个WEB应用或数据库应用等等)及其运行环境能够做到“一次封装，到处运行”。</li>
 <li><strong>虚拟机技术</strong>
 <ul>
@@ -287,7 +373,10 @@
 </ul>
 </li>
 <li>Docker架构图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5ozn9sxkj60sw0f0gr102.jpg" alt="QQ截图20211006165516.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5ozn9sxkj60sw0f0gr102.jpg" alt="QQ截图20211006165516.png">
+
+</li>
 </ul>
 <h2 id="docker三要素">Docker三要素</h2>
 <ul>
@@ -300,72 +389,72 @@
 <ol>
 <li>确认为centos7且内核版本为3.1以上</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">uname -r
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">uname -r
 </code></pre></div><ol start="2">
 <li>yum安装gcc相关</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum -y install gcc
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum -y install gcc
 yum -y install gcc-c++
 </code></pre></div><ol start="3">
 <li>卸载旧版本</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo yum remove docker <span style="color:#ae81ff">\</span>
-                  docker-client <span style="color:#ae81ff">\</span>
-                  docker-client-latest <span style="color:#ae81ff">\</span>
-                  docker-common <span style="color:#ae81ff">\</span>
-                  docker-latest <span style="color:#ae81ff">\</span>
-                  docker-latest-logrotate <span style="color:#ae81ff">\</span>
-                  docker-logrotate <span style="color:#ae81ff">\</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo yum remove docker <span style="color:#f1fa8c">\</span>
+                  docker-client <span style="color:#f1fa8c">\</span>
+                  docker-client-latest <span style="color:#f1fa8c">\</span>
+                  docker-common <span style="color:#f1fa8c">\</span>
+                  docker-latest <span style="color:#f1fa8c">\</span>
+                  docker-latest-logrotate <span style="color:#f1fa8c">\</span>
+                  docker-logrotate <span style="color:#f1fa8c">\</span>
                   docker-engine
 </code></pre></div><ol start="4">
 <li>安装所需的软件包</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo yum install -y yum-utils <span style="color:#ae81ff">\</span>
-  device-mapper-persistent-data <span style="color:#ae81ff">\</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo yum install -y yum-utils <span style="color:#f1fa8c">\</span>
+  device-mapper-persistent-data <span style="color:#f1fa8c">\</span>
   lvm2
 </code></pre></div><ol start="5">
 <li>设置镜像仓库</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo yum-config-manager <span style="color:#ae81ff">\</span>
-    --add-repo <span style="color:#ae81ff">\</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo yum-config-manager <span style="color:#f1fa8c">\</span>
+    --add-repo <span style="color:#f1fa8c">\</span>
     http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 </code></pre></div><ol start="6">
 <li>更新yum软件包索引</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum makecache fast
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum makecache fast
 </code></pre></div><ol start="7">
 <li>安装docker ce</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum -y install docker-ce
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum -y install docker-ce
 </code></pre></div><ol start="8">
 <li>启动dokcer</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl start docker
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl start docker
 </code></pre></div><ol start="9">
 <li>设置开机自启动</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl enable docker
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl <span style="color:#8be9fd;font-style:italic">enable</span> docker
 </code></pre></div><ol start="10">
 <li>配置镜像加速器</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo mkdir -p /etc/docker
-sudo tee /etc/docker/daemon.json <span style="color:#e6db74">&lt;&lt;-&#39;EOF&#39;
-</span><span style="color:#e6db74">{
-</span><span style="color:#e6db74">  &#34;registry-mirrors&#34;: [&#34;https://65fiy50w.mirror.aliyuncs.com&#34;]
-</span><span style="color:#e6db74">}
-</span><span style="color:#e6db74">EOF</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <span style="color:#f1fa8c">&lt;&lt;-&#39;EOF&#39;
+</span><span style="color:#f1fa8c">{
+</span><span style="color:#f1fa8c">  &#34;registry-mirrors&#34;: [&#34;https://65fiy50w.mirror.aliyuncs.com&#34;]
+</span><span style="color:#f1fa8c">}
+</span><span style="color:#f1fa8c">EOF</span>
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 </code></pre></div><ol start="11">
 <li>卸载</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl stop docker
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl stop docker
 yum -y remove docker-ce
 rm -rf/var/lib/dockerw
 </code></pre></div><ul>
 <li><strong>官方脚本安装</strong></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
 </code></pre></div><h2 id="底层原理">底层原理</h2>
 <ul>
 <li>Docker是一个Client-Server结构的系统，Docker守 护进程运行在主机上，然后通过Socket连 接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。容器，是一个运行时环境，就是我们前面说到的集装箱。</li>
@@ -457,8 +546,8 @@ containerPort
 </li>
 <li>查看容器日志</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">//后台运行且不会背杀死
-docker run -d centos /bin/sh -c <span style="color:#e6db74">&#34;while true; do echo hello world;sleep 2; done&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">//后台运行且不会背杀死
+docker run -d centos /bin/sh -c <span style="color:#f1fa8c">&#34;while true; do echo hello world;sleep 2; done&#34;</span>
 //查看日志
 docker logs -f -t --tail 容器ID
 ​ -t 是加入时间戳
@@ -472,11 +561,17 @@ docker logs -f -t --tail 容器ID
 <li>docker exec -it 容器ID bashShell,</li>
 <li>docker attach 容器ID</li>
 <li>attach 直接进入容器启动命令的终端，不会启动新的进程;exec 是在容器中打开新的终端，并且可以启动新的进程
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yeb3z45j30n106gtau.jpg" alt="QQ截图20211006222046.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yeb3z45j30n106gtau.jpg" alt="QQ截图20211006222046.png">
+
+</li>
 </ul>
 </li>
 <li>docker cp 容器ID:容器内路径 目的主机路径(从容器内拷贝文件到主机上)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yalway4j30nj0a1424.jpg" alt="QQ截图20211006221708.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yalway4j30nj0a1424.jpg" alt="QQ截图20211006221708.png">
+
+</li>
 </ul>
 <h2 id="docker镜像">Docker镜像</h2>
 <ul>
@@ -497,8 +592,14 @@ docker logs -f -t --tail 容器ID
 <h3 id="分层的镜像">分层的镜像</h3>
 <ul>
 <li>docker的镜像一层一层的加载
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yrnvxc4j60p3055ta302.jpg" alt="QQ截图20211006223337.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yua7jhmj30rf0cc428.jpg" alt="QQ截图20211006223607.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yrnvxc4j60p3055ta302.jpg" alt="QQ截图20211006223337.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5yua7jhmj30rf0cc428.jpg" alt="QQ截图20211006223607.png">
+
+</li>
 <li><strong>最大的一个好处就是共享资源</strong>，比如:有多个镜像都从相同的base镜像构建而来，那么宿主机只需在磁盘上保存一份base镜像, 同时内存中也只需加载一份base镜像，就可以为所有容器服务了。而且镜像的每一层都可以被共享。</li>
 <li>**特点：**Docker镜像都是只读的，当容器启动时，一个新的可写层被加载到镜像的顶部，这一层通常被称为容器层，容器层之下都叫镜像层</li>
 </ul>
@@ -511,10 +612,19 @@ docker logs -f -t --tail 容器ID
 <ol>
 <li>从Hub上下载tomcat镜像到本地并成功运行(docker run -d -p 8080:8080 tomcat)</li>
 <li>故意删除上一步镜像生产tomcat容器的文档
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5z7bmy7pj60kz04qgmz02.jpg" alt="QQ截图20211006224839.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5z7bmy7pj60kz04qgmz02.jpg" alt="QQ截图20211006224839.png">
+
+</li>
 <li>当前的tomcat运行实例是一个没有文档内容的容器，以此模板commit一个没有doc的tomcat新镜像 atguigu/tomcat02
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5zasng6wj60u305lwgw02.jpg" alt="QQ截图20211006225157.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5ze9ele8j618a04ymzp02.jpg" alt="QQ截图20211006225520.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5zasng6wj60u305lwgw02.jpg" alt="QQ截图20211006225157.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv5ze9ele8j618a04ymzp02.jpg" alt="QQ截图20211006225520.png">
+
+</li>
 <li>启动新镜像并和原来的对比，新镜像没有doc</li>
 </ol>
 <h2 id="容器数据卷">容器数据卷</h2>
@@ -538,9 +648,15 @@ docker logs -f -t --tail 容器ID
 <ul>
 <li>docker run -it -v /宿主机绝对路径目录:/容器内目录 镜像名</li>
 <li>查看数据卷是否挂载成功，使用docker -inspect
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv602knr0nj31370g2jwm.jpg" alt="QQ截图20211006231841.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv602knr0nj31370g2jwm.jpg" alt="QQ截图20211006231841.png">
+
+</li>
 <li>容器和宿主机之间数据共享
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv601ks65wj318p098jyb.jpg" alt="QQ截图20211006231744.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv601ks65wj318p098jyb.jpg" alt="QQ截图20211006231744.png">
+
+</li>
 <li>容器停止退出后，主机修改后的数据是否同步</li>
 <li>命令(带权限,容器只读):docker run -it -v /宿主机绝对路径目录:/容器内目录:ro 镜像名</li>
 </ul>
@@ -553,13 +669,25 @@ docker logs -f -t --tail 容器ID
 <ul>
 <li>根目录下新建mydocker文件夹并进入</li>
 <li>在Dockerfile中使用VOLUME指令来给镜像添加一个或多个数据卷
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv60vmhtcsj60wn07hdk902.jpg" alt="QQ截图20211006234636.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv60vmhtcsj60wn07hdk902.jpg" alt="QQ截图20211006234636.png">
+
+</li>
 <li>File构建
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv60ywp1rbj30k204r0tb.jpg" alt="QQ截图20211006234946.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv60ywp1rbj30k204r0tb.jpg" alt="QQ截图20211006234946.png">
+
+</li>
 <li>build后生成镜像
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv60ztebohj612h0ejafo02.jpg" alt="QQ截图20211006235038.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv60ztebohj612h0ejafo02.jpg" alt="QQ截图20211006235038.png">
+
+</li>
 <li>运行后默认在宿主机生成数据卷
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv615a5ig3j614a0cf78p02.jpg" alt="QQ截图20211006235553.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv615a5ig3j614a0cf78p02.jpg" alt="QQ截图20211006235553.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -567,7 +695,10 @@ docker logs -f -t --tail 容器ID
 <ul>
 <li>命名的容器挂载数据卷，其它容器通过挂载这个(父容器)实现数据共享，挂载数据卷的容器，称之为数据卷容器</li>
 <li>以上一步新建的zzyy/centos为模板并运行容器 doc1/doc2/doc3，doc2和doc3继承doc1，达到数据卷共享数据的目的
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv61j5fxj7j61630i146y02.jpg" alt="QQ截图20211007000719.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv61j5fxj7j61630i146y02.jpg" alt="QQ截图20211007000719.png">
+
+</li>
 <li><strong>结论：容器之间配置信息的传递，数据卷的生命周期一直持续到没有容器使用它为止</strong></li>
 </ul>
 <h2 id="dockerfile解析">DockerFile解析</h2>
@@ -582,7 +713,10 @@ docker logs -f -t --tail 容器ID
 </ul>
 </li>
 <li>centos的DockerFile如下
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv627pg6q0j60cl05fjsh02.jpg" alt="QQ截图20211007003249.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv627pg6q0j60cl05fjsh02.jpg" alt="QQ截图20211007003249.png">
+
+</li>
 </ul>
 <h3 id="dockerfile构建过程解析">DockerFile构建过程解析</h3>
 <ul>
@@ -613,12 +747,18 @@ docker logs -f -t --tail 容器ID
 <li>EXPOSE(当前容器对外暴露的端口)</li>
 <li>WORKDIR(指定在创建容器后，终端默认登录进来的工作目录，一个落脚点)</li>
 <li>ENV(用来构建镜像过程中设置环境变量)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6oqvmto5j60x307cdj702.jpg" alt="QQ截图20211007133226.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6oqvmto5j60x307cdj702.jpg" alt="QQ截图20211007133226.png">
+
+</li>
 <li>ADD(将宿主机目录下的文件拷贝进镜像且ADD命令会自动处理URL和解压tar压缩包)</li>
 <li>COPY(类似ADD，拷贝文件和目录到镜像中。将从构建上下文目录中源路径的文件/目录复制到新的一层的镜像内的目标路径)</li>
 <li>VOLUME(容器数据卷，用于数据保存和持久化工作)</li>
 <li>CMD(指定一个容器启动时要运行的命令。Dockerfile中可以有多个CMD指令，但只有最后一个生效，CMD会被docker run之后的参数替换)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6ox2cqduj60r907p76v02.jpg" alt="QQ截图20211007133822.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6ox2cqduj60r907p76v02.jpg" alt="QQ截图20211007133822.png">
+
+</li>
 <li>ENTRYPOINT(指定一个容器启动时要运行的命令。ENTRYPOINT的目的和CMD一样，都是在指定容器启动程序及参数)</li>
 <li>ONBUILD(当构建一个被继承的Dockerfile时运行命令，父镜像在被子继承后父镜像的onbuild被触发)</li>
 </ul>
@@ -629,29 +769,41 @@ Docker Hub中 99%的镜像都是通过在base镜像中安装和配置需要的�
 <li><strong>自定义镜像mycentos</strong>
 <ol>
 <li>编写
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6p7qco7rj60z90h6dng02.jpg" alt="QQ截图20211007134837.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6p7qco7rj60z90h6dng02.jpg" alt="QQ截图20211007134837.png">
+
+</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">FROM centos
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">FROM centos
 MAINTAINER ZZYY&lt;zzyy167@126.com&gt;
 
 ENV MYPATH /usr/local
-WORKDIR $MYPATH
+WORKDIR <span style="color:#8be9fd;font-style:italic">$MYPATH</span>
 
 RUN yum -y install vim
 RUN yum -y install net-tools
 
 EXPOSE 80
 
-CMD echo $MYPATH
-CMD echo <span style="color:#e6db74">&#34;success--------------ok&#34;</span>
+CMD <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#8be9fd;font-style:italic">$MYPATH</span>
+CMD <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;success--------------ok&#34;</span>
 CMD /bin/bash
 </code></pre></div><ol start="2">
 <li>构建(docker build -t 新镜像名字:TAG .)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6pe4g4mbj612p0htwq602.jpg" alt="QQ截图20211007135445.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6pe4g4mbj612p0htwq602.jpg" alt="QQ截图20211007135445.png">
+
+</li>
 <li>运行
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6pinrc05j60tf04jwfr02.jpg" alt="QQ截图20211007135908.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6pinrc05j60tf04jwfr02.jpg" alt="QQ截图20211007135908.png">
+
+</li>
 <li>列出镜像的变更历史
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6pkf0v5gj60vn09an1x02.jpg" alt="QQ截图20211007140048.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6pkf0v5gj60vn09an1x02.jpg" alt="QQ截图20211007140048.png">
+
+</li>
 </ol>
 </li>
 <li><strong>CMD/ENTRYPOINT</strong>
@@ -661,49 +813,61 @@ CMD /bin/bash
 </ul>
 </li>
 <li><strong>ONBUILD案例</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6q9gsz69j60gp03fwex02.jpg" alt="QQ截图20211007142453.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6qamw0woj60sv0f1jwl02.jpg" alt="QQ截图20211007142601.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6q9gsz69j60gp03fwex02.jpg" alt="QQ截图20211007142453.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6qamw0woj60sv0f1jwl02.jpg" alt="QQ截图20211007142601.png">
+
+</li>
 <li><strong>自定义镜像Tomcat</strong>
 <ol>
 <li>mkdir -p /zzyy/mydockerfile/tomcat9</li>
 <li>在上述目录下 touch c.txt</li>
 <li>将jdk和tomcat安装的压缩包拷贝进上一步目录
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6qedqqpqj60mc05jmz002.jpg" alt="QQ截图20211007142936.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6qedqqpqj60mc05jmz002.jpg" alt="QQ截图20211007142936.png">
+
+</li>
 <li>在zzyyuse/mydockerfile/tomcat9目录下新建Dockerfile文件</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">FROM centos
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">FROM centos
 MAINTAINER zzyy&lt;zzyybs@ 126.com&gt;
-<span style="color:#75715e">#把宿主机当前上下文的c .txt拷贝到容器/usr/local/路径下</span>
+<span style="color:#6272a4">#把宿主机当前上下文的c .txt拷贝到容器/usr/local/路径下</span>
 COPY c.txt /usr/local/cincontainer.txt
-<span style="color:#75715e">#把java与tomcat添加到容器中</span>
+<span style="color:#6272a4">#把java与tomcat添加到容器中</span>
 ADD jdk-8u171-linux x64.tar .gz /usr/local/
 ADD apache-tomcat-9.0.8.tar.gz /usr/ocal/
-<span style="color:#75715e">#安装vim编辑器</span>
+<span style="color:#6272a4">#安装vim编辑器</span>
 RUN yum -y install vim
-<span style="color:#75715e">#设置工 作访问时候的WORKDIR路径， 登录落脚点</span>
+<span style="color:#6272a4">#设置工 作访问时候的WORKDIR路径， 登录落脚点</span>
 ENV MYPATH /usr/local
-WORKDIR $MYPATH
-<span style="color:#75715e">#配:置java与tomcat环境变量</span>
+WORKDIR <span style="color:#8be9fd;font-style:italic">$MYPATH</span>
+<span style="color:#6272a4">#配:置java与tomcat环境变量</span>
 ENV JAVA_ HOME /usr/localjdk1 .8.0_ 171
-ENV CLASSPATH $JAVA_ HOME/lib/dt.jar:$JAVA_ HOME/lib/tools.jar
+ENV CLASSPATH <span style="color:#8be9fd;font-style:italic">$JAVA_</span> HOME/lib/dt.jar:<span style="color:#8be9fd;font-style:italic">$JAVA_</span> HOME/lib/tools.jar
 ENV CATALINA_ HOME /usr/local/apache-tomcat-9.0.8
 ENV CATALINA_ BASE /usr/ocal/apache-tomcat-9.0.8
-ENV PATH $PATH:$JAVA_ HOME/bin:$CATALINA_ HOME/ib:$CATALINA_ HOME/bin
-<span style="color:#75715e">#容器运行时监听的端口</span>
+ENV PATH <span style="color:#8be9fd;font-style:italic">$PATH</span>:<span style="color:#8be9fd;font-style:italic">$JAVA_</span> HOME/bin:<span style="color:#8be9fd;font-style:italic">$CATALINA_</span> HOME/ib:<span style="color:#8be9fd;font-style:italic">$CATALINA_</span> HOME/bin
+<span style="color:#6272a4">#容器运行时监听的端口</span>
 EXPOSE 8080
-<span style="color:#75715e">#启动时运行tomcat</span>
-<span style="color:#75715e"># ENTRYPOINT [&#34;/usrl/local/apache-tomcat-9.0.8/bin/startup.sh&#34; ]</span>
-<span style="color:#75715e"># CMD [&#34;/usr/local/apache-tomcat-9.0.8/bin/catalina.sh&#34;,&#34;run&#34;]</span>
-CMD /usr/local/apache-tomcat-9.0.8/bin/startup.sh <span style="color:#f92672">&amp;&amp;</span> tail -F /usr/local/apache-tomcat-9.0.8/in/logs/catalina.out
+<span style="color:#6272a4">#启动时运行tomcat</span>
+<span style="color:#6272a4"># ENTRYPOINT [&#34;/usrl/local/apache-tomcat-9.0.8/bin/startup.sh&#34; ]</span>
+<span style="color:#6272a4"># CMD [&#34;/usr/local/apache-tomcat-9.0.8/bin/catalina.sh&#34;,&#34;run&#34;]</span>
+CMD /usr/local/apache-tomcat-9.0.8/bin/startup.sh <span style="color:#ff79c6">&amp;&amp;</span> tail -F /usr/local/apache-tomcat-9.0.8/in/logs/catalina.out
 </code></pre></div><ol start="5">
 <li>构建(如果是本路径下的Dockerfile文件就不需要写-f 路径)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6qedqqpqj60mc05jmz002.jpg" alt="QQ截图20211007142936.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6qedqqpqj60mc05jmz002.jpg" alt="QQ截图20211007142936.png">
+
+</li>
 <li>run</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -d -p 9080:8080 -name myt9
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -d -p 9080:8080 -name myt9
 -v /zyuse/mydockerfiletomcat9/test:/usrlocal/apache-tomcat9.0.8/webapps/test
 -v /zzyyuse/mydockerfile/tomcat9/tomcat9logs/:/usrlocal/apache-tomcat-9.0.8/logs 
--privileged<span style="color:#f92672">=</span>true 
+-privileged<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">true</span> 
 zzyytomcat9
 </code></pre></div><ol start="7">
 <li>容器卷测试的web服务test发布(将war包放到宿主映射文件夹中)</li>
@@ -713,32 +877,53 @@ zzyytomcat9
 <h2 id="本地镜像发布到阿里云">本地镜像发布到阿里云</h2>
 <ul>
 <li>发布流程
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6r6oxxn3j60tw0i2goq02.jpg" alt="QQ截图20211007145649.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6r6oxxn3j60tw0i2goq02.jpg" alt="QQ截图20211007145649.png">
+
+</li>
 <li><strong>镜像生成方法</strong>
 <ol>
 <li>Dockerfile</li>
 <li>从容器中创建一个新的镜像</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker commit <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> 容器ID <span style="color:#f92672">[</span>REPOSITORY<span style="color:#f92672">[</span>:TAG<span style="color:#f92672">]</span><span style="color:#f92672">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker commit <span style="color:#ff79c6">[</span>OPTIONS<span style="color:#ff79c6">]</span> 容器ID <span style="color:#ff79c6">[</span>REPOSITORY<span style="color:#ff79c6">[</span>:TAG<span style="color:#ff79c6">]</span><span style="color:#ff79c6">]</span>
 </code></pre></div></li>
 <li><strong>将本地镜像推送到阿里云</strong>
 <ol>
 <li>创建镜像仓库
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rf8io5xj611r0dhae502.jpg" alt="QQ截图20211007150502.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rgdbbv9j61gu0j4k1202.jpg" alt="QQ截图20211007150607.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rf8io5xj611r0dhae502.jpg" alt="QQ截图20211007150502.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rgdbbv9j61gu0j4k1202.jpg" alt="QQ截图20211007150607.png">
+
+</li>
 <li>将镜像推送到registry</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo docker login --username<span style="color:#f92672">=</span>white3e registry.cn-shenzhen.aliyuncs.com
-$ sudo docker tag <span style="color:#f92672">[</span>ImageId<span style="color:#f92672">]</span> registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style="color:#f92672">[</span>镜像版本号<span style="color:#f92672">]</span>
-$ sudo docker push registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style="color:#f92672">[</span>镜像版本号<span style="color:#f92672">]</span>
-其中<span style="color:#f92672">[</span>ImageId<span style="color:#f92672">]</span><span style="color:#f92672">[</span>镜像版本<span style="color:#f92672">]</span>自己填写
-</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rjralc0j610308l43e02.jpg" alt="QQ截图20211007150922.png">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo docker login --username<span style="color:#ff79c6">=</span>white3e registry.cn-shenzhen.aliyuncs.com
+$ sudo docker tag <span style="color:#ff79c6">[</span>ImageId<span style="color:#ff79c6">]</span> registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style="color:#ff79c6">[</span>镜像版本号<span style="color:#ff79c6">]</span>
+$ sudo docker push registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style="color:#ff79c6">[</span>镜像版本号<span style="color:#ff79c6">]</span>
+其中<span style="color:#ff79c6">[</span>ImageId<span style="color:#ff79c6">]</span><span style="color:#ff79c6">[</span>镜像版本<span style="color:#ff79c6">]</span>自己填写
+</code></pre></div><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rjralc0j610308l43e02.jpg" alt="QQ截图20211007150922.png">
+
+
 3. 公有云查询
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rmf0hyxj619q0k411b02.jpg" alt="QQ截图20211007151154.png">
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rmf0hyxj619q0k411b02.jpg" alt="QQ截图20211007151154.png">
+
+
 4. 查看详情
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rmzto9hj617y0gttcz02.jpg" alt="QQ截图20211007151229.png">
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6rmzto9hj617y0gttcz02.jpg" alt="QQ截图20211007151229.png">
+
+
 5. 将阿里云上的镜像下载到本地
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6roeojqzj60x508yach02.jpg" alt="QQ截图20211007151348.png"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gv6roeojqzj60x508yach02.jpg" alt="QQ截图20211007151348.png">
+
+</p>
 </li>
 </ul>
 
@@ -760,13 +945,27 @@ $ sudo docker push registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -1065,16 +1264,6 @@ $ sudo docker push registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -1087,48 +1276,44 @@ $ sudo docker push registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1138,7 +1323,19 @@ $ sudo docker push registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1158,7 +1355,7 @@ $ sudo docker push registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1176,7 +1373,7 @@ $ sudo docker push registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1188,12 +1385,76 @@ $ sudo docker push registry.cn-shenzhen.aliyuncs.com/ggccqq/mycentos:<span style
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

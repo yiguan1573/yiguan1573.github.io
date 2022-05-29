@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>2、SpringSecurity 入门案例（SpringSecurity）-yiguan1573</title>
+    <title>2、SpringSecurity 入门案例（SpringSecurity） | yiguan1573</title>
 
     <link rel="canonical" href="/post/1031springsecurity-%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>2、SpringSecurity 入门案例（SpringSecurity）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                            亿观
-                         
-                        on 
-                        Tuesday, May 10, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                亿观
+                             
+                            on 
+                            Tuesday, May 10, 2022
+                            
+                                <span id="/post/1031springsecurity-%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,68 +340,65 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#创建项目">创建项目</a></li>
-    <li><a href="#运行项目">运行项目</a></li>
-    <li><a href="#权限管理中的相关概念">权限管理中的相关概念</a></li>
-    <li><a href="#添加一个控制器进行访问">添加一个控制器进行访问</a></li>
-    <li><a href="#springsecurity-基本原理">SpringSecurity 基本原理</a></li>
-    <li><a href="#userdetailsservice-接口讲解">UserDetailsService 接口讲解</a></li>
-    <li><a href="#passwordencoder-接口讲解">PasswordEncoder 接口讲解</a></li>
-  </ul>
-</nav>
-                
                 <h2 id="创建项目"><strong>创建项目</strong></h2>
 <ul>
 <li>
 <p>新建springboot工程</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3shhjdxj30mv0fk0su.jpg" alt="QQ截图20220519225410.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3shhjdxj30mv0fk0su.jpg" alt="QQ截图20220519225410.jpg">
+
+</p>
 </li>
 <li>
 <p>增加依赖</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-security<span style="color:#f92672">&lt;/artifactId&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+    <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-security<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+<span style="color:#ff79c6">&lt;/dependency&gt;</span>
 </code></pre></div></li>
 <li>
 <p>添加一个配置类：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SecurityConfigextends</span> WebSecurityConfigurerAdapter <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span>HttpSecurity http<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        http<span style="color:#f92672">.</span><span style="color:#a6e22e">formLogin</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#75715e">// 表单登录
-</span><span style="color:#75715e"></span>              
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">authorizeRequests</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#75715e">// 认证配置
-</span><span style="color:#75715e"></span>              
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">anyRequest</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#75715e">// 任何请求
-</span><span style="color:#75715e"></span>              
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">authenticated</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 都需要身份验证
-</span><span style="color:#75715e"></span>          
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">SecurityConfigextends</span> WebSecurityConfigurerAdapter <span style="color:#ff79c6">{</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">configure</span><span style="color:#ff79c6">(</span>HttpSecurity http<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception <span style="color:#ff79c6">{</span>
+        http<span style="color:#ff79c6">.</span><span style="color:#50fa7b">formLogin</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#6272a4">// 表单登录
+</span><span style="color:#6272a4"></span>              
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">and</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">authorizeRequests</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#6272a4">// 认证配置
+</span><span style="color:#6272a4"></span>              
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">anyRequest</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#6272a4">// 任何请求
+</span><span style="color:#6272a4"></span>              
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">authenticated</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 都需要身份验证
+</span><span style="color:#6272a4"></span>          
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 <h2 id="运行项目"><strong>运行项目</strong></h2>
 <ul>
 <li>
 <p>访问 localhost:8080</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3x1onzjj30mu09s0sm.jpg" alt="QQ截图20220519225839.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3x1onzjj30mu09s0sm.jpg" alt="QQ截图20220519225839.jpg">
+
+</p>
 <p>默认的用户名：user</p>
 <p>密码在项目启动的时候在控制台会打印，<strong>注意每次启动的时候密码都回发生变化</strong></p>
 </li>
 <li>
 <p>输入用户名，密码，这样表示可以访问了，404 表示我们没有这个控制器，但是我们可以</p>
 <p>访问了。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3y8ks33j30mh076jsb.jpg" alt="QQ截图20220519225944.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3y8ks33j30mh076jsb.jpg" alt="QQ截图20220519225944.jpg">
+
+</p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3z0mgujj30nb05rq39.jpg" alt="QQ截图20220519230034.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e3z0mgujj30nb05rq39.jpg" alt="QQ截图20220519230034.jpg">
+
+</p>
 <h2 id="权限管理中的相关概念"><strong>权限管理中的相关概念</strong></h2>
 <ul>
 <li>
@@ -317,15 +440,15 @@
 <ul>
 <li>登录后即可访问</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu.controller<span style="color:#f92672">;</span>
-<span style="color:#a6e22e">@Controller</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IndexController</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;index&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#a6e22e">@ResponseBody</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">index</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;success&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.atguigu.controller<span style="color:#ff79c6">;</span>
+@Controller
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">IndexController</span> <span style="color:#ff79c6">{</span>
+    @GetMapping<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;index&#34;</span><span style="color:#ff79c6">)</span>
+    @ResponseBody
+    <span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">index</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#f1fa8c">&#34;success&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h2 id="springsecurity-基本原理">SpringSecurity 基本原理</h2>
 <ul>
 <li>SpringSecurity 本质是一个过滤器链</li>
@@ -344,58 +467,64 @@
 </li>
 <li>
 <p>如果需要自定义逻辑时，只需要实现 UserDetailsService 接口即可。接口定义如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e4hwl77sj30m50ck0tj.jpg" alt="QQ截图20220519231841.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e4hwl77sj30m50ck0tj.jpg" alt="QQ截图20220519231841.jpg">
+
+</p>
 </li>
 <li>
 <p>返回值 UserDetails，这个类是系统默认的用户“<strong>主体</strong>”</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 表示获取登录用户所有权限
-</span><span style="color:#75715e"></span>  
-Collection<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> GrantedAuthority<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAuthorities</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// 表示获取登录用户所有权限
+</span><span style="color:#6272a4"></span>  
+Collection<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span> <span style="color:#8be9fd;font-style:italic">extends</span> GrantedAuthority<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">getAuthorities</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-<span style="color:#75715e">// 表示获取密码
-</span><span style="color:#75715e"></span>  
-String <span style="color:#a6e22e">getPassword</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#6272a4">// 表示获取密码
+</span><span style="color:#6272a4"></span>  
+String <span style="color:#50fa7b">getPassword</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-<span style="color:#75715e">// 表示获取用户名
-</span><span style="color:#75715e"></span>  
-String <span style="color:#a6e22e">getUsername</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#6272a4">// 表示获取用户名
+</span><span style="color:#6272a4"></span>  
+String <span style="color:#50fa7b">getUsername</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-<span style="color:#75715e">// 表示判断账户是否过期
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAccountNonExpired</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#6272a4">// 表示判断账户是否过期
+</span><span style="color:#6272a4"></span>  
+<span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">isAccountNonExpired</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-<span style="color:#75715e">// 表示判断账户是否被锁定
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAccountNonLocked</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#6272a4">// 表示判断账户是否被锁定
+</span><span style="color:#6272a4"></span>  
+<span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">isAccountNonLocked</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-<span style="color:#75715e">// 表示凭证{密码}是否过期
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isCredentialsNonExpired</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#6272a4">// 表示凭证{密码}是否过期
+</span><span style="color:#6272a4"></span>  
+<span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">isCredentialsNonExpired</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-<span style="color:#75715e">// 表示当前用户是否可用
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isEnabled</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#6272a4">// 表示当前用户是否可用
+</span><span style="color:#6272a4"></span>  
+<span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">isEnabled</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 </code></pre></div></li>
 <li>
 <p>以后我们只需要使用 User 这个实体类即可</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e4no63n0j30ln0ajgmf.jpg" alt="QQ截图20220519232414.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2e4no63n0j30ln0ajgmf.jpg" alt="QQ截图20220519232414.jpg">
+
+</p>
 <p><strong>方法参数</strong> <strong>username</strong></p>
 <p>表示用户名。此值是客户端表单传递过来的数据。默认情况下必须叫 username，否则无</p>
 <p>法接收。</p>
 </li>
 </ul>
 <h2 id="passwordencoder-接口讲解">PasswordEncoder 接口讲解</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 表示把参数按照特定的解析规则进行解析
-</span><span style="color:#75715e"></span>
-String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</span>CharSequence rawPassword<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#75715e">// 表示验证从存储中获取的编码密码与编码后提交的原始密码是否匹配。如果密码匹配，则返回 true；如果不匹配，则返回 false。第一个参数表示需要被解析的密码。第二个参数表示存储的密码。
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">matches</span><span style="color:#f92672">(</span>CharSequence rawPassword<span style="color:#f92672">,</span> String encodedPassword<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#75715e">// 表示如果解析的密码能够再次进行解析且达到更安全的结果则返回 true，否则返回false。默认返回 false。
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">default</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">upgradeEncoding</span><span style="color:#f92672">(</span>String encodedPassword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// 表示把参数按照特定的解析规则进行解析
+</span><span style="color:#6272a4"></span>
+String <span style="color:#50fa7b">encode</span><span style="color:#ff79c6">(</span>CharSequence rawPassword<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#6272a4">// 表示验证从存储中获取的编码密码与编码后提交的原始密码是否匹配。如果密码匹配，则返回 true；如果不匹配，则返回 false。第一个参数表示需要被解析的密码。第二个参数表示存储的密码。
+</span><span style="color:#6272a4"></span>
+<span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">matches</span><span style="color:#ff79c6">(</span>CharSequence rawPassword<span style="color:#ff79c6">,</span> String encodedPassword<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#6272a4">// 表示如果解析的密码能够再次进行解析且达到更安全的结果则返回 true，否则返回false。默认返回 false。
+</span><span style="color:#6272a4"></span>
+<span style="color:#ff79c6">default</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">upgradeEncoding</span><span style="color:#ff79c6">(</span>String encodedPassword<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><ul>
 <li>
 <p>接口实现类</p>
@@ -410,25 +539,25 @@ String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</s
 </li>
 <li>
 <p>案例</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test01</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-    <span style="color:#75715e">// 创建密码解析器
-</span><span style="color:#75715e"></span>      
-    BCryptPasswordEncoder bCryptPasswordEncoder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> 
-        BCryptPasswordEncoder<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">// 对密码进行加密
-</span><span style="color:#75715e"></span>      
-    String atguigu <span style="color:#f92672">=</span> bCryptPasswordEncoder<span style="color:#f92672">.</span><span style="color:#a6e22e">encode</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">// 打印加密之后的数据
-</span><span style="color:#75715e"></span>      
-    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;加密之后数据：\t&#34;</span><span style="color:#f92672">+</span>atguigu<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">//判断原字符加密后和加密之前是否匹配
-</span><span style="color:#75715e"></span>      
-    <span style="color:#66d9ef">boolean</span> result <span style="color:#f92672">=</span> bCryptPasswordEncoder<span style="color:#f92672">.</span><span style="color:#a6e22e">matches</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;atguigu&#34;</span><span style="color:#f92672">,</span> atguigu<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">// 打印比较结果
-</span><span style="color:#75715e"></span>      
-    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;比较结果：\t&#34;</span><span style="color:#f92672">+</span>result<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Test
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">test01</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 创建密码解析器
+</span><span style="color:#6272a4"></span>      
+    BCryptPasswordEncoder bCryptPasswordEncoder <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> 
+        BCryptPasswordEncoder<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">// 对密码进行加密
+</span><span style="color:#6272a4"></span>      
+    String atguigu <span style="color:#ff79c6">=</span> bCryptPasswordEncoder<span style="color:#ff79c6">.</span><span style="color:#50fa7b">encode</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;atguigu&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">// 打印加密之后的数据
+</span><span style="color:#6272a4"></span>      
+    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;加密之后数据：\t&#34;</span><span style="color:#ff79c6">+</span>atguigu<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//判断原字符加密后和加密之前是否匹配
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#8be9fd">boolean</span> result <span style="color:#ff79c6">=</span> bCryptPasswordEncoder<span style="color:#ff79c6">.</span><span style="color:#50fa7b">matches</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;atguigu&#34;</span><span style="color:#ff79c6">,</span> atguigu<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">// 打印比较结果
+</span><span style="color:#6272a4"></span>      
+    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;比较结果：\t&#34;</span><span style="color:#ff79c6">+</span>result<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 
@@ -450,13 +579,27 @@ String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</s
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -755,16 +898,6 @@ String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</s
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -777,48 +910,44 @@ String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</s
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -828,7 +957,19 @@ String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</s
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -848,7 +989,7 @@ String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</s
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -866,7 +1007,7 @@ String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</s
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -878,12 +1019,76 @@ String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</s
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

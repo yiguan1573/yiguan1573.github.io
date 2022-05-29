@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>4、服务器动态上下线监听案例（Zookeeper）-yiguan1573</title>
+    <title>4、服务器动态上下线监听案例（Zookeeper） | yiguan1573</title>
 
     <link rel="canonical" href="/post/874%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%A8%E6%80%81%E4%B8%8A%E4%B8%8B%E7%BA%BF%E7%9B%91%E5%90%AC%E6%A1%88%E4%BE%8B/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>4、服务器动态上下线监听案例（Zookeeper）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Monday, October 4, 2021
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Monday, October 4, 2021
+                            
+                                <span id="/post/874%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%A8%E6%80%81%E4%B8%8A%E4%B8%8B%E7%BA%BF%E7%9B%91%E5%90%AC%E6%A1%88%E4%BE%8B/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,18 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#需求">需求</a></li>
-    <li><a href="#需求分析">需求分析</a></li>
-    <li><a href="#具体实现">具体实现</a></li>
-    <li><a href="#测试">测试</a></li>
-  </ul>
-</nav>
-                
                 <h2 id="需求">需求</h2>
 <ul>
 <li>某分布式系统中，主节点可以有多台，可以动态上下线，任意一台客户端都能实时感知 到主节点服务器的上下线。</li>
@@ -234,14 +348,17 @@
 <ul>
 <li>
 <p>服务器动态上下线</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkxkaz33gj60z50h2gu902.jpg" alt="QQ截图20211019211524.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkxkaz33gj60z50h2gu902.jpg" alt="QQ截图20211019211524.png">
+
+</p>
 </li>
 </ul>
 <h2 id="具体实现">具体实现</h2>
 <ol>
 <li>
 <p>先在集群上创建/servers 节点</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 10<span style="color:#f92672">]</span> create /servers <span style="color:#e6db74">&#34;servers&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>zk: localhost:2181<span style="color:#ff79c6">(</span>CONNECTED<span style="color:#ff79c6">)</span> 10<span style="color:#ff79c6">]</span> create /servers <span style="color:#f1fa8c">&#34;servers&#34;</span>
 Created /servers
 </code></pre></div></li>
 <li>
@@ -249,127 +366,127 @@ Created /servers
 </li>
 <li>
 <p>服务器端向 Zookeeper 注册代码</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu.zkcase1<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.zookeeper.CreateMode<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.zookeeper.WatchedEvent<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.zookeeper.Watcher<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.zookeeper.ZooKeeper<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.zookeeper.ZooDefs.Ids<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DistributeServer</span> <span style="color:#f92672">{</span>
- <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> String connectString <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hadoop102:2181,hadoop103:2181,hadoop104:2181&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> sessionTimeout <span style="color:#f92672">=</span> 2000<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> ZooKeeper zk <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String parentNode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/servers&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">// 创建到 zk 的客户端连接
-</span><span style="color:#75715e"></span>       
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getConnect</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">{</span>
-        zk <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ZooKeeper<span style="color:#f92672">(</span>connectString<span style="color:#f92672">,</span> sessionTimeout<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Watcher<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#a6e22e">@Override</span>
-            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>WatchedEvent event<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
- <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.atguigu.zkcase1<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.zookeeper.CreateMode<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.zookeeper.WatchedEvent<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.zookeeper.Watcher<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.zookeeper.ZooKeeper<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.zookeeper.ZooDefs.Ids<span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DistributeServer</span> <span style="color:#ff79c6">{</span>
+ <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> String connectString <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hadoop102:2181,hadoop103:2181,hadoop104:2181&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">int</span> sessionTimeout <span style="color:#ff79c6">=</span> 2000<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> ZooKeeper zk <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String parentNode <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;/servers&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">// 创建到 zk 的客户端连接
+</span><span style="color:#6272a4"></span>       
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">getConnect</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">{</span>
+        zk <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ZooKeeper<span style="color:#ff79c6">(</span>connectString<span style="color:#ff79c6">,</span> sessionTimeout<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> Watcher<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            @Override
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">process</span><span style="color:#ff79c6">(</span>WatchedEvent event<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+ <span style="color:#ff79c6">}</span>
        
-    <span style="color:#75715e">// 注册服务器
-</span><span style="color:#75715e"></span>       
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registServer</span><span style="color:#f92672">(</span>String hostname<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
-     String create <span style="color:#f92672">=</span> zk<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>parentNode <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/server&#34;</span><span style="color:#f92672">,</span>hostname<span style="color:#f92672">.</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> Ids<span style="color:#f92672">.</span><span style="color:#a6e22e">OPEN_ACL_UNSAFE</span><span style="color:#f92672">,</span>CreateMode<span style="color:#f92672">.</span><span style="color:#a6e22e">EPHEMERAL_SEQUENTIAL</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-     System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>hostname <span style="color:#f92672">+</span><span style="color:#e6db74">&#34; is online &#34;</span><span style="color:#f92672">+</span> create<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#6272a4">// 注册服务器
+</span><span style="color:#6272a4"></span>       
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">registServer</span><span style="color:#ff79c6">(</span>String hostname<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception<span style="color:#ff79c6">{</span>
+     String create <span style="color:#ff79c6">=</span> zk<span style="color:#ff79c6">.</span><span style="color:#50fa7b">create</span><span style="color:#ff79c6">(</span>parentNode <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;/server&#34;</span><span style="color:#ff79c6">,</span>hostname<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getBytes</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Ids<span style="color:#ff79c6">.</span><span style="color:#50fa7b">OPEN_ACL_UNSAFE</span><span style="color:#ff79c6">,</span>CreateMode<span style="color:#ff79c6">.</span><span style="color:#50fa7b">EPHEMERAL_SEQUENTIAL</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+     System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>hostname <span style="color:#ff79c6">+</span><span style="color:#f1fa8c">&#34; is online &#34;</span><span style="color:#ff79c6">+</span> create<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
        
-    <span style="color:#75715e">// 业务功能
-</span><span style="color:#75715e"></span>       
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">business</span><span style="color:#f92672">(</span>String hostname<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>hostname <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; is working ...&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>Long<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#6272a4">// 业务功能
+</span><span style="color:#6272a4"></span>       
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">business</span><span style="color:#ff79c6">(</span>String hostname<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception<span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>hostname <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34; is working ...&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>Long<span style="color:#ff79c6">.</span><span style="color:#50fa7b">MAX_VALUE</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
        
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// 1 获取 zk 连接
-</span><span style="color:#75715e"></span>           
-        DistributeServer server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DistributeServer<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        server<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnect</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">// 2 利用 zk 连接注册服务器信息
-</span><span style="color:#75715e"></span>           
-        server<span style="color:#f92672">.</span><span style="color:#a6e22e">registServer</span><span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">// 3 启动业务功能
-</span><span style="color:#75715e"></span>           
-        server<span style="color:#f92672">.</span><span style="color:#a6e22e">business</span><span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 1 获取 zk 连接
+</span><span style="color:#6272a4"></span>           
+        DistributeServer server <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> DistributeServer<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        server<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getConnect</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">// 2 利用 zk 连接注册服务器信息
+</span><span style="color:#6272a4"></span>           
+        server<span style="color:#ff79c6">.</span><span style="color:#50fa7b">registServer</span><span style="color:#ff79c6">(</span>args<span style="color:#ff79c6">[</span>0<span style="color:#ff79c6">]</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">// 3 启动业务功能
+</span><span style="color:#6272a4"></span>           
+        server<span style="color:#ff79c6">.</span><span style="color:#50fa7b">business</span><span style="color:#ff79c6">(</span>args<span style="color:#ff79c6">[</span>0<span style="color:#ff79c6">]</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>客户端代码</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.atguigu.zkcase1<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.util.ArrayList<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.zookeeper.WatchedEvent<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.zookeeper.Watcher<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.zookeeper.ZooKeeper<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DistributeClient</span> <span style="color:#f92672">{</span>
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> String connectString <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hadoop102:2181,hadoop103:2181,hadoop104:2181&#34;</span><span style="color:#f92672">;</span>
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> sessionTimeout <span style="color:#f92672">=</span> 2000<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">private</span> ZooKeeper zk <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-<span style="color:#66d9ef">private</span> String parentNode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/servers&#34;</span><span style="color:#f92672">;</span>
-<span style="color:#75715e">// 创建到 zk 的客户端连接
-</span><span style="color:#75715e"></span>       
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getConnect</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
- zk <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ZooKeeper<span style="color:#f92672">(</span>connectString<span style="color:#f92672">,</span> sessionTimeout<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Watcher<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>WatchedEvent event<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#75715e">// 再次启动监听
-</span><span style="color:#75715e"></span>               
-            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-             getServerList<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-             e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span> 
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.atguigu.zkcase1<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.util.ArrayList<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.util.List<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.zookeeper.WatchedEvent<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.zookeeper.Watcher<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.apache.zookeeper.ZooKeeper<span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DistributeClient</span> <span style="color:#ff79c6">{</span>
+<span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> String connectString <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hadoop102:2181,hadoop103:2181,hadoop104:2181&#34;</span><span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">int</span> sessionTimeout <span style="color:#ff79c6">=</span> 2000<span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">private</span> ZooKeeper zk <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">private</span> String parentNode <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;/servers&#34;</span><span style="color:#ff79c6">;</span>
+<span style="color:#6272a4">// 创建到 zk 的客户端连接
+</span><span style="color:#6272a4"></span>       
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">getConnect</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException <span style="color:#ff79c6">{</span>
+ zk <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ZooKeeper<span style="color:#ff79c6">(</span>connectString<span style="color:#ff79c6">,</span> sessionTimeout<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> Watcher<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        @Override
+        <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">process</span><span style="color:#ff79c6">(</span>WatchedEvent event<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">// 再次启动监听
+</span><span style="color:#6272a4"></span>               
+            <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+             getServerList<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+             e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span> 
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
        
-    <span style="color:#75715e">// 获取服务器列表信息
-</span><span style="color:#75715e"></span>       
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getServerList</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-         <span style="color:#75715e">// 1 获取服务器子节点信息，并且对父节点进行监听
-</span><span style="color:#75715e"></span>           
-        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> children <span style="color:#f92672">=</span> zk<span style="color:#f92672">.</span><span style="color:#a6e22e">getChildren</span><span style="color:#f92672">(</span>parentNode<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-         <span style="color:#75715e">// 2 存储服务器信息列表
-</span><span style="color:#75715e"></span>           
-        ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> servers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-         <span style="color:#75715e">// 3 遍历所有节点，获取节点中的主机名称信息
-</span><span style="color:#75715e"></span>           
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String child <span style="color:#f92672">:</span> children<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> data <span style="color:#f92672">=</span> zk<span style="color:#f92672">.</span><span style="color:#a6e22e">getData</span><span style="color:#f92672">(</span>parentNode <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">+</span> child<span style="color:#f92672">,</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            servers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span>data<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-         <span style="color:#75715e">// 4 打印服务器列表信息
-</span><span style="color:#75715e"></span>           
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>servers<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#6272a4">// 获取服务器列表信息
+</span><span style="color:#6272a4"></span>       
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">getServerList</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception <span style="color:#ff79c6">{</span>
+         <span style="color:#6272a4">// 1 获取服务器子节点信息，并且对父节点进行监听
+</span><span style="color:#6272a4"></span>           
+        List<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">&gt;</span> children <span style="color:#ff79c6">=</span> zk<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getChildren</span><span style="color:#ff79c6">(</span>parentNode<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+         <span style="color:#6272a4">// 2 存储服务器信息列表
+</span><span style="color:#6272a4"></span>           
+        ArrayList<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">&gt;</span> servers <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ArrayList<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+         <span style="color:#6272a4">// 3 遍历所有节点，获取节点中的主机名称信息
+</span><span style="color:#6272a4"></span>           
+        <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>String child <span style="color:#ff79c6">:</span> children<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> data <span style="color:#ff79c6">=</span> zk<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getData</span><span style="color:#ff79c6">(</span>parentNode <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;/&#34;</span> <span style="color:#ff79c6">+</span> child<span style="color:#ff79c6">,</span><span style="color:#ff79c6">false</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            servers<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> String<span style="color:#ff79c6">(</span>data<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+         <span style="color:#6272a4">// 4 打印服务器列表信息
+</span><span style="color:#6272a4"></span>           
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>servers<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
        
-    <span style="color:#75715e">// 业务功能
-</span><span style="color:#75715e"></span>       
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">business</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;client is working ...&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>Long<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#6272a4">// 业务功能
+</span><span style="color:#6272a4"></span>       
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">business</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception<span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;client is working ...&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>Long<span style="color:#ff79c6">.</span><span style="color:#50fa7b">MAX_VALUE</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
        
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// 1 获取 zk 连接
-</span><span style="color:#75715e"></span>           
-        DistributeClient client <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DistributeClient<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        client<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnect</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">// 2 获取 servers 的子节点信息，从中获取服务器信息列表
-</span><span style="color:#75715e"></span>           
-        client<span style="color:#f92672">.</span><span style="color:#a6e22e">getServerList</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">// 3 业务进程启动
-</span><span style="color:#75715e"></span>           
-        client<span style="color:#f92672">.</span><span style="color:#a6e22e">business</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
- <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 1 获取 zk 连接
+</span><span style="color:#6272a4"></span>           
+        DistributeClient client <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> DistributeClient<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        client<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getConnect</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">// 2 获取 servers 的子节点信息，从中获取服务器信息列表
+</span><span style="color:#6272a4"></span>           
+        client<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getServerList</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">// 3 业务进程启动
+</span><span style="color:#6272a4"></span>           
+        client<span style="color:#ff79c6">.</span><span style="color:#50fa7b">business</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+ <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ol>
 <h2 id="测试">测试</h2>
@@ -382,20 +499,20 @@ Created /servers
 </li>
 <li>
 <p>在 hadoop102 上 zk 的客户端/servers 目录上创建临时带序号节点</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 1<span style="color:#f92672">]</span> create -e -s /servers/hadoop102 <span style="color:#e6db74">&#34;hadoop102&#34;</span>
-<span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 2<span style="color:#f92672">]</span> create -e -s /servers/hadoop103 <span style="color:#e6db74">&#34;hadoop103&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>zk: localhost:2181<span style="color:#ff79c6">(</span>CONNECTED<span style="color:#ff79c6">)</span> 1<span style="color:#ff79c6">]</span> create -e -s /servers/hadoop102 <span style="color:#f1fa8c">&#34;hadoop102&#34;</span>
+<span style="color:#ff79c6">[</span>zk: localhost:2181<span style="color:#ff79c6">(</span>CONNECTED<span style="color:#ff79c6">)</span> 2<span style="color:#ff79c6">]</span> create -e -s /servers/hadoop103 <span style="color:#f1fa8c">&#34;hadoop103&#34;</span>
 </code></pre></div></li>
 <li>
 <p>观察 Idea 控制台变化</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>hadoop102, hadoop103<span style="color:#f92672">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>hadoop102, hadoop103<span style="color:#ff79c6">]</span>
 </code></pre></div></li>
 <li>
 <p>执行删除操作</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>zk: localhost:2181<span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span> 8<span style="color:#f92672">]</span> delete /servers/hadoop1020000000000
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>zk: localhost:2181<span style="color:#ff79c6">(</span>CONNECTED<span style="color:#ff79c6">)</span> 8<span style="color:#ff79c6">]</span> delete /servers/hadoop1020000000000
 </code></pre></div></li>
 <li>
 <p>观察 Idea 控制台变化</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>hadoop103<span style="color:#f92672">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>hadoop103<span style="color:#ff79c6">]</span>
 </code></pre></div></li>
 </ul>
 </li>
@@ -407,9 +524,18 @@ Created /servers
 </ul>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkxx1krxnj60vd090wju02.jpg" alt="QQ截图20211019212737.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkxx6h1oxj30sj0hz78f.jpg" alt="QQ截图20211019212709.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkxxbt72uj60v40l0k4r02.jpg" alt="QQ截图20211019212719.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkxx1krxnj60vd090wju02.jpg" alt="QQ截图20211019212737.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkxx6h1oxj30sj0hz78f.jpg" alt="QQ截图20211019212709.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvkxxbt72uj60v40l0k4r02.jpg" alt="QQ截图20211019212719.png">
+
+</p>
 
 
                 
@@ -429,13 +555,27 @@ Created /servers
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -734,16 +874,6 @@ Created /servers
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -756,48 +886,44 @@ Created /servers
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -807,7 +933,19 @@ Created /servers
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -827,7 +965,7 @@ Created /servers
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -845,7 +983,7 @@ Created /servers
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -857,12 +995,76 @@ Created /servers
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

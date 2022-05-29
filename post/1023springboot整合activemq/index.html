@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>7、SpringBoot整合ActiveMQ（ActiveMQ）-yiguan1573</title>
+    <title>7、SpringBoot整合ActiveMQ（ActiveMQ） | yiguan1573</title>
 
     <link rel="canonical" href="/post/1023springboot%E6%95%B4%E5%90%88activemq/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>7、SpringBoot整合ActiveMQ（ActiveMQ）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Tuesday, May 3, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Tuesday, May 3, 2022
+                            
+                                <span id="/post/1023springboot%E6%95%B4%E5%90%88activemq/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,236 +340,224 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#queue生产者">queue生产者</a></li>
-    <li><a href="#queue消费者">queue消费者</a></li>
-    <li><a href="#topic生产者">topic生产者</a></li>
-    <li><a href="#topic消费者">topic消费者</a></li>
-  </ul>
-</nav>
-                
                 <h2 id="queue生产者">queue生产者</h2>
 <ul>
 <li>
 <p><strong>pom.xml</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
-   <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
-   <span style="color:#f92672">&lt;modelVersion</span><span style="color:#f92672">&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
-   <span style="color:#f92672">&lt;parent</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-      <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-parent<span style="color:#f92672">&lt;/artifactId&gt;</span>
-      <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.1.5.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
-      <span style="color:#f92672">&lt;relativePath</span><span style="color:#f92672">/&gt;</span> <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> lookup parent from repository </span><span style="color:#75715e">--&gt;</span>
-   <span style="color:#f92672">&lt;/parent&gt;</span>
-   <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>com.at.boot.activemq<span style="color:#f92672">&lt;/groupId&gt;</span>
-   <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>boot_mq_produce<span style="color:#f92672">&lt;/artifactId&gt;</span>
-   <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#ff79c6">&lt;project</span> <span style="color:#50fa7b">xmlns=</span><span style="color:#f1fa8c">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#50fa7b">xmlns:xsi=</span><span style="color:#f1fa8c">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+   <span style="color:#50fa7b">xsi:schemaLocation=</span><span style="color:#f1fa8c">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#ff79c6">&gt;</span>
+   <span style="color:#ff79c6">&lt;modelVersion</span><span style="color:#ff79c6">&gt;</span>4.0.0<span style="color:#ff79c6">&lt;/modelVersion&gt;</span>
+   <span style="color:#ff79c6">&lt;parent</span><span style="color:#ff79c6">&gt;</span>
+      <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+      <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-parent<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+      <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>2.1.5.RELEASE<span style="color:#ff79c6">&lt;/version&gt;</span>
+      <span style="color:#ff79c6">&lt;relativePath</span><span style="color:#ff79c6">/&gt;</span> <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> lookup parent from repository </span><span style="color:#6272a4">--&gt;</span>
+   <span style="color:#ff79c6">&lt;/parent&gt;</span>
+   <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>com.at.boot.activemq<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+   <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>boot_mq_produce<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+   <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>1.0-SNAPSHOT<span style="color:#ff79c6">&lt;/version&gt;</span>
   
   
-   <span style="color:#f92672">&lt;properties</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;project.build.sourceEncoding</span><span style="color:#f92672">&gt;</span>UTF-8<span style="color:#f92672">&lt;/project.build.sourceEncoding&gt;</span>
-      <span style="color:#f92672">&lt;maven.compiler.source</span><span style="color:#f92672">&gt;</span>1.8<span style="color:#f92672">&lt;/maven.compiler.source&gt;</span>
-      <span style="color:#f92672">&lt;maven.compiler.target</span><span style="color:#f92672">&gt;</span>1.8<span style="color:#f92672">&lt;/maven.compiler.target&gt;</span>
-   <span style="color:#f92672">&lt;/properties&gt;</span>
+   <span style="color:#ff79c6">&lt;properties</span><span style="color:#ff79c6">&gt;</span>
+      <span style="color:#ff79c6">&lt;project.build.sourceEncoding</span><span style="color:#ff79c6">&gt;</span>UTF-8<span style="color:#ff79c6">&lt;/project.build.sourceEncoding&gt;</span>
+      <span style="color:#ff79c6">&lt;maven.compiler.source</span><span style="color:#ff79c6">&gt;</span>1.8<span style="color:#ff79c6">&lt;/maven.compiler.source&gt;</span>
+      <span style="color:#ff79c6">&lt;maven.compiler.target</span><span style="color:#ff79c6">&gt;</span>1.8<span style="color:#ff79c6">&lt;/maven.compiler.target&gt;</span>
+   <span style="color:#ff79c6">&lt;/properties&gt;</span>
   
-   <span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-         <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-         <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-test<span style="color:#f92672">&lt;/artifactId&gt;</span>
-         <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-      <span style="color:#f92672">&lt;/dependency&gt;</span>
-      <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-         <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-         <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
-      <span style="color:#f92672">&lt;/dependency&gt;</span>
+   <span style="color:#ff79c6">&lt;dependencies</span><span style="color:#ff79c6">&gt;</span>
+      <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+         <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+         <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-test<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+         <span style="color:#ff79c6">&lt;scope</span><span style="color:#ff79c6">&gt;</span>test<span style="color:#ff79c6">&lt;/scope&gt;</span>
+      <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+      <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+         <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+         <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-web<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+      <span style="color:#ff79c6">&lt;/dependency&gt;</span>
   
-      <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-         <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-         <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter<span style="color:#f92672">&lt;/artifactId&gt;</span>
-      <span style="color:#f92672">&lt;/dependency&gt;</span>
-      <span style="color:#75715e">&lt;!--</span><span style="color:#75715e">spring boot整合activemq的jar包</span><span style="color:#75715e">--&gt;</span>
-      <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-         <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-         <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-activemq<span style="color:#f92672">&lt;/artifactId&gt;</span>
-         <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.1.5.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
-      <span style="color:#f92672">&lt;/dependency&gt;</span>
-   <span style="color:#f92672">&lt;/dependencies&gt;</span>
+      <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+         <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+         <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+      <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+      <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4">spring boot整合activemq的jar包</span><span style="color:#6272a4">--&gt;</span>
+      <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+         <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+         <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-activemq<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+         <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>2.1.5.RELEASE<span style="color:#ff79c6">&lt;/version&gt;</span>
+      <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+   <span style="color:#ff79c6">&lt;/dependencies&gt;</span>
   
-   <span style="color:#f92672">&lt;build</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-         <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-         <span style="color:#f92672">&lt;/plugin&gt;</span>
-      <span style="color:#f92672">&lt;/plugins&gt;</span>
-   <span style="color:#f92672">&lt;/build&gt;</span>
-<span style="color:#f92672">&lt;/project&gt;</span>
+   <span style="color:#ff79c6">&lt;build</span><span style="color:#ff79c6">&gt;</span>
+      <span style="color:#ff79c6">&lt;plugins</span><span style="color:#ff79c6">&gt;</span>
+         <span style="color:#ff79c6">&lt;plugin</span><span style="color:#ff79c6">&gt;</span>
+            <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+            <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-maven-plugin<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+         <span style="color:#ff79c6">&lt;/plugin&gt;</span>
+      <span style="color:#ff79c6">&lt;/plugins&gt;</span>
+   <span style="color:#ff79c6">&lt;/build&gt;</span>
+<span style="color:#ff79c6">&lt;/project&gt;</span>
 </code></pre></div></li>
 <li>
 <p><strong>application.yml</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># web占用的端口</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#6272a4"># web占用的端口</span>
 server:
-  <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">7777</span>
+  <span style="color:#ff79c6">port</span>: <span style="color:#bd93f9">7777</span>
   
 spring:
   activemq:
-    <span style="color:#75715e"># activemq的broker的url</span>
-    <span style="color:#66d9ef">broker-url</span>: tcp://<span style="color:#ae81ff">192.168</span><span style="color:#ae81ff">.17</span><span style="color:#ae81ff">.3</span>:<span style="color:#ae81ff">61616</span>
-    <span style="color:#75715e"># 连接activemq的broker所需的账号和密码</span>
-    <span style="color:#66d9ef">user</span>: admin
-    <span style="color:#66d9ef">password</span>: admin
+    <span style="color:#6272a4"># activemq的broker的url</span>
+    <span style="color:#ff79c6">broker-url</span>: tcp://<span style="color:#bd93f9">192.168</span><span style="color:#bd93f9">.17</span><span style="color:#bd93f9">.3</span>:<span style="color:#bd93f9">61616</span>
+    <span style="color:#6272a4"># 连接activemq的broker所需的账号和密码</span>
+    <span style="color:#ff79c6">user</span>: admin
+    <span style="color:#ff79c6">password</span>: admin
   jms:
-    <span style="color:#75715e"># 目的地是queue还是topic， false（默认） = queue    true =  topic</span>
-    <span style="color:#66d9ef">pub-sub-domain</span>: <span style="color:#66d9ef">false</span>
+    <span style="color:#6272a4"># 目的地是queue还是topic， false（默认） = queue    true =  topic</span>
+    <span style="color:#ff79c6">pub-sub-domain</span>: <span style="color:#ff79c6">false</span>
   
-<span style="color:#75715e">#  自定义队列名称。这只是个常量</span>
-<span style="color:#66d9ef">myqueue</span>: boot-activemq-queue
+<span style="color:#6272a4">#  自定义队列名称。这只是个常量</span>
+<span style="color:#ff79c6">myqueue</span>: boot-activemq-queue
 </code></pre></div></li>
 <li>
 <p><strong>配置目的地的bean</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.at.boot.activemq.config<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.at.boot.activemq.config<span style="color:#ff79c6">;</span>
   
-<span style="color:#f92672">import</span> org.apache.activemq.command.ActiveMQQueue<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.beans.factory.annotation.Value<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.context.annotation.Bean<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.jms.annotation.EnableJms<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.stereotype.Component<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.command.ActiveMQQueue<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.beans.factory.annotation.Value<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.context.annotation.Bean<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.jms.annotation.EnableJms<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.stereotype.Component<span style="color:#ff79c6">;</span>
   
-<span style="color:#75715e">// 让spring管理的注解，相当于spring中在xml 中写了个bean
-</span><span style="color:#75715e"></span>  
-<span style="color:#a6e22e">@Component</span>
-<span style="color:#75715e">// 开启jms适配
-</span><span style="color:#75715e"></span>  
-<span style="color:#a6e22e">@EnableJms</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConfigBean</span> <span style="color:#f92672">{</span>
+<span style="color:#6272a4">// 让spring管理的注解，相当于spring中在xml 中写了个bean
+</span><span style="color:#6272a4"></span>  
+@Component
+<span style="color:#6272a4">// 开启jms适配
+</span><span style="color:#6272a4"></span>  
+@EnableJms
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ConfigBean</span> <span style="color:#ff79c6">{</span>
   
-        <span style="color:#75715e">// 注入配置文件中的 myqueue
-</span><span style="color:#75715e"></span>      
-        <span style="color:#a6e22e">@Value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;${myqueue}&#34;</span><span style="color:#f92672">)</span>
-        <span style="color:#66d9ef">private</span> String myQueue <span style="color:#f92672">;</span>
+        <span style="color:#6272a4">// 注入配置文件中的 myqueue
+</span><span style="color:#6272a4"></span>      
+        @Value<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;${myqueue}&#34;</span><span style="color:#ff79c6">)</span>
+        <span style="color:#8be9fd;font-style:italic">private</span> String myQueue <span style="color:#ff79c6">;</span>
   		
-      <span style="color:#75715e">// bean id=&#34;&#34;  class=&#34;…&#34;
-</span><span style="color:#75715e"></span>      
-        <span style="color:#a6e22e">@Bean</span>   
-        <span style="color:#66d9ef">public</span> ActiveMQQueue <span style="color:#a6e22e">queue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-             <span style="color:#66d9ef">return</span>  <span style="color:#66d9ef">new</span> ActiveMQQueue<span style="color:#f92672">(</span>myQueue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+      <span style="color:#6272a4">// bean id=&#34;&#34;  class=&#34;…&#34;
+</span><span style="color:#6272a4"></span>      
+        @Bean   
+        <span style="color:#8be9fd;font-style:italic">public</span> ActiveMQQueue <span style="color:#50fa7b">queue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+             <span style="color:#ff79c6">return</span>  <span style="color:#ff79c6">new</span> ActiveMQQueue<span style="color:#ff79c6">(</span>myQueue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>队列生产者代码</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.at.boot.activemq.produce<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.at.boot.activemq.produce<span style="color:#ff79c6">;</span>
   
-<span style="color:#f92672">import</span> org.springframework.beans.factory.annotation.Autowired<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.jms.core.JmsMessagingTemplate<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.scheduling.annotation.Scheduled<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.stereotype.Component<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.jms.Queue<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.util.UUID<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.beans.factory.annotation.Autowired<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.jms.core.JmsMessagingTemplate<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.scheduling.annotation.Scheduled<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.stereotype.Component<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.Queue<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.util.UUID<span style="color:#ff79c6">;</span>
   
-<span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Queue_Produce</span> <span style="color:#f92672">{</span>
+@Component
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Queue_Produce</span> <span style="color:#ff79c6">{</span>
   
-    <span style="color:#75715e">// JMS模板
-</span><span style="color:#75715e"></span>      
-    <span style="color:#a6e22e">@Autowired</span>
-    <span style="color:#66d9ef">private</span> JmsMessagingTemplate  jmsMessagingTemplate <span style="color:#f92672">;</span>
+    <span style="color:#6272a4">// JMS模板
+</span><span style="color:#6272a4"></span>      
+    @Autowired
+    <span style="color:#8be9fd;font-style:italic">private</span> JmsMessagingTemplate  jmsMessagingTemplate <span style="color:#ff79c6">;</span>
   
-    <span style="color:#75715e">// 这个是我们配置的队列目的地
-</span><span style="color:#75715e"></span>      
-    <span style="color:#a6e22e">@Autowired</span>
-    <span style="color:#66d9ef">private</span> Queue queue <span style="color:#f92672">;</span>
+    <span style="color:#6272a4">// 这个是我们配置的队列目的地
+</span><span style="color:#6272a4"></span>      
+    @Autowired
+    <span style="color:#8be9fd;font-style:italic">private</span> Queue queue <span style="color:#ff79c6">;</span>
   
-    <span style="color:#75715e">// 发送消息
-</span><span style="color:#75715e"></span>      
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">produceMessage</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        <span style="color:#75715e">// 一参是目的地，二参是消息的内容
-</span><span style="color:#75715e"></span>          
-        jmsMessagingTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">convertAndSend</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">,</span><span style="color:#e6db74">&#34;****&#34;</span><span style="color:#f92672">+</span> UUID<span style="color:#f92672">.</span><span style="color:#a6e22e">randomUUID</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span>6<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#6272a4">// 发送消息
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">produceMessage</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 一参是目的地，二参是消息的内容
+</span><span style="color:#6272a4"></span>          
+        jmsMessagingTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">convertAndSend</span><span style="color:#ff79c6">(</span>queue<span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;****&#34;</span><span style="color:#ff79c6">+</span> UUID<span style="color:#ff79c6">.</span><span style="color:#50fa7b">randomUUID</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">substring</span><span style="color:#ff79c6">(</span>0<span style="color:#ff79c6">,</span>6<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
   
-    <span style="color:#75715e">// 定时任务。每3秒执行一次。非必须代码，仅为演示。
-</span><span style="color:#75715e"></span>      
-    <span style="color:#a6e22e">@Scheduled</span><span style="color:#f92672">(</span>fixedDelay <span style="color:#f92672">=</span> 3000<span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">produceMessageScheduled</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        produceMessage<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#6272a4">// 定时任务。每3秒执行一次。非必须代码，仅为演示。
+</span><span style="color:#6272a4"></span>      
+    @Scheduled<span style="color:#ff79c6">(</span>fixedDelay <span style="color:#ff79c6">=</span> 3000<span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">produceMessageScheduled</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        produceMessage<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>主启动类</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.at.boot.activemq<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.at.boot.activemq<span style="color:#ff79c6">;</span>
   
-<span style="color:#f92672">import</span> org.springframework.boot.SpringApplication<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.boot.autoconfigure.SpringBootApplication<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.scheduling.annotation.EnableScheduling<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.boot.SpringApplication<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.boot.autoconfigure.SpringBootApplication<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.scheduling.annotation.EnableScheduling<span style="color:#ff79c6">;</span>
   
-<span style="color:#a6e22e">@SpringBootApplication</span>
-<span style="color:#75715e">// 是否开启定时任务调度功能
-</span><span style="color:#75715e"></span>  
-<span style="color:#a6e22e">@EnableScheduling</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainApp_Produce</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>MainApp_Produce<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span>args<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+@SpringBootApplication
+<span style="color:#6272a4">// 是否开启定时任务调度功能
+</span><span style="color:#6272a4"></span>  
+@EnableScheduling
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">MainApp_Produce</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        SpringApplication<span style="color:#ff79c6">.</span><span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span>MainApp_Produce<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span>args<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>单元测试</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.at.boot.activemq<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.at.boot.activemq<span style="color:#ff79c6">;</span>
   
-<span style="color:#f92672">import</span> com.at.boot.activemq.produce.Queue_Produce<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.junit.Test<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.junit.runner.RunWith<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.boot.test.context.SpringBootTest<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.test.context.web.WebAppConfiguration<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.annotation.Resource<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> com.at.boot.activemq.produce.Queue_Produce<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.junit.Test<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.junit.runner.RunWith<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.boot.test.context.SpringBootTest<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.test.context.web.WebAppConfiguration<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.annotation.Resource<span style="color:#ff79c6">;</span>
   
-<span style="color:#75715e">// 加载主类
-</span><span style="color:#75715e"></span>  
-<span style="color:#a6e22e">@SpringBootTest</span><span style="color:#f92672">(</span>classes <span style="color:#f92672">=</span> MainApp_Produce<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
-<span style="color:#75715e">// 加载spring的junit
-</span><span style="color:#75715e"></span>  
-<span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>SpringJUnit4ClassRunner<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
-<span style="color:#75715e">// 加载web
-</span><span style="color:#75715e"></span>  
-<span style="color:#a6e22e">@WebAppConfiguration</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestActiveMQ</span> <span style="color:#f92672">{</span>
+<span style="color:#6272a4">// 加载主类
+</span><span style="color:#6272a4"></span>  
+@SpringBootTest<span style="color:#ff79c6">(</span>classes <span style="color:#ff79c6">=</span> MainApp_Produce<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span>
+<span style="color:#6272a4">// 加载spring的junit
+</span><span style="color:#6272a4"></span>  
+@RunWith<span style="color:#ff79c6">(</span>SpringJUnit4ClassRunner<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span>
+<span style="color:#6272a4">// 加载web
+</span><span style="color:#6272a4"></span>  
+@WebAppConfiguration
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">TestActiveMQ</span> <span style="color:#ff79c6">{</span>
   
-    <span style="color:#a6e22e">@Resource</span>    
-    <span style="color:#66d9ef">private</span> Queue_Produce  queue_produce <span style="color:#f92672">;</span>
+    @Resource    
+    <span style="color:#8be9fd;font-style:italic">private</span> Queue_Produce  queue_produce <span style="color:#ff79c6">;</span>
   
   
-    <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSend</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
-        queue_produce<span style="color:#f92672">.</span><span style="color:#a6e22e">produceMessage</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    @Test
+    <span style="color:#8be9fd;font-style:italic">public</span>  <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testSend</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception<span style="color:#ff79c6">{</span>
+        queue_produce<span style="color:#ff79c6">.</span><span style="color:#50fa7b">produceMessage</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 <h2 id="queue消费者">queue消费者</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.at.boot.activemq.consummer<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.at.boot.activemq.consummer<span style="color:#ff79c6">;</span>
 
-<span style="color:#f92672">import</span> org.springframework.jms.annotation.JmsListener<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.stereotype.Component<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.jms.TextMessage<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.jms.annotation.JmsListener<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.stereotype.Component<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.TextMessage<span style="color:#ff79c6">;</span>
 
-<span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Queue_consummer</span> <span style="color:#f92672">{</span>
+@Component
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Queue_consummer</span> <span style="color:#ff79c6">{</span>
 
-    <span style="color:#75715e">// 注册一个监听器。destination指定监听的主题。
-</span><span style="color:#75715e"></span>    
-    <span style="color:#a6e22e">@JmsListener</span><span style="color:#f92672">(</span>destination <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;${myqueue}&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">receive</span><span style="color:#f92672">(</span>TextMessage textMessage<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span>  Exception<span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; ***  消费者收到消息  ***&#34;</span><span style="color:#f92672">+</span>textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#6272a4">// 注册一个监听器。destination指定监听的主题。
+</span><span style="color:#6272a4"></span>    
+    @JmsListener<span style="color:#ff79c6">(</span>destination <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;${myqueue}&#34;</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">receive</span><span style="color:#ff79c6">(</span>TextMessage textMessage<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span>  Exception<span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; ***  消费者收到消息  ***&#34;</span><span style="color:#ff79c6">+</span>textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getText</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h2 id="topic生产者">topic生产者</h2>
 <ul>
 <li>
@@ -454,69 +568,69 @@ spring:
 </li>
 <li>
 <p>application.yml</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">server:
-  <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">6666</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">server:
+  <span style="color:#ff79c6">port</span>: <span style="color:#bd93f9">6666</span>
 spring:
   activemq:
-    <span style="color:#66d9ef">broker-url</span>: tcp://<span style="color:#ae81ff">192.168</span><span style="color:#ae81ff">.17</span><span style="color:#ae81ff">.3</span>:<span style="color:#ae81ff">61616</span>
-    <span style="color:#66d9ef">user</span>: admin
-    <span style="color:#66d9ef">password</span>: admin
+    <span style="color:#ff79c6">broker-url</span>: tcp://<span style="color:#bd93f9">192.168</span><span style="color:#bd93f9">.17</span><span style="color:#bd93f9">.3</span>:<span style="color:#bd93f9">61616</span>
+    <span style="color:#ff79c6">user</span>: admin
+    <span style="color:#ff79c6">password</span>: admin
   jms:
-    <span style="color:#75715e"># 目的地是queue还是topic， false（默认） = queue    true =  topic</span>
-    <span style="color:#66d9ef">pub-sub-domain</span>: <span style="color:#66d9ef">true</span>
+    <span style="color:#6272a4"># 目的地是queue还是topic， false（默认） = queue    true =  topic</span>
+    <span style="color:#ff79c6">pub-sub-domain</span>: <span style="color:#ff79c6">true</span>
   
- <span style="color:#75715e">#  自定义主题名称</span>
-<span style="color:#66d9ef">mytopic</span>: boot-activemq-topic
+ <span style="color:#6272a4">#  自定义主题名称</span>
+<span style="color:#ff79c6">mytopic</span>: boot-activemq-topic
 </code></pre></div></li>
 <li>
 <p>配置目的地的bean和开启JMS功能</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.at.boot.activemq.topic.config<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.at.boot.activemq.topic.config<span style="color:#ff79c6">;</span>
   
-<span style="color:#f92672">import</span> org.apache.activemq.command.ActiveMQTopic<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.beans.factory.annotation.Value<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.context.annotation.Bean<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.jms.annotation.EnableJms<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.stereotype.Component<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.jms.Topic<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.apache.activemq.command.ActiveMQTopic<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.beans.factory.annotation.Value<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.context.annotation.Bean<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.jms.annotation.EnableJms<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.stereotype.Component<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.Topic<span style="color:#ff79c6">;</span>
   
-<span style="color:#a6e22e">@Component</span>
-<span style="color:#a6e22e">@EnableJms</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConfigBean</span> <span style="color:#f92672">{</span>
+@Component
+@EnableJms
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ConfigBean</span> <span style="color:#ff79c6">{</span>
   
-    <span style="color:#a6e22e">@Value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;${mytopic}&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> String  topicName <span style="color:#f92672">;</span>
+    @Value<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;${mytopic}&#34;</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String  topicName <span style="color:#ff79c6">;</span>
   
-    <span style="color:#a6e22e">@Bean</span>
-    <span style="color:#66d9ef">public</span> Topic <span style="color:#a6e22e">topic</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ActiveMQTopic<span style="color:#f92672">(</span>topicName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    @Bean
+    <span style="color:#8be9fd;font-style:italic">public</span> Topic <span style="color:#50fa7b">topic</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> ActiveMQTopic<span style="color:#ff79c6">(</span>topicName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p>生产者代码</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.at.boot.activemq.topic.produce<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.at.boot.activemq.topic.produce<span style="color:#ff79c6">;</span>
   
-<span style="color:#f92672">import</span> org.springframework.beans.factory.annotation.Autowired<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.jms.core.JmsMessagingTemplate<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.scheduling.annotation.Scheduled<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.stereotype.Component<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.jms.Topic<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.util.UUID<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.beans.factory.annotation.Autowired<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.jms.core.JmsMessagingTemplate<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.scheduling.annotation.Scheduled<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.stereotype.Component<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.Topic<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.util.UUID<span style="color:#ff79c6">;</span>
   
-<span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Topic_Produce</span> <span style="color:#f92672">{</span>
+@Component
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Topic_Produce</span> <span style="color:#ff79c6">{</span>
   
-    <span style="color:#a6e22e">@Autowired</span>
-    <span style="color:#66d9ef">private</span> JmsMessagingTemplate  jmsMessagingTemplate <span style="color:#f92672">;</span>
+    @Autowired
+    <span style="color:#8be9fd;font-style:italic">private</span> JmsMessagingTemplate  jmsMessagingTemplate <span style="color:#ff79c6">;</span>
   
-    <span style="color:#a6e22e">@Autowired</span>
-    <span style="color:#66d9ef">private</span> Topic  topic <span style="color:#f92672">;</span>
+    @Autowired
+    <span style="color:#8be9fd;font-style:italic">private</span> Topic  topic <span style="color:#ff79c6">;</span>
   
-    <span style="color:#a6e22e">@Scheduled</span><span style="color:#f92672">(</span>fixedDelay <span style="color:#f92672">=</span> 3000<span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">produceTopic</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-        jmsMessagingTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">convertAndSend</span><span style="color:#f92672">(</span>topic<span style="color:#f92672">,</span><span style="color:#e6db74">&#34;主题消息&#34;</span><span style="color:#f92672">+</span> UUID<span style="color:#f92672">.</span><span style="color:#a6e22e">randomUUID</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span>6<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    @Scheduled<span style="color:#ff79c6">(</span>fixedDelay <span style="color:#ff79c6">=</span> 3000<span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">produceTopic</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        jmsMessagingTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">convertAndSend</span><span style="color:#ff79c6">(</span>topic<span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;主题消息&#34;</span><span style="color:#ff79c6">+</span> UUID<span style="color:#ff79c6">.</span><span style="color:#50fa7b">randomUUID</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">substring</span><span style="color:#ff79c6">(</span>0<span style="color:#ff79c6">,</span>6<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 <h2 id="topic消费者">topic消费者</h2>
@@ -535,20 +649,20 @@ spring:
 </li>
 <li>
 <p>消费者代码</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.at.boot.activemq.consummer<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> com.at.boot.activemq.consummer<span style="color:#ff79c6">;</span>
   
-<span style="color:#f92672">import</span> org.springframework.jms.annotation.JmsListener<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.stereotype.Component<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> javax.jms.TextMessage<span style="color:#f92672">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.jms.annotation.JmsListener<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> org.springframework.stereotype.Component<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> javax.jms.TextMessage<span style="color:#ff79c6">;</span>
   
-<span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Topic_Consummer</span> <span style="color:#f92672">{</span>
+@Component
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Topic_Consummer</span> <span style="color:#ff79c6">{</span>
   
-    <span style="color:#a6e22e">@JmsListener</span><span style="color:#f92672">(</span>destination <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;${mytopic}&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">receive</span><span style="color:#f92672">(</span>TextMessage textMessage<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span>  Exception<span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;消费者受到订阅的主题：&#34;</span><span style="color:#f92672">+</span>textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    @JmsListener<span style="color:#ff79c6">(</span>destination <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;${mytopic}&#34;</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">receive</span><span style="color:#ff79c6">(</span>TextMessage textMessage<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span>  Exception<span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;消费者受到订阅的主题：&#34;</span><span style="color:#ff79c6">+</span>textMessage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getText</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 
@@ -570,13 +684,27 @@ spring:
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -875,16 +1003,6 @@ spring:
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -897,48 +1015,44 @@ spring:
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -948,7 +1062,19 @@ spring:
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -968,7 +1094,7 @@ spring:
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -986,7 +1112,7 @@ spring:
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -998,12 +1124,76 @@ spring:
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

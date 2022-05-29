@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>3、链表(数据结构与算法)-yiguan1573</title>
+    <title>3、链表(数据结构与算法) | yiguan1573</title>
 
     <link rel="canonical" href="/post/733%E9%93%BE%E8%A1%A8/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>3、链表(数据结构与算法)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Sunday, August 16, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Sunday, August 16, 2020
+                            
+                                <span id="/post/733%E9%93%BE%E8%A1%A8/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,33 +340,13 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#求单链表中有效节点的个数">求单链表中有效节点的个数</a></li>
-    <li><a href="#查找单链表中的倒数第-k-个结点-新浪面试题">查找单链表中的倒数第 k 个结点 【新浪面试题】</a></li>
-    <li><a href="#单链表的反转腾讯面试题">单链表的反转【腾讯面试题】</a></li>
-    <li><a href="#从尾到头打印单链表-百度要求方式1反向遍历方式2stack-栈">从尾到头打印单链表 【百度，要求方式1：反向遍历,方式2：Stack 栈】</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#双向链表的操作分析和实现">双向链表的操作分析和实现</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#josephu约瑟夫约瑟夫环-问题介绍">Josephu(约瑟夫、约瑟夫环) 问题介绍</a></li>
-    <li><a href="#单向环形链表介绍">单向环形链表介绍</a></li>
-    <li><a href="#josephu-问题">Josephu 问题</a></li>
-    <li><a href="#josephu-问题的代码实现">Josephu 问题的代码实现</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="链表linked-list介绍">链表(Linked List)介绍</h1>
 <ul>
 <li>链表是有序的列表，但是它在内存中是存储如下
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij3zr2s35j309n07v0sp.jpg" alt="QQ截图20200908120223.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij3zr2s35j309n07v0sp.jpg" alt="QQ截图20200908120223.jpg">
+
+</li>
 <li>小结上图:
 <ol>
 <li>链表是以节点的方式来存储,是链式存储</li>
@@ -250,16 +356,25 @@
 </ol>
 </li>
 <li>单链表(带头结点) 逻辑结构示意图如下
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij40zrf4sj30bm03p3yc.jpg" alt="QQ截图20200908120335.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij40zrf4sj30bm03p3yc.jpg" alt="QQ截图20200908120335.jpg">
+
+</li>
 </ul>
 <h1 id="单链表的应用实例">单链表的应用实例</h1>
 <ul>
 <li>使用带 head 头的单向链表实现 –水浒英雄排行榜管理完成对英雄人物的增删改查操作， 注: 删除和修改,查找 可以考虑学员独立完成，也可带学员完成
 <ol>
 <li>第一种方法在添加英雄时，直接添加到链表的尾部
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij42hip5rj30gw07b0t3.jpg" alt="QQ截图20200908120502.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij42hip5rj30gw07b0t3.jpg" alt="QQ截图20200908120502.jpg">
+
+</li>
 <li>第二种方式在添加英雄时，根据排名将英雄插入到指定位置(如果有这个排名，则添加失败，并给出提示) 思路的分析示意图:
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij438hugcj30c705vaa5.jpg" alt="QQ截图20200908120544.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij438hugcj30c705vaa5.jpg" alt="QQ截图20200908120544.jpg">
+
+</li>
 <li>修改节点功能:思路
 <ul>
 <li>先找到该节点，通过遍历</li>
@@ -267,46 +382,115 @@
 </ul>
 </li>
 <li>删除节点
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij46dp5eej30gb05wweo.jpg" alt="QQ截图20200908120821.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij46dp5eej30gb05wweo.jpg" alt="QQ截图20200908120821.jpg">
+
+</li>
 <li>完成的代码演示:
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4rors3qj30f109xmxd.jpg" alt="QQ截图20200908120919.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4rvgyruj30f60k274x.jpg" alt="QQ截图20200908120926.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4s2hfbaj30es0k6mxp.jpg" alt="QQ截图20200908120936.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4s6vulmj30h30jymy1.jpg" alt="QQ截图20200908120946.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sb9gqaj30h30k50ta.jpg" alt="QQ截图20200908120959.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sijkd8j30gz0jx0tb.jpg" alt="QQ截图20200908121006.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sqnoazj30ga0jvt94.jpg" alt="QQ截图20200908121016.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sv55roj30he0jymxl.jpg" alt="QQ截图20200908121026.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sz8ebpj30g808j0sr.jpg" alt="QQ截图20200908121033.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4rors3qj30f109xmxd.jpg" alt="QQ截图20200908120919.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4rvgyruj30f60k274x.jpg" alt="QQ截图20200908120926.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4s2hfbaj30es0k6mxp.jpg" alt="QQ截图20200908120936.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4s6vulmj30h30jymy1.jpg" alt="QQ截图20200908120946.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sb9gqaj30h30k50ta.jpg" alt="QQ截图20200908120959.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sijkd8j30gz0jx0tb.jpg" alt="QQ截图20200908121006.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sqnoazj30ga0jvt94.jpg" alt="QQ截图20200908121016.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sv55roj30he0jymxl.jpg" alt="QQ截图20200908121026.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4sz8ebpj30g808j0sr.jpg" alt="QQ截图20200908121033.jpg">
+
+</li>
 </ol>
 </li>
 </ul>
 <h1 id="单链表面试题新浪百度腾讯">单链表面试题(新浪、百度、腾讯)</h1>
 <h2 id="求单链表中有效节点的个数">求单链表中有效节点的个数</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4tstgp4j30h806474d.jpg" alt="QQ截图20200908123109.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4txd8dfj30gh08agll.jpg" alt="QQ截图20200908123115.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4tstgp4j30h806474d.jpg" alt="QQ截图20200908123109.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4txd8dfj30gh08agll.jpg" alt="QQ截图20200908123115.jpg">
+
+</p>
 <h2 id="查找单链表中的倒数第-k-个结点-新浪面试题">查找单链表中的倒数第 k 个结点 【新浪面试题】</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4ufvh8fj30fw09674p.jpg" alt="QQ截图20200908123147.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4ujzzjvj30gf0bg3yp.jpg" alt="QQ截图20200908123154.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4ufvh8fj30fw09674p.jpg" alt="QQ截图20200908123147.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4ujzzjvj30gf0bg3yp.jpg" alt="QQ截图20200908123154.jpg">
+
+</p>
 <h2 id="单链表的反转腾讯面试题">单链表的反转【腾讯面试题】</h2>
 <ul>
 <li>思路分析图解
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4vmmetfj309v05k74b.jpg" alt="QQ截图20200908123232.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4vs7nnzj30cm071jrn.jpg" alt="QQ截图20200908123252.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4vmmetfj309v05k74b.jpg" alt="QQ截图20200908123232.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4vs7nnzj30cm071jrn.jpg" alt="QQ截图20200908123252.jpg">
+
+</li>
 <li>代码实现
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4w98ltzj30i40bit97.jpg" alt="QQ截图20200908123328.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4wdht6jj30fr05b3yk.jpg" alt="QQ截图20200908123335.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4w98ltzj30i40bit97.jpg" alt="QQ截图20200908123328.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4wdht6jj30fr05b3yk.jpg" alt="QQ截图20200908123335.jpg">
+
+</li>
 </ul>
 <h2 id="从尾到头打印单链表-百度要求方式1反向遍历方式2stack-栈">从尾到头打印单链表 【百度，要求方式1：反向遍历,方式2：Stack 栈】</h2>
 <ul>
 <li>思路分析图解
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4xoby7hj30fn05cweq.jpg" alt="QQ截图20200908123457.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4xoby7hj30fn05cweq.jpg" alt="QQ截图20200908123457.jpg">
+
+</li>
 <li>代码实现:写了一个小程序，测试 Stack 的使用
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4ymwpplj30ct04gjr9.jpg" alt="QQ截图20200908123545.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4yrqex7j30en0blwek.jpg" alt="QQ截图20200908123554.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4ymwpplj30ct04gjr9.jpg" alt="QQ截图20200908123545.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4yrqex7j30en0blwek.jpg" alt="QQ截图20200908123554.jpg">
+
+</li>
 <li>代码实现:单链表的逆序打印代码:
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4zf119jj30ju05fq2z.jpg" alt="QQ截图20200908123630.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4zknm9oj30f509y0sz.jpg" alt="QQ截图20200908123638.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4zf119jj30ju05fq2z.jpg" alt="QQ截图20200908123630.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gij4zknm9oj30f509y0sz.jpg" alt="QQ截图20200908123638.jpg">
+
+</li>
 </ul>
 <h1 id="双向链表应用实例">双向链表应用实例</h1>
 <h2 id="双向链表的操作分析和实现">双向链表的操作分析和实现</h2>
@@ -317,7 +501,10 @@
 <li>单向链表，查找的方向只能是一个方向，而双向链表可以向前或者向后查找。</li>
 <li>单向链表不能自我删除，需要靠辅助节点 ，而双向链表，则可以自我删除，所以前面我们单链表删除 时节点，总是找到 temp,temp 是待删除节点的前一个节点(认真体会).</li>
 <li>分析了双向链表如何完成遍历，添加，修改和删除的思路
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik64lcjtij30jj04e0sx.jpg" alt="QQ截图20200909100132.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik64lcjtij30jj04e0sx.jpg" alt="QQ截图20200909100132.jpg">
+
+</li>
 </ol>
 </li>
 <li>
@@ -344,14 +531,38 @@
 </li>
 <li>
 <p><strong>代码实现</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik68p7alnj30f003ra9x.jpg" alt="QQ截图20200909100432.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik68ttisqj30gb0jy0ti.jpg" alt="QQ截图20200909100441.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik68yndisj30gt0hvaac.jpg" alt="QQ截图20200909100449.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik693blt9j30ft0k0gm4.jpg" alt="QQ截图20200909100456.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69afbv1j30g40jy74t.jpg" alt="QQ截图20200909100504.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69gygepj30ge0jjwey.jpg" alt="QQ截图20200909100510.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69l0anej30gw0k0q3h.jpg" alt="QQ截图20200909100516.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69py9zpj30h50k3aai.jpg" alt="QQ截图20200909100525.jpg"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik68p7alnj30f003ra9x.jpg" alt="QQ截图20200909100432.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik68ttisqj30gb0jy0ti.jpg" alt="QQ截图20200909100441.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik68yndisj30gt0hvaac.jpg" alt="QQ截图20200909100449.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik693blt9j30ft0k0gm4.jpg" alt="QQ截图20200909100456.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69afbv1j30g40jy74t.jpg" alt="QQ截图20200909100504.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69gygepj30ge0jjwey.jpg" alt="QQ截图20200909100510.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69l0anej30gw0k0q3h.jpg" alt="QQ截图20200909100516.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik69py9zpj30h50k3aai.jpg" alt="QQ截图20200909100525.jpg">
+
+</p>
 </li>
 </ul>
 <h1 id="单向环形链表应用场景">单向环形链表应用场景</h1>
@@ -361,23 +572,53 @@
 <li>提示：用一个不带头结点的循环链表来处理 Josephu 问题：先构成一个有 n 个结点的单循环链表，然后由 k 结 点起从 1 开始计数，计到 m 时，对应结点从链表中删除，然后再从被删除结点的下一个结点又从 1 开始计数，直 到最后一个结点从链表中删除算法结束</li>
 </ul>
 <h2 id="单向环形链表介绍">单向环形链表介绍</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6augopwj306204bdfp.jpg" alt="QQ截图20200909100750.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6augopwj306204bdfp.jpg" alt="QQ截图20200909100750.jpg">
+
+</p>
 <h2 id="josephu-问题">Josephu 问题</h2>
 <ul>
 <li>约瑟夫问题的示意图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6bbbhvlj30ek07uq38.jpg" alt="QQ截图20200909100816.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6bbbhvlj30ek07uq38.jpg" alt="QQ截图20200909100816.jpg">
+
+</li>
 <li>约瑟夫问题-创建环形链表的思路图解
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6c7yyx0j30fm06imxe.jpg" alt="QQ截图20200909100907.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6c7yyx0j30fm06imxe.jpg" alt="QQ截图20200909100907.jpg">
+
+</li>
 <li>约瑟夫问题-小孩出圈的思路分析图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6cmizjdj30gd074q3a.jpg" alt="QQ截图20200909100932.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6cmizjdj30gd074q3a.jpg" alt="QQ截图20200909100932.jpg">
+
+</li>
 </ul>
 <h2 id="josephu-问题的代码实现">Josephu 问题的代码实现</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6dos76hj30gm0jygm9.jpg" alt="QQ截图20200909100955.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6dtq47rj30f40k0dgc.jpg" alt="QQ截图20200909101002.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6dzmfsxj30ev0k0aak.jpg" alt="QQ截图20200909101009.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6e53jilj30gk0jzq3o.jpg" alt="QQ截图20200909101018.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6eaq7p5j30fo0k3aad.jpg" alt="QQ截图20200909101024.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6egqpaxj30ek08rq2t.jpg" alt="QQ截图20200909101029.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6dos76hj30gm0jygm9.jpg" alt="QQ截图20200909100955.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6dtq47rj30f40k0dgc.jpg" alt="QQ截图20200909101002.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6dzmfsxj30ev0k0aak.jpg" alt="QQ截图20200909101009.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6e53jilj30gk0jzq3o.jpg" alt="QQ截图20200909101018.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6eaq7p5j30fo0k3aad.jpg" alt="QQ截图20200909101024.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gik6egqpaxj30ek08rq2t.jpg" alt="QQ截图20200909101029.jpg">
+
+</p>
 
 
                 
@@ -397,13 +638,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -702,16 +957,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -724,48 +969,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -775,7 +1016,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -795,7 +1048,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -813,7 +1066,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -825,12 +1078,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

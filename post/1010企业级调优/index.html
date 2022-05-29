@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>10、企业级调优（Hive）-yiguan1573</title>
+    <title>10、企业级调优（Hive） | yiguan1573</title>
 
     <link rel="canonical" href="/post/1010%E4%BC%81%E4%B8%9A%E7%BA%A7%E8%B0%83%E4%BC%98/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>10、企业级调优（Hive）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Tuesday, March 22, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Tuesday, March 22, 2022
+                            
+                                <span id="/post/1010%E4%BC%81%E4%B8%9A%E7%BA%A7%E8%B0%83%E4%BC%98/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,36 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#执行计划explain">执行计划（Explain）</a></li>
-    <li><a href="#fetch-抓取">Fetch 抓取</a></li>
-    <li><a href="#本地模式">本地模式</a></li>
-    <li><a href="#表的优化">表的优化</a>
-      <ul>
-        <li><a href="#小表大表-joinmapjoin">小表大表 Join（MapJOIN）</a></li>
-        <li><a href="#大表-join-大表">大表 Join 大表</a></li>
-        <li><a href="#group-by">Group By</a></li>
-        <li><a href="#countdistinct-去重统计">Count(Distinct) 去重统计</a></li>
-        <li><a href="#笛卡尔积">笛卡尔积</a></li>
-        <li><a href="#行列过滤">行列过滤</a></li>
-      </ul>
-    </li>
-    <li><a href="#合理设置-map-及-reduce-数">合理设置 Map 及 Reduce 数</a>
-      <ul>
-        <li><a href="#复杂文件增加-map-数">复杂文件增加 Map 数</a></li>
-        <li><a href="#小文件进行合并">小文件进行合并</a></li>
-        <li><a href="#合理设置-reduce-数">合理设置 Reduce 数</a></li>
-      </ul>
-    </li>
-    <li><a href="#并行执行">并行执行</a></li>
-    <li><a href="#严格模式">严格模式</a></li>
-  </ul>
-</nav>
-                
                 <h2 id="执行计划explain"><strong>执行计划（Explain）</strong></h2>
 <ul>
 <li>
@@ -252,8 +348,14 @@
 </li>
 <li>
 <p><strong>案例实操</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fhz5juzgj30pq0zcju6.jpg" alt="QQ截图20220420003018.jpg"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fi01ddygj30on0sq415.jpg" alt="QQ截图20220420003048.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fhz5juzgj30pq0zcju6.jpg" alt="QQ截图20220420003018.jpg">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fi01ddygj30on0sq415.jpg" alt="QQ截图20220420003048.jpg">
+
+</p>
 </li>
 </ul>
 <h2 id="fetch-抓取"><strong>Fetch</strong> <strong>抓取</strong></h2>
@@ -261,10 +363,10 @@
 <li>Fetch 抓取是指，Hive 中对某些情况的查询可以不必使用 MapReduce 计算。例如：SELECT * FROM employees;在这种情况下，Hive 可以简单地读取 employee 对应的存储目录下的文件，然后输出查询结果到控制台。</li>
 <li>在 hive-default.xml.template 文件中 hive.fetch.task.conversion 默认是 more，老版本 hive默认是 minimal，该属性修改为 more 以后，在全局查找、字段查找、limit 查找等都不走mapreduce。</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hive.fetch.task.conversion<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>more<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hive.fetch.task.conversion<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>more<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;description</span><span style="color:#ff79c6">&gt;</span>
         Expects one of [none, minimal, more].
         Some select queries can be converted to single FETCH task minimizing 
         latency.
@@ -275,9 +377,12 @@
         1. minimal : SELECT STAR, FILTER on partition columns, LIMIT only
         2. more : SELECT, FILTER, LIMIT only (support TABLESAMPLE and 
         virtual columns)
-    <span style="color:#f92672">&lt;/description&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fi2niyrwj30q90bydgy.jpg" alt="QQ截图20220420003339.jpg"></p>
+    <span style="color:#ff79c6">&lt;/description&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+</code></pre></div><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fi2niyrwj30q90bydgy.jpg" alt="QQ截图20220420003339.jpg">
+
+</p>
 <h2 id="本地模式"><strong>本地模式</strong></h2>
 <ul>
 <li>
@@ -308,8 +413,14 @@ hive (default)&gt; select count(*) from emp group by deptno;
 </ul>
 <h2 id="表的优化"><strong>表的优化</strong></h2>
 <h3 id="小表大表-joinmapjoin"><strong>小表大表</strong> Join（MapJOIN）</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fiewc8idj30rr0wiwhd.jpg" alt="QQ截图20220420004518.jpg"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fif6jirjj30px0lm76l.jpg" alt="QQ截图20220420004526.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fiewc8idj30rr0wiwhd.jpg" alt="QQ截图20220420004518.jpg">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fif6jirjj30px0lm76l.jpg" alt="QQ截图20220420004526.jpg">
+
+</p>
 <h3 id="大表-join-大表"><strong>大表</strong> <strong>Join</strong> <strong>大表</strong></h3>
 <ul>
 <li>空key过滤使用场景
@@ -319,22 +430,40 @@ hive (default)&gt; select count(*) from emp group by deptno;
 </ul>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fiiv1wkqj30qf0f8wfm.jpg" alt="QQ截图20220420004821.jpg"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fiizsyfcj30pn0ykdj2.jpg" alt="QQ截图20220420004829.jpg"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fikggozxj30rj11wq7d.jpg" alt="QQ截图20220420005033.jpg"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fikme29pj30pu0xzgoa.jpg" alt="QQ截图20220420005047.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fiiv1wkqj30qf0f8wfm.jpg" alt="QQ截图20220420004821.jpg">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fiizsyfcj30pn0ykdj2.jpg" alt="QQ截图20220420004829.jpg">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fikggozxj30rj11wq7d.jpg" alt="QQ截图20220420005033.jpg">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1fikme29pj30pu0xzgoa.jpg" alt="QQ截图20220420005047.jpg">
+
+</p>
 <h3 id="group-by"><strong>Group By</strong></h3>
 <ul>
 <li>
 <p>默认情况下，Map 阶段同一 Key 数据分发给一个 reduce，当一个 key 数据过大时就倾斜了。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hr5bdogjj30pk12eq6q.jpg" alt="QQ截图20220421231842.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hr5bdogjj30pk12eq6q.jpg" alt="QQ截图20220421231842.jpg">
+
+</p>
 </li>
 </ul>
 <h3 id="countdistinct-去重统计"><strong>Count(Distinct)</strong> <strong>去重统计</strong></h3>
 <ul>
 <li>
 <p>数据量小的时候无所谓，数据量大的情况下，由于 COUNT DISTINCT 操作需要用一个Reduce Task 来完成，这一个 Reduce 需要处理的数据量太大，就会导致整个 Job 很难完成，一般 COUNT DISTINCT 使用先 GROUP BY 再 COUNT 的方式替换,但是需要注意 group by 造成的数据倾斜问题.</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hrd2krscj30pk0q8dib.jpg" alt="QQ截图20220421232608.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hrd2krscj30pk0q8dib.jpg" alt="QQ截图20220421232608.jpg">
+
+</p>
 </li>
 </ul>
 <h3 id="笛卡尔积"><strong>笛卡尔积</strong></h3>
@@ -346,7 +475,10 @@ hive (default)&gt; select count(*) from emp group by deptno;
 <li>列处理：在 SELECT 中，只拿需要的列，如果有分区，尽量使用分区过滤，少用 SELECT *。</li>
 <li>行处理：在分区剪裁中，当使用外关联时，如果将副表的过滤条件写在 Where 后面，那么就会先全表关联，之后再过滤，比如：</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hriweh1tj30qk09h0tg.jpg" alt="QQ截图20220421233148.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hriweh1tj30qk09h0tg.jpg" alt="QQ截图20220421233148.jpg">
+
+</p>
 <h2 id="合理设置-map-及-reduce-数"><strong>合理设置</strong> <strong>Map</strong> <strong>及</strong> <strong>Reduce</strong> <strong>数</strong></h2>
 <ul>
 <li>
@@ -375,11 +507,17 @@ hive (default)&gt; select count(*) from emp group by deptno;
 </li>
 <li>
 <p>增加 map 的方法为：根据computeSliteSize(Math.max(minSize,Math.min(maxSize,blocksize)))=blocksize=128M 公式，调整 maxSize 最大值。让 maxSize 最大值低于 blocksize 就可以增加 map 的个数。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hrsypyrsj30op07e74v.jpg" alt="QQ截图20220421234126.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hrsypyrsj30op07e74v.jpg" alt="QQ截图20220421234126.jpg">
+
+</p>
 </li>
 </ul>
 <h3 id="小文件进行合并"><strong>小文件进行合并</strong></h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hrtrif0mj30pb0d5abh.jpg" alt="QQ截图20220421234214.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hrtrif0mj30pb0d5abh.jpg" alt="QQ截图20220421234214.jpg">
+
+</p>
 <h3 id="合理设置-reduce-数"><strong>合理设置</strong> <strong>Reduce</strong> <strong>数</strong></h3>
 <ul>
 <li>
@@ -418,7 +556,10 @@ hive (default)&gt; select count(*) from emp group by deptno;
 </li>
 </ul>
 <h2 id="并行执行"><strong>并行执行</strong></h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hs02rn27j30qi0cjwg9.jpg" alt="QQ截图20220421234818.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h1hs02rn27j30qi0cjwg9.jpg" alt="QQ截图20220421234818.jpg">
+
+</p>
 <h2 id="严格模式"><strong>严格模式</strong></h2>
 <ul>
 <li>Hive 可以通过设置防止一些危险操作：</li>
@@ -457,13 +598,27 @@ hive (default)&gt; select count(*) from emp group by deptno;
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -762,16 +917,6 @@ hive (default)&gt; select count(*) from emp group by deptno;
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -784,48 +929,44 @@ hive (default)&gt; select count(*) from emp group by deptno;
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -835,7 +976,19 @@ hive (default)&gt; select count(*) from emp group by deptno;
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -855,7 +1008,7 @@ hive (default)&gt; select count(*) from emp group by deptno;
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -873,7 +1026,7 @@ hive (default)&gt; select count(*) from emp group by deptno;
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -885,12 +1038,76 @@ hive (default)&gt; select count(*) from emp group by deptno;
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

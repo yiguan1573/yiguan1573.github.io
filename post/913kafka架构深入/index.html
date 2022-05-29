@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>3、Kafka 架构深入（Kafka）-yiguan1573</title>
+    <title>3、Kafka 架构深入（Kafka） | yiguan1573</title>
 
     <link rel="canonical" href="/post/913kafka%E6%9E%B6%E6%9E%84%E6%B7%B1%E5%85%A5/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>3、Kafka 架构深入（Kafka）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Tuesday, October 12, 2021
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Tuesday, October 12, 2021
+                            
+                                <span id="/post/913kafka%E6%9E%B6%E6%9E%84%E6%B7%B1%E5%85%A5/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,52 +340,18 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#kafka工作流程及文件存储机制">Kafka工作流程及文件存储机制</a>
-      <ul>
-        <li><a href="#工作流程">工作流程</a></li>
-        <li><a href="#文件存储">文件存储</a></li>
-      </ul>
-    </li>
-    <li><a href="#kafka生产者">Kafka生产者</a>
-      <ul>
-        <li><a href="#分区策略">分区策略</a></li>
-        <li><a href="#数据可靠性保证">数据可靠性保证</a></li>
-        <li><a href="#exactly-once语义">Exactly Once语义</a></li>
-      </ul>
-    </li>
-    <li><a href="#消费者">消费者</a>
-      <ul>
-        <li><a href="#消费方式">消费方式</a></li>
-        <li><a href="#分区分配策略">分区分配策略</a></li>
-        <li><a href="#offset的维护">offset的维护</a></li>
-        <li><a href="#消费者案例">消费者案例</a></li>
-      </ul>
-    </li>
-    <li><a href="#kafka高效读写数据">Kafka高效读写数据</a></li>
-    <li><a href="#zookeeper在kafka中的作用">Zookeeper在Kafka中的作用</a></li>
-    <li><a href="#kafka事务">Kafka事务</a>
-      <ul>
-        <li><a href="#producer事务">Producer事务</a></li>
-        <li><a href="#consumer事务">Consumer事务</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-                
                 <h2 id="kafka工作流程及文件存储机制">Kafka工作流程及文件存储机制</h2>
 <h3 id="工作流程">工作流程</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvn2yscehdj61jn0podwp02.jpg" alt="QQ截图20211021175244.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvn2yscehdj61jn0podwp02.jpg" alt="QQ截图20211021175244.png">
+
+</p>
 <ul>
 <li>
 <p>Kafka 中消息是以 topic 进行分类的， producer生产消息，consumer消费消息，都是面向 topic的。(从命令行操作看出)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</span>afka-console-producer.bat --broker-list localhost:9092 --topic test
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin<span style="color:#f1fa8c">\w</span>indows<span style="color:#f1fa8c">\k</span>afka-console-producer.bat --broker-list localhost:9092 --topic <span style="color:#8be9fd;font-style:italic">test</span>
   
-bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</span>afka-console-consumer.bat --bootstrap-server localhost:9092 --topic test --from-beginning
+bin<span style="color:#f1fa8c">\w</span>indows<span style="color:#f1fa8c">\k</span>afka-console-consumer.bat --bootstrap-server localhost:9092 --topic <span style="color:#8be9fd;font-style:italic">test</span> --from-beginning
 </code></pre></div></li>
 <li>
 <p>topic 是逻辑上的概念，而 partition 是物理上的概念，每个 partition 对应于一个 log 文件，该 log 文件中存储的就是 producer 生产的数据。（topic = N partition，partition = log）</p>
@@ -269,7 +361,10 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 </li>
 </ul>
 <h3 id="文件存储">文件存储</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvn2z8vi4dj61g50r67eq02.jpg" alt="QQ截图20211021175257.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvn2z8vi4dj61g50r67eq02.jpg" alt="QQ截图20211021175257.png">
+
+</p>
 <ul>
 <li>
 <p>由于生产者生产的消息会不断追加到 log 文件末尾， 为防止 log 文件过大导致数据定位效率低下， Kafka 采取了<strong>分片</strong>和<strong>索引</strong>机制，将每个 partition 分为多个 segment。</p>
@@ -287,7 +382,10 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 <p>index 和 log 文件以当前 segment 的第一条消息的 offset 命名。下图为 index 文件和 log文件的结构示意图。</p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvn2zkxvzrj61gu0ondt002.jpg" alt="QQ截图20211021175313.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvn2zkxvzrj61gu0ondt002.jpg" alt="QQ截图20211021175313.png">
+
+</p>
 <ul>
 <li><strong>“.index”文件存储大量的索引信息，“.log”文件存储大量的数据，索引文件中的元数据指向对应数据文件中 message 的物理偏移地址。</strong></li>
 </ul>
@@ -303,7 +401,10 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 </li>
 <li>
 <p>分区的原则（将 producer 发送的数据封装成一个 <code>ProducerRecord</code> 对象）</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvn32m9dyqj60q903igq902.jpg" alt="QQ截图20211021175703.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvn32m9dyqj60q903igq902.jpg" alt="QQ截图20211021175703.png">
+
+</p>
 <ol>
 <li>指明 partition 的情况下，直接将指明的值直接作为 partiton 值；</li>
 <li>没有指明 partition 值但有 key 的情况下，将 key 的 hash 值与 topic 的 partition 数进行取余得到 partition 值；</li>
@@ -315,7 +416,10 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 <ul>
 <li><strong>为保证 producer 发送的数据，能可靠的发送到指定的 topic， topic 的每个 partition 收到producer 发送的数据后，都需要向 producer 发送 ack（acknowledgement 确认收到），如果producer 收到 ack， 就会进行下一轮的发送，否则重新发送数据。</strong></li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvn356q7kjj61hd0nsk8j02.jpg" alt="QQ截图20211021175930.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvn356q7kjj61hd0nsk8j02.jpg" alt="QQ截图20211021175930.png">
+
+</p>
 <ul>
 <li>
 <p><strong>何时发送ack？</strong></p>
@@ -383,11 +487,17 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 </li>
 <li>
 <p>1： producer 等待 broker 的 ack， partition 的 leader 落盘成功后返回 ack，如果在 follower同步成功之前 leader 故障，那么将会<strong>丢失数据</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo4g2lfuqj61e30mptez02.jpg" alt="QQ截图20211022152725.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo4g2lfuqj61e30mptez02.jpg" alt="QQ截图20211022152725.png">
+
+</p>
 </li>
 <li>
 <p>-1（all） ： producer 等待 broker 的 ack， partition 的 leader 和 ISR 的follower 全部落盘成功后才返回 ack。但是如果在 follower 同步完成后， broker 发送 ack 之前， leader 发生故障，那么会造成<strong>数据重复</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo4ggy1lwj619z0k7dl702.jpg" alt="QQ截图20211022152743.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo4ggy1lwj619z0k7dl702.jpg" alt="QQ截图20211022152743.png">
+
+</p>
 </li>
 </ul>
 </li>
@@ -395,7 +505,10 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 </li>
 <li>
 <p>故障处理细节</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo4ilf8tgj61h50ph4c202.jpg" alt="QQ截图20211022152802.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo4ilf8tgj61h50ph4c202.jpg" alt="QQ截图20211022152802.png">
+
+</p>
 <p><strong>LEO：指的是每个副本最大的offset</strong></p>
 <p><strong>HW：指的是消费者能见到的最大的offset，ISR 队列中最小的LEO</strong>。</p>
 <ul>
@@ -454,7 +567,10 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 <li>关于Roudn Robin重分配策略，其主要采用的是一种轮询的方式分配所有的分区，该策略主要实现的步骤如下。这里我们首先假设有三个topic：t0、t1和t2，这三个topic拥有的分区数分别为1、2和3，那么总共有六个分区，这六个分区分别为：t0-0、t1-0、t1-1、t2-0、t2-1和t2-2。这里假设我们有三个consumer：C0、C1和C2，它们订阅情况为：C0订阅t0，C1订阅t0和t1，C2订阅t0、t1和t2。那么这些分区的分配步骤如下：</li>
 <li>首先将所有的partition和consumer按照字典序进行排序，所谓的字典序，就是按照其名称的字符串顺序，那么上面的六个分区和三个consumer排序之后分别为：</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo4v70sgnj60x40hrmz002.jpg" alt="QQ截图20211022154444.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo4v70sgnj60x40hrmz002.jpg" alt="QQ截图20211022154444.png">
+
+</p>
 <ul>
 <li>然后依次以按顺序轮询的方式将这六个分区分配给三个consumer，如果当前consumer没有订阅当前分区所在的topic，则轮询的判断下一个consumer：</li>
 <li>尝试将t0-0分配给C0，由于C0订阅了t0，因而可以分配成功；</li>
@@ -466,7 +582,10 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 <li>同理由于t2-1和t2-2所在的topic都没有被C0和C1所订阅，因而都不会分配成功，最终都会分配给C2。</li>
 <li>按照上述的步骤将所有的分区都分配完毕之后，最终分区的订阅情况如下：</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo4x0cjddj60uh08rdhk02.jpg" alt="QQ截图20211022154631.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo4x0cjddj60uh08rdhk02.jpg" alt="QQ截图20211022154631.png">
+
+</p>
 <ul>
 <li>从上面的步骤分析可以看出，轮询的策略就是简单的将所有的partition和consumer按照字典序进行排序之后，然后依次将partition分配给各个consumer，<strong>如果当前的consumer没有订阅当前的partition，那么就会轮询下一个consumer</strong>，直至最终将所有的分区都分配完毕。<strong>但是从上面的分配结果可以看出，轮询的方式会导致每个consumer所承载的分区数量不一致，从而导致各个consumer压力不均一。</strong></li>
 </ul>
@@ -488,7 +607,10 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 <p>最终上面六个分区的分配情况如下：</p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo516ok64j60kh040mxr02.jpg" alt="QQ截图20211022155034.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo516ok64j60kh040mxr02.jpg" alt="QQ截图20211022155034.png">
+
+</p>
 <ul>
 <li>可以看到，如果按照<code>Range</code>分区方式进行分配，其本质上是依次遍历每个topic，然后将这些topic的分区按照其所订阅的consumer数量进行平均的范围分配。这种方式从计算原理上就会导致排序在前面的consumer分配到更多的分区，从而导致各个consumer的压力不均衡。</li>
 </ul>
@@ -496,7 +618,10 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 <ul>
 <li>
 <p>由于 consumer 在消费过程中可能会出现断电宕机等故障， consumer 恢复后，需要从故障前的位置的继续消费，所以 <strong>consumer 需要实时记录自己消费到了哪个 offset</strong>，以便故障恢复后继续消费。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo545ajzjj61fs0tr16v02.jpg" alt="QQ截图20211022155321.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo545ajzjj61fs0tr16v02.jpg" alt="QQ截图20211022155321.png">
+
+</p>
 </li>
 <li>
 <p><strong>Kafka 0.9 版本之前， consumer 默认将 offset 保存在 Zookeeper 中，从 0.9 版本开始，consumer 默认将 offset 保存在 Kafka 一个内置的 topic 中，该 topic 为__consumer_offsets</strong>。</p>
@@ -506,10 +631,10 @@ bin<span style="color:#ae81ff">\w</span>indows<span style="color:#ae81ff">\k</sp
 </li>
 <li>
 <p>读取 offset</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">0.11.0.0 之前版本
-bin/kafka-console-consumer.sh --topic __consumer_offsets --zookeeper hadoop102:2181 --formatter <span style="color:#e6db74">&#34;kafka.coordinator.GroupMetadataManager\$OffsetsMessageFormatter&#34;</span> --consumer.config config/consumer.properties --from-beginning
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">0.11.0.0 及之后版本
-bin/kafka-console-consumer.sh --topic __consumer_offsets --zookeeper hadoop102:2181 --formatter <span style="color:#e6db74">&#34;kafka.coordinator.group.GroupMetadataManager\$OffsetsMessageFormatter&#34;</span> --consumer.config config/consumer.properties --from-beginning
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">0.11.0.0 之前版本
+bin/kafka-console-consumer.sh --topic __consumer_offsets --zookeeper hadoop102:2181 --formatter <span style="color:#f1fa8c">&#34;kafka.coordinator.GroupMetadataManager\$OffsetsMessageFormatter&#34;</span> --consumer.config config/consumer.properties --from-beginning
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">0.11.0.0 及之后版本
+bin/kafka-console-consumer.sh --topic __consumer_offsets --zookeeper hadoop102:2181 --formatter <span style="color:#f1fa8c">&#34;kafka.coordinator.group.GroupMetadataManager\$OffsetsMessageFormatter&#34;</span> --consumer.config config/consumer.properties --from-beginning
 </code></pre></div></li>
 </ul>
 </li>
@@ -524,17 +649,17 @@ bin/kafka-console-consumer.sh --topic __consumer_offsets --zookeeper hadoop102:2
 <ul>
 <li>
 <p>在 hadoop102、hadoop103 上修改/opt/module/kafka/config/consumer.properties 配置文件中的 group.id 属性为任意组名。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop103 config<span style="color:#f92672">]</span>$ vi consumer.properties
-group.id<span style="color:#f92672">=</span>atguigu
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop103 config<span style="color:#ff79c6">]</span>$ vi consumer.properties
+group.id<span style="color:#ff79c6">=</span>atguigu
 </code></pre></div></li>
 <li>
 <p>在 hadoop102、hadoop103 上分别启动消费者</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 kafka<span style="color:#f92672">]</span>$ bin/kafka-console-consumer.sh <span style="color:#ae81ff">\ </span>--zookeeper hadoop102:2181 --topic first --consumer.config config/consumer.properties
-<span style="color:#f92672">[</span>atguigu@hadoop103 kafka<span style="color:#f92672">]</span>$ bin/kafka-console-consumer.sh --bootstrap-server hadoop102:9092 --topic first --consumer.config config/consumer.properties
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 kafka<span style="color:#ff79c6">]</span>$ bin/kafka-console-consumer.sh <span style="color:#f1fa8c">\ </span>--zookeeper hadoop102:2181 --topic first --consumer.config config/consumer.properties
+<span style="color:#ff79c6">[</span>atguigu@hadoop103 kafka<span style="color:#ff79c6">]</span>$ bin/kafka-console-consumer.sh --bootstrap-server hadoop102:9092 --topic first --consumer.config config/consumer.properties
 </code></pre></div></li>
 <li>
 <p>在 hadoop104 上启动生产者</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop104 kafka<span style="color:#f92672">]</span>$ bin/kafka-console-producer.sh <span style="color:#ae81ff">\ </span>--broker-list hadoop102:9092 --topic first
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop104 kafka<span style="color:#ff79c6">]</span>$ bin/kafka-console-producer.sh <span style="color:#f1fa8c">\ </span>--broker-list hadoop102:9092 --topic first
 &gt;hello world
 </code></pre></div></li>
 <li>
@@ -553,7 +678,10 @@ group.id<span style="color:#f92672">=</span>atguigu
 </li>
 <li>
 <p>零复制技术</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo5mqe3cbj60uc0cvq6o02.jpg" alt="QQ截图20211022160911.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo5mqe3cbj60uc0cvq6o02.jpg" alt="QQ截图20211022160911.png">
+
+</p>
 <ul>
 <li>NIC network interface controller 网络接口控制器</li>
 </ul>
@@ -564,7 +692,10 @@ group.id<span style="color:#f92672">=</span>atguigu
 <li>Kafka 集群中有一个 broker 会被选举为 Controller，负责管理集群 broker 的上下线，所有 topic 的分区副本分配和 leader 选举等工作。</li>
 <li>Controller 的管理工作都是依赖于 Zookeeper 的。</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo5pgduivj61ej0osdrl02.jpg" alt="QQ截图20211022161348.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvo5pgduivj61ej0osdrl02.jpg" alt="QQ截图20211022161348.png">
+
+</p>
 <h2 id="kafka事务">Kafka事务</h2>
 <ul>
 <li>Kafka 从 0.11 版本开始引入了事务支持。事务可以保证 Kafka 在 Exactly Once 语义的基础上，生产和消费可以跨分区和会话，要么全部成功，要么全部失败。</li>
@@ -597,13 +728,27 @@ group.id<span style="color:#f92672">=</span>atguigu
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -902,16 +1047,6 @@ group.id<span style="color:#f92672">=</span>atguigu
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -924,48 +1059,44 @@ group.id<span style="color:#f92672">=</span>atguigu
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -975,7 +1106,19 @@ group.id<span style="color:#f92672">=</span>atguigu
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -995,7 +1138,7 @@ group.id<span style="color:#f92672">=</span>atguigu
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1013,7 +1156,7 @@ group.id<span style="color:#f92672">=</span>atguigu
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1025,12 +1168,76 @@ group.id<span style="color:#f92672">=</span>atguigu
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

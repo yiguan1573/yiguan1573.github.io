@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>1、Hadoop入门（Hadoop）-yiguan1573</title>
+    <title>1、Hadoop入门（Hadoop） | yiguan1573</title>
 
     <link rel="canonical" href="/post/921hadoop%E5%85%A5%E9%97%A8/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>1、Hadoop入门（Hadoop）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Wednesday, October 20, 2021
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Wednesday, October 20, 2021
+                            
+                                <span id="/post/921hadoop%E5%85%A5%E9%97%A8/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -213,35 +339,6 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#hadoop概述">Hadoop概述</a>
-      <ul>
-        <li><a href="#hadoop是什么">Hadoop是什么</a></li>
-        <li><a href="#hadoop三大发行版">Hadoop三大发行版</a></li>
-        <li><a href="#hadoop优势4高">Hadoop优势（4高）</a></li>
-        <li><a href="#hadoop组成">Hadoop组成</a></li>
-        <li><a href="#大数据生态体系">大数据生态体系</a></li>
-      </ul>
-    </li>
-    <li><a href="#hadoop运行环境搭建">Hadoop运行环境搭建</a>
-      <ul>
-        <li><a href="#模板虚拟机环境准备">模板虚拟机环境准备</a></li>
-      </ul>
-    </li>
-    <li><a href="#hadoop运行模式">Hadoop运行模式</a>
-      <ul>
-        <li><a href="#本地运行模式官方wordcount">本地运行模式（官方WordCount）</a></li>
-        <li><a href="#完全分布式运行模式">完全分布式运行模式</a></li>
-      </ul>
-    </li>
-    <li><a href="#常见错误及解决方案">常见错误及解决方案</a></li>
-  </ul>
-</nav>
                 
                 <h2 id="hadoop概述">Hadoop概述</h2>
 <h3 id="hadoop是什么">Hadoop是什么</h3>
@@ -271,13 +368,22 @@
 </li>
 </ul>
 <h3 id="hadoop优势4高">Hadoop优势（4高）</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz02uhdbj30yy0flafa.jpg" alt="QQ截图20211027165033.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz09cyxnj30w50fmjwz.jpg" alt="QQ截图20211027165044.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz02uhdbj30yy0flafa.jpg" alt="QQ截图20211027165033.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz09cyxnj30w50fmjwz.jpg" alt="QQ截图20211027165044.png">
+
+</p>
 <h3 id="hadoop组成">Hadoop组成</h3>
 <ul>
 <li>Hadoop1.x、2.x、3.x的区别</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz0uyz75j30xl0eeah7.jpg" alt="QQ截图20211027165102.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz0uyz75j30xl0eeah7.jpg" alt="QQ截图20211027165102.png">
+
+</p>
 <ul>
 <li>
 <p>HDFS架构概述</p>
@@ -297,7 +403,10 @@
 <ul>
 <li>Yet Another Resource Negotiator简称YARN ，另一种资源协调者，是Hadoop的资源管理器。</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz76amp1j311i0i547s.jpg" alt="QQ截图20211027170202.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz76amp1j311i0i547s.jpg" alt="QQ截图20211027170202.png">
+
+</p>
 </li>
 <li>
 <p>MapReduce架构概述</p>
@@ -311,41 +420,86 @@
 </li>
 <li>
 <p>HDFS、YARN、MapReduce三者关系</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz8rhjluj311f0i77d6.jpg" alt="QQ截图20211027170331.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz8rhjluj311f0i77d6.jpg" alt="QQ截图20211027170331.png">
+
+</p>
 </li>
 </ul>
 <h3 id="大数据生态体系">大数据生态体系</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz9oexouj310k0h0n9w.jpg" alt="QQ截图20211027170429.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtz9oexouj310k0h0n9w.jpg" alt="QQ截图20211027170429.png">
+
+</p>
 <h2 id="hadoop运行环境搭建">Hadoop运行环境搭建</h2>
 <h3 id="模板虚拟机环境准备">模板虚拟机环境准备</h3>
 <ul>
 <li>
 <p><strong>安装模板虚拟机，IP地址192.168.10.100、主机名称hadoop100、内存4G、硬盘50G</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtzy0lkd9j30q40yqe4a.jpg" alt="QQ截图20211027172655.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtzyxz0omj30q70s2kah.jpg" alt="QQ截图20211027172829.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtzy0lkd9j30q40yqe4a.jpg" alt="QQ截图20211027172655.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtzyxz0omj30q70s2kah.jpg" alt="QQ截图20211027172829.png">
+
+</p>
 </li>
 <li>
 <p>克隆虚拟机</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtzzhf88vj30ob08s42j.jpg" alt="QQ截图20211027172840.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu00tk291j30o20r8wn6.jpg" alt="QQ截图20211027172955.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu019up9xj30nt0mun21.jpg" alt="QQ截图20211027173014.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu01fb64fj30o3125gzi.jpg" alt="QQ截图20211027173032.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu02na4m0j30pj0t9dvo.jpg" alt="QQ截图20211027173158.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvtzzhf88vj30ob08s42j.jpg" alt="QQ截图20211027172840.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu00tk291j30o20r8wn6.jpg" alt="QQ截图20211027172955.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu019up9xj30nt0mun21.jpg" alt="QQ截图20211027173014.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu01fb64fj30o3125gzi.jpg" alt="QQ截图20211027173032.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu02na4m0j30pj0t9dvo.jpg" alt="QQ截图20211027173158.png">
+
+</p>
 </li>
 <li>
 <p>在hadoop102安装JDK</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu048linkj30of06241c.jpg" alt="QQ截图20211027173212.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu04fmmp8j30ot11gh4i.jpg" alt="QQ截图20211027173322.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu04pu4f3j30ob03iq4g.jpg" alt="QQ截图20211027173346.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu048linkj30of06241c.jpg" alt="QQ截图20211027173212.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu04fmmp8j30ot11gh4i.jpg" alt="QQ截图20211027173322.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu04pu4f3j30ob03iq4g.jpg" alt="QQ截图20211027173346.png">
+
+</p>
 </li>
 <li>
 <p>在hadoop102安装Hadoop</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu06waz5vj30p00wk4f7.jpg" alt="QQ截图20211027173602.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu074qpi4j30ob0d6dnh.jpg" alt="QQ截图20211027173620.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu06waz5vj30p00wk4f7.jpg" alt="QQ截图20211027173602.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu074qpi4j30ob0d6dnh.jpg" alt="QQ截图20211027173620.png">
+
+</p>
 </li>
 <li>
 <p>Hadoop目录结构</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu08cvdtjj30p90i8tnb.jpg" alt="QQ截图20211027173749.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu08cvdtjj30p90i8tnb.jpg" alt="QQ截图20211027173749.png">
+
+</p>
 </li>
 </ul>
 <h2 id="hadoop运行模式">Hadoop运行模式</h2>
@@ -360,139 +514,169 @@
 </li>
 </ul>
 <h3 id="本地运行模式官方wordcount">本地运行模式（官方WordCount）</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu53x8vz5j30on0lzk2l.jpg" alt="QQ截图20211027202632.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu53x8vz5j30on0lzk2l.jpg" alt="QQ截图20211027202632.png">
+
+</p>
 <h3 id="完全分布式运行模式">完全分布式运行模式</h3>
 <ul>
 <li><strong>集群分发脚本</strong></li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu56yc9l5j30ow0ritpc.jpg" alt="QQ截图20211027202926.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu57eoaqjj30po126wz8.jpg" alt="QQ截图20211027202819.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu57rh5caj30nu0vb4df.jpg" alt="QQ截图20211027202839.png"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">#1. 判断参数个数</span>
-<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $# -lt <span style="color:#ae81ff">1</span> <span style="color:#f92672">]</span>
-<span style="color:#66d9ef">then</span>
-  	echo Not Enough Arguement!
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu56yc9l5j30ow0ritpc.jpg" alt="QQ截图20211027202926.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu57eoaqjj30po126wz8.jpg" alt="QQ截图20211027202819.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu57rh5caj30nu0vb4df.jpg" alt="QQ截图20211027202839.png">
+
+</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4">#1. 判断参数个数</span>
+<span style="color:#ff79c6">if</span> <span style="color:#ff79c6">[</span> <span style="color:#8be9fd;font-style:italic">$#</span> -lt <span style="color:#bd93f9">1</span> <span style="color:#ff79c6">]</span>
+<span style="color:#ff79c6">then</span>
+  	<span style="color:#8be9fd;font-style:italic">echo</span> Not Enough Arguement!
     exit;
-<span style="color:#66d9ef">fi</span>
+<span style="color:#ff79c6">fi</span>
 
-<span style="color:#75715e">#2. 遍历集群所有机器</span>
-<span style="color:#66d9ef">for</span> host in hadoop102 hadoop103 hadoop104
-<span style="color:#66d9ef">do</span>
-    echo <span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span>  $host  <span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span>
-    <span style="color:#75715e">#3. 遍历所有目录，挨个发送</span>
+<span style="color:#6272a4">#2. 遍历集群所有机器</span>
+<span style="color:#ff79c6">for</span> host in hadoop102 hadoop103 hadoop104
+<span style="color:#ff79c6">do</span>
+    <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span>  <span style="color:#8be9fd;font-style:italic">$host</span>  <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span>
+    <span style="color:#6272a4">#3. 遍历所有目录，挨个发送</span>
 
-    <span style="color:#66d9ef">for</span> file in $@
-    <span style="color:#66d9ef">do</span>
-        <span style="color:#75715e">#4. 判断文件是否存在</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -e $file <span style="color:#f92672">]</span>
-            <span style="color:#66d9ef">then</span>
-                <span style="color:#75715e">#5. 获取父目录</span>
-                pdir<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>cd -P <span style="color:#66d9ef">$(</span>dirname $file<span style="color:#66d9ef">)</span>; pwd<span style="color:#66d9ef">)</span>
+    <span style="color:#ff79c6">for</span> file in <span style="color:#8be9fd;font-style:italic">$@</span>
+    <span style="color:#ff79c6">do</span>
+        <span style="color:#6272a4">#4. 判断文件是否存在</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">[</span> -e <span style="color:#8be9fd;font-style:italic">$file</span> <span style="color:#ff79c6">]</span>
+            <span style="color:#ff79c6">then</span>
+                <span style="color:#6272a4">#5. 获取父目录</span>
+                <span style="color:#8be9fd;font-style:italic">pdir</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">$(</span><span style="color:#8be9fd;font-style:italic">cd</span> -P <span style="color:#ff79c6">$(</span>dirname <span style="color:#8be9fd;font-style:italic">$file</span><span style="color:#ff79c6">)</span>; <span style="color:#8be9fd;font-style:italic">pwd</span><span style="color:#ff79c6">)</span>
 
-                <span style="color:#75715e">#6. 获取当前文件的名称</span>
-                fname<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>basename $file<span style="color:#66d9ef">)</span>
-                ssh $host <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mkdir -p </span>$pdir<span style="color:#e6db74">&#34;</span>
-                rsync -av $pdir/$fname $host:$pdir
-            <span style="color:#66d9ef">else</span>
-                echo $file does not exists!
-        <span style="color:#66d9ef">fi</span>
-    <span style="color:#66d9ef">done</span>
-<span style="color:#66d9ef">done</span>
+                <span style="color:#6272a4">#6. 获取当前文件的名称</span>
+                <span style="color:#8be9fd;font-style:italic">fname</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">$(</span>basename <span style="color:#8be9fd;font-style:italic">$file</span><span style="color:#ff79c6">)</span>
+                ssh <span style="color:#8be9fd;font-style:italic">$host</span> <span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">mkdir -p </span><span style="color:#8be9fd;font-style:italic">$pdir</span><span style="color:#f1fa8c">&#34;</span>
+                rsync -av <span style="color:#8be9fd;font-style:italic">$pdir</span>/<span style="color:#8be9fd;font-style:italic">$fname</span> <span style="color:#8be9fd;font-style:italic">$host</span>:<span style="color:#8be9fd;font-style:italic">$pdir</span>
+            <span style="color:#ff79c6">else</span>
+                <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#8be9fd;font-style:italic">$file</span> does not exists!
+        <span style="color:#ff79c6">fi</span>
+    <span style="color:#ff79c6">done</span>
+<span style="color:#ff79c6">done</span>
 </code></pre></div><ul>
 <li><strong>SSH无密登录配置</strong></li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5aej3lxj30mr05pta1.jpg" alt="QQ截图20211027203211.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5ana06vj30rh12f1bv.jpg" alt="QQ截图20211027203231.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5avzgc6j30q9087tbr.jpg" alt="QQ截图20211027203245.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5aej3lxj30mr05pta1.jpg" alt="QQ截图20211027203211.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5ana06vj30rh12f1bv.jpg" alt="QQ截图20211027203231.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5avzgc6j30q9087tbr.jpg" alt="QQ截图20211027203245.png">
+
+</p>
 <ul>
 <li>
 <p><strong>集群配置</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5d242p2j30q40s5aqi.jpg" alt="QQ截图20211027203420.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5dcx6axj30ph12cqmv.jpg" alt="QQ截图20211027203444.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5dk6j3kj30pd10je0j.jpg" alt="QQ截图20211027203500.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5d242p2j30q40s5aqi.jpg" alt="QQ截图20211027203420.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5dcx6axj30ph12cqmv.jpg" alt="QQ截图20211027203444.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvu5dk6j3kj30pd10je0j.jpg" alt="QQ截图20211027203500.png">
+
+</p>
 <ul>
 <li><strong>core-site.xml</strong></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#75715e">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#ff79c6">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
   
-<span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 指定NameNode的地址 </span><span style="color:#75715e">--&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>fs.defaultFS<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>hdfs://hadoop102:8020<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;configuration</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 指定NameNode的地址 </span><span style="color:#6272a4">--&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>fs.defaultFS<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>hdfs://hadoop102:8020<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
   
-    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 指定hadoop数据的存储目录 </span><span style="color:#75715e">--&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hadoop.tmp.dir<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>/opt/module/hadoop-3.1.3/data<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 指定hadoop数据的存储目录 </span><span style="color:#6272a4">--&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hadoop.tmp.dir<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>/opt/module/hadoop-3.1.3/data<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
   
-    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 配置HDFS网页登录使用的静态用户为atguigu </span><span style="color:#75715e">--&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hadoop.http.staticuser.user<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>atguigu<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;/configuration&gt;</span>
+    <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 配置HDFS网页登录使用的静态用户为atguigu </span><span style="color:#6272a4">--&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hadoop.http.staticuser.user<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>atguigu<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;/configuration&gt;</span>
 </code></pre></div><ul>
 <li><strong>hdfs-site.xml</strong></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#75715e">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#ff79c6">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
   
-<span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> nn web端访问地址</span><span style="color:#75715e">--&gt;</span>
-  <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.namenode.http-address<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>hadoop102:9870<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 2nn web端访问地址</span><span style="color:#75715e">--&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.namenode.secondary.http-address<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>hadoop104:9868<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;/configuration&gt;</span>
+<span style="color:#ff79c6">&lt;configuration</span><span style="color:#ff79c6">&gt;</span>
+  <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> nn web端访问地址</span><span style="color:#6272a4">--&gt;</span>
+  <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.namenode.http-address<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>hadoop102:9870<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
+  <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 2nn web端访问地址</span><span style="color:#6272a4">--&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.namenode.secondary.http-address<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>hadoop104:9868<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;/configuration&gt;</span>
 </code></pre></div><ul>
 <li><strong>yarn-site.xml</strong></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#75715e">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#ff79c6">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
   
-<span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 指定MR走shuffle </span><span style="color:#75715e">--&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.nodemanager.aux-services<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>mapreduce_shuffle<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;configuration</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 指定MR走shuffle </span><span style="color:#6272a4">--&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>yarn.nodemanager.aux-services<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>mapreduce_shuffle<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
   
-    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 指定ResourceManager的地址</span><span style="color:#75715e">--&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.resourcemanager.hostname<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>hadoop103<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 指定ResourceManager的地址</span><span style="color:#6272a4">--&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>yarn.resourcemanager.hostname<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>hadoop103<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
   
-    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 环境变量的继承,之后的版本不需要 </span><span style="color:#75715e">--&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.nodemanager.env-whitelist<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;/configuration&gt;</span>
+    <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 环境变量的继承,之后的版本不需要 </span><span style="color:#6272a4">--&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>yarn.nodemanager.env-whitelist<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;/configuration&gt;</span>
 </code></pre></div><ul>
 <li><strong>mapred-site.xml</strong></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#75715e">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#ff79c6">&lt;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;configuration.xsl&#34;?&gt;</span>
   
-<span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 指定MapReduce程序运行在Yarn上 </span><span style="color:#75715e">--&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>mapreduce.framework.name<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>yarn<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;/configuration&gt;</span>
+<span style="color:#ff79c6">&lt;configuration</span><span style="color:#ff79c6">&gt;</span>
+  <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 指定MapReduce程序运行在Yarn上 </span><span style="color:#6272a4">--&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>mapreduce.framework.name<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>yarn<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;/configuration&gt;</span>
 </code></pre></div></li>
 <li>
 <p>启动集群报错</p>
@@ -501,97 +685,127 @@ ERROR: but there is no HDFS_NAMENODE_USER defi
 </code></pre><p><strong>解决办法：</strong></p>
 <p>在Hadoop安装目录下找到sbin文件夹在里面修改四个文件</p>
 <p>对于start-dfs.sh和stop-dfs.sh文件，添加下列参数：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/usr/bin/env bash
-</span><span style="color:#75715e"></span>HDFS_DATANODE_USER<span style="color:#f92672">=</span>root
-HDFS_DATANODE_SECURE_USER<span style="color:#f92672">=</span>hdfs 
-HDFS_NAMENODE_USER<span style="color:#f92672">=</span>root
-HDFS_SECONDARYNAMENODE_USER<span style="color:#f92672">=</span>root
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">#!/usr/bin/env bash
+</span><span style="color:#ff79c6"></span><span style="color:#8be9fd;font-style:italic">HDFS_DATANODE_USER</span><span style="color:#ff79c6">=</span>root
+<span style="color:#8be9fd;font-style:italic">HDFS_DATANODE_SECURE_USER</span><span style="color:#ff79c6">=</span>hdfs 
+<span style="color:#8be9fd;font-style:italic">HDFS_NAMENODE_USER</span><span style="color:#ff79c6">=</span>root
+<span style="color:#8be9fd;font-style:italic">HDFS_SECONDARYNAMENODE_USER</span><span style="color:#ff79c6">=</span>root
 </code></pre></div><p>对于start-yarn.sh和stop-yarn.sh文件，添加下列参数：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/usr/bin/env bash
-</span><span style="color:#75715e"></span>YARN_RESOURCEMANAGER_USER<span style="color:#f92672">=</span>root
-HADOOP_SECURE_DN_USER<span style="color:#f92672">=</span>yarn
-YARN_NODEMANAGER_USER<span style="color:#f92672">=</span>root
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">#!/usr/bin/env bash
+</span><span style="color:#ff79c6"></span><span style="color:#8be9fd;font-style:italic">YARN_RESOURCEMANAGER_USER</span><span style="color:#ff79c6">=</span>root
+<span style="color:#8be9fd;font-style:italic">HADOOP_SECURE_DN_USER</span><span style="color:#ff79c6">=</span>yarn
+<span style="color:#8be9fd;font-style:italic">YARN_NODEMANAGER_USER</span><span style="color:#ff79c6">=</span>root
 </code></pre></div></li>
 <li>
 <p>群起集群</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv3k9ix7j30p71017qy.jpg" alt="QQ截图20211101191148.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv3uhg73j30pd0ng4fy.jpg" alt="QQ截图20211101191256.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv3k9ix7j30p71017qy.jpg" alt="QQ截图20211101191148.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv3uhg73j30pd0ng4fy.jpg" alt="QQ截图20211101191256.png">
+
+</p>
 </li>
 <li>
 <p>配置历史服务器</p>
-<p>​	<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv4w1zt2j30pd0dj7b9.jpg" alt="QQ截图20211101191437.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv55i9hcj30of085q7y.jpg" alt="QQ截图20211101191451.png"></p>
+<p>​	
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv4w1zt2j30pd0dj7b9.jpg" alt="QQ截图20211101191437.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv55i9hcj30of085q7y.jpg" alt="QQ截图20211101191451.png">
+
+</p>
 </li>
 <li>
 <p>配置日志的聚集</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv6yf3jej30p90se4co.jpg" alt="QQ截图20211101191607.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv74yhpij30p00v8h2m.jpg" alt="QQ截图20211101191630.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv7aok1qj30oo0p2k12.jpg" alt="QQ截图20211101191644.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv6yf3jej30p90se4co.jpg" alt="QQ截图20211101191607.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv74yhpij30p00v8h2m.jpg" alt="QQ截图20211101191630.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv7aok1qj30oo0p2k12.jpg" alt="QQ截图20211101191644.png">
+
+</p>
 <ul>
 <li>
 <p>yarn-site.xml</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 开启日志聚集功能 </span><span style="color:#75715e">--&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.log-aggregation-enable<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 设置日志聚集服务器地址 </span><span style="color:#75715e">--&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>  
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.log.server.url<span style="color:#f92672">&lt;/name&gt;</span>  
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>http://hadoop102:19888/jobhistory/logs<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 设置日志保留时间为7天 </span><span style="color:#75715e">--&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.log-aggregation.retain-seconds<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>604800<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>    
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 开启日志聚集功能 </span><span style="color:#6272a4">--&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>yarn.log-aggregation-enable<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>true<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 设置日志聚集服务器地址 </span><span style="color:#6272a4">--&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>  
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>yarn.log.server.url<span style="color:#ff79c6">&lt;/name&gt;</span>  
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>http://hadoop102:19888/jobhistory/logs<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 设置日志保留时间为7天 </span><span style="color:#6272a4">--&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>yarn.log-aggregation.retain-seconds<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>604800<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>    
 </code></pre></div></li>
 </ul>
 </li>
 <li>
 <p>集群启动停止总结</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv9rkei7j30o20batec.jpg" alt="QQ截图20211101191931.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzv9rkei7j30o20batec.jpg" alt="QQ截图20211101191931.png">
+
+</p>
 </li>
 <li>
 <p>编写Hadoop集群常用脚本</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvbt9bzjj30pm10qk9m.jpg" alt="QQ截图20211101192116.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvc52sk6j30ol04fq63.jpg" alt="QQ截图20211101192129.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvbt9bzjj30pm10qk9m.jpg" alt="QQ截图20211101192116.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvc52sk6j30ol04fq63.jpg" alt="QQ截图20211101192129.png">
+
+</p>
 <ul>
 <li>
 <p>启停脚本</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
-</span><span style="color:#75715e"></span>    
-<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $# -lt <span style="color:#ae81ff">1</span> <span style="color:#f92672">]</span>
-<span style="color:#66d9ef">then</span>
-    echo <span style="color:#e6db74">&#34;No Args Input...&#34;</span>
-    exit ;
-<span style="color:#66d9ef">fi</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>    
+<span style="color:#ff79c6">if</span> <span style="color:#ff79c6">[</span> <span style="color:#8be9fd;font-style:italic">$#</span> -lt <span style="color:#bd93f9">1</span> <span style="color:#ff79c6">]</span>
+<span style="color:#ff79c6">then</span>
+    <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;No Args Input...&#34;</span>
+    <span style="color:#8be9fd;font-style:italic">exit</span> ;
+<span style="color:#ff79c6">fi</span>
     
-<span style="color:#66d9ef">case</span> $1 in
-<span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">)</span>
-        echo <span style="color:#e6db74">&#34; =================== 启动 hadoop集群 ===================&#34;</span>
+<span style="color:#ff79c6">case</span> <span style="color:#8be9fd;font-style:italic">$1</span> in
+<span style="color:#f1fa8c">&#34;start&#34;</span><span style="color:#ff79c6">)</span>
+        <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34; =================== 启动 hadoop集群 ===================&#34;</span>
     
-        echo <span style="color:#e6db74">&#34; --------------- 启动 hdfs ---------------&#34;</span>
-        ssh hadoop102 <span style="color:#e6db74">&#34;/opt/module/hadoop-3.1.3/sbin/start-dfs.sh&#34;</span>
-        echo <span style="color:#e6db74">&#34; --------------- 启动 yarn ---------------&#34;</span>
-        ssh hadoop103 <span style="color:#e6db74">&#34;/opt/module/hadoop-3.1.3/sbin/start-yarn.sh&#34;</span>
-        echo <span style="color:#e6db74">&#34; --------------- 启动 historyserver ---------------&#34;</span>
-        ssh hadoop102 <span style="color:#e6db74">&#34;/opt/module/hadoop-3.1.3/bin/mapred --daemon start historyserver&#34;</span>
+        <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34; --------------- 启动 hdfs ---------------&#34;</span>
+        ssh hadoop102 <span style="color:#f1fa8c">&#34;/opt/module/hadoop-3.1.3/sbin/start-dfs.sh&#34;</span>
+        <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34; --------------- 启动 yarn ---------------&#34;</span>
+        ssh hadoop103 <span style="color:#f1fa8c">&#34;/opt/module/hadoop-3.1.3/sbin/start-yarn.sh&#34;</span>
+        <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34; --------------- 启动 historyserver ---------------&#34;</span>
+        ssh hadoop102 <span style="color:#f1fa8c">&#34;/opt/module/hadoop-3.1.3/bin/mapred --daemon start historyserver&#34;</span>
 ;;
-<span style="color:#e6db74">&#34;stop&#34;</span><span style="color:#f92672">)</span>
-        echo <span style="color:#e6db74">&#34; =================== 关闭 hadoop集群 ===================&#34;</span>
+<span style="color:#f1fa8c">&#34;stop&#34;</span><span style="color:#ff79c6">)</span>
+        <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34; =================== 关闭 hadoop集群 ===================&#34;</span>
     
-        echo <span style="color:#e6db74">&#34; --------------- 关闭 historyserver ---------------&#34;</span>
-        ssh hadoop102 <span style="color:#e6db74">&#34;/opt/module/hadoop-3.1.3/bin/mapred --daemon stop historyserver&#34;</span>
-        echo <span style="color:#e6db74">&#34; --------------- 关闭 yarn ---------------&#34;</span>
-        ssh hadoop103 <span style="color:#e6db74">&#34;/opt/module/hadoop-3.1.3/sbin/stop-yarn.sh&#34;</span>
-        echo <span style="color:#e6db74">&#34; --------------- 关闭 hdfs ---------------&#34;</span>
-        ssh hadoop102 <span style="color:#e6db74">&#34;/opt/module/hadoop-3.1.3/sbin/stop-dfs.sh&#34;</span>
+        <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34; --------------- 关闭 historyserver ---------------&#34;</span>
+        ssh hadoop102 <span style="color:#f1fa8c">&#34;/opt/module/hadoop-3.1.3/bin/mapred --daemon stop historyserver&#34;</span>
+        <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34; --------------- 关闭 yarn ---------------&#34;</span>
+        ssh hadoop103 <span style="color:#f1fa8c">&#34;/opt/module/hadoop-3.1.3/sbin/stop-yarn.sh&#34;</span>
+        <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34; --------------- 关闭 hdfs ---------------&#34;</span>
+        ssh hadoop102 <span style="color:#f1fa8c">&#34;/opt/module/hadoop-3.1.3/sbin/stop-dfs.sh&#34;</span>
 ;;
-*<span style="color:#f92672">)</span>
-    echo <span style="color:#e6db74">&#34;Input Args Error...&#34;</span>
+*<span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;Input Args Error...&#34;</span>
 ;;
-<span style="color:#66d9ef">esac</span>
+<span style="color:#ff79c6">esac</span>
 </code></pre></div></li>
 </ul>
 </li>
@@ -631,14 +845,29 @@ YARN_NODEMANAGER_USER<span style="color:#f92672">=</span>root
 </li>
 <li>
 <p>集群时间同步</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvh2f8xij30pj0m17g4.jpg" alt="QQ截图20211101192555.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvh9qrzxj30og12a7u0.jpg" alt="QQ截图20211101192614.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvhh0yufj30n302dwfi.jpg" alt="QQ截图20211101192632.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvh2f8xij30pj0m17g4.jpg" alt="QQ截图20211101192555.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvh9qrzxj30og12a7u0.jpg" alt="QQ截图20211101192614.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvhh0yufj30n302dwfi.jpg" alt="QQ截图20211101192632.png">
+
+</p>
 </li>
 </ul>
 <h2 id="常见错误及解决方案">常见错误及解决方案</h2>
-<p>​	<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvjcs0efj30qq0o1nbt.jpg" alt="QQ截图20211101192804.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvjkrh41j30ow0r6na6.jpg" alt="QQ截图20211101192815.png"></p>
+<p>​	
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvjcs0efj30qq0o1nbt.jpg" alt="QQ截图20211101192804.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gvzvjkrh41j30ow0r6na6.jpg" alt="QQ截图20211101192815.png">
+
+</p>
 
 
                 
@@ -658,13 +887,27 @@ YARN_NODEMANAGER_USER<span style="color:#f92672">=</span>root
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -963,16 +1206,6 @@ YARN_NODEMANAGER_USER<span style="color:#f92672">=</span>root
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -985,48 +1218,44 @@ YARN_NODEMANAGER_USER<span style="color:#f92672">=</span>root
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1036,7 +1265,19 @@ YARN_NODEMANAGER_USER<span style="color:#f92672">=</span>root
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1056,7 +1297,7 @@ YARN_NODEMANAGER_USER<span style="color:#f92672">=</span>root
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1074,7 +1315,7 @@ YARN_NODEMANAGER_USER<span style="color:#f92672">=</span>root
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1086,12 +1327,76 @@ YARN_NODEMANAGER_USER<span style="color:#f92672">=</span>root
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

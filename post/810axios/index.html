@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>10、axios(Vue)-yiguan1573</title>
+    <title>10、axios(Vue) | yiguan1573</title>
 
     <link rel="canonical" href="/post/810axios/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>10、axios(Vue)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Thursday, September 24, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Thursday, September 24, 2020
+                            
+                                <span id="/post/810axios/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -213,11 +339,6 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents"></nav>
                 
                 <h1 id="axios的基本使用">axios的基本使用</h1>
 <ul>
@@ -252,26 +373,47 @@
 <li>axios将请求的数据自动封装</li>
 <li>默然情况下为get请求</li>
 <li>axios将自动返回一个promise实例并执行resolve和reject
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfa13rah3j30bx03074v.jpg" alt="QQ截图20201207142927.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfa1ij8bwj30e40aqwha.jpg" alt="QQ截图20201207143028.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfa13rah3j30bx03074v.jpg" alt="QQ截图20201207142927.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfa1ij8bwj30e40aqwha.jpg" alt="QQ截图20201207143028.png">
+
+</li>
 </ul>
 </li>
 <li>post请求
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfa53hqrpj30ck03bt9f.jpg" alt="QQ截图20201207143353.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfa53hqrpj30ck03bt9f.jpg" alt="QQ截图20201207143353.png">
+
+</li>
 <li>带参数的url
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfa8yqwngj30dj04ndgp.jpg" alt="QQ截图20201207143653.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfa8yqwngj30dj04ndgp.jpg" alt="QQ截图20201207143653.png">
+
+</li>
 </ul>
 <h1 id="发送并发请求">发送并发请求</h1>
 <ul>
 <li><strong>使用axios.all, 可以放入多个请求的数组</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfabspizrj30cy05rjt1.jpg" alt="QQ截图20201207144017.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfabspizrj30cy05rjt1.jpg" alt="QQ截图20201207144017.png">
+
+</li>
 <li>axios.all([]) 返回的结果是一个数组，使用 axios.spread 可将数组 [res1,res2] 展开为 res1, res2
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfacbb24yj31go0ow0wn.jpg" alt="图片1.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfacbb24yj31go0ow0wn.jpg" alt="图片1.png">
+
+</li>
 </ul>
 <h1 id="配置信息">配置信息</h1>
 <ul>
 <li>在开发中可能很多参数都是固定的，这个时候我们可以进行一些抽取, 也可以利用axiox的全局配置
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfarr5baqj31c00mmjuu.jpg" alt="图片2.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfarr5baqj31c00mmjuu.jpg" alt="图片2.png">
+
+</li>
 <li><strong>常见的配置选项</strong>
 <ul>
 <li>请求地址，url: &lsquo;/user&rsquo;</li>
@@ -296,15 +438,30 @@
 <li>当我们从axios模块中导入对象时, 使用的实例是默认的实例.
 当给该实例设置一些默认配置时, 这些配置就被固定下来了.
 但是后续开发中, 某些配置可能会不太一样，这个时候, 我们就可以创建新的实例, 并且传入属于该实例的配置信息
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfdzazklpj319a0ectah.jpg" alt="图片3.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfdzi3k9oj30v80g2760.jpg" alt="图片4.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfdzazklpj319a0ectah.jpg" alt="图片3.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfdzi3k9oj30v80g2760.jpg" alt="图片4.png">
+
+</li>
 <li><strong>axios封装</strong>
 <ul>
 <li>不能将axios操作放在组件中，这样会与网络框架的耦合太高
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfe2anwraj30mu0cstdw.jpg" alt="QQ截图20201207164935.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfe2anwraj30mu0cstdw.jpg" alt="QQ截图20201207164935.png">
+
+</li>
 <li>封装axios,先创建一个network文件夹，然后创建一个js文件
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfe59tfisj30et07776g.jpg" alt="QQ截图20201207165225.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfe5wniudj30g30a50ur.jpg" alt="QQ截图20201207165303.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfe59tfisj30et07776g.jpg" alt="QQ截图20201207165225.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glfe5wniudj30g30a50ur.jpg" alt="QQ截图20201207165303.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -312,11 +469,23 @@
 <ul>
 <li><strong>axios提供了拦截器，用于我们在发送每次请求或者得到响应后，进行对应的处理</strong></li>
 <li>使用
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glffh928mvj30fo0akt9z.jpg" alt="图片5.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glffhemsb9j30ae07pq39.jpg" alt="图片6.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glffhjx40qj30fb01sdfw.jpg" alt="图片7.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glffh928mvj30fo0akt9z.jpg" alt="图片5.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glffhemsb9j30ae07pq39.jpg" alt="图片6.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glffhjx40qj30fb01sdfw.jpg" alt="图片7.png">
+
+</li>
 <li><strong>请求拦截可以做到的事情</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glffi7vsb9j30me07swfw.jpg" alt="图片8.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glffi7vsb9j30me07swfw.jpg" alt="图片8.png">
+
+</li>
 <li><strong>响应拦截中完成的事情</strong>
 <ul>
 <li>响应的成功拦截中，主要是对数据进行过滤</li>
@@ -343,13 +512,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -648,16 +831,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -670,48 +843,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -721,7 +890,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -741,7 +922,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -759,7 +940,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -771,12 +952,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

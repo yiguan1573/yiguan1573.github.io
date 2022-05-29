@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>25、职责链模式(设计模式)-yiguan1573</title>
+    <title>25、职责链模式(设计模式) | yiguan1573</title>
 
     <link rel="canonical" href="/post/725%E8%81%8C%E8%B4%A3%E9%93%BE%E6%A8%A1%E5%BC%8F/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>25、职责链模式(设计模式)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Tuesday, September 8, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Tuesday, September 8, 2020
+                            
+                                <span id="/post/725%E8%81%8C%E8%B4%A3%E9%93%BE%E6%A8%A1%E5%BC%8F/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,11 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents"></nav>
-                
                 <h1 id="学校-oa-系统的采购审批项目需求是">学校 OA 系统的采购审批项目：需求是</h1>
 <ul>
 <li>如果金额 小于等于 5000,  由教学主任审批 （0&lt;=x&lt;=5000）</li>
@@ -228,7 +349,10 @@
 <li>请设计程序完成采购审批项目</li>
 </ul>
 <h1 id="传统方案解决-oa-系统审批传统的设计方案类图">传统方案解决 OA 系统审批，传统的设计方案(类图)</h1>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8pohjh0j308506x3yf.jpg" alt="QQ截图20200906211436.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8pohjh0j308506x3yf.jpg" alt="QQ截图20200906211436.jpg">
+
+</p>
 <h1 id="传统方案解决-oa-系统审批问题分析">传统方案解决 OA 系统审批问题分析</h1>
 <ul>
 <li>
@@ -251,7 +375,10 @@
 <li>这种类型的设计模式属于行为型模式</li>
 </ul>
 <h1 id="职责链模式的原理类图">职责链模式的原理类图</h1>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8qt2d45j30by05sq2v.jpg" alt="QQ截图20200906211541.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8qt2d45j30by05sq2v.jpg" alt="QQ截图20200906211541.jpg">
+
+</p>
 <ul>
 <li>Handler :  抽象的处理者,  定义了一个处理请求的接口,  同时含义另外 Handler</li>
 <li>ConcreteHandlerA , B  是具体的处理者, 处理它自己负责的请求， 可以访问它的后继者(即下一个处理者),  如果可以处理当前请求，则处理，否则就将该请求交个 后继者去处理，从而形成一个职责链</li>
@@ -260,23 +387,53 @@
 <h1 id="职责链模式解决-oa-系统采购审批">职责链模式解决 OA 系统采购审批</h1>
 <ul>
 <li>思路分析和图解(类图)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8rns59yj30de0700sq.jpg" alt="QQ截图20200906211630.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8rns59yj30de0700sq.jpg" alt="QQ截图20200906211630.jpg">
+
+</li>
 <li>代码实现
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8t4q14jj30cp02r3yd.jpg" alt="QQ截图20200906211657.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8t8yciaj30h60jtaas.jpg" alt="QQ截图20200906211707.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8tedgizj30im0j275m.jpg" alt="QQ截图20200906211717.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8tlqagmj30i00jqgme.jpg" alt="QQ截图20200906211724.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8tqk5aej30ig0jidgk.jpg" alt="QQ截图20200906211731.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8tvca6rj30g90jf3ys.jpg" alt="QQ截图20200906211738.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8u6yt0aj30j30k075c.jpg" alt="QQ截图20200906211746.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8uaurpzj30eh03iglg.jpg" alt="QQ截图20200906211752.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8t4q14jj30cp02r3yd.jpg" alt="QQ截图20200906211657.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8t8yciaj30h60jtaas.jpg" alt="QQ截图20200906211707.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8tedgizj30im0j275m.jpg" alt="QQ截图20200906211717.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8tlqagmj30i00jqgme.jpg" alt="QQ截图20200906211724.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8tqk5aej30ig0jidgk.jpg" alt="QQ截图20200906211731.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8tvca6rj30g90jf3ys.jpg" alt="QQ截图20200906211738.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8u6yt0aj30j30k075c.jpg" alt="QQ截图20200906211746.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8uaurpzj30eh03iglg.jpg" alt="QQ截图20200906211752.jpg">
+
+</li>
 </ul>
 <h1 id="职责链模式在-springmvc-框架应用的源码分析">职责链模式在 SpringMVC 框架应用的源码分析</h1>
 <ul>
 <li>SpringMVC-HandlerExecutionChain 类就使用到职责链模式</li>
 <li>SpringMVC 请求流程简图</li>
 <li>代码分析+Debug 源码+说明
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8ux0u51j30i905ldgg.jpg" alt="QQ截图20200906211936.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gih8ux0u51j30i905ldgg.jpg" alt="QQ截图20200906211936.jpg">
+
+</li>
 <li>springmvc 请求的流程图中，执行了 拦截器相关方法 interceptor.preHandler 等等</li>
 <li>在处理 SpringMvc 请求时，使用到职责链模式还使用到适配器模式</li>
 <li>HandlerExecutionChain 主要负责的是请求拦截器的执行和请求处理,但是他本身不处理请求，只是将请求分配给链上注册处理器执行，这是职责链实现方式,减少职责链本身与处理逻辑之间的耦合,规范了处理流程</li>
@@ -309,13 +466,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -614,16 +785,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -636,48 +797,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -687,7 +844,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -707,7 +876,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -725,7 +894,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -737,12 +906,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

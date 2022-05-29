@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>2、HBase快速入门（HBase）-yiguan1573</title>
+    <title>2、HBase快速入门（HBase） | yiguan1573</title>
 
     <link rel="canonical" href="/post/1012hbase%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>2、HBase快速入门（HBase）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Sunday, March 6, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Sunday, March 6, 2022
+                            
+                                <span id="/post/1012hbase%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,103 +340,78 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#hbase-安装部署">HBase 安装部署</a>
-      <ul>
-        <li><a href="#zookeeper-正常部署">Zookeeper 正常部署</a></li>
-        <li><a href="#hadoop-正常部署">Hadoop 正常部署</a></li>
-        <li><a href="#hbase-的解压">HBase 的解压</a></li>
-        <li><a href="#hbase-的配置文件">HBase 的配置文件</a></li>
-        <li><a href="#hbase-远程发送到其他集群">HBase 远程发送到其他集群</a></li>
-        <li><a href="#hbase-服务的启动">HBase 服务的启动</a></li>
-        <li><a href="#查看-hbase-页面">查看 HBase 页面</a></li>
-      </ul>
-    </li>
-    <li><a href="#hbase-shell-操作">HBase Shell 操作</a>
-      <ul>
-        <li><a href="#基本操作">基本操作</a></li>
-        <li><a href="#表的操作">表的操作</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-                
                 <h2 id="hbase-安装部署">HBase 安装部署</h2>
 <h3 id="zookeeper-正常部署">Zookeeper 正常部署</h3>
 <ul>
 <li>
 <p>首先保证 Zookeeper 集群的正常部署，并启动之：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 zookeeper-3.4.10<span style="color:#f92672">]</span>$ bin/zkServer.sh start
-<span style="color:#f92672">[</span>atguigu@hadoop103 zookeeper-3.4.10<span style="color:#f92672">]</span>$ bin/zkServer.sh start
-<span style="color:#f92672">[</span>atguigu@hadoop104 zookeeper-3.4.10<span style="color:#f92672">]</span>$ bin/zkServer.sh start
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 zookeeper-3.4.10<span style="color:#ff79c6">]</span>$ bin/zkServer.sh start
+<span style="color:#ff79c6">[</span>atguigu@hadoop103 zookeeper-3.4.10<span style="color:#ff79c6">]</span>$ bin/zkServer.sh start
+<span style="color:#ff79c6">[</span>atguigu@hadoop104 zookeeper-3.4.10<span style="color:#ff79c6">]</span>$ bin/zkServer.sh start
 </code></pre></div></li>
 </ul>
 <h3 id="hadoop-正常部署">Hadoop 正常部署</h3>
 <ul>
 <li>
 <p>Hadoop 集群的正常部署并启动：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-2.7.2<span style="color:#f92672">]</span>$ sbin/start-dfs.sh
-<span style="color:#f92672">[</span>atguigu@hadoop103 hadoop-2.7.2<span style="color:#f92672">]</span>$ sbin/start-yarn.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hadoop-2.7.2<span style="color:#ff79c6">]</span>$ sbin/start-dfs.sh
+<span style="color:#ff79c6">[</span>atguigu@hadoop103 hadoop-2.7.2<span style="color:#ff79c6">]</span>$ sbin/start-yarn.sh
 </code></pre></div></li>
 </ul>
 <h3 id="hbase-的解压">HBase 的解压</h3>
 <ul>
 <li>
 <p>解压 Hbase 到指定目录：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ tar -zxvf hbase-1.3.1-bin.tar.gz -C /opt/module
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 software<span style="color:#ff79c6">]</span>$ tar -zxvf hbase-1.3.1-bin.tar.gz -C /opt/module
 </code></pre></div></li>
 </ul>
 <h3 id="hbase-的配置文件">HBase 的配置文件</h3>
 <p>修改HBase对应的配置文件。</p>
 <p>1）hbase-env.sh修改内容：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export JAVA_HOME<span style="color:#f92672">=</span>/opt/module/jdk1.6.0_
-export HBASE_MANAGES_ZK<span style="color:#f92672">=</span>false
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">JAVA_HOME</span><span style="color:#ff79c6">=</span>/opt/module/jdk1.6.0_
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">HBASE_MANAGES_ZK</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">false</span>
 </code></pre></div><p>2）hbase-site.xml修改内容：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.rootdir<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>hdfs://hadoop102: 9000 /HBase<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.cluster.distributed<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 0.98后的新变动，之前版本没有.port,默认端口为 60000 </span><span style="color:#75715e">--&gt;</span>
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.master.port<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>16000<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;configuration</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hbase.rootdir<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>hdfs://hadoop102: 9000 /HBase<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hbase.cluster.distributed<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>true<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
+    <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 0.98后的新变动，之前版本没有.port,默认端口为 60000 </span><span style="color:#6272a4">--&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hbase.master.port<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>16000<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
 
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.zookeeper.quorum<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>hadoop102,hadoop103,hadoop104<span style="color:#f92672">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hbase.zookeeper.quorum<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>hadoop102,hadoop103,hadoop104<span style="color:#ff79c6">&lt;/value&gt;</span>
 
-    <span style="color:#f92672">&lt;/property&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
 
-    <span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.zookeeper.property.dataDir<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>/opt/module/zookeeper-3.4.10/zkData<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;/configuration&gt;</span>
+    <span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hbase.zookeeper.property.dataDir<span style="color:#ff79c6">&lt;/name&gt;</span>
+        <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>/opt/module/zookeeper-3.4.10/zkData<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;/configuration&gt;</span>
 </code></pre></div><p>3）regionservers：</p>
 <pre><code>hadoop102
 hadoop103
 hadoop104
 </code></pre><p>4）软连接hadoop配置文件到HBase：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ ln -s /opt/module/hadoop-2.7.2/etc/hadoop/core-site.xml /opt/module/hbase/conf/core-site.xml
-<span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ ln -s /opt/module/hadoop-2.7.2/etc/hadoop/hdfs-site.xml /opt/module/hbase/conf/hdfs-site.xml
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 module<span style="color:#ff79c6">]</span>$ ln -s /opt/module/hadoop-2.7.2/etc/hadoop/core-site.xml /opt/module/hbase/conf/core-site.xml
+<span style="color:#ff79c6">[</span>atguigu@hadoop102 module<span style="color:#ff79c6">]</span>$ ln -s /opt/module/hadoop-2.7.2/etc/hadoop/hdfs-site.xml /opt/module/hbase/conf/hdfs-site.xml
 </code></pre></div><h3 id="hbase-远程发送到其他集群">HBase 远程发送到其他集群</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 module<span style="color:#f92672">]</span>$ xsync hbase/
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 module<span style="color:#ff79c6">]</span>$ xsync hbase/
 </code></pre></div><h3 id="hbase-服务的启动">HBase 服务的启动</h3>
 <ul>
 <li>
 <p><strong>启动方式</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hbase<span style="color:#f92672">]</span>$ bin/hbase-daemon.sh start master
-<span style="color:#f92672">[</span>atguigu@hadoop102 hbase<span style="color:#f92672">]</span>$ bin/hbase-daemon.sh start regionserver
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hbase<span style="color:#ff79c6">]</span>$ bin/hbase-daemon.sh start master
+<span style="color:#ff79c6">[</span>atguigu@hadoop102 hbase<span style="color:#ff79c6">]</span>$ bin/hbase-daemon.sh start regionserver
 </code></pre></div><ul>
 <li>
 <p>提示：如果集群之间的节点时间不同步，会导致 regionserver 无法启动，抛出ClockOutOfSyncException 异常。</p>
@@ -319,19 +420,19 @@ hadoop104
 <p>修复提示：</p>
 <p>a、同步时间服务</p>
 <p>b、属性：hbase.master.maxclockskew 设置更大的值</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>hbase.master.maxclockskew<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>180000<span style="color:#f92672">&lt;/value&gt;</span>
-    <span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>Time difference of regionserver from master<span style="color:#f92672">&lt;/description&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>hbase.master.maxclockskew<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>180000<span style="color:#ff79c6">&lt;/value&gt;</span>
+    <span style="color:#ff79c6">&lt;description</span><span style="color:#ff79c6">&gt;</span>Time difference of regionserver from master<span style="color:#ff79c6">&lt;/description&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 </ul>
 </li>
 <li>
 <p><strong>启动方式 2</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hbase<span style="color:#f92672">]</span>$ bin/start-hbase.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hbase<span style="color:#ff79c6">]</span>$ bin/start-hbase.sh
 </code></pre></div><p>对应的停止服务：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hbase<span style="color:#f92672">]</span>$ bin/stop-hbase.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hbase<span style="color:#ff79c6">]</span>$ bin/stop-hbase.sh
 </code></pre></div></li>
 </ul>
 <h3 id="查看-hbase-页面">查看 HBase 页面</h3>
@@ -341,7 +442,7 @@ hadoop104
 <h2 id="hbase-shell-操作">HBase Shell 操作</h2>
 <h3 id="基本操作">基本操作</h3>
 <p>1 ．进入HBase客户端命令行</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hbase<span style="color:#f92672">]</span>$ bin/hbase shell
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hbase<span style="color:#ff79c6">]</span>$ bin/hbase shell
 </code></pre></div><p>2 ．查看帮助命令</p>
 <pre><code>hbase(main):001:0&gt; help
 </code></pre><p>3 ．查看当前数据库中有哪些表</p>
@@ -406,13 +507,27 @@ hbase(main):022:0&gt; get 'student','1001',{COLUMN=&gt;'info:name',VERSIONS=&gt;
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -711,16 +826,6 @@ hbase(main):022:0&gt; get 'student','1001',{COLUMN=&gt;'info:name',VERSIONS=&gt;
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -733,48 +838,44 @@ hbase(main):022:0&gt; get 'student','1001',{COLUMN=&gt;'info:name',VERSIONS=&gt;
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -784,7 +885,19 @@ hbase(main):022:0&gt; get 'student','1001',{COLUMN=&gt;'info:name',VERSIONS=&gt;
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -804,7 +917,7 @@ hbase(main):022:0&gt; get 'student','1001',{COLUMN=&gt;'info:name',VERSIONS=&gt;
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -822,7 +935,7 @@ hbase(main):022:0&gt; get 'student','1001',{COLUMN=&gt;'info:name',VERSIONS=&gt;
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -834,12 +947,76 @@ hbase(main):022:0&gt; get 'student','1001',{COLUMN=&gt;'info:name',VERSIONS=&gt;
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

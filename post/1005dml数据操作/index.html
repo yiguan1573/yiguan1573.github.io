@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>5、DML数据操作（Hive）-yiguan1573</title>
+    <title>5、DML数据操作（Hive） | yiguan1573</title>
 
     <link rel="canonical" href="/post/1005dml%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>5、DML数据操作（Hive）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Saturday, March 5, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Saturday, March 5, 2022
+                            
+                                <span id="/post/1005dml%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,38 +340,13 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#数据导入">数据导入</a>
-      <ul>
-        <li><a href="#向表中装载数据load">向表中装载数据（Load）</a></li>
-        <li><a href="#通过查询语句向表中插入数据insert">通过查询语句向表中插入数据（Insert）</a></li>
-        <li><a href="#查询语句中创建表并加载数据as-select">查询语句中创建表并加载数据（As Select）</a></li>
-        <li><a href="#创建表时通过-location-指定加载数据路径">创建表时通过 Location 指定加载数据路径</a></li>
-        <li><a href="#import-数据到指定-hive-表中">Import 数据到指定 Hive 表中</a></li>
-      </ul>
-    </li>
-    <li><a href="#数据导出">数据导出</a>
-      <ul>
-        <li><a href="#insert-导出">Insert 导出</a></li>
-        <li><a href="#hive-shell-命令导出">Hive Shell 命令导出</a></li>
-        <li><a href="#export-导出到-hdfs-上">Export 导出到 HDFS 上</a></li>
-        <li><a href="#清除表中数据truncate">清除表中数据（Truncate）</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-                
                 <h2 id="数据导入">数据导入</h2>
 <h3 id="向表中装载数据load"><strong>向表中装载数据（Load）</strong></h3>
 <h4 id="语法">语法</h4>
 <ul>
 <li>
 <p>例子</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive&gt; load data <span style="color:#f92672">[</span>local<span style="color:#f92672">]</span> inpath <span style="color:#e6db74">&#39;数据的 path&#39;</span> <span style="color:#f92672">[</span>overwrite<span style="color:#f92672">]</span> into table student <span style="color:#f92672">[</span>partition <span style="color:#f92672">(</span>partcol1<span style="color:#f92672">=</span>val1,…<span style="color:#f92672">)</span><span style="color:#f92672">]</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive&gt; load data <span style="color:#ff79c6">[</span>local<span style="color:#ff79c6">]</span> inpath <span style="color:#f1fa8c">&#39;数据的 path&#39;</span> <span style="color:#ff79c6">[</span>overwrite<span style="color:#ff79c6">]</span> into table student <span style="color:#ff79c6">[</span>partition <span style="color:#ff79c6">(</span><span style="color:#8be9fd;font-style:italic">partcol1</span><span style="color:#ff79c6">=</span>val1,…<span style="color:#ff79c6">)</span><span style="color:#ff79c6">]</span>;
 </code></pre></div></li>
 <li>
 <p>load data:表示加载数据</p>
@@ -273,79 +374,79 @@
 <ul>
 <li>
 <p>创建一张表</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; create table student<span style="color:#f92672">(</span>id string, name string<span style="color:#f92672">)</span> row format delimited fields terminated by <span style="color:#e6db74">&#39;\t&#39;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; create table student<span style="color:#ff79c6">(</span>id string, name string<span style="color:#ff79c6">)</span> row format delimited fields terminated by <span style="color:#f1fa8c">&#39;\t&#39;</span>;
 </code></pre></div></li>
 <li>
 <p>加载本地文件到 hive</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; load data local inpath <span style="color:#e6db74">&#39;/opt/module/hive/datas/student.txt&#39;</span> into table default.student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; load data <span style="color:#8be9fd;font-style:italic">local</span> inpath <span style="color:#f1fa8c">&#39;/opt/module/hive/datas/student.txt&#39;</span> into table default.student;
 </code></pre></div></li>
 <li>
 <p>加载 HDFS 文件到 hive 中</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; dfs -put /opt/module/hive/data/student.txt /user/atguigu/hive;
-hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; load data inpath <span style="color:#e6db74">&#39;/user/atguigu/hive/student.txt&#39;</span> into table default.student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; dfs -put /opt/module/hive/data/student.txt /user/atguigu/hive;
+hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; load data inpath <span style="color:#f1fa8c">&#39;/user/atguigu/hive/student.txt&#39;</span> into table default.student;
 </code></pre></div></li>
 <li>
 <p>加载数据覆盖表中已有的数据</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; dfs -put /opt/module/data/student.txt /user/atguigu/hive;
-hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; load data inpath <span style="color:#e6db74">&#39;/user/atguigu/hive/student.txt&#39;</span> overwrite into table default.student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; dfs -put /opt/module/data/student.txt /user/atguigu/hive;
+hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; load data inpath <span style="color:#f1fa8c">&#39;/user/atguigu/hive/student.txt&#39;</span> overwrite into table default.student;
 </code></pre></div></li>
 </ul>
 <h3 id="通过查询语句向表中插入数据insert">通过查询语句向表中插入数据（Insert）</h3>
 <ul>
 <li>
 <p><strong>创建一张表</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; create table student_par<span style="color:#f92672">(</span>id int, name string<span style="color:#f92672">)</span> row format delimited fields terminated by <span style="color:#e6db74">&#39;\t&#39;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; create table student_par<span style="color:#ff79c6">(</span>id int, name string<span style="color:#ff79c6">)</span> row format delimited fields terminated by <span style="color:#f1fa8c">&#39;\t&#39;</span>;
 </code></pre></div></li>
 <li>
 <p><strong>基本插入数据</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; insert into table student_par values<span style="color:#f92672">(</span>1,<span style="color:#e6db74">&#39;wangwu&#39;</span><span style="color:#f92672">)</span>,<span style="color:#f92672">(</span>2,<span style="color:#e6db74">&#39;zhaoliu&#39;</span><span style="color:#f92672">)</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; insert into table student_par values<span style="color:#ff79c6">(</span>1,<span style="color:#f1fa8c">&#39;wangwu&#39;</span><span style="color:#ff79c6">)</span>,<span style="color:#ff79c6">(</span>2,<span style="color:#f1fa8c">&#39;zhaoliu&#39;</span><span style="color:#ff79c6">)</span>;
 </code></pre></div></li>
 <li>
 <p><strong>基本模式插入（根据单张表查询结果）</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; insert overwrite table student_par <span style="color:#66d9ef">select</span> id, name from student where month<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;201709&#39;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; insert overwrite table student_par <span style="color:#ff79c6">select</span> id, name from student where <span style="color:#8be9fd;font-style:italic">month</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;201709&#39;</span>;
 </code></pre></div><p>insert into：以追加数据的方式插入到表或分区，原有数据不会删除</p>
 <p>insert overwrite：会覆盖表中已存在的数据</p>
 <p>注意：insert 不支持插入部分字段</p>
 </li>
 <li>
 <p><strong>多表（多分区）插入模式（根据多张表查询结果）</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; from student
- insert overwrite table student partition<span style="color:#f92672">(</span>month<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;201707&#39;</span><span style="color:#f92672">)</span>
- <span style="color:#66d9ef">select</span> id, name where month<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;201709&#39;</span>
- insert overwrite table student partition<span style="color:#f92672">(</span>month<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;201706&#39;</span><span style="color:#f92672">)</span>
- <span style="color:#66d9ef">select</span> id, name where month<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;201709&#39;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; from student
+ insert overwrite table student partition<span style="color:#ff79c6">(</span><span style="color:#8be9fd;font-style:italic">month</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;201707&#39;</span><span style="color:#ff79c6">)</span>
+ <span style="color:#ff79c6">select</span> id, name where <span style="color:#8be9fd;font-style:italic">month</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;201709&#39;</span>
+ insert overwrite table student partition<span style="color:#ff79c6">(</span><span style="color:#8be9fd;font-style:italic">month</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;201706&#39;</span><span style="color:#ff79c6">)</span>
+ <span style="color:#ff79c6">select</span> id, name where <span style="color:#8be9fd;font-style:italic">month</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;201709&#39;</span>;
 </code></pre></div></li>
 </ul>
 <h3 id="查询语句中创建表并加载数据as-select">查询语句中创建表并加载数据（As Select）</h3>
 <ul>
 <li>
 <p>根据查询结果创建表（查询的结果会添加到新创建的表中）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">create table <span style="color:#66d9ef">if</span> not exists student3 as <span style="color:#66d9ef">select</span> id, name from student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">create table <span style="color:#ff79c6">if</span> not exists student3 as <span style="color:#ff79c6">select</span> id, name from student;
 </code></pre></div></li>
 </ul>
 <h3 id="创建表时通过-location-指定加载数据路径"><strong>创建表时通过</strong> <strong>Location</strong> <strong>指定加载数据路径</strong></h3>
 <ul>
 <li>
 <p><strong>上传数据到</strong> <strong>hdfs</strong> <strong>上</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; dfs -mkdir /student;
-hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; dfs -put /opt/module/datas/student.txt /student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; dfs -mkdir /student;
+hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; dfs -put /opt/module/datas/student.txt /student;
 </code></pre></div></li>
 <li>
 <p><strong>创建表，并指定在</strong> <strong>hdfs</strong> <strong>上的位置</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; create external table <span style="color:#66d9ef">if</span> not exists student5<span style="color:#f92672">(</span>id int, name string<span style="color:#f92672">)</span>
- row format delimited fields terminated by <span style="color:#e6db74">&#39;\t&#39;</span>
- location <span style="color:#960050;background-color:#1e0010">&#39;</span>/student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; create external table <span style="color:#ff79c6">if</span> not exists student5<span style="color:#ff79c6">(</span>id int, name string<span style="color:#ff79c6">)</span>
+ row format delimited fields terminated by <span style="color:#f1fa8c">&#39;\t&#39;</span>
+ location &#39;/student;
 </code></pre></div></li>
 <li>
 <p><strong>查询数据</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; <span style="color:#66d9ef">select</span> * from student5;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; <span style="color:#ff79c6">select</span> * from student5;
 </code></pre></div></li>
 </ul>
 <h3 id="import-数据到指定-hive-表中"><strong>Import</strong> <strong>数据到指定</strong> <strong>Hive</strong> <strong>表中</strong></h3>
 <ul>
 <li>
 <p>注意：先用 export 导出后，再将数据导入。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; import table student2 from <span style="color:#e6db74">&#39;/user/hive/warehouse/export/student&#39;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; import table student2 from <span style="color:#f1fa8c">&#39;/user/hive/warehouse/export/student&#39;</span>;
 </code></pre></div></li>
 </ul>
 <h2 id="数据导出">数据导出</h2>
@@ -353,45 +454,45 @@ hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</s
 <ul>
 <li>
 <p><strong>将查询的结果导出到本地</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; insert overwrite local directory 			       <span style="color:#e6db74">&#39;/opt/module/hive/data/export/student&#39;</span>
-<span style="color:#66d9ef">select</span> * from student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; insert overwrite <span style="color:#8be9fd;font-style:italic">local</span> directory 			       <span style="color:#f1fa8c">&#39;/opt/module/hive/data/export/student&#39;</span>
+<span style="color:#ff79c6">select</span> * from student;
 </code></pre></div></li>
 <li>
 <p><strong>将查询的结果格式化导出到本地</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive<span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt;insert overwrite local directory 
-  <span style="color:#e6db74">&#39;/opt/module/hive/data/export/student1&#39;</span>
-  ROW FORMAT DELIMITED FIELDS TERMINATED BY <span style="color:#e6db74">&#39;\t&#39;</span>
-  <span style="color:#66d9ef">select</span> * from student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive<span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt;insert overwrite <span style="color:#8be9fd;font-style:italic">local</span> directory 
+  <span style="color:#f1fa8c">&#39;/opt/module/hive/data/export/student1&#39;</span>
+  ROW FORMAT DELIMITED FIELDS TERMINATED BY <span style="color:#f1fa8c">&#39;\t&#39;</span>
+  <span style="color:#ff79c6">select</span> * from student;
 </code></pre></div></li>
 <li>
 <p><strong>将查询的结果导出到HDFS上(没有 local)</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; insert overwrite directory <span style="color:#e6db74">&#39;/user/atguigu/student2&#39;</span>
- ROW FORMAT DELIMITED FIELDS TERMINATED BY <span style="color:#e6db74">&#39;\t&#39;</span> 
- <span style="color:#66d9ef">select</span> * from student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; insert overwrite directory <span style="color:#f1fa8c">&#39;/user/atguigu/student2&#39;</span>
+ ROW FORMAT DELIMITED FIELDS TERMINATED BY <span style="color:#f1fa8c">&#39;\t&#39;</span> 
+ <span style="color:#ff79c6">select</span> * from student;
 </code></pre></div></li>
 </ul>
 <h4 id="hadoop-命令导出到本地"><strong>Hadoop</strong> <strong>命令导出到本地</strong></h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; dfs -get /user/hive/warehouse/student/student.txt
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; dfs -get /user/hive/warehouse/student/student.txt
 /opt/module/data/export/student3.txt;
 </code></pre></div><h3 id="hive-shell-命令导出"><strong>Hive Shell</strong> <strong>命令导出</strong></h3>
 <ul>
 <li>
 <p>基本语法：（hive -f/-e 执行语句或者脚本 &gt; file）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hive<span style="color:#f92672">]</span>$ bin/hive -e <span style="color:#e6db74">&#39;select * from default.student;&#39;</span> &gt; /opt/module/hive/data/export/student4.txt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hive<span style="color:#ff79c6">]</span>$ bin/hive -e <span style="color:#f1fa8c">&#39;select * from default.student;&#39;</span> &gt; /opt/module/hive/data/export/student4.txt;
 </code></pre></div></li>
 </ul>
 <h3 id="export-导出到-hdfs-上"><strong>Export</strong> <strong>导出到</strong> <strong>HDFS</strong> <strong>上</strong></h3>
 <ul>
 <li>
 <p>export 和 import 主要用于两个 Hadoop 平台集群之间 Hive 表迁移。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">(</span>defahiveult<span style="color:#f92672">)</span>&gt; export table default.student to <span style="color:#e6db74">&#39;/user/hive/warehouse/export/student&#39;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">(</span>defahiveult<span style="color:#ff79c6">)</span>&gt; <span style="color:#8be9fd;font-style:italic">export</span> table default.student to <span style="color:#f1fa8c">&#39;/user/hive/warehouse/export/student&#39;</span>;
 </code></pre></div></li>
 </ul>
 <h3 id="清除表中数据truncate">清除表中数据（Truncate）</h3>
 <ul>
 <li>
 <p>注意：Truncate 只能删除管理表，不能删除外部表中数据</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>&gt; truncate table student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hive <span style="color:#ff79c6">(</span>default<span style="color:#ff79c6">)</span>&gt; truncate table student;
 </code></pre></div></li>
 </ul>
 
@@ -413,13 +514,27 @@ hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</s
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -718,16 +833,6 @@ hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</s
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -740,48 +845,44 @@ hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</s
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -791,7 +892,19 @@ hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</s
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -811,7 +924,7 @@ hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</s
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -829,7 +942,7 @@ hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</s
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -841,12 +954,76 @@ hive <span style="color:#f92672">(</span>default<span style="color:#f92672">)</s
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

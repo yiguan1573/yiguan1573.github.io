@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>4、SpringSecurity 微服务权限方案（SpringSecurity）-yiguan1573</title>
+    <title>4、SpringSecurity 微服务权限方案（SpringSecurity） | yiguan1573</title>
 
     <link rel="canonical" href="/post/1033springsecurity-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90%E6%96%B9%E6%A1%88/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>4、SpringSecurity 微服务权限方案（SpringSecurity）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                            亿观
-                         
-                        on 
-                        Thursday, May 12, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                亿观
+                             
+                            on 
+                            Thursday, May 12, 2022
+                            
+                                <span id="/post/1033springsecurity-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90%E6%96%B9%E6%A1%88/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,24 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#微服务认证与授权实现思路">微服务认证与授权实现思路</a></li>
-    <li><a href="#jwt-介绍">jwt 介绍</a></li>
-    <li><a href="#具体代码实现">具体代码实现</a>
-      <ul>
-        <li><a href="#编写核心配置类">编写核心配置类</a></li>
-        <li><a href="#创建认证授权相关的工具类">创建认证授权相关的工具类</a></li>
-        <li><a href="#创建认证授权实体类">创建认证授权实体类</a></li>
-        <li><a href="#创建认证和授权的-filter">创建认证和授权的 filter</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-                
                 <h2 id="微服务认证与授权实现思路">微服务认证与授权实现思路</h2>
 <ul>
 <li>
@@ -242,7 +350,10 @@
 </li>
 <li>
 <p>如果是 token，则是解析出 token，然后将当前请求加入到 Spring-security 管理的权限信息中去</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hlddfipsj30rz0dawf7.jpg" alt="QQ截图20220522231915.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hlddfipsj30rz0dawf7.jpg" alt="QQ截图20220522231915.jpg">
+
+</p>
 </li>
 <li>
 <p>如果系统的模块众多，每个模块都需要进行授权与认证，所以我们选择基于 token 的形式进行授权与认证，用户根据用户名密码认证成功，然后获取当前用户角色的一系列权限值，并以用户名为 key，权限列表为 value 的形式存入 redis 缓存中，根据用户名相关信息生成 token 返回，浏览器将 token 记录到 cookie 中，每次调用 api 接口都默认将 token 携带到 header 请求头中，Spring-security 解析 header 头获取 token 信息，解析 token 获取当前用户名，根据用户名就可以从 redis 中获取权限列表，这样 Spring-security 就能够判断当前请求是否有权限访问</p>
@@ -251,18 +362,27 @@
 </li>
 <li>
 <p><strong>权限管理数据模型</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hle1q2tkj30oi07rgm3.jpg" alt="QQ截图20220522231953.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hle1q2tkj30oi07rgm3.jpg" alt="QQ截图20220522231953.jpg">
+
+</p>
 </li>
 </ul>
 <h2 id="jwt-介绍">jwt 介绍</h2>
 <ul>
 <li>
 <p><strong>访问令牌的类型</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hlg5wcsoj30n00a83zq.jpg" alt="QQ截图20220522232147.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hlg5wcsoj30n00a83zq.jpg" alt="QQ截图20220522232147.jpg">
+
+</p>
 </li>
 <li>
 <p><strong>JWT 的组成</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hlglxv4vj30qf0e6js7.jpg" alt="QQ截图20220522232155.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hlglxv4vj30qf0e6js7.jpg" alt="QQ截图20220522232155.jpg">
+
+</p>
 <ul>
 <li>该对象为一个很长的字符串，字符之间通过&rdquo;.&ldquo;分隔符分为三个子串</li>
 <li>每一个子串表示了一个功能块，总共有以下三个部分：JWT 头、有效载荷和签名</li>
@@ -343,334 +463,346 @@
 </li>
 </ul>
 <h2 id="具体代码实现">具体代码实现</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hllfh378j30lg0gpaat.jpg" alt="QQ截图20220522232659.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hllfh378j30lg0gpaat.jpg" alt="QQ截图20220522232659.jpg">
+
+</p>
 <h3 id="编写核心配置类">编写核心配置类</h3>
 <ul>
 <li>
 <p>Spring Security 的核心配置就是继承 WebSecurityConfigurerAdapter 并注解@EnableWebSecurity 的配置。这个配置指明了用户名密码的处理方式、请求路径、登录登出控制等和安全相关的配置</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Configuration</span>
-<span style="color:#a6e22e">@EnableWebSecurity</span>
-<span style="color:#a6e22e">@EnableGlobalMethodSecurity</span><span style="color:#f92672">(</span>prePostEnabled <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TokenWebSecurityConfig</span> <span style="color:#66d9ef">extends</span> WebSecurityConfigurerAdapter <span style="color:#f92672">{</span>
-    <span style="color:#75715e">//自定义查询数据库用户名密码和权限信息
-</span><span style="color:#75715e"></span>      
-    <span style="color:#66d9ef">private</span> UserDetailsService userDetailsService<span style="color:#f92672">;</span>
-    <span style="color:#75715e">//token 管理工具类（生成 token）
-</span><span style="color:#75715e"></span>      
-    <span style="color:#66d9ef">private</span> TokenManager tokenManager<span style="color:#f92672">;</span>
-    <span style="color:#75715e">//密码管理工具类
-</span><span style="color:#75715e"></span>      
-    <span style="color:#66d9ef">private</span> DefaultPasswordEncoder defaultPasswordEncoder<span style="color:#f92672">;</span>
-    <span style="color:#75715e">//redis 操作工具类
-</span><span style="color:#75715e"></span>      
-    <span style="color:#66d9ef">private</span> RedisTemplate redisTemplate<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity<span style="color:#ff79c6">(</span>prePostEnabled <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">TokenWebSecurityConfig</span> <span style="color:#8be9fd;font-style:italic">extends</span> WebSecurityConfigurerAdapter <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//自定义查询数据库用户名密码和权限信息
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#8be9fd;font-style:italic">private</span> UserDetailsService userDetailsService<span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//token 管理工具类（生成 token）
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#8be9fd;font-style:italic">private</span> TokenManager tokenManager<span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//密码管理工具类
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#8be9fd;font-style:italic">private</span> DefaultPasswordEncoder defaultPasswordEncoder<span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//redis 操作工具类
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#8be9fd;font-style:italic">private</span> RedisTemplate redisTemplate<span style="color:#ff79c6">;</span>
       
-    <span style="color:#a6e22e">@Autowired</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TokenWebSecurityConfig</span><span style="color:#f92672">(</span>UserDetailsService userDetailsService<span style="color:#f92672">,</span> 
-                                  DefaultPasswordEncoder defaultPasswordEncoder<span style="color:#f92672">,</span>
-                                  TokenManager tokenManager<span style="color:#f92672">,</span> RedisTemplate 
-                                  redisTemplate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">userDetailsService</span> <span style="color:#f92672">=</span> userDetailsService<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">defaultPasswordEncoder</span> <span style="color:#f92672">=</span> defaultPasswordEncoder<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">tokenManager</span> <span style="color:#f92672">=</span> tokenManager<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">redisTemplate</span> <span style="color:#f92672">=</span> redisTemplate<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">   * 配置设置
-</span><span style="color:#75715e">   */</span>
+    @Autowired
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">TokenWebSecurityConfig</span><span style="color:#ff79c6">(</span>UserDetailsService userDetailsService<span style="color:#ff79c6">,</span> 
+                                  DefaultPasswordEncoder defaultPasswordEncoder<span style="color:#ff79c6">,</span>
+                                  TokenManager tokenManager<span style="color:#ff79c6">,</span> RedisTemplate 
+                                  redisTemplate<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">userDetailsService</span> <span style="color:#ff79c6">=</span> userDetailsService<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">defaultPasswordEncoder</span> <span style="color:#ff79c6">=</span> defaultPasswordEncoder<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">tokenManager</span> <span style="color:#ff79c6">=</span> tokenManager<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">redisTemplate</span> <span style="color:#ff79c6">=</span> redisTemplate<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">   * 配置设置
+</span><span style="color:#6272a4">   */</span>
       
-    <span style="color:#75715e">//设置退出的地址和 token，redis 操作地址
-</span><span style="color:#75715e"></span>      
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span>HttpSecurity http<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        http<span style="color:#f92672">.</span><span style="color:#a6e22e">exceptionHandling</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">authenticationEntryPoint</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> UnauthorizedEntryPoint<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">csrf</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">disable</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">authorizeRequests</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">anyRequest</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">authenticated</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">logout</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">logoutUrl</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/admin/acl/index/logout&#34;</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">addLogoutHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> 
-                              TokenLogoutHandler<span style="color:#f92672">(</span>tokenManager<span style="color:#f92672">,</span>redisTemplate<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">addFilter</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> TokenLoginFilter<span style="color:#f92672">(</span>authenticationManager<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> tokenManager<span style="color:#f92672">,</span> redisTemplate<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">addFilter</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> TokenAuthenticationFilter<span style="color:#f92672">(</span>authenticationManager<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> tokenManager<span style="color:#f92672">,</span> redisTemplate<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">httpBasic</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">   * 密码处理
-</span><span style="color:#75715e">   */</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span>AuthenticationManagerBuilder auth<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception 
-    <span style="color:#f92672">{</span>
+    <span style="color:#6272a4">//设置退出的地址和 token，redis 操作地址
+</span><span style="color:#6272a4"></span>      
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">configure</span><span style="color:#ff79c6">(</span>HttpSecurity http<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception <span style="color:#ff79c6">{</span>
+        http<span style="color:#ff79c6">.</span><span style="color:#50fa7b">exceptionHandling</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">authenticationEntryPoint</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> UnauthorizedEntryPoint<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">and</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">csrf</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">disable</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">authorizeRequests</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">anyRequest</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">authenticated</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">and</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">logout</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">logoutUrl</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/admin/acl/index/logout&#34;</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">addLogoutHandler</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> 
+                              TokenLogoutHandler<span style="color:#ff79c6">(</span>tokenManager<span style="color:#ff79c6">,</span>redisTemplate<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">and</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">addFilter</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> TokenLoginFilter<span style="color:#ff79c6">(</span>authenticationManager<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> tokenManager<span style="color:#ff79c6">,</span> redisTemplate<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">addFilter</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> TokenAuthenticationFilter<span style="color:#ff79c6">(</span>authenticationManager<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> tokenManager<span style="color:#ff79c6">,</span> redisTemplate<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">httpBasic</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">   * 密码处理
+</span><span style="color:#6272a4">   */</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">configure</span><span style="color:#ff79c6">(</span>AuthenticationManagerBuilder auth<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception 
+    <span style="color:#ff79c6">{</span>
   
-        auth<span style="color:#f92672">.</span><span style="color:#a6e22e">userDetailsService</span><span style="color:#f92672">(</span>userDetailsService<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">passwordEncoder</span><span style="color:#f92672">(</span>defaultPasswordEnc
-                                                                    oder<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">  * 配置哪些请求不拦截
-</span><span style="color:#75715e">  */</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span>WebSecurity web<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        web<span style="color:#f92672">.</span><span style="color:#a6e22e">ignoring</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">antMatchers</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/api/**&#34;</span> <span style="color:#f92672">,</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#f92672">/</span>swagger<span style="color:#f92672">-</span>ui<span style="color:#f92672">.</span><span style="color:#a6e22e">html</span><span style="color:#f92672">/</span><span style="color:#f92672">*</span><span style="color:#f92672">*</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+        auth<span style="color:#ff79c6">.</span><span style="color:#50fa7b">userDetailsService</span><span style="color:#ff79c6">(</span>userDetailsService<span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">passwordEncoder</span><span style="color:#ff79c6">(</span>defaultPasswordEnc
+                                                                    oder<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">  * 配置哪些请求不拦截
+</span><span style="color:#6272a4">  */</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">configure</span><span style="color:#ff79c6">(</span>WebSecurity web<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> Exception <span style="color:#ff79c6">{</span>
+        web<span style="color:#ff79c6">.</span><span style="color:#50fa7b">ignoring</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">antMatchers</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/api/**&#34;</span> <span style="color:#ff79c6">,</span> &#34;<span style="color:#ff79c6">/</span>swagger<span style="color:#ff79c6">-</span>ui<span style="color:#ff79c6">.</span><span style="color:#50fa7b">html</span><span style="color:#ff79c6">/</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 <h3 id="创建认证授权相关的工具类">创建认证授权相关的工具类</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hn2spgp9j30ki0bcaab.jpg" alt="QQ截图20220523001816.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hn2spgp9j30ki0bcaab.jpg" alt="QQ截图20220523001816.jpg">
+
+</p>
 <ul>
 <li>
 <p><strong>DefaultPasswordEncoder：密码处理的方法</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DefaultPasswordEncoder</span> <span style="color:#66d9ef">implements</span> PasswordEncoder <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">DefaultPasswordEncoder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">(</span><span style="color:#f92672">-</span>1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">  * @param strength 
-</span><span style="color:#75715e">   	
-</span><span style="color:#75715e">  * the log rounds to use, between 4 and 31
-</span><span style="color:#75715e">  */</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Component
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DefaultPasswordEncoder</span> <span style="color:#8be9fd;font-style:italic">implements</span> PasswordEncoder <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">DefaultPasswordEncoder</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">  * @param strength 
+</span><span style="color:#6272a4">   	
+</span><span style="color:#6272a4">  * the log rounds to use, between 4 and 31
+</span><span style="color:#6272a4">  */</span>
       
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">DefaultPasswordEncoder</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> strength<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">encode</span><span style="color:#f92672">(</span>CharSequence rawPassword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> MD5<span style="color:#f92672">.</span><span style="color:#a6e22e">encrypt</span><span style="color:#f92672">(</span>rawPassword<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">matches</span><span style="color:#f92672">(</span>CharSequence rawPassword<span style="color:#f92672">,</span> String encodedPassword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> encodedPassword<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>MD5<span style="color:#f92672">.</span><span style="color:#a6e22e">encrypt</span><span style="color:#f92672">(</span>rawPassword<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">DefaultPasswordEncoder</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> strength<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">encode</span><span style="color:#ff79c6">(</span>CharSequence rawPassword<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> MD5<span style="color:#ff79c6">.</span><span style="color:#50fa7b">encrypt</span><span style="color:#ff79c6">(</span>rawPassword<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">matches</span><span style="color:#ff79c6">(</span>CharSequence rawPassword<span style="color:#ff79c6">,</span> String encodedPassword<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> encodedPassword<span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>MD5<span style="color:#ff79c6">.</span><span style="color:#50fa7b">encrypt</span><span style="color:#ff79c6">(</span>rawPassword<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>TokenManager：token 操作的工具类</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TokenManager</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">long</span> tokenExpiration <span style="color:#f92672">=</span> 24<span style="color:#f92672">*</span>60<span style="color:#f92672">*</span>60<span style="color:#f92672">*</span>1000<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String tokenSignKey <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;123456&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">createToken</span><span style="color:#f92672">(</span>String username<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        String token <span style="color:#f92672">=</span> Jwts<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setSubject</span><span style="color:#f92672">(</span>username<span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setExpiration</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> tokenExpiration<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">signWith</span><span style="color:#f92672">(</span>SignatureAlgorithm<span style="color:#f92672">.</span><span style="color:#a6e22e">HS512</span><span style="color:#f92672">,</span> 
-                      tokenSignKey<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">compressWith</span><span style="color:#f92672">(</span>CompressionCodecs<span style="color:#f92672">.</span><span style="color:#a6e22e">GZIP</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">compact</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">return</span> token<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getUserFromToken</span><span style="color:#f92672">(</span>String token<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        String user <span style="color:#f92672">=</span> Jwts<span style="color:#f92672">.</span><span style="color:#a6e22e">parser</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setSigningKey</span><span style="color:#f92672">(</span>tokenSignKey<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">parseClaimsJws</span><span style="color:#f92672">(</span>token<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBody</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSu</span>
-            bject<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">return</span> user<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">removeToken</span><span style="color:#f92672">(</span>String token<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">//jwttoken 无需删除，客户端扔掉即可。
-</span><span style="color:#75715e"></span>          
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Component
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">TokenManager</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">long</span> tokenExpiration <span style="color:#ff79c6">=</span> 24<span style="color:#ff79c6">*</span>60<span style="color:#ff79c6">*</span>60<span style="color:#ff79c6">*</span>1000<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String tokenSignKey <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;123456&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">createToken</span><span style="color:#ff79c6">(</span>String username<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        String token <span style="color:#ff79c6">=</span> Jwts<span style="color:#ff79c6">.</span><span style="color:#50fa7b">builder</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setSubject</span><span style="color:#ff79c6">(</span>username<span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">setExpiration</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Date<span style="color:#ff79c6">(</span>System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentTimeMillis</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">+</span> tokenExpiration<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">.</span><span style="color:#50fa7b">signWith</span><span style="color:#ff79c6">(</span>SignatureAlgorithm<span style="color:#ff79c6">.</span><span style="color:#50fa7b">HS512</span><span style="color:#ff79c6">,</span> 
+                      tokenSignKey<span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">compressWith</span><span style="color:#ff79c6">(</span>CompressionCodecs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">GZIP</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">compact</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> token<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">getUserFromToken</span><span style="color:#ff79c6">(</span>String token<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        String user <span style="color:#ff79c6">=</span> Jwts<span style="color:#ff79c6">.</span><span style="color:#50fa7b">parser</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setSigningKey</span><span style="color:#ff79c6">(</span>tokenSignKey<span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">parseClaimsJws</span><span style="color:#ff79c6">(</span>token<span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getBody</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSu</span>
+            bject<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> user<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">removeToken</span><span style="color:#ff79c6">(</span>String token<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//jwttoken 无需删除，客户端扔掉即可。
+</span><span style="color:#6272a4"></span>          
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>TokenLogoutHandler：退出实现</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TokenLogoutHandler</span> <span style="color:#66d9ef">implements</span> LogoutHandler <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> TokenManager tokenManager<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> RedisTemplate redisTemplate<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TokenLogoutHandler</span><span style="color:#f92672">(</span>TokenManager tokenManager<span style="color:#f92672">,</span> RedisTemplate redisTemplate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">tokenManager</span> <span style="color:#f92672">=</span> tokenManager<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">redisTemplate</span> <span style="color:#f92672">=</span> redisTemplate<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">logout</span><span style="color:#f92672">(</span>HttpServletRequest request<span style="color:#f92672">,</span> HttpServletResponse response<span style="color:#f92672">,</span> Authentication authentication<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        String token <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span><span style="color:#a6e22e">getHeader</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;token&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>token <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            tokenManager<span style="color:#f92672">.</span><span style="color:#a6e22e">removeToken</span><span style="color:#f92672">(</span>token<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#75715e">//清空当前用户缓存中的权限数据
-</span><span style="color:#75715e"></span>              
-            String userName <span style="color:#f92672">=</span> tokenManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserFromToken</span><span style="color:#f92672">(</span>token<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">(</span>userName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        ResponseUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">(</span>response<span style="color:#f92672">,</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">TokenLogoutHandler</span> <span style="color:#8be9fd;font-style:italic">implements</span> LogoutHandler <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> TokenManager tokenManager<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> RedisTemplate redisTemplate<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">TokenLogoutHandler</span><span style="color:#ff79c6">(</span>TokenManager tokenManager<span style="color:#ff79c6">,</span> RedisTemplate redisTemplate<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">tokenManager</span> <span style="color:#ff79c6">=</span> tokenManager<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">redisTemplate</span> <span style="color:#ff79c6">=</span> redisTemplate<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">logout</span><span style="color:#ff79c6">(</span>HttpServletRequest request<span style="color:#ff79c6">,</span> HttpServletResponse response<span style="color:#ff79c6">,</span> Authentication authentication<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        String token <span style="color:#ff79c6">=</span> request<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getHeader</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;token&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>token <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            tokenManager<span style="color:#ff79c6">.</span><span style="color:#50fa7b">removeToken</span><span style="color:#ff79c6">(</span>token<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">//清空当前用户缓存中的权限数据
+</span><span style="color:#6272a4"></span>              
+            String userName <span style="color:#ff79c6">=</span> tokenManager<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getUserFromToken</span><span style="color:#ff79c6">(</span>token<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">delete</span><span style="color:#ff79c6">(</span>userName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        ResponseUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">(</span>response<span style="color:#ff79c6">,</span> R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">ok</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>UnauthorizedEntryPoint：未授权统一处理</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UnauthorizedEntryPoint</span> <span style="color:#66d9ef">implements</span> AuthenticationEntryPoint <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">commence</span><span style="color:#f92672">(</span>HttpServletRequest request<span style="color:#f92672">,</span> HttpServletResponse response<span style="color:#f92672">,</span>
-                         AuthenticationException authException<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> 
-        IOException<span style="color:#f92672">,</span> ServletException <span style="color:#f92672">{</span>
-        ResponseUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">(</span>response<span style="color:#f92672">,</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">UnauthorizedEntryPoint</span> <span style="color:#8be9fd;font-style:italic">implements</span> AuthenticationEntryPoint <span style="color:#ff79c6">{</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">commence</span><span style="color:#ff79c6">(</span>HttpServletRequest request<span style="color:#ff79c6">,</span> HttpServletResponse response<span style="color:#ff79c6">,</span>
+                         AuthenticationException authException<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> 
+        IOException<span style="color:#ff79c6">,</span> ServletException <span style="color:#ff79c6">{</span>
+        ResponseUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">(</span>response<span style="color:#ff79c6">,</span> R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">error</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 <h3 id="创建认证授权实体类">创建认证授权实体类</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hn7o4fj5j30e7054a9y.jpg" alt="QQ截图20220523002256.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hn7o4fj5j30e7054a9y.jpg" alt="QQ截图20220523002256.jpg">
+
+</p>
 <ul>
 <li>
 <p><strong>SecutityUser</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Data</span>
-<span style="color:#a6e22e">@Slf4j</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SecurityUser</span> <span style="color:#66d9ef">implements</span> UserDetails <span style="color:#f92672">{</span>
-    <span style="color:#75715e">//当前登录用户
-</span><span style="color:#75715e"></span>      
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">transient</span> User currentUserInfo<span style="color:#f92672">;</span>
-    <span style="color:#75715e">//当前权限
-</span><span style="color:#75715e"></span>      
-    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> permissionValueList<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">SecurityUser</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">SecurityUser</span><span style="color:#f92672">(</span>User user<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>user <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">currentUserInfo</span> <span style="color:#f92672">=</span> user<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> Collection<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> GrantedAuthority<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAuthorities</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Collection<span style="color:#f92672">&lt;</span>GrantedAuthority<span style="color:#f92672">&gt;</span> authorities <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>String permissionValue <span style="color:#f92672">:</span> permissionValueList<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>permissionValue<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
-            SimpleGrantedAuthority authority <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleGrantedAuthority<span style="color:#f92672">(</span>permissionValue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            authorities<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>authority<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> authorities<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getPassword</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> currentUserInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getPassword</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getUsername</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> currentUserInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getUsername</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAccountNonExpired</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAccountNonLocked</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isCredentialsNonExpired</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isEnabled</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Data
+@Slf4j
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">SecurityUser</span> <span style="color:#8be9fd;font-style:italic">implements</span> UserDetails <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//当前登录用户
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">transient</span> User currentUserInfo<span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//当前权限
+</span><span style="color:#6272a4"></span>      
+    <span style="color:#8be9fd;font-style:italic">private</span> List<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">&gt;</span> permissionValueList<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">SecurityUser</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">SecurityUser</span><span style="color:#ff79c6">(</span>User user<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>user <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentUserInfo</span> <span style="color:#ff79c6">=</span> user<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> Collection<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span> <span style="color:#8be9fd;font-style:italic">extends</span> GrantedAuthority<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">getAuthorities</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        Collection<span style="color:#ff79c6">&lt;</span>GrantedAuthority<span style="color:#ff79c6">&gt;</span> authorities <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ArrayList<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>String permissionValue <span style="color:#ff79c6">:</span> permissionValueList<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>StringUtils<span style="color:#ff79c6">.</span><span style="color:#50fa7b">isEmpty</span><span style="color:#ff79c6">(</span>permissionValue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">continue</span><span style="color:#ff79c6">;</span>
+            SimpleGrantedAuthority authority <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> SimpleGrantedAuthority<span style="color:#ff79c6">(</span>permissionValue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            authorities<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>authority<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> authorities<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">getPassword</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> currentUserInfo<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPassword</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">getUsername</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> currentUserInfo<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getUsername</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">isAccountNonExpired</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">isAccountNonLocked</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">isCredentialsNonExpired</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">isEnabled</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>User</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Data</span>
-<span style="color:#a6e22e">@ApiModel</span><span style="color:#f92672">(</span>description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;用户实体类&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> String username<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String password<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String nickName<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String salt<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String token<span style="color:#f92672">;</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Data
+@ApiModel<span style="color:#ff79c6">(</span>description <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;用户实体类&#34;</span><span style="color:#ff79c6">)</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">User</span> <span style="color:#8be9fd;font-style:italic">implements</span> Serializable <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String username<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String password<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String nickName<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String salt<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String token<span style="color:#ff79c6">;</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 <h3 id="创建认证和授权的-filter">创建认证和授权的 filter</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hn99zz0oj30gp054747.jpg" alt="QQ截图20220523002431.jpg"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1h2hn99zz0oj30gp054747.jpg" alt="QQ截图20220523002431.jpg">
+
+</p>
 <ul>
 <li>
 <p><strong>TokenLoginFilter：认证的 filter</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TokenLoginFilter</span> <span style="color:#66d9ef">extends</span> UsernamePasswordAuthenticationFilter <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> AuthenticationManager authenticationManager<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> TokenManager tokenManager<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> RedisTemplate redisTemplate<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TokenLoginFilter</span><span style="color:#f92672">(</span>AuthenticationManager authenticationManager<span style="color:#f92672">,</span> TokenManager tokenManager<span style="color:#f92672">,</span> RedisTemplate redisTemplate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">authenticationManager</span> <span style="color:#f92672">=</span> authenticationManager<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">tokenManager</span> <span style="color:#f92672">=</span> tokenManager<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">redisTemplate</span> <span style="color:#f92672">=</span> redisTemplate<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setPostOnly</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setRequiresAuthenticationRequestMatcher</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> AntPathRequestMatcher<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/admin/acl/login&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;POST&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> Authentication <span style="color:#a6e22e">attemptAuthentication</span><span style="color:#f92672">(</span>HttpServletRequest req<span style="color:#f92672">,</span> HttpServletResponse res<span style="color:#f92672">)</span>
-        <span style="color:#66d9ef">throws</span> AuthenticationException <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            User user <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectMapper<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">readValue</span><span style="color:#f92672">(</span>req<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> User<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">return</span> authenticationManager<span style="color:#f92672">.</span><span style="color:#a6e22e">authenticate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> UsernamePasswordAuthenticationToken<span style="color:#f92672">(</span>user<span style="color:#f92672">.</span><span style="color:#a6e22e">getUsername</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> user<span style="color:#f92672">.</span><span style="color:#a6e22e">getPassword</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e"> * 登录成功
-</span><span style="color:#75715e"> */</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">TokenLoginFilter</span> <span style="color:#8be9fd;font-style:italic">extends</span> UsernamePasswordAuthenticationFilter <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> AuthenticationManager authenticationManager<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> TokenManager tokenManager<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> RedisTemplate redisTemplate<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">TokenLoginFilter</span><span style="color:#ff79c6">(</span>AuthenticationManager authenticationManager<span style="color:#ff79c6">,</span> TokenManager tokenManager<span style="color:#ff79c6">,</span> RedisTemplate redisTemplate<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">authenticationManager</span> <span style="color:#ff79c6">=</span> authenticationManager<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">tokenManager</span> <span style="color:#ff79c6">=</span> tokenManager<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">redisTemplate</span> <span style="color:#ff79c6">=</span> redisTemplate<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setPostOnly</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">false</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setRequiresAuthenticationRequestMatcher</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> AntPathRequestMatcher<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/admin/acl/login&#34;</span><span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;POST&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> Authentication <span style="color:#50fa7b">attemptAuthentication</span><span style="color:#ff79c6">(</span>HttpServletRequest req<span style="color:#ff79c6">,</span> HttpServletResponse res<span style="color:#ff79c6">)</span>
+        <span style="color:#8be9fd;font-style:italic">throws</span> AuthenticationException <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            User user <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ObjectMapper<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">readValue</span><span style="color:#ff79c6">(</span>req<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getInputStream</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> User<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">return</span> authenticationManager<span style="color:#ff79c6">.</span><span style="color:#50fa7b">authenticate</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> UsernamePasswordAuthenticationToken<span style="color:#ff79c6">(</span>user<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getUsername</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> user<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPassword</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">new</span> ArrayList<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IOException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> RuntimeException<span style="color:#ff79c6">(</span>e<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * 登录成功
+</span><span style="color:#6272a4"> */</span>
   
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">successfulAuthentication</span><span style="color:#f92672">(</span>HttpServletRequest req<span style="color:#f92672">,</span> HttpServletResponse res<span style="color:#f92672">,</span> FilterChain chain<span style="color:#f92672">,</span>Authentication auth<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> 
-        IOException<span style="color:#f92672">,</span> ServletException <span style="color:#f92672">{</span>
-        SecurityUser user <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>SecurityUser<span style="color:#f92672">)</span> auth<span style="color:#f92672">.</span><span style="color:#a6e22e">getPrincipal</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        String token <span style="color:#f92672">=</span> tokenManager<span style="color:#f92672">.</span><span style="color:#a6e22e">createToken</span><span style="color:#f92672">(</span>user<span style="color:#f92672">.</span><span style="color:#a6e22e">getCurrentUserInfo</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getUsername</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">successfulAuthentication</span><span style="color:#ff79c6">(</span>HttpServletRequest req<span style="color:#ff79c6">,</span> HttpServletResponse res<span style="color:#ff79c6">,</span> FilterChain chain<span style="color:#ff79c6">,</span>Authentication auth<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> 
+        IOException<span style="color:#ff79c6">,</span> ServletException <span style="color:#ff79c6">{</span>
+        SecurityUser user <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>SecurityUser<span style="color:#ff79c6">)</span> auth<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPrincipal</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        String token <span style="color:#ff79c6">=</span> tokenManager<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createToken</span><span style="color:#ff79c6">(</span>user<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCurrentUserInfo</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getUsername</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-        redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">opsForValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>user<span style="color:#f92672">.</span><span style="color:#a6e22e">getCurrentUserInfo</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getUsername</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> user<span style="color:#f92672">.</span><span style="color:#a6e22e">getPermissionValueList</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        ResponseUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">(</span>res<span style="color:#f92672">,</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">data</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;token&#34;</span><span style="color:#f92672">,</span> token<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e"> * 登录失败
-</span><span style="color:#75715e"> */</span>
+        redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span>user<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCurrentUserInfo</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getUsername</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> user<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPermissionValueList</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        ResponseUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">(</span>res<span style="color:#ff79c6">,</span> R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">ok</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">data</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;token&#34;</span><span style="color:#ff79c6">,</span> token<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * 登录失败
+</span><span style="color:#6272a4"> */</span>
   
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unsuccessfulAuthentication</span><span style="color:#f92672">(</span>HttpServletRequest request<span style="color:#f92672">,</span> HttpServletResponse response<span style="color:#f92672">,</span>AuthenticationException e<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> ServletException <span style="color:#f92672">{</span>
-        ResponseUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">(</span>response<span style="color:#f92672">,</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">unsuccessfulAuthentication</span><span style="color:#ff79c6">(</span>HttpServletRequest request<span style="color:#ff79c6">,</span> HttpServletResponse response<span style="color:#ff79c6">,</span>AuthenticationException e<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> ServletException <span style="color:#ff79c6">{</span>
+        ResponseUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">(</span>response<span style="color:#ff79c6">,</span> R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">error</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 <li>
 <p><strong>TokenAuthenticationFilter：授权 filter</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TokenAuthenticationFilter</span> <span style="color:#66d9ef">extends</span> BasicAuthenticationFilter <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> TokenManager tokenManager<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> RedisTemplate redisTemplate<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TokenAuthenticationFilter</span><span style="color:#f92672">(</span>AuthenticationManager authManager<span style="color:#f92672">,</span> TokenManager tokenManager<span style="color:#f92672">,</span>RedisTemplate redisTemplate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>authManager<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">tokenManager</span> <span style="color:#f92672">=</span> tokenManager<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">redisTemplate</span> <span style="color:#f92672">=</span> redisTemplate<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doFilterInternal</span><span style="color:#f92672">(</span>HttpServletRequest req<span style="color:#f92672">,</span>HttpServletResponse res<span style="color:#f92672">,</span> FilterChain chain<span style="color:#f92672">)</span>
-        <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> ServletException <span style="color:#f92672">{</span>
-        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;=================&#34;</span><span style="color:#f92672">+</span>req<span style="color:#f92672">.</span><span style="color:#a6e22e">getRequestURI</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>req<span style="color:#f92672">.</span><span style="color:#a6e22e">getRequestURI</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">indexOf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;admin&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            chain<span style="color:#f92672">.</span><span style="color:#a6e22e">doFilter</span><span style="color:#f92672">(</span>req<span style="color:#f92672">,</span> res<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        UsernamePasswordAuthenticationToken authentication <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            authentication <span style="color:#f92672">=</span> getAuthentication<span style="color:#f92672">(</span>req<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            ResponseUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">(</span>res<span style="color:#f92672">,</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>authentication <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-          SecurityContextHolder<span style="color:#f92672">.</span><span style="color:#a6e22e">getContext</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setAuthentication</span><span style="color:#f92672">(</span>authentication<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            ResponseUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">(</span>res<span style="color:#f92672">,</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        chain<span style="color:#f92672">.</span><span style="color:#a6e22e">doFilter</span><span style="color:#f92672">(</span>req<span style="color:#f92672">,</span> res<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">private</span> UsernamePasswordAuthenticationToken
-        <span style="color:#a6e22e">getAuthentication</span><span style="color:#f92672">(</span>HttpServletRequest request<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// token 置于 header 里
-</span><span style="color:#75715e"></span>  
-        String token <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span><span style="color:#a6e22e">getHeader</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;token&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>token <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#f92672">!</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>token<span style="color:#f92672">.</span><span style="color:#a6e22e">trim</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            String userName <span style="color:#f92672">=</span> tokenManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserFromToken</span><span style="color:#f92672">(</span>token<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> permissionValueList <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span><span style="color:#f92672">)</span> redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">opsForValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>userName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            Collection<span style="color:#f92672">&lt;</span>GrantedAuthority<span style="color:#f92672">&gt;</span> authorities <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>String permissionValue <span style="color:#f92672">:</span> permissionValueList<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>permissionValue<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
-                SimpleGrantedAuthority authority <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleGrantedAuthority<span style="color:#f92672">(</span>permissionValue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                authorities<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>authority<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>userName<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> UsernamePasswordAuthenticationToken<span style="color:#f92672">(</span>userName<span style="color:#f92672">,</span> token<span style="color:#f92672">,</span> authorities<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">TokenAuthenticationFilter</span> <span style="color:#8be9fd;font-style:italic">extends</span> BasicAuthenticationFilter <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> TokenManager tokenManager<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> RedisTemplate redisTemplate<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">TokenAuthenticationFilter</span><span style="color:#ff79c6">(</span>AuthenticationManager authManager<span style="color:#ff79c6">,</span> TokenManager tokenManager<span style="color:#ff79c6">,</span>RedisTemplate redisTemplate<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">(</span>authManager<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">tokenManager</span> <span style="color:#ff79c6">=</span> tokenManager<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">redisTemplate</span> <span style="color:#ff79c6">=</span> redisTemplate<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">doFilterInternal</span><span style="color:#ff79c6">(</span>HttpServletRequest req<span style="color:#ff79c6">,</span>HttpServletResponse res<span style="color:#ff79c6">,</span> FilterChain chain<span style="color:#ff79c6">)</span>
+        <span style="color:#8be9fd;font-style:italic">throws</span> IOException<span style="color:#ff79c6">,</span> ServletException <span style="color:#ff79c6">{</span>
+        logger<span style="color:#ff79c6">.</span><span style="color:#50fa7b">info</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;=================&#34;</span><span style="color:#ff79c6">+</span>req<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRequestURI</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>req<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRequestURI</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">indexOf</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;admin&#34;</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            chain<span style="color:#ff79c6">.</span><span style="color:#50fa7b">doFilter</span><span style="color:#ff79c6">(</span>req<span style="color:#ff79c6">,</span> res<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">return</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        UsernamePasswordAuthenticationToken authentication <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            authentication <span style="color:#ff79c6">=</span> getAuthentication<span style="color:#ff79c6">(</span>req<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            ResponseUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">(</span>res<span style="color:#ff79c6">,</span> R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">error</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>authentication <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+          SecurityContextHolder<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getContext</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setAuthentication</span><span style="color:#ff79c6">(</span>authentication<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+            ResponseUtil<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">(</span>res<span style="color:#ff79c6">,</span> R<span style="color:#ff79c6">.</span><span style="color:#50fa7b">error</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        chain<span style="color:#ff79c6">.</span><span style="color:#50fa7b">doFilter</span><span style="color:#ff79c6">(</span>req<span style="color:#ff79c6">,</span> res<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> UsernamePasswordAuthenticationToken
+        <span style="color:#50fa7b">getAuthentication</span><span style="color:#ff79c6">(</span>HttpServletRequest request<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// token 置于 header 里
+</span><span style="color:#6272a4"></span>  
+        String token <span style="color:#ff79c6">=</span> request<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getHeader</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;token&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>token <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> <span style="color:#ff79c6">!</span><span style="color:#f1fa8c">&#34;&#34;</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>token<span style="color:#ff79c6">.</span><span style="color:#50fa7b">trim</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            String userName <span style="color:#ff79c6">=</span> tokenManager<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getUserFromToken</span><span style="color:#ff79c6">(</span>token<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            List<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">&gt;</span> permissionValueList <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>List<span style="color:#ff79c6">&lt;</span>String<span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span>userName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            Collection<span style="color:#ff79c6">&lt;</span>GrantedAuthority<span style="color:#ff79c6">&gt;</span> authorities <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ArrayList<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>String permissionValue <span style="color:#ff79c6">:</span> permissionValueList<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>StringUtils<span style="color:#ff79c6">.</span><span style="color:#50fa7b">isEmpty</span><span style="color:#ff79c6">(</span>permissionValue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">continue</span><span style="color:#ff79c6">;</span>
+                SimpleGrantedAuthority authority <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> SimpleGrantedAuthority<span style="color:#ff79c6">(</span>permissionValue<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                authorities<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>authority<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">!</span>StringUtils<span style="color:#ff79c6">.</span><span style="color:#50fa7b">isEmpty</span><span style="color:#ff79c6">(</span>userName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> UsernamePasswordAuthenticationToken<span style="color:#ff79c6">(</span>userName<span style="color:#ff79c6">,</span> token<span style="color:#ff79c6">,</span> authorities<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> 
+<span style="color:#ff79c6">}</span>
 </code></pre></div></li>
 </ul>
 
@@ -692,13 +824,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -997,16 +1143,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -1019,48 +1155,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1070,7 +1202,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1090,7 +1234,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1108,7 +1252,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1120,12 +1264,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>14、代理模式(设计模式)-yiguan1573</title>
+    <title>14、代理模式(设计模式) | yiguan1573</title>
 
     <link rel="canonical" href="/post/714%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>14、代理模式(设计模式)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Friday, August 28, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Friday, August 28, 2020
+                            
+                                <span id="/post/714%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,33 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#代理模式的基本介绍">代理模式的基本介绍</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#静态代码模式的基本介绍">静态代码模式的基本介绍</a></li>
-    <li><a href="#应用实例">应用实例</a></li>
-    <li><a href="#静态代理优缺点">静态代理优缺点</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#动态代理模式的基本介绍">动态代理模式的基本介绍</a></li>
-    <li><a href="#jdk-中生成代理对象的-api">JDK 中生成代理对象的 API</a></li>
-    <li><a href="#动态代理应用实例">动态代理应用实例</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#cglib-代理模式的基本介绍">Cglib 代理模式的基本介绍</a></li>
-    <li><a href="#cglib-代理模式实现步骤">Cglib 代理模式实现步骤</a></li>
-    <li><a href="#cglib-代理模式应用实例">Cglib 代理模式应用实例</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="代理模式proxy">代理模式(Proxy)</h1>
 <h2 id="代理模式的基本介绍">代理模式的基本介绍</h2>
 <ul>
@@ -248,7 +347,10 @@
 <li>被代理的对象可以是远程对象、创建开销大的对象或需要安全控制的对象</li>
 <li>代理模式有不同的形式, 主要有三种 静态代理、动态代理 (JDK 代理、接口代理)和  Cglib 代理  (可以在内存动态的创建对象，而不需要实现接口， 他是属于动态代理的范畴)</li>
 <li>代理模式示意图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqavkb97j30ch04ljra.jpg" alt="QQ截图20200906103735.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqavkb97j30ch04ljra.jpg" alt="QQ截图20200906103735.jpg">
+
+</li>
 </ul>
 <h1 id="静态代理">静态代理</h1>
 <h2 id="静态代码模式的基本介绍">静态代码模式的基本介绍</h2>
@@ -269,7 +371,10 @@
 </li>
 <li>
 <p><strong>思路分析图解(类图)</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqdeuv28j308k06u0so.jpg" alt="QQ截图20200906103947.jpg"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqdeuv28j308k06u0so.jpg" alt="QQ截图20200906103947.jpg">
+
+</p>
 </li>
 <li>
 <p>代码实现</p>
@@ -353,15 +458,33 @@ static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,I
 </li>
 <li>
 <p>思路图解(类图)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqnrmxovj30be068jre.jpg" alt="QQ截图20200906104957.jpg"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqnrmxovj30be068jre.jpg" alt="QQ截图20200906104957.jpg">
+
+</p>
 </li>
 <li>
 <p>代码实现
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqpaguppj30ei07kglq.jpg" alt="QQ截图20200906105029.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqpg0t31j30g70k0aat.jpg" alt="QQ截图20200906105044.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqpkditcj30jr0jx756.jpg" alt="QQ截图20200906105051.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqppfejcj30i80jyq3n.jpg" alt="QQ截图20200906105103.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqpwiyspj30cn0820ss.jpg" alt="QQ截图20200906105110.jpg"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqpaguppj30ei07kglq.jpg" alt="QQ截图20200906105029.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqpg0t31j30g70k0aat.jpg" alt="QQ截图20200906105044.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqpkditcj30jr0jx756.jpg" alt="QQ截图20200906105051.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqppfejcj30i80jyq3n.jpg" alt="QQ截图20200906105103.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqpwiyspj30cn0820ss.jpg" alt="QQ截图20200906105110.jpg">
+
+</p>
 </li>
 </ul>
 <h1 id="cglib-代理">Cglib 代理</h1>
@@ -381,18 +504,33 @@ static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,I
 <h2 id="cglib-代理模式实现步骤">Cglib 代理模式实现步骤</h2>
 <ol>
 <li>需要引入 cglib 的 jar 文件
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqway2e8j306l02ma9u.jpg" alt="QQ截图20200906105811.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqway2e8j306l02ma9u.jpg" alt="QQ截图20200906105811.jpg">
+
+</li>
 <li>在内存中动态构建子类，注意代理的类不能为 final，否则报错java.lang.IllegalArgumentException:</li>
 <li>目标对象的方法如果为 final/static,那么就不会被拦截,即不会执行目标对象额外的业务方法</li>
 </ol>
 <h2 id="cglib-代理模式应用实例">Cglib 代理模式应用实例</h2>
 <ul>
 <li>思路图解(类图)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqx6c59lj30b1069mx6.jpg" alt="QQ截图20200906105901.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqx6c59lj30b1069mx6.jpg" alt="QQ截图20200906105901.jpg">
+
+</li>
 <li>代码实现+Debug 源码
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqzcw0fdj30gi0icwfb.jpg" alt="QQ截图20200906110048.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqzhgyfxj30fg0howf4.jpg" alt="QQ截图20200906110057.jpg">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqzll7w3j30iu0ej3z1.jpg" alt="QQ截图20200906110106.jpg"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqzcw0fdj30gi0icwfb.jpg" alt="QQ截图20200906110048.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqzhgyfxj30fg0howf4.jpg" alt="QQ截图20200906110057.jpg">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gigqzll7w3j30iu0ej3z1.jpg" alt="QQ截图20200906110106.jpg">
+
+</li>
 </ul>
 <h1 id="几种常见的代理模式介绍-几种变体">几种常见的代理模式介绍— 几种变体</h1>
 <ul>
@@ -420,13 +558,27 @@ static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,I
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -725,16 +877,6 @@ static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,I
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -747,48 +889,44 @@ static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,I
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -798,7 +936,19 @@ static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,I
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -818,7 +968,7 @@ static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,I
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -836,7 +986,7 @@ static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,I
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -848,12 +998,76 @@ static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,I
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

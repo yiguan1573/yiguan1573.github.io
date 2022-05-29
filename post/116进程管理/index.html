@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>16、进程管理(Linux)-yiguan1573</title>
+    <title>16、进程管理(Linux) | yiguan1573</title>
 
     <link rel="canonical" href="/post/116%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gbrsfbcufcj30zk1r41kx.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>16、进程管理(Linux)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Thursday, February 27, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Thursday, February 27, 2020
+                            
+                                <span id="/post/116%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,11 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents"></nav>
-                
                 <h1 id="进程的基本介绍">进程的基本介绍</h1>
 <ul>
 <li><strong>在 LINUX 中，每个执行的程序（代码）都称为一个进程。每一个进程都分配一个ID号</strong></li>
@@ -230,8 +351,14 @@
 <h1 id="显示系统执行的进程">显示系统执行的进程</h1>
 <ul>
 <li><strong>说明：查看进行使用的指令是ps ,一般来说使用的参数是 ps -aux</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayaylg22j30mj0avdhz.jpg" alt="QQ截图20200227143846.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaycwc0xzj30tf0a5tnv.jpg" alt="QQ截图20200227144052.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayaylg22j30mj0avdhz.jpg" alt="QQ截图20200227143846.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaycwc0xzj30tf0a5tnv.jpg" alt="QQ截图20200227144052.png">
+
+</li>
 <li><strong>ps指令详解</strong>
 <ul>
 <li>指令：ps –aux|grep xxx ，比如看看有没有 sshd 服务，ps –aux|grep sshd</li>
@@ -248,7 +375,10 @@
 •	COMMAND：启动进程所用的命令和参数，如果过长会被截断显示
 </code></pre><ul>
 <li><strong>以全格式显示当前所有的进程，查看进程的父进程</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaykxyghjj30ox08mgtp.jpg" alt="QQ截图20200227144837.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaykxyghjj30ox08mgtp.jpg" alt="QQ截图20200227144837.png">
+
+</li>
 </ul>
 <pre><code>•	UID：用户 ID
 •	PID：进程 ID
@@ -271,13 +401,25 @@ killall 进程名称（功能描述：通过进程名称杀死进程，也支持
 <li><strong>案例</strong>
 <ol>
 <li>踢掉某个非法登录用户
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaypipfpdj30ov07jq7a.jpg" alt="QQ截图20200227145301.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaypipfpdj30ov07jq7a.jpg" alt="QQ截图20200227145301.png">
+
+</li>
 <li>终止远程登录服务 sshd, 在适当时候再次重启 sshd 服务
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayrivd6uj30ql0enn6q.jpg" alt="QQ截图20200227145412.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayrivd6uj30ql0enn6q.jpg" alt="QQ截图20200227145412.png">
+
+</li>
 <li>终止多个 gedit编辑【killall , 通过进程名称来终止进程】
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaysih325j30gn054abx.jpg" alt="QQ截图20200227145554.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaysih325j30gn054abx.jpg" alt="QQ截图20200227145554.png">
+
+</li>
 <li>强制杀掉一个终端
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayuc8mq2j30r7092wlh.jpg" alt="QQ截图20200227145736.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayuc8mq2j30r7092wlh.jpg" alt="QQ截图20200227145736.png">
+
+</li>
 </ol>
 </li>
 </ul>
@@ -296,7 +438,10 @@ killall 进程名称（功能描述：通过进程名称杀死进程，也支持
 <li><strong>案例</strong>
 <ol>
 <li>树状的形式显示进程的 pid
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayx1e3icj30jm06ymze.jpg" alt="QQ截图20200227150011.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcayx1e3icj30jm06ymze.jpg" alt="QQ截图20200227150011.png">
+
+</li>
 <li>请你树状的形式进程的用户 id，pstree -u 即可</li>
 </ol>
 </li>
@@ -313,8 +458,14 @@ killall 进程名称（功能描述：通过进程名称杀死进程，也支持
 <p><strong>案例</strong></p>
 <ul>
 <li>查看当前防火墙的状况，关闭防火墙和重启防火墙
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaz5f8zijj30po09aaen.jpg" alt="QQ截图20200227150502.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaz5pzk9ej30qq073q7s.jpg" alt="QQ截图20200227150816.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaz5f8zijj30po09aaen.jpg" alt="QQ截图20200227150502.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcaz5pzk9ej30qq073q7s.jpg" alt="QQ截图20200227150816.png">
+
+</li>
 </ul>
 </li>
 <li>
@@ -331,19 +482,28 @@ killall 进程名称（功能描述：通过进程名称杀死进程，也支持
 <li>使用 setup -&gt; 系统服务 就可以看到,cenos7中使用nmtui</li>
 <li>systemctl list-unit-files  //centos7使用此命令</li>
 <li>/etc/init.d/服务名称
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazauupd8j30lj05jjuz.jpg" alt="QQ截图20200227151331.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazauupd8j30lj05jjuz.jpg" alt="QQ截图20200227151331.png">
+
+</li>
 </ol>
 </li>
 <li>
 <p><strong>开机的流程说明</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazc9vlv5j30te02z40x.jpg" alt="QQ截图20200227151452.png"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazc9vlv5j30te02z40x.jpg" alt="QQ截图20200227151452.png">
+
+</p>
 </li>
 <li>
 <p><strong>chkconfig 指令</strong></p>
 <ul>
 <li>通过 chkconfig 命令可以给每个服务的各个运行级别设置自启动/关闭</li>
 <li>案例：将 sshd 服务在运行级别为	5 的情况下，不要自启动
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazgv74a3j30nw03976f.jpg" alt="QQ截图20200227151918.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazgv74a3j30nw03976f.jpg" alt="QQ截图20200227151918.png">
+
+</li>
 <li>基本语法</li>
 </ul>
 </li>
@@ -376,7 +536,10 @@ bash&gt; chkconfig	iptables	on
 <pre><code>top [选项]
 </code></pre><ul>
 <li><strong>选项说明</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazmo30w7j30to0jyk0e.jpg" alt="QQ截图20200227152444.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcazmo30w7j30to0jyk0e.jpg" alt="QQ截图20200227152444.png">
+
+</li>
 <li><strong>案例</strong>
 <ul>
 <li>监视特定用户</li>
@@ -410,9 +573,15 @@ netstat -anp
 <li>应用案例
 <ol>
 <li>查看系统所有的网络服务
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcj43tw9xvj310z0io0u2.jpg" alt="QQ截图20200305160342.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcj43tw9xvj310z0io0u2.jpg" alt="QQ截图20200305160342.png">
+
+</li>
 <li>查看服务名为 sshd 的服务的信息
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcj45s386lj311a08s74v.jpg" alt="QQ截图20200305160607.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gcj45s386lj311a08s74v.jpg" alt="QQ截图20200305160607.png">
+
+</li>
 </ol>
 </li>
 </ul>
@@ -435,13 +604,27 @@ netstat -anp
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -740,16 +923,6 @@ netstat -anp
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -762,48 +935,44 @@ netstat -anp
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -813,7 +982,19 @@ netstat -anp
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -833,7 +1014,7 @@ netstat -anp
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -851,7 +1032,7 @@ netstat -anp
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -863,12 +1044,76 @@ netstat -anp
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

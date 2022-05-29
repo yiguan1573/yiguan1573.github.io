@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>7、redux（React）-yiguan1573</title>
+    <title>7、redux（React） | yiguan1573</title>
 
     <link rel="canonical" href="/post/907redux/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>7、redux（React）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Monday, July 19, 2021
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Monday, July 19, 2021
+                            
+                                <span id="/post/907redux/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,37 +340,14 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#简介">简介</a></li>
-    <li><a href="#redux的核心api">redux的核心API</a></li>
-    <li><a href="#redux异步编程">redux异步编程</a></li>
-    <li><a href="#react-redux">react-redux</a></li>
-    <li><a href="#使用redux调试工具">使用redux调试工具</a></li>
-    <li><a href="#纯函数和高阶函数">纯函数和高阶函数</a></li>
-    <li><a href="#案例解析">案例解析</a>
-      <ul>
-        <li><a href="#1求和案例_redux精简版">1.求和案例_redux精简版</a></li>
-        <li><a href="#2求和案例_redux完整版">2.求和案例_redux完整版</a></li>
-        <li><a href="#3求和案例_redux异步action版">3.求和案例_redux异步action版</a></li>
-        <li><a href="#4求和案例_react-redux基本使用">4.求和案例_react-redux基本使用</a></li>
-        <li><a href="#5求和案例_react-redux优化">5.求和案例_react-redux优化</a></li>
-        <li><a href="#6求和案例_react-redux数据共享版">6.求和案例_react-redux数据共享版</a></li>
-        <li><a href="#7求和案例_react-redux开发者工具的使用">7.求和案例_react-redux开发者工具的使用</a></li>
-        <li><a href="#8求和案例_react-redux最终版">8.求和案例_react-redux最终版</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-                
                 <h2 id="简介">简介</h2>
 <ul>
 <li>redux是一个专门用于做状态管理的JS库(不是react插件库)，它可以用在react, angular, vue等项目中, 但基本与react配合使用，作用: 集中式管理react应用中多个组件共享的状态。</li>
 <li>redux工作流程
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj6ljxn3oj30hp09v764.jpg" alt="QQ截图20210716225541.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj6ljxn3oj30hp09v764.jpg" alt="QQ截图20210716225541.png">
+
+</li>
 <li><strong>action</strong>
 <ol>
 <li>动作的对象</li>
@@ -318,7 +421,10 @@
 <ul>
 <li><strong>一个react插件库,专门用来简化react应用中使用redux</strong></li>
 <li><strong>react-Redux将所有组件分成两大类</strong></li>
-<li><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj74lot80j30wi0krq9p.jpg" alt="QQ截图20210716231410.png"></li>
+<li>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj74lot80j30wi0krq9p.jpg" alt="QQ截图20210716231410.png">
+
+</li>
 <li>相关API
 <ul>
 <li>Provider：让所有组件都可以得到state数据</li>
@@ -336,13 +442,19 @@
 <h2 id="使用redux调试工具">使用redux调试工具</h2>
 <ul>
 <li><strong>安装chrome浏览器插件</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj795rlpvj30dv045jsf.jpg" alt="QQ截图20210716231833.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj795rlpvj30dv045jsf.jpg" alt="QQ截图20210716231833.png">
+
+</li>
 <li><strong>下载工具依赖包</strong></li>
 </ul>
 <pre><code>npm install --save-dev redux-devtools-extension
 </code></pre><ul>
 <li>在store.js中引入 redux-devtools-extension
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7hwk1h0j30jt0ad0ww.jpg" alt="QQ截图20210716232656.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7hwk1h0j30jt0ad0ww.jpg" alt="QQ截图20210716232656.png">
+
+</li>
 </ul>
 <h2 id="纯函数和高阶函数">纯函数和高阶函数</h2>
 <ul>
@@ -383,20 +495,47 @@
     (5).在index.js中监测store中状态的改变，一旦发生改变重新渲染&lt;App/&gt;
             备注：redux只负责管理状态，至于状态的改变驱动着页面的展示，要靠我们自己写。
 </code></pre>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7srtktlj30qj0npn9w.jpg" alt="QQ截图20210716233554.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7sxtr91j30t40djn43.jpg" alt="QQ截图20210716233604.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7t61f0ij30pc0i8th4.jpg" alt="QQ截图20210716233625.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7thj5slj30lr0i144b.jpg" alt="QQ截图20210716233635.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7tn8nq8j30ie0i4wjp.jpg" alt="QQ截图20210716233643.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7tsn0urj30lw0ijtf1.jpg" alt="QQ截图20210716233651.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7srtktlj30qj0npn9w.jpg" alt="QQ截图20210716233554.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7sxtr91j30t40djn43.jpg" alt="QQ截图20210716233604.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7t61f0ij30pc0i8th4.jpg" alt="QQ截图20210716233625.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7thj5slj30lr0i144b.jpg" alt="QQ截图20210716233635.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7tn8nq8j30ie0i4wjp.jpg" alt="QQ截图20210716233643.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7tsn0urj30lw0ijtf1.jpg" alt="QQ截图20210716233651.png">
+
+</p>
 <h3 id="2求和案例_redux完整版">2.求和案例_redux完整版</h3>
 <pre><code>    新增文件：
         1.count_action.js 专门用于创建action对象
         2.constant.js 放置容易写错的type值
 </code></pre>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7x6khdwj60vt0jjwjp02.jpg" alt="QQ截图20210716234127.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7xh25oxj30o10k0q95.jpg" alt="QQ截图20210716234139.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7z9ea8dj30r30k0dri.jpg" alt="QQ截图20210716234339.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7x6khdwj60vt0jjwjp02.jpg" alt="QQ截图20210716234127.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7xh25oxj30o10k0q95.jpg" alt="QQ截图20210716234139.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj7z9ea8dj30r30k0dri.jpg" alt="QQ截图20210716234339.png">
+
+</p>
 <h3 id="3求和案例_redux异步action版">3.求和案例_redux异步action版</h3>
 <pre><code>     (1).明确：延迟的动作不想交给组件自身，想交给action
      (2).何时需要异步action：想要对状态进行操作，但是具体的数据靠异步任务返回。
@@ -406,8 +545,14 @@
                 3).异步任务有结果后，分发一个同步的action去真正操作数据。
      (4).备注：异步action不是必须要写的，完全可以自己等待异步任务的结果了再去分发同步action。
 </code></pre>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj810hkgrj30pl0lpthn.jpg" alt="QQ截图20210716234459.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj817my0kj30nb0ltdny.jpg" alt="QQ截图20210716234520.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj810hkgrj30pl0lpthn.jpg" alt="QQ截图20210716234459.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj817my0kj30nb0ltdny.jpg" alt="QQ截图20210716234520.png">
+
+</p>
 <h3 id="4求和案例_react-redux基本使用">4.求和案例_react-redux基本使用</h3>
 <pre><code>        (1).明确两个概念：
                     1).UI组件:不能使用任何redux的api，只负责页面的呈现、交互等。
@@ -419,15 +564,42 @@
         (3).备注1：容器组件中的store是靠props传进去的，而不是在容器组件中直接引入
         (4).备注2：mapDispatchToProps，也可以是一个对象
 </code></pre>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8jpjjx2j30rx0krn7b.jpg" alt="QQ截图20210717000134.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8jw47eyj30p60k8n6x.jpg" alt="QQ截图20210717000143.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8k27btlj30qj0mbwrp.jpg" alt="QQ截图20210717000157.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8k7732zj30nd0moafw.jpg" alt="QQ截图20210717000222.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kda5h0j30qg0mnwnx.jpg" alt="QQ截图20210717000228.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kjciv9j30p00m8gus.jpg" alt="QQ截图20210717000235.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kq6hrwj30pa0mkqaq.jpg" alt="QQ截图20210717000241.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kve0vdj30k70mmq9m.jpg" alt="QQ截图20210717000249.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8l0udmhj60nq0mg45v02.jpg" alt="QQ截图20210717000257.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8jpjjx2j30rx0krn7b.jpg" alt="QQ截图20210717000134.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8jw47eyj30p60k8n6x.jpg" alt="QQ截图20210717000143.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8k27btlj30qj0mbwrp.jpg" alt="QQ截图20210717000157.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8k7732zj30nd0moafw.jpg" alt="QQ截图20210717000222.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kda5h0j30qg0mnwnx.jpg" alt="QQ截图20210717000228.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kjciv9j30p00m8gus.jpg" alt="QQ截图20210717000235.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kq6hrwj30pa0mkqaq.jpg" alt="QQ截图20210717000241.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8kve0vdj30k70mmq9m.jpg" alt="QQ截图20210717000249.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8l0udmhj60nq0mg45v02.jpg" alt="QQ截图20210717000257.png">
+
+</p>
 <h3 id="5求和案例_react-redux优化">5.求和案例_react-redux优化</h3>
 <pre><code>        (1).容器组件和UI组件整合一个文件
         (2).无需自己给容器组件传递store，给&lt;App/&gt;包裹一个&lt;Provider store={store}&gt;即可。
@@ -442,14 +614,38 @@
                                 )(UI组件)
                         (4).在UI组件中通过this.props.xxxxxxx读取和操作状态
 </code></pre>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj89tzx2yj30od0qeqft.jpg" alt="QQ截图20210716234652.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8bgeqakj60qx0n616002.jpg" alt="QQ截图20210716234704.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8af89wmj30lw0lrdla.jpg" alt="QQ截图20210716234722.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ajbc54j30t00lvaj5.jpg" alt="QQ截图20210716234731.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ao2hdgj30p20m0gv3.jpg" alt="QQ截图20210716234742.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8at4ilaj30mu0lfjyz.jpg" alt="QQ截图20210716234750.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8azkkmej30l40lhn2v.jpg" alt="QQ截图20210716234803.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8b4n04mj30jl0lr44v.jpg" alt="QQ截图20210716234812.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj89tzx2yj30od0qeqft.jpg" alt="QQ截图20210716234652.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8bgeqakj60qx0n616002.jpg" alt="QQ截图20210716234704.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8af89wmj30lw0lrdla.jpg" alt="QQ截图20210716234722.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ajbc54j30t00lvaj5.jpg" alt="QQ截图20210716234731.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ao2hdgj30p20m0gv3.jpg" alt="QQ截图20210716234742.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8at4ilaj30mu0lfjyz.jpg" alt="QQ截图20210716234750.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8azkkmej30l40lhn2v.jpg" alt="QQ截图20210716234803.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8b4n04mj30jl0lr44v.jpg" alt="QQ截图20210716234812.png">
+
+</p>
 <h3 id="6求和案例_react-redux数据共享版">6.求和案例_react-redux数据共享版</h3>
 <pre><code>        (1).定义一个Pserson组件，和Count组件通过redux共享数据。
         (2).为Person组件编写：reducer、action，配置constant常量。
@@ -457,10 +653,22 @@
                 合并后的总状态是一个对象！！！
         (4).交给store的是总reducer，最后注意在组件中取出状态的时候，记得“取到位”。
 </code></pre>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8tj02s9j30rs0o44c2.jpg" alt="QQ截图20210717000812.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8toxskjj30rx0pfjxv.jpg" alt="QQ截图20210717000828.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ttus1zj30n50ph46f.jpg" alt="QQ截图20210717000857.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8tzi20wj30nc0modp7.jpg" alt="QQ截图20210717000923.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8tj02s9j30rs0o44c2.jpg" alt="QQ截图20210717000812.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8toxskjj30rx0pfjxv.jpg" alt="QQ截图20210717000828.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ttus1zj30n50ph46f.jpg" alt="QQ截图20210717000857.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8tzi20wj30nc0modp7.jpg" alt="QQ截图20210717000923.png">
+
+</p>
 <h3 id="7求和案例_react-redux开发者工具的使用">7.求和案例_react-redux开发者工具的使用</h3>
 <pre><code>        (1).yarn add redux-devtools-extension
         (2).store中进行配置
@@ -471,18 +679,54 @@
 <pre><code>        (1).所有变量名字要规范，尽量触发对象的简写形式。
         (2).reducers文件夹中，编写index.js专门用于汇总并暴露所有的reducer
 </code></pre>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8xsrffnj30pd0pf14o.jpg" alt="QQ截图20210717001357.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8xytq9oj60se0len9002.jpg" alt="QQ截图20210717001407.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8y3xabgj30s60qaqh6.jpg" alt="QQ截图20210717001416.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8y9s90cj30pe0m4qb1.jpg" alt="QQ截图20210717001439.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yefl0hj30of0mpgrd.jpg" alt="QQ截图20210717001449.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yk6l2vj30pv0m6n6e.jpg" alt="QQ截图20210717001510.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yop62jj30jg0nmjz4.jpg" alt="QQ截图20210717001548.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ytl81hj60wt0nggua02.jpg" alt="QQ截图20210717001558.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yzpsmlj30tr0lhwke.jpg" alt="QQ截图20210717001606.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8z86akmj30sx0lmqc1.jpg" alt="QQ截图20210717001614.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8zdxihej30n30l4tf8.jpg" alt="QQ截图20210717001621.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8zit48mj30r40lqqae.jpg" alt="QQ截图20210717001628.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8xsrffnj30pd0pf14o.jpg" alt="QQ截图20210717001357.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8xytq9oj60se0len9002.jpg" alt="QQ截图20210717001407.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8y3xabgj30s60qaqh6.jpg" alt="QQ截图20210717001416.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8y9s90cj30pe0m4qb1.jpg" alt="QQ截图20210717001439.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yefl0hj30of0mpgrd.jpg" alt="QQ截图20210717001449.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yk6l2vj30pv0m6n6e.jpg" alt="QQ截图20210717001510.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yop62jj30jg0nmjz4.jpg" alt="QQ截图20210717001548.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8ytl81hj60wt0nggua02.jpg" alt="QQ截图20210717001558.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8yzpsmlj30tr0lhwke.jpg" alt="QQ截图20210717001606.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8z86akmj30sx0lmqc1.jpg" alt="QQ截图20210717001614.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8zdxihej30n30l4tf8.jpg" alt="QQ截图20210717001621.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gsj8zit48mj30r40lqqae.jpg" alt="QQ截图20210717001628.png">
+
+</p>
 
 
                 
@@ -502,13 +746,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -807,16 +1065,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -829,48 +1077,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -880,7 +1124,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -900,7 +1156,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -918,7 +1174,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -930,12 +1186,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

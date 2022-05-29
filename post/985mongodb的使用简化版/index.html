@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>1、MongoDB的使用简化版（MongoDB）-yiguan1573</title>
+    <title>1、MongoDB的使用简化版（MongoDB） | yiguan1573</title>
 
     <link rel="canonical" href="/post/985mongodb%E7%9A%84%E4%BD%BF%E7%94%A8%E7%AE%80%E5%8C%96%E7%89%88/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>1、MongoDB的使用简化版（MongoDB）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Wednesday, April 27, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Wednesday, April 27, 2022
+                            
+                                <span id="/post/985mongodb%E7%9A%84%E4%BD%BF%E7%94%A8%E7%AE%80%E5%8C%96%E7%89%88/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,86 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#mongodb">MongoDB</a></li>
-    <li><a href="#简介">简介</a></li>
-    <li><a href="#基本操作">基本操作</a>
-      <ul>
-        <li></li>
-      </ul>
-    </li>
-    <li><a href="#增删改查">增删改查</a>
-      <ul>
-        <li><a href="#c增">C增</a></li>
-        <li><a href="#r查">R查</a></li>
-        <li><a href="#u改">U改</a></li>
-        <li><a href="#d删">D删</a></li>
-      </ul>
-    </li>
-    <li><a href="#try-catch">try catch</a></li>
-    <li><a href="#排序分页">排序&分页</a>
-      <ul>
-        <li></li>
-      </ul>
-    </li>
-    <li><a href="#聚合查询">聚合查询</a></li>
-    <li><a href="#优化索引">优化索引</a>
-      <ul>
-        <li></li>
-      </ul>
-    </li>
-    <li><a href="#权限机制">权限机制</a></li>
-    <li><a href="#备份还原">备份还原</a></li>
-    <li><a href="#mongoose">Mongoose</a></li>
-    <li><a href="#java使用">Java使用</a>
-      <ul>
-        <li><a href="#添加依赖">添加依赖</a></li>
-        <li><a href="#配置属性文件applictionyml">配置属性文件（appliction.yml）</a></li>
-        <li><a href="#添加数据">添加数据</a></li>
-        <li><a href="#创建分页">创建分页</a></li>
-        <li><a href="#实现点赞">实现点赞</a></li>
-      </ul>
-    </li>
-  </ul>
-
-  <ul>
-    <li><a href="#副本集">副本集</a></li>
-    <li><a href="#搭建副本集">搭建副本集</a>
-      <ul>
-        <li><a href="#主节点">主节点</a></li>
-        <li><a href="#从节点">从节点</a></li>
-        <li><a href="#仲裁节点">仲裁节点</a></li>
-      </ul>
-    </li>
-    <li><a href="#连接节点">连接节点</a>
-      <ul>
-        <li><a href="#添加副本从节点">添加副本从节点</a></li>
-        <li><a href="#添加仲裁者节点">添加仲裁者节点</a></li>
-      </ul>
-    </li>
-    <li><a href="#副本集读写操作">副本集读写操作</a></li>
-    <li><a href="#主节点的选举原则">主节点的选举原则</a></li>
-    <li><a href="#springdatamongodb连接副本集">SpringDataMongoDB连接副本集</a></li>
-    <li><a href="#分片集群">分片集群</a>
-      <ul>
-        <li><a href="#分片包含的组件">分片包含的组件</a></li>
-        <li><a href="#第一套副本集">第一套副本集</a></li>
-        <li><a href="#第二个副本集">第二个副本集</a></li>
-        <li><a href="#配置集">配置集</a></li>
-        <li><a href="#初始化副本集">初始化副本集</a></li>
-        <li><a href="#路由集">路由集</a></li>
-        <li><a href="#1添加分片">(1)添加分片：</a></li>
-        <li><a href="#2开启分片功能">(2)开启分片功能</a></li>
-        <li><a href="#3集合分片">(3)集合分片</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-                
                 <h2 id="mongodb">MongoDB</h2>
 <p>官方文档：https://docs.mongodb.com/manual/mongo/</p>
 <p>中文社区：https://mongoing.com</p>
@@ -304,19 +350,19 @@
 <p>支持的数据结构非常松散，可以通过json格式来修改插入数据</p>
 <h2 id="基本操作">基本操作</h2>
 <h4 id="启动服务">启动服务</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#fork 后台运行  若要使用账号密码服务 需要在启动时加 --auth</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4">#fork 后台运行  若要使用账号密码服务 需要在启动时加 --auth</span>
 mongod --dbpath /usr/local/var/mongodb --logpath /usr/local/var/log/mongodb/mongo.log --fork
-<span style="color:#75715e">#不在后端运行，可以在控制台上查看运行过程，使用配置文件启动</span>
+<span style="color:#6272a4">#不在后端运行，可以在控制台上查看运行过程，使用配置文件启动</span>
 mongod --config /usr/local/etc/mongod.conf
 
-//关闭方法db.shutdownServer<span style="color:#f92672">(</span><span style="color:#f92672">)</span>  之后exit
+//关闭方法db.shutdownServer<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>  之后exit
 需要账号密码的登陆方式：
 方法一：
 mongo 服务器IP地址：mongo 127.0.0.1/admin -u admin -p 123456
 方法二：
 mongo进入shell
 use admin
-db.auth<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;admin&#39;</span>,<span style="color:#e6db74">&#39;123456&#39;</span><span style="color:#f92672">)</span> 返回1则验证成功
+db.auth<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;admin&#39;</span>,<span style="color:#f1fa8c">&#39;123456&#39;</span><span style="color:#ff79c6">)</span> 返回1则验证成功
 </code></pre></div><h4 id="查看服务信息">查看服务信息</h4>
 <pre><code>ps aux | grep -v grep | grep mongod
 </code></pre><h4 id="查看数据库">查看数据库</h4>
@@ -339,63 +385,63 @@ db.auth<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;admi
 <h3 id="c增">C增</h3>
 <p>db.集合名.insert(JSON数据)</p>
 <p>集合存在，则直接插入数据，集合不存在，隐式创建并插入</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">use test2
-db.c1.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;xzy&#34;</span>,age:18<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-db.c1.insertMany<span style="color:#f92672">(</span><span style="color:#f92672">{</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">use test2
+db.c1.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;xzy&#34;</span>,age:18<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+db.c1.insertMany<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 留心一：数据库和集合不存在时，都隐式创建
 留心二：对象的键同意不加引号方便看，但是查看集合数据时系统会自动加上
 留心三：mongodn会给每条数据添加一个全球唯一的ID
 
 插入多条数据：
 传递数组，数组中每个元素都是一个JSON类型
-db.c1.insert<span style="color:#f92672">(</span><span style="color:#f92672">[</span>
-  <span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;z3&#34;</span>,age:3<span style="color:#f92672">}</span>,
-  <span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;z4&#34;</span>,age:4<span style="color:#f92672">}</span>,
-  <span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;z5&#34;</span>,age:5<span style="color:#f92672">}</span>
-<span style="color:#f92672">]</span><span style="color:#f92672">)</span>
+db.c1.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">[</span>
+  <span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;z3&#34;</span>,age:3<span style="color:#ff79c6">}</span>,
+  <span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;z4&#34;</span>,age:4<span style="color:#ff79c6">}</span>,
+  <span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;z5&#34;</span>,age:5<span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">]</span><span style="color:#ff79c6">)</span>
 
 插入N条数据：
 mongodb底层使用JS引擎实现的，所以支持部分js语法，可以使用for循环
-<span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>var i<span style="color:#f92672">=</span>1;i&lt;<span style="color:#f92672">=</span>10;i++<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-  print<span style="color:#f92672">(</span>i<span style="color:#f92672">)</span>
-<span style="color:#f92672">}</span>
+<span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>var <span style="color:#8be9fd;font-style:italic">i</span><span style="color:#ff79c6">=</span>1;i&lt;<span style="color:#ff79c6">=</span>10;i++<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+  print<span style="color:#ff79c6">(</span>i<span style="color:#ff79c6">)</span>
+<span style="color:#ff79c6">}</span>
 
 插入十条数据：
   
-<span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>var i<span style="color:#f92672">=</span>1;i&lt;<span style="color:#f92672">=</span>10;i++<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-  db.c1.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;a&#34;</span>+i,age:i<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-<span style="color:#f92672">}</span>
+<span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>var <span style="color:#8be9fd;font-style:italic">i</span><span style="color:#ff79c6">=</span>1;i&lt;<span style="color:#ff79c6">=</span>10;i++<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+  db.c1.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;a&#34;</span>+i,age:i<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="r查">R查</h3>
 <p>语法： db.集合名.find(条件，[查询的列])</p>
 <p>格式化：db.集合名.find().pretty()</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">条件：
-	查询所有数据  				<span style="color:#f92672">{</span><span style="color:#f92672">}</span>或者不写
-	查询age<span style="color:#f92672">=</span>6的数据 			 <span style="color:#f92672">{</span>age:6<span style="color:#f92672">}</span>
-	查询age<span style="color:#f92672">=</span>6且性别为男   <span style="color:#f92672">{</span>age:6,sex:<span style="color:#e6db74">&#39;男&#39;</span><span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">条件：
+	查询所有数据  				<span style="color:#ff79c6">{</span><span style="color:#ff79c6">}</span>或者不写
+	<span style="color:#8be9fd;font-style:italic">查询age</span><span style="color:#ff79c6">=</span>6的数据 			 <span style="color:#ff79c6">{</span>age:6<span style="color:#ff79c6">}</span>
+	<span style="color:#8be9fd;font-style:italic">查询age</span><span style="color:#ff79c6">=</span>6且性别为男   <span style="color:#ff79c6">{</span>age:6,sex:<span style="color:#f1fa8c">&#39;男&#39;</span><span style="color:#ff79c6">}</span>
 
 查询的列
 	不写 - 查询全部的列
-	<span style="color:#f92672">{</span>age:1<span style="color:#f92672">}</span> 只显示age列，可以显示多个想要的列<span style="color:#f92672">{</span>user:1,age:1.......<span style="color:#f92672">}</span> 
-	<span style="color:#f92672">{</span>age:0<span style="color:#f92672">}</span> 除了age列外都显示 可以不显示多个想要的列<span style="color:#f92672">{</span>user:0,age:0<span style="color:#f92672">}</span>
+	<span style="color:#ff79c6">{</span>age:1<span style="color:#ff79c6">}</span> 只显示age列，可以显示多个想要的列<span style="color:#ff79c6">{</span>user:1,age:1.......<span style="color:#ff79c6">}</span> 
+	<span style="color:#ff79c6">{</span>age:0<span style="color:#ff79c6">}</span> 除了age列外都显示 可以不显示多个想要的列<span style="color:#ff79c6">{</span>user:0,age:0<span style="color:#ff79c6">}</span>
 	无论怎么写系统自定义_id都会在
 </code></pre></div><p>升级语法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">db.集合名.find<span style="color:#f92672">(</span>键：值<span style="color:#f92672">)</span>  注：值不直接写
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">db.集合名.find<span style="color:#ff79c6">(</span>键：值<span style="color:#ff79c6">)</span>  注：值不直接写
 
-							<span style="color:#f92672">{</span>运算符：值<span style="color:#f92672">}</span>
+							<span style="color:#ff79c6">{</span>运算符：值<span style="color:#ff79c6">}</span>
 
-db.集合名.find<span style="color:#f92672">(</span><span style="color:#f92672">{</span>
+db.集合名.find<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>
 
-	键：<span style="color:#f92672">{</span>运算符：值<span style="color:#f92672">}</span>
+	键：<span style="color:#ff79c6">{</span>运算符：值<span style="color:#ff79c6">}</span>
 
-<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 
 
 例如：
 年龄小于5的
-db.c1.find<span style="color:#f92672">(</span><span style="color:#f92672">{</span>age:<span style="color:#f92672">{</span>$lt:5<span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+db.c1.find<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>age:<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$lt</span>:5<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 
 年龄等于3、4、5的
-db.c1.find<span style="color:#f92672">(</span><span style="color:#f92672">{</span>age:<span style="color:#f92672">{</span>$in:<span style="color:#f92672">[</span>3,4,5<span style="color:#f92672">]</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+db.c1.find<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>age:<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$in</span>:<span style="color:#ff79c6">[</span>3,4,5<span style="color:#ff79c6">]</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 </code></pre></div><p>运算符表：</p>
 <table>
 <thead>
@@ -437,47 +483,47 @@ db.c1.find<span style="color:#f92672">(</span><span style="color:#f92672">{</spa
 </table>
 <h3 id="u改">U改</h3>
 <p>基础语法： db.集合名.update（条件，新数据[,是否新增，是否修改多条]）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">是否新增：指条件匹配不到数据则插入，true是插入，false否不插入默认
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">是否新增：指条件匹配不到数据则插入，true是插入，false否不插入默认
 是否修改多条：指将匹配成功的数据都修改（true是，false否默认）
 
-<span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>var i<span style="color:#f92672">=</span>1;i&lt;<span style="color:#f92672">=</span>10;i++<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-	db.c3.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;zs&#34;</span>+i,age:i<span style="color:#f92672">}</span><span style="color:#f92672">)</span>;
-<span style="color:#f92672">}</span>
+<span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>var <span style="color:#8be9fd;font-style:italic">i</span><span style="color:#ff79c6">=</span>1;i&lt;<span style="color:#ff79c6">=</span>10;i++<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+	db.c3.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;zs&#34;</span>+i,age:i<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>;
+<span style="color:#ff79c6">}</span>
 
 
-db.c3.update<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;zs1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;zs2&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#75715e">#这样是替换，将符合条件的行直接换成这个</span>
+db.c3.update<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;zs1&#34;</span><span style="color:#ff79c6">}</span>,<span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;zs2&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span><span style="color:#6272a4">#这样是替换，将符合条件的行直接换成这个</span>
 </code></pre></div><p>升级语法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">db.c3.update（<span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;zs2&#34;</span><span style="color:#f92672">}</span>，<span style="color:#f92672">{</span>$set:<span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;zs222&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span>）	
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">db.c3.update（<span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;zs2&#34;</span><span style="color:#ff79c6">}</span>，<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$set</span>:<span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;zs222&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span>）	
 
 给zs10 增加2岁
-db.c3.update<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;zs10&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span>$inc:<span style="color:#f92672">{</span>age:2<span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+db.c3.update<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;zs10&#34;</span><span style="color:#ff79c6">}</span>,<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$inc</span>:<span style="color:#ff79c6">{</span>age:2<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 给zs10 减少2岁
-db.c3.update<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;zs10&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span>$inc:<span style="color:#f92672">{</span>age:-2<span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+db.c3.update<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;zs10&#34;</span><span style="color:#ff79c6">}</span>,<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$inc</span>:<span style="color:#ff79c6">{</span>age:-2<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 
-准备：插入一个数据： db.c4.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;熊子阳&#34;</span>,age:18,who:<span style="color:#e6db74">&#34;男&#34;</span>,other:<span style="color:#e6db74">&#34;没钱&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+准备：插入一个数据： db.c4.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;熊子阳&#34;</span>,age:18,who:<span style="color:#f1fa8c">&#34;男&#34;</span>,other:<span style="color:#f1fa8c">&#34;没钱&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 
 修改数据，将 熊子阳 改为 Aoi  ，age 改为999 ，who 改为 sex ，other 删除
-db.c4.update<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;熊子阳&#34;</span><span style="color:#f92672">}</span>,
-<span style="color:#f92672">{</span>$set:<span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;Aoi&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span>,
-<span style="color:#f92672">{</span>$inc:<span style="color:#f92672">{</span>age:971<span style="color:#f92672">}</span><span style="color:#f92672">}</span>,
-<span style="color:#f92672">{</span>$rename:<span style="color:#f92672">{</span>who:sex<span style="color:#f92672">}</span><span style="color:#f92672">}</span>,
-<span style="color:#f92672">{</span>$unset:<span style="color:#f92672">{</span>other:true<span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+db.c4.update<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;熊子阳&#34;</span><span style="color:#ff79c6">}</span>,
+<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$set</span>:<span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;Aoi&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span>,
+<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$inc</span>:<span style="color:#ff79c6">{</span>age:971<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span>,
+<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$rename</span>:<span style="color:#ff79c6">{</span>who:sex<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span>,
+<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$unset</span>:<span style="color:#ff79c6">{</span>other:true<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 
 正确写法：
-db.c4.update<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;熊子阳&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span>
-	$set:<span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;Aoi&#34;</span><span style="color:#f92672">}</span>,
-	$inc:<span style="color:#f92672">{</span>age:971<span style="color:#f92672">}</span>,
-	$rename:<span style="color:#f92672">{</span>who:<span style="color:#e6db74">&#34;sex&#34;</span><span style="color:#f92672">}</span>,
-	$unset:<span style="color:#f92672">{</span>other:true<span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+db.c4.update<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;熊子阳&#34;</span><span style="color:#ff79c6">}</span>,<span style="color:#ff79c6">{</span>
+	<span style="color:#8be9fd;font-style:italic">$set</span>:<span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;Aoi&#34;</span><span style="color:#ff79c6">}</span>,
+	<span style="color:#8be9fd;font-style:italic">$inc</span>:<span style="color:#ff79c6">{</span>age:971<span style="color:#ff79c6">}</span>,
+	<span style="color:#8be9fd;font-style:italic">$rename</span>:<span style="color:#ff79c6">{</span>who:<span style="color:#f1fa8c">&#34;sex&#34;</span><span style="color:#ff79c6">}</span>,
+	<span style="color:#8be9fd;font-style:italic">$unset</span>:<span style="color:#ff79c6">{</span>other:true<span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 
-<span style="color:#75715e">#更新不存在的值,若不存在则不会有操作</span>
-&gt; db.c3.update<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;zs30&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span>$set:<span style="color:#f92672">{</span>age:30<span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-<span style="color:#75715e">#在最后加一个true参数，作用是，如果不存在，则插入该条数据,默认为false则不管</span>
-&gt; db.c3.update<span style="color:#f92672">(</span><span style="color:#f92672">{</span>username:<span style="color:#e6db74">&#34;zs30&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span>$set:<span style="color:#f92672">{</span>age:30<span style="color:#f92672">}</span><span style="color:#f92672">}</span>,true<span style="color:#f92672">)</span>
+<span style="color:#6272a4">#更新不存在的值,若不存在则不会有操作</span>
+&gt; db.c3.update<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;zs30&#34;</span><span style="color:#ff79c6">}</span>,<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$set</span>:<span style="color:#ff79c6">{</span>age:30<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+<span style="color:#6272a4">#在最后加一个true参数，作用是，如果不存在，则插入该条数据,默认为false则不管</span>
+&gt; db.c3.update<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>username:<span style="color:#f1fa8c">&#34;zs30&#34;</span><span style="color:#ff79c6">}</span>,<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$set</span>:<span style="color:#ff79c6">{</span>age:30<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span>,true<span style="color:#ff79c6">)</span>
 
-<span style="color:#75715e">#第四个参数如果为true，当匹配到多条条件符合的元素时，都更改，默认为false，只改一条</span>
-&gt; db.c3.update<span style="color:#f92672">(</span><span style="color:#f92672">{</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span>$set:<span style="color:#f92672">{</span>age:20<span style="color:#f92672">}</span><span style="color:#f92672">}</span>,false,true<span style="color:#f92672">)</span>
+<span style="color:#6272a4">#第四个参数如果为true，当匹配到多条条件符合的元素时，都更改，默认为false，只改一条</span>
+&gt; db.c3.update<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span><span style="color:#ff79c6">}</span>,<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$set</span>:<span style="color:#ff79c6">{</span>age:20<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span>,false,true<span style="color:#ff79c6">)</span>
 </code></pre></div><table>
 <thead>
 <tr>
@@ -507,108 +553,108 @@ db.c4.update<span style="color:#f92672">(</span><span style="color:#f92672">{</s
 <h3 id="d删">D删</h3>
 <p>语法：db.集合名.remove(条件[,是否删除一条])</p>
 <p>是否删除一条 true是，false否 默认</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">当存在多条符合条件的行时</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">只删除一条</span>
-<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">c3</span>.<span style="color:#a6e22e">remove</span>({<span style="color:#a6e22e">username</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;zs30&#34;</span>},<span style="color:#66d9ef">true</span>)
-<span style="color:#a6e22e">存在多条时</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">全部删除</span>
-<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">c3</span>.<span style="color:#a6e22e">remove</span>({<span style="color:#a6e22e">username</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;zs30&#34;</span>},<span style="color:#66d9ef">true</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">当存在多条符合条件的行时，只删除一条
+db.c3.remove({username<span style="color:#ff79c6">:</span><span style="color:#f1fa8c">&#34;zs30&#34;</span>},<span style="color:#ff79c6">true</span>)
+存在多条时，全部删除
+db.c3.remove({username<span style="color:#ff79c6">:</span><span style="color:#f1fa8c">&#34;zs30&#34;</span>},<span style="color:#ff79c6">true</span>)
 </code></pre></div><h2 id="try-catch">try catch</h2>
 <p>当一次性插入或者更新n条数据时，mongodb不会因为一条数据的错误而使得整个操作终止并回滚，只会终止接下来的操作，所以可以使用trycatch来进行异常的捕捉处理。测试的时候可以不处理。</p>
 <p>例如：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">y</span>{
-  <span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">1</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">M</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#960050;background-color:#1e0010">[</span>
-  <span style="color:#960050;background-color:#1e0010">{</span><span style="color:#f92672">&#34;_id&#34;</span>:<span style="color:#ae81ff">1</span>,<span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#f92672">&#34;xzy&#34;</span>}<span style="color:#960050;background-color:#1e0010">,</span>
-  {<span style="color:#f92672">&#34;_id&#34;</span>:<span style="color:#ae81ff">2</span>,<span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#f92672">&#34;lhl&#34;</span>}<span style="color:#960050;background-color:#1e0010">,</span>
-	{<span style="color:#f92672">&#34;_id&#34;</span>:<span style="color:#ae81ff">3</span>,<span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#f92672">&#34;yzh&#34;</span>}<span style="color:#960050;background-color:#1e0010">,</span>
-	{<span style="color:#f92672">&#34;_id&#34;</span>:<span style="color:#ae81ff">4</span>,<span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#f92672">&#34;lwy&#34;</span>}<span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span>
-<span style="color:#960050;background-color:#1e0010">}</span>
-  <span style="color:#960050;background-color:#1e0010">]</span><span style="color:#960050;background-color:#1e0010">)</span>
-<span style="color:#960050;background-color:#1e0010">}</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">)</span>{
-	<span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">t</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">try{
+  db.c1.insertMany([
+  {<span style="color:#ff79c6">&#34;_id&#34;</span>:<span style="color:#bd93f9">1</span>,name:<span style="color:#ff79c6">&#34;xzy&#34;</span>},
+  {<span style="color:#ff79c6">&#34;_id&#34;</span>:<span style="color:#bd93f9">2</span>,name:<span style="color:#ff79c6">&#34;lhl&#34;</span>},
+	{<span style="color:#ff79c6">&#34;_id&#34;</span>:<span style="color:#bd93f9">3</span>,name:<span style="color:#ff79c6">&#34;yzh&#34;</span>},
+	{<span style="color:#ff79c6">&#34;_id&#34;</span>:<span style="color:#bd93f9">4</span>,name:<span style="color:#ff79c6">&#34;lwy&#34;</span>}...
+}
+  ])
+}catch(e){
+	print
 }
 </code></pre></div><h2 id="排序分页">排序&amp;分页</h2>
 <p>准备：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">use test
-db.c2.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>_id:1,name:<span style="color:#e6db74">&#34;a&#34;</span>,sex:1,age:1<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-db.c2.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>_id:2,name:<span style="color:#e6db74">&#34;b&#34;</span>,sex:2,age:2<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-db.c2.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>_id:3,name:<span style="color:#e6db74">&#34;c&#34;</span>,sex:3,age:3<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-db.c2.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>_id:4,name:<span style="color:#e6db74">&#34;d&#34;</span>,sex:4,age:4<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-db.c2.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>_id:5,name:<span style="color:#e6db74">&#34;e&#34;</span>,sex:5,age:5<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">use <span style="color:#8be9fd;font-style:italic">test</span>
+db.c2.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>_id:1,name:<span style="color:#f1fa8c">&#34;a&#34;</span>,sex:1,age:1<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+db.c2.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>_id:2,name:<span style="color:#f1fa8c">&#34;b&#34;</span>,sex:2,age:2<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+db.c2.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>_id:3,name:<span style="color:#f1fa8c">&#34;c&#34;</span>,sex:3,age:3<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+db.c2.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>_id:4,name:<span style="color:#f1fa8c">&#34;d&#34;</span>,sex:4,age:4<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+db.c2.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>_id:5,name:<span style="color:#f1fa8c">&#34;e&#34;</span>,sex:5,age:5<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 </code></pre></div><h4 id="排序">排序</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">语法：db.集合名.find<span style="color:#f92672">(</span><span style="color:#f92672">)</span>.sort<span style="color:#f92672">(</span>JSON数据<span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">语法：db.集合名.find<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>.sort<span style="color:#ff79c6">(</span>JSON数据<span style="color:#ff79c6">)</span>
 说明：键-就是要排序的列/字段，值：1升序 -1降序
 使用：对年龄进行降序排序
-db.c2.find<span style="color:#f92672">(</span><span style="color:#f92672">)</span>.sort<span style="color:#f92672">(</span><span style="color:#f92672">{</span>age:-1<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+db.c2.find<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>.sort<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>age:-1<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 </code></pre></div><h4 id="分页">分页</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">语法：db.集合名.find<span style="color:#f92672">(</span><span style="color:#f92672">)</span>.skip<span style="color:#f92672">(</span>数字<span style="color:#f92672">)</span>.limit<span style="color:#f92672">(</span>数字<span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">语法：db.集合名.find<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>.skip<span style="color:#ff79c6">(</span>数字<span style="color:#ff79c6">)</span>.limit<span style="color:#ff79c6">(</span>数字<span style="color:#ff79c6">)</span>
 说明：skip里的数字指跳过指定数量（可选），limit限制查询的数量
-db.c2.find<span style="color:#f92672">(</span><span style="color:#f92672">)</span>.sort<span style="color:#f92672">(</span><span style="color:#f92672">{</span>age:-1<span style="color:#f92672">}</span><span style="color:#f92672">)</span>.skip<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>.limit<span style="color:#f92672">(</span>2<span style="color:#f92672">)</span>
+db.c2.find<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>.sort<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>age:-1<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>.skip<span style="color:#ff79c6">(</span>1<span style="color:#ff79c6">)</span>.limit<span style="color:#ff79c6">(</span>2<span style="color:#ff79c6">)</span>
 </code></pre></div><h2 id="聚合查询">聚合查询</h2>
 <p>语法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">db.集合名称.aggregate<span style="color:#f92672">(</span><span style="color:#f92672">[</span>
-	<span style="color:#f92672">{</span>管道:<span style="color:#f92672">{</span>表达式<span style="color:#f92672">}</span><span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">db.集合名称.aggregate<span style="color:#ff79c6">(</span><span style="color:#ff79c6">[</span>
+	<span style="color:#ff79c6">{</span>管道:<span style="color:#ff79c6">{</span>表达式<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span>
 	....
-<span style="color:#f92672">]</span><span style="color:#f92672">)</span>
+<span style="color:#ff79c6">]</span><span style="color:#ff79c6">)</span>
 
 常用管道：
-$group   将集合中的文档分组，用于统计结果
-$match   过滤数据，只要输出符合条件的文档
-$sort		 聚合数据进一步排序
-$skip    跳过指定文档数
-$limit   限制集合数据返回文档数
+<span style="color:#8be9fd;font-style:italic">$group</span>   将集合中的文档分组，用于统计结果
+<span style="color:#8be9fd;font-style:italic">$match</span>   过滤数据，只要输出符合条件的文档
+<span style="color:#8be9fd;font-style:italic">$sort</span>		 聚合数据进一步排序
+<span style="color:#8be9fd;font-style:italic">$skip</span>    跳过指定文档数
+<span style="color:#8be9fd;font-style:italic">$limit</span>   限制集合数据返回文档数
 ....
 
 常用表达式：
-$sum 总和 $sum:1同count表示统计
-$avg 平均
-$min 最小值
-$max 最大值
+<span style="color:#8be9fd;font-style:italic">$sum</span> 总和 <span style="color:#8be9fd;font-style:italic">$sum</span>:1同count表示统计
+<span style="color:#8be9fd;font-style:italic">$avg</span> 平均
+<span style="color:#8be9fd;font-style:italic">$min</span> 最小值
+<span style="color:#8be9fd;font-style:italic">$max</span> 最大值
 
 准备：
-db.c3.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>_id:1,name:<span style="color:#e6db74">&#34;a&#34;</span>,sex:1,age:1<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-db.c3.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>_id:2,name:<span style="color:#e6db74">&#34;a&#34;</span>,sex:1,age:2<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-db.c3.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>_id:3,name:<span style="color:#e6db74">&#34;b&#34;</span>,sex:1,age:3<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-db.c3.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>_id:4,name:<span style="color:#e6db74">&#34;c&#34;</span>,sex:2,age:4<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-db.c3.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span>_id:5,name:<span style="color:#e6db74">&#34;d&#34;</span>,sex:2,age:5<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+db.c3.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>_id:1,name:<span style="color:#f1fa8c">&#34;a&#34;</span>,sex:1,age:1<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+db.c3.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>_id:2,name:<span style="color:#f1fa8c">&#34;a&#34;</span>,sex:1,age:2<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+db.c3.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>_id:3,name:<span style="color:#f1fa8c">&#34;b&#34;</span>,sex:1,age:3<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+db.c3.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>_id:4,name:<span style="color:#f1fa8c">&#34;c&#34;</span>,sex:2,age:4<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+db.c3.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>_id:5,name:<span style="color:#f1fa8c">&#34;d&#34;</span>,sex:2,age:5<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 
 操作：
 男女生的总年龄
-<span style="color:#75715e">#_id 必须加，后跟指定列</span>
-<span style="color:#75715e">#rew 求和 返回结果数</span>
-db.c3.aggregate<span style="color:#f92672">(</span><span style="color:#f92672">[</span>
-	<span style="color:#f92672">{</span>
-		$group:<span style="color:#f92672">{</span>	
-			_id:<span style="color:#e6db74">&#34;</span>$sex<span style="color:#e6db74">&#34;</span>, 			
-			res:<span style="color:#f92672">{</span>$sum:<span style="color:#e6db74">&#34;</span>$sex<span style="color:#e6db74">&#34;</span><span style="color:#f92672">}</span>   
-	<span style="color:#f92672">}</span>
-	<span style="color:#f92672">}</span>
-<span style="color:#f92672">]</span><span style="color:#f92672">)</span>
+<span style="color:#6272a4">#_id 必须加，后跟指定列</span>
+<span style="color:#6272a4">#rew 求和 返回结果数</span>
+db.c3.aggregate<span style="color:#ff79c6">(</span><span style="color:#ff79c6">[</span>
+	<span style="color:#ff79c6">{</span>
+		<span style="color:#8be9fd;font-style:italic">$group</span>:<span style="color:#ff79c6">{</span>	
+			_id:<span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$sex</span><span style="color:#f1fa8c">&#34;</span>, 			
+			res:<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$sum</span>:<span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$sex</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">}</span>   
+	<span style="color:#ff79c6">}</span>
+	<span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">]</span><span style="color:#ff79c6">)</span>
 
 求男女总人数
-db.c3.aggregate<span style="color:#f92672">(</span><span style="color:#f92672">[</span>
-	<span style="color:#f92672">{</span>
-		$group:<span style="color:#f92672">{</span>	
-			_id:<span style="color:#e6db74">&#34;</span>$sex<span style="color:#e6db74">&#34;</span>, 			
-			res:<span style="color:#f92672">{</span>$sum:1<span style="color:#f92672">}</span>   
-	<span style="color:#f92672">}</span>
-	<span style="color:#f92672">}</span>
-<span style="color:#f92672">]</span><span style="color:#f92672">)</span>
+db.c3.aggregate<span style="color:#ff79c6">(</span><span style="color:#ff79c6">[</span>
+	<span style="color:#ff79c6">{</span>
+		<span style="color:#8be9fd;font-style:italic">$group</span>:<span style="color:#ff79c6">{</span>	
+			_id:<span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$sex</span><span style="color:#f1fa8c">&#34;</span>, 			
+			res:<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$sum</span>:1<span style="color:#ff79c6">}</span>   
+	<span style="color:#ff79c6">}</span>
+	<span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">]</span><span style="color:#ff79c6">)</span>
 
 求学生总数和平均年龄
-db.c3.aggregate<span style="color:#f92672">(</span><span style="color:#f92672">[</span>
-	<span style="color:#f92672">{</span>
-		$group:<span style="color:#f92672">{</span>	
+db.c3.aggregate<span style="color:#ff79c6">(</span><span style="color:#ff79c6">[</span>
+	<span style="color:#ff79c6">{</span>
+		<span style="color:#8be9fd;font-style:italic">$group</span>:<span style="color:#ff79c6">{</span>	
 			_id:null, 			
-			res:<span style="color:#f92672">{</span>$sum:1<span style="color:#f92672">}</span>,
-      total_avg:<span style="color:#f92672">{</span>$avg:<span style="color:#e6db74">&#34;</span>$age<span style="color:#e6db74">&#34;</span><span style="color:#f92672">}</span>
-	<span style="color:#f92672">}</span>
-	<span style="color:#f92672">}</span>
-<span style="color:#f92672">]</span><span style="color:#f92672">)</span>
+			res:<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$sum</span>:1<span style="color:#ff79c6">}</span>,
+      total_avg:<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$avg</span>:<span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$age</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">}</span>
+	<span style="color:#ff79c6">}</span>
+	<span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">]</span><span style="color:#ff79c6">)</span>
 
 查询男生女生人数，升序排序
-db.c3.aggregate<span style="color:#f92672">(</span><span style="color:#f92672">[</span>
-	<span style="color:#f92672">{</span>$group:<span style="color:#f92672">{</span>	_id:<span style="color:#e6db74">&#34;</span>$sex<span style="color:#e6db74">&#34;</span>,res:<span style="color:#f92672">{</span>$sum:1<span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span>,
-	<span style="color:#f92672">{</span>$sort:<span style="color:#f92672">{</span>res:1<span style="color:#f92672">}</span><span style="color:#f92672">}</span>
-<span style="color:#f92672">]</span><span style="color:#f92672">)</span>
+db.c3.aggregate<span style="color:#ff79c6">(</span><span style="color:#ff79c6">[</span>
+	<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$group</span>:<span style="color:#ff79c6">{</span>	_id:<span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$sex</span><span style="color:#f1fa8c">&#34;</span>,res:<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$sum</span>:1<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span>,
+	<span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">$sort</span>:<span style="color:#ff79c6">{</span>res:1<span style="color:#ff79c6">}</span><span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">]</span><span style="color:#ff79c6">)</span>
 </code></pre></div><h2 id="优化索引">优化索引</h2>
 <h4 id="基本操作-1">基本操作</h4>
 <p>创建索引语法： db.集合名.createIndex(待创建索引的列[,额外选项])</p>
@@ -618,15 +664,15 @@ db.c3.aggregate<span style="color:#f92672">(</span><span style="color:#f92672">[
 <p>说明：1升序  -1降序 列入{age：1}表示创建age索引并按照升序的方式存储</p>
 <p>额外选项：设置索引的名称或者唯一索引等等</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#创建只对单个列为条件的索引</span>
-db.c1.create<span style="color:#f92672">(</span><span style="color:#f92672">{</span>name:1<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-<span style="color:#75715e">#创建一个自己取名的索引</span>
-db.c1.create<span style="color:#f92672">(</span><span style="color:#f92672">{</span>name:1<span style="color:#f92672">}</span>,<span style="color:#f92672">{</span>name:<span style="color:#e6db74">&#34;xzy&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-<span style="color:#75715e">#创建条件为多个列的组合索引</span>
-db.c1.create<span style="color:#f92672">(</span><span style="color:#f92672">{</span>name:1,age:-1<span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;hh&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4">#创建只对单个列为条件的索引</span>
+db.c1.create<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>name:1<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+<span style="color:#6272a4">#创建一个自己取名的索引</span>
+db.c1.create<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>name:1<span style="color:#ff79c6">}</span>,<span style="color:#ff79c6">{</span>name:<span style="color:#f1fa8c">&#34;xzy&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+<span style="color:#6272a4">#创建条件为多个列的组合索引</span>
+db.c1.create<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>name:1,age:-1<span style="color:#ff79c6">}</span>,<span style="color:#ff79c6">{</span><span style="color:#f1fa8c">&#34;hh&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 
-<span style="color:#75715e">#创建唯一索引</span>
-db.c1.createIndex<span style="color:#f92672">(</span><span style="color:#f92672">{</span>name:1<span style="color:#f92672">}</span>,<span style="color:#f92672">{</span>unique:<span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<span style="color:#6272a4">#创建唯一索引</span>
+db.c1.createIndex<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>name:1<span style="color:#ff79c6">}</span>,<span style="color:#ff79c6">{</span>unique:<span style="color:#f1fa8c">&#34;name&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 </code></pre></div><p>删除索引语法：</p>
 <blockquote>
 <p>全部删除：db.集合名.dropIndexes()</p>
@@ -642,35 +688,35 @@ db.c1.createIndex<span style="color:#f92672">(</span><span style="color:#f92672"
 <h2 id="权限机制">权限机制</h2>
 <p>**开启验证模式概念：**指用户需要输入账号密码才能登陆使用</p>
 <p>操作步骤：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">1、添加超级管理员
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">1、添加超级管理员
 2、退出卸载服务
 3、重新安装需要输入账号密码的服务（注在原安装命令基础上加上--auth即可）
 4、启动服务-〉登陆测试
 </code></pre></div><p>步骤一：添加超级管理员</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">use <span style="color:#66d9ef">admin</span>
-db.<span style="color:#66d9ef">createUser</span>(<span style="color:#960050;background-color:#1e0010">{</span>
-              <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">user</span><span style="color:#e6db74">&#34;</span>:<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">admin</span><span style="color:#e6db74">&#34;</span>,
-              <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">pwd</span><span style="color:#e6db74">&#34;</span>:<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">123456</span><span style="color:#e6db74">&#34;</span>,
-             	<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">roles</span><span style="color:#e6db74">&#34;</span>:[<span style="color:#960050;background-color:#1e0010">{</span>
-                       <span style="color:#66d9ef">role</span>:<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">root</span><span style="color:#e6db74">&#34;</span>,
-                       db:<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">admin</span><span style="color:#e6db74">&#34;</span>
-                       <span style="color:#960050;background-color:#1e0010">}</span>]
-              <span style="color:#960050;background-color:#1e0010">}</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">use <span style="color:#ff79c6">admin</span>
+db.<span style="color:#ff79c6">createUser</span>({
+              <span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">user</span><span style="color:#f1fa8c">&#34;</span>:<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">admin</span><span style="color:#f1fa8c">&#34;</span>,
+              <span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">pwd</span><span style="color:#f1fa8c">&#34;</span>:<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">123456</span><span style="color:#f1fa8c">&#34;</span>,
+             	<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">roles</span><span style="color:#f1fa8c">&#34;</span>:[{
+                       <span style="color:#ff79c6">role</span>:<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">root</span><span style="color:#f1fa8c">&#34;</span>,
+                       db:<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">admin</span><span style="color:#f1fa8c">&#34;</span>
+                       }]
+              })
               
-<span style="color:#960050;background-color:#1e0010">查</span><span style="color:#960050;background-color:#1e0010">看</span><span style="color:#960050;background-color:#1e0010">管</span><span style="color:#960050;background-color:#1e0010">理</span><span style="color:#960050;background-color:#1e0010">员</span>
-use <span style="color:#66d9ef">admin</span>
-<span style="color:#66d9ef">show</span> collections
-db.<span style="color:#66d9ef">system</span>.users.find().pretty()
+查看管理员
+use <span style="color:#ff79c6">admin</span>
+<span style="color:#ff79c6">show</span> collections
+db.<span style="color:#ff79c6">system</span>.users.find().pretty()
 </code></pre></div><p>步骤二：退出卸载服务</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">//关闭方法db.shutdownServer<span style="color:#f92672">(</span><span style="color:#f92672">)</span>  
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">//关闭方法db.shutdownServer<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>  
 之后exit
 </code></pre></div><p>步骤三：安装需要验证的MongoDB服务</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#使用--auth参数来开启认证服务</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4">#使用--auth参数来开启认证服务</span>
 mongod --dbpath /usr/local/var/mongodb --logpath /usr/local/var/log/mongodb/mongo.log --auth --fork
 
-<span style="color:#75715e">#或在config文件中添加上</span>
+<span style="color:#6272a4">#或在config文件中添加上</span>
 security:
-	<span style="color:#75715e">#开启授权认证后再用配置文件来启动即可</span>
+	<span style="color:#6272a4">#开启授权认证后再用配置文件来启动即可</span>
 	authorization:enabled
 
 需要账号密码的登陆方式：
@@ -679,48 +725,48 @@ mongo 服务器IP地址：mongo 127.0.0.1/admin -u admin -p 123456
 方法二：
 mongo进入shell
 use admin
-db.auth<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;admin&#39;</span>,<span style="color:#e6db74">&#39;123456&#39;</span><span style="color:#f92672">)</span> 返回1则验证成功
+db.auth<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;admin&#39;</span>,<span style="color:#f1fa8c">&#39;123456&#39;</span><span style="color:#ff79c6">)</span> 返回1则验证成功
 </code></pre></div><p>例子：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>var i <span style="color:#f92672">=</span> 1;i&lt;<span style="color:#f92672">=</span>10;i++<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-db.goods.insert<span style="color:#f92672">(</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;goodsName&#34;</span>+i,<span style="color:#e6db74">&#34;price&#34;</span>:i<span style="color:#f92672">}</span><span style="color:#f92672">)</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">for</span><span style="color:#ff79c6">(</span>var <span style="color:#8be9fd;font-style:italic">i</span> <span style="color:#ff79c6">=</span> 1;i&lt;<span style="color:#ff79c6">=</span>10;i++<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+db.goods.insert<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span><span style="color:#f1fa8c">&#34;name&#34;</span>:<span style="color:#f1fa8c">&#34;goodsName&#34;</span>+i,<span style="color:#f1fa8c">&#34;price&#34;</span>:i<span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
+<span style="color:#ff79c6">}</span>
 添加用户shop1可以读shop数据库
-db.createUser<span style="color:#f92672">(</span><span style="color:#f92672">{</span>
-              <span style="color:#e6db74">&#34;user&#34;</span>:<span style="color:#e6db74">&#34;shop1&#34;</span>,
-              <span style="color:#e6db74">&#34;pwd&#34;</span>:<span style="color:#e6db74">&#34;123456&#34;</span>,
-             	<span style="color:#e6db74">&#34;roles&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span>
-                       role:<span style="color:#e6db74">&#34;read&#34;</span>,
-                       db:<span style="color:#e6db74">&#34;shop&#34;</span>
-                       <span style="color:#f92672">}</span><span style="color:#f92672">]</span>
-              <span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+db.createUser<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>
+              <span style="color:#f1fa8c">&#34;user&#34;</span>:<span style="color:#f1fa8c">&#34;shop1&#34;</span>,
+              <span style="color:#f1fa8c">&#34;pwd&#34;</span>:<span style="color:#f1fa8c">&#34;123456&#34;</span>,
+             	<span style="color:#f1fa8c">&#34;roles&#34;</span>:<span style="color:#ff79c6">[</span><span style="color:#ff79c6">{</span>
+                       role:<span style="color:#f1fa8c">&#34;read&#34;</span>,
+                       db:<span style="color:#f1fa8c">&#34;shop&#34;</span>
+                       <span style="color:#ff79c6">}</span><span style="color:#ff79c6">]</span>
+              <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 添加用户shop2可以读写shop数据库
-db.createUser<span style="color:#f92672">(</span><span style="color:#f92672">{</span>
-              <span style="color:#e6db74">&#34;user&#34;</span>:<span style="color:#e6db74">&#34;shop2&#34;</span>,
-              <span style="color:#e6db74">&#34;pwd&#34;</span>:<span style="color:#e6db74">&#34;123456&#34;</span>,
-             	<span style="color:#e6db74">&#34;roles&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span>
-                       role:<span style="color:#e6db74">&#34;readWrite&#34;</span>,
-                       db:<span style="color:#e6db74">&#34;shop&#34;</span>
-                       <span style="color:#f92672">}</span><span style="color:#f92672">]</span>
-              <span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+db.createUser<span style="color:#ff79c6">(</span><span style="color:#ff79c6">{</span>
+              <span style="color:#f1fa8c">&#34;user&#34;</span>:<span style="color:#f1fa8c">&#34;shop2&#34;</span>,
+              <span style="color:#f1fa8c">&#34;pwd&#34;</span>:<span style="color:#f1fa8c">&#34;123456&#34;</span>,
+             	<span style="color:#f1fa8c">&#34;roles&#34;</span>:<span style="color:#ff79c6">[</span><span style="color:#ff79c6">{</span>
+                       role:<span style="color:#f1fa8c">&#34;readWrite&#34;</span>,
+                       db:<span style="color:#f1fa8c">&#34;shop&#34;</span>
+                       <span style="color:#ff79c6">}</span><span style="color:#ff79c6">]</span>
+              <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 </code></pre></div><h2 id="备份还原">备份还原</h2>
 <p>语法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">在终端中执行，该命令不是mongo命令
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">在终端中执行，该命令不是mongo命令
 导出：mongodump -h -port -u -p -d -o
 导出语法说明
 -h host 服务器IP地址（一般不写 默认本机）
 -port port 端口（不写默认27017）
 -u user 用户
--p pwd 密码
+-p <span style="color:#8be9fd;font-style:italic">pwd</span> 密码
 -d database 数据库（不写默认导出全部）
 -o open 备份到指定目录下
 
-mongodump -u admin -p <span style="color:#ae81ff">123456</span> -o /Users/didi/xzy文件/mongo
-<span style="color:#75715e">#注意 最新的mongodb版本4.4中，是没有mongodump工具的，需要通过使用brew命令单独下载</span>
-<span style="color:#75715e">#brew install mongodb-database-tools</span>
+mongodump -u admin -p <span style="color:#bd93f9">123456</span> -o /Users/didi/xzy文件/mongo
+<span style="color:#6272a4">#注意 最新的mongodb版本4.4中，是没有mongodump工具的，需要通过使用brew命令单独下载</span>
+<span style="color:#6272a4">#brew install mongodb-database-tools</span>
 
 单独备份一个指定数据库：
-mongodump -u shop2 -p <span style="color:#ae81ff">123456</span> -d shop -o /Users/didi/xzy文件/mongo
-<span style="color:#75715e">#此时好像不能使用admin作为用户来备份，可能是因为这个不是创建在shop中的用户？</span>
+mongodump -u shop2 -p <span style="color:#bd93f9">123456</span> -d shop -o /Users/didi/xzy文件/mongo
+<span style="color:#6272a4">#此时好像不能使用admin作为用户来备份，可能是因为这个不是创建在shop中的用户？</span>
 </code></pre></div><h2 id="mongoose">Mongoose</h2>
 <p>官方：http://mongoosejs.com</p>
 <p>中文：http://mongosejs.net/</p>
@@ -728,90 +774,90 @@ mongodump -u shop2 -p <span style="color:#ae81ff">123456</span> -d shop -o /User
 <p>能过通过Node语法实现MongoDB数据库CURD</p>
 <p>从而实现使用node写程序</p>
 <p>下载：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm i mongoose
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm i mongoose
 或者
 yarn add mongoose
 </code></pre></div><h2 id="java使用">Java使用</h2>
 <h3 id="添加依赖">添加依赖</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">    <span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-test<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-        <span style="color:#f92672">&lt;/dependency&gt;</span>
-        <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spring-boot-starter-data-mongodb<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;/dependency&gt;</span>
-    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">    <span style="color:#ff79c6">&lt;dependencies</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+            <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+            <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-test<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+            <span style="color:#ff79c6">&lt;scope</span><span style="color:#ff79c6">&gt;</span>test<span style="color:#ff79c6">&lt;/scope&gt;</span>
+        <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+        <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+            <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.springframework.boot<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+            <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spring-boot-starter-data-mongodb<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+        <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+    <span style="color:#ff79c6">&lt;/dependencies&gt;</span>
 </code></pre></div><h3 id="配置属性文件applictionyml">配置属性文件（appliction.yml）</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">spiring:
-	<span style="color:#75715e">#数据源配置</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">spiring:
+	<span style="color:#6272a4">#数据源配置</span>
 	data:
 		mongodb:
-			<span style="color:#75715e">#主机地址</span>
-			<span style="color:#66d9ef">host</span>: locahost
-			<span style="color:#75715e">#数据库</span>
-			<span style="color:#66d9ef">database</span>: test
-			<span style="color:#75715e">#默认端口时27017</span>
-			port:	<span style="color:#ae81ff">27017</span>
-			<span style="color:#75715e">#也可以使用url连接</span>
-			<span style="color:#75715e">#url:mongodb://localhost:27017/test</span>
+			<span style="color:#6272a4">#主机地址</span>
+			<span style="color:#ff79c6">host</span>: locahost
+			<span style="color:#6272a4">#数据库</span>
+			<span style="color:#ff79c6">database</span>: test
+			<span style="color:#6272a4">#默认端口时27017</span>
+			port:	<span style="color:#bd93f9">27017</span>
+			<span style="color:#6272a4">#也可以使用url连接</span>
+			<span style="color:#6272a4">#url:mongodb://localhost:27017/test</span>
 </code></pre></div><h3 id="添加数据">添加数据</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">(</span>{
-  <span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#960050;background-color:#1e0010">1</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#f92672">&#34;我们不应该吧清晨浪费在手机上，哈哈&#34;</span>,
-  <span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">e</span> <span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#960050;background-color:#1e0010">1</span><span style="color:#960050;background-color:#1e0010">0</span><span style="color:#960050;background-color:#1e0010">0</span><span style="color:#960050;background-color:#1e0010">2</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">k</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#f92672">&#34;Aoi&#34;</span>
-}<span style="color:#960050;background-color:#1e0010">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">db.comment.insert({
+  _id:&#39;1&#39;,
+  content:<span style="color:#ff79c6">&#34;我们不应该吧清晨浪费在手机上，哈哈&#34;</span>,
+  pulishtime :null,
+  userid:&#39;1002&#39;,
+  nickname:<span style="color:#ff79c6">&#34;Aoi&#34;</span>
+})
 </code></pre></div><h3 id="创建分页">创建分页</h3>
 <p>在CommentReposity中添加方法</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CommentRepository</span> <span style="color:#66d9ef">extends</span> MongoRepository<span style="color:#f92672">&lt;</span>Comment<span style="color:#f92672">,</span>String<span style="color:#f92672">&gt;</span><span style="color:#f92672">{</span>
-  <span style="color:#75715e">//方法名根据已有字段来设置，Mongo会提示，拼写错误则无法使用
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">//第一个参数是查询条件，第二个是分页
-</span><span style="color:#75715e"></span>  Page<span style="color:#f92672">&lt;</span>Comment<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findByParentid</span><span style="color:#f92672">(</span>String parentid<span style="color:#f92672">,</span>Pageable pageable<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">interface</span> <span style="color:#50fa7b">CommentRepository</span> <span style="color:#8be9fd;font-style:italic">extends</span> MongoRepository<span style="color:#ff79c6">&lt;</span>Comment<span style="color:#ff79c6">,</span>String<span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">{</span>
+  <span style="color:#6272a4">//方法名根据已有字段来设置，Mongo会提示，拼写错误则无法使用
+</span><span style="color:#6272a4"></span>  <span style="color:#6272a4">//第一个参数是查询条件，第二个是分页
+</span><span style="color:#6272a4"></span>  Page<span style="color:#ff79c6">&lt;</span>Comment<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">findByParentid</span><span style="color:#ff79c6">(</span>String parentid<span style="color:#ff79c6">,</span>Pageable pageable<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><p>在Service中添加该方法</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Page<span style="color:#f92672">&lt;</span>Comment<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findCommentListByParentid</span><span style="color:#f92672">(</span>String parentid<span style="color:#f92672">,</span><span style="color:#66d9ef">int</span> page<span style="color:#f92672">,</span><span style="color:#66d9ef">int</span> size<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-  <span style="color:#75715e">//之所以-1是因为索引从0开始  
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> commentRepository<span style="color:#f92672">.</span><span style="color:#a6e22e">findByParentid</span><span style="color:#f92672">(</span>parentid<span style="color:#f92672">,</span> PageRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>page<span style="color:#f92672">-</span>1<span style="color:#f92672">,</span>size<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> Page<span style="color:#ff79c6">&lt;</span>Comment<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">findCommentListByParentid</span><span style="color:#ff79c6">(</span>String parentid<span style="color:#ff79c6">,</span><span style="color:#8be9fd">int</span> page<span style="color:#ff79c6">,</span><span style="color:#8be9fd">int</span> size<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+  <span style="color:#6272a4">//之所以-1是因为索引从0开始  
+</span><span style="color:#6272a4"></span>  <span style="color:#ff79c6">return</span> commentRepository<span style="color:#ff79c6">.</span><span style="color:#50fa7b">findByParentid</span><span style="color:#ff79c6">(</span>parentid<span style="color:#ff79c6">,</span> PageRequest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">of</span><span style="color:#ff79c6">(</span>page<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">,</span>size<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
 </code></pre></div><h3 id="实现点赞">实现点赞</h3>
 <p>在Service中新增updateThumbup方法</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
-</span><span style="color:#75715e">点赞-效率低
-</span><span style="color:#75715e">@param id
-</span><span style="color:#75715e">*/</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateCommentThumbupToIncrementingOld</span><span style="color:#f92672">(</span>String id<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-  Comment comment <span style="color:#f92672">=</span> commentRepository<span style="color:#f92672">.</span><span style="color:#a6e22e">findById</span><span style="color:#f92672">(</span>id<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-  comment<span style="color:#f92672">.</span><span style="color:#a6e22e">setLikenum</span><span style="color:#f92672">(</span>comment<span style="color:#f92672">.</span><span style="color:#a6e22e">getLikenum</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">+</span>1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-  CommentRepository<span style="color:#f92672">.</span><span style="color:#a6e22e">save</span><span style="color:#f92672">(</span>comment<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">/*
+</span><span style="color:#6272a4">点赞-效率低
+</span><span style="color:#6272a4">@param id
+</span><span style="color:#6272a4">*/</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">updateCommentThumbupToIncrementingOld</span><span style="color:#ff79c6">(</span>String id<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+  Comment comment <span style="color:#ff79c6">=</span> commentRepository<span style="color:#ff79c6">.</span><span style="color:#50fa7b">findById</span><span style="color:#ff79c6">(</span>id<span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+  comment<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setLikenum</span><span style="color:#ff79c6">(</span>comment<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getLikenum</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">+</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+  CommentRepository<span style="color:#ff79c6">.</span><span style="color:#50fa7b">save</span><span style="color:#ff79c6">(</span>comment<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><p>以上方法效率不高，只需要将点赞数+1就可以，没必要查出所有字段以后再更新所有字段。</p>
 <p>可以使用MongoTemplate类来实现对某列的操作</p>
 <p>（1）修改CommentService</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
-<span style="color:#75715e">//注入MongoTemplate
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Autowired</span>
-<span style="color:#66d9ef">private</span> MongoTemplate mongoTemplate<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#6272a4">//注入MongoTemplate
+</span><span style="color:#6272a4"></span>@Autowired
+<span style="color:#8be9fd;font-style:italic">private</span> MongoTemplate mongoTemplate<span style="color:#ff79c6">;</span>
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateCommentLikenum</span><span style="color:#f92672">(</span>String id<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
-  <span style="color:#75715e">//查询对象
-</span><span style="color:#75715e"></span>  Query query <span style="color:#f92672">=</span> Query<span style="color:#f92672">.</span><span style="color:#a6e22e">query</span><span style="color:#f92672">(</span>Criteria<span style="color:#f92672">.</span><span style="color:#a6e22e">where</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;_id&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>is<span style="color:#f92672">(</span>id<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-  <span style="color:#75715e">//更新对象
-</span><span style="color:#75715e"></span>  Update update <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Update<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-	<span style="color:#75715e">//局部更新，相当于$set
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">//update.set(key,value)
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">//递增$inc
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// update.inc(&#34;likenum&#34;,1)
-</span><span style="color:#75715e"></span>  update<span style="color:#f92672">.</span><span style="color:#a6e22e">inc</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;likenum&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">updateCommentLikenum</span><span style="color:#ff79c6">(</span>String id<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+  <span style="color:#6272a4">//查询对象
+</span><span style="color:#6272a4"></span>  Query query <span style="color:#ff79c6">=</span> Query<span style="color:#ff79c6">.</span><span style="color:#50fa7b">query</span><span style="color:#ff79c6">(</span>Criteria<span style="color:#ff79c6">.</span><span style="color:#50fa7b">where</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_id&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span>is<span style="color:#ff79c6">(</span>id<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+  <span style="color:#6272a4">//更新对象
+</span><span style="color:#6272a4"></span>  Update update <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Update<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+	<span style="color:#6272a4">//局部更新，相当于$set
+</span><span style="color:#6272a4"></span>  <span style="color:#6272a4">//update.set(key,value)
+</span><span style="color:#6272a4"></span>  <span style="color:#6272a4">//递增$inc
+</span><span style="color:#6272a4"></span>  <span style="color:#6272a4">// update.inc(&#34;likenum&#34;,1)
+</span><span style="color:#6272a4"></span>  update<span style="color:#ff79c6">.</span><span style="color:#50fa7b">inc</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;likenum&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
   
-  <span style="color:#75715e">//参数1:查询对象
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">//参数2:更新对象
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">//参数3:集合的名字或实体类的类型Comment.class
-</span><span style="color:#75715e"></span>  mongoTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">updateFirst</span><span style="color:#f92672">(</span>query<span style="color:#f92672">,</span>update<span style="color:#f92672">,</span><span style="color:#e6db74">&#34;comment&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+  <span style="color:#6272a4">//参数1:查询对象
+</span><span style="color:#6272a4"></span>  <span style="color:#6272a4">//参数2:更新对象
+</span><span style="color:#6272a4"></span>  <span style="color:#6272a4">//参数3:集合的名字或实体类的类型Comment.class
+</span><span style="color:#6272a4"></span>  mongoTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">updateFirst</span><span style="color:#ff79c6">(</span>query<span style="color:#ff79c6">,</span>update<span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;comment&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
 </code></pre></div><h1 id="mongodb集群和安全">MongoDB集群和安全</h1>
 <h2 id="副本集">副本集</h2>
 <p>是一组维护相同数据集的Mongod服务，副本集可以提供冗余和高可用性，是所有生产部署的基础。</p>
@@ -839,142 +885,142 @@ yarn add mongoose
 <p>一主一从一仲裁。</p>
 <h3 id="主节点">主节点</h3>
 <p>建立存放数据和日志的目录</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#---------myrs</span>
-<span style="color:#75715e">#主节点</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4">#---------myrs</span>
+<span style="color:#6272a4">#主节点</span>
 mkdir -p /Users/didi/xzy/replica_sets/myrs_27017/log
 mkdir -p /Users/didi/xzy/replica_sets/myrs_27017/data/db
 </code></pre></div><p>新建或修改配置文件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vim /Users/didi/xzy/replica_sets/myrs_27017/mongod.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vim /Users/didi/xzy/replica_sets/myrs_27017/mongod.conf
 </code></pre></div><p>myrs_27017:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">systemLog:
-  <span style="color:#75715e">#MongoDB发送所有日志输出的目标指定为文件</span>
-  <span style="color:#66d9ef">destination</span>: file
-  <span style="color:#75715e">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
-  <span style="color:#66d9ef">path</span>: <span style="color:#e6db74">&#34;/Users/didi/xzy/replica_sets/myrs_27017/log/mongod.log&#34;</span>
-  <span style="color:#75715e">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
-  <span style="color:#66d9ef">logAppend</span>: <span style="color:#66d9ef">true</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">systemLog:
+  <span style="color:#6272a4">#MongoDB发送所有日志输出的目标指定为文件</span>
+  <span style="color:#ff79c6">destination</span>: file
+  <span style="color:#6272a4">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
+  <span style="color:#ff79c6">path</span>: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/replica_sets/myrs_27017/log/mongod.log&#34;</span>
+  <span style="color:#6272a4">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
+  <span style="color:#ff79c6">logAppend</span>: <span style="color:#ff79c6">true</span>
 storage:
-  <span style="color:#75715e">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
-  <span style="color:#66d9ef">dbPath</span>: <span style="color:#e6db74">&#34;/Users/didi/xzy/replica_sets/myrs_27017/data/db&#34;</span>
+  <span style="color:#6272a4">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
+  <span style="color:#ff79c6">dbPath</span>: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/replica_sets/myrs_27017/data/db&#34;</span>
   journal:
-    <span style="color:#75715e">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
-    <span style="color:#66d9ef">enabled</span>: <span style="color:#66d9ef">true</span>
+    <span style="color:#6272a4">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
+    <span style="color:#ff79c6">enabled</span>: <span style="color:#ff79c6">true</span>
 processManagement:
-  <span style="color:#75715e">#启用在后台运行mongos或mongod进程的守护进程模式</span>
-  <span style="color:#66d9ef">fork</span>: <span style="color:#66d9ef">true</span>
-  <span style="color:#75715e">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
-  <span style="color:#66d9ef">pidFilePath</span>: <span style="color:#e6db74">&#34;/Users/didi/xzy/replica_sets/myrs_27017/log/mongod.pid&#34;</span>
+  <span style="color:#6272a4">#启用在后台运行mongos或mongod进程的守护进程模式</span>
+  <span style="color:#ff79c6">fork</span>: <span style="color:#ff79c6">true</span>
+  <span style="color:#6272a4">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
+  <span style="color:#ff79c6">pidFilePath</span>: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/replica_sets/myrs_27017/log/mongod.pid&#34;</span>
 net:
-  <span style="color:#75715e">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
-  <span style="color:#75715e">#bindIpAll:true</span>
-  <span style="color:#75715e">#服务实例绑定的IP</span>
-  <span style="color:#66d9ef">bindIp</span>: localhost
-  <span style="color:#75715e">#bindIp</span>
-  <span style="color:#75715e">#绑定的端口</span>
-  <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">27017</span>
+  <span style="color:#6272a4">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
+  <span style="color:#6272a4">#bindIpAll:true</span>
+  <span style="color:#6272a4">#服务实例绑定的IP</span>
+  <span style="color:#ff79c6">bindIp</span>: localhost
+  <span style="color:#6272a4">#bindIp</span>
+  <span style="color:#6272a4">#绑定的端口</span>
+  <span style="color:#ff79c6">port</span>: <span style="color:#bd93f9">27017</span>
 replication:
-  <span style="color:#75715e">#副本集的名称</span>
-  <span style="color:#66d9ef">replSetName</span>: myrs
+  <span style="color:#6272a4">#副本集的名称</span>
+  <span style="color:#ff79c6">replSetName</span>: myrs
 </code></pre></div><p>启动节点服务：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mongod -f /Users/didi/xzy/replica_sets/myrs_27017/mongod.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mongod -f /Users/didi/xzy/replica_sets/myrs_27017/mongod.conf
 
 mongod --dbpath /Users/didi/xzy/replica_sets/myrs_27017/data/db --logpath /Users/didi/xzy/replica_sets/myrs_27017/log/mongod.log --fork
 </code></pre></div><h3 id="从节点">从节点</h3>
 <p>建立存放数据和日志的目录</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#---------myrs</span>
-<span style="color:#75715e">#从节点</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4">#---------myrs</span>
+<span style="color:#6272a4">#从节点</span>
 mkdir -p /Users/didi/xzy/replica_sets/myrs_27018/log
 mkdir -p /Users/didi/xzy/replica_sets/myrs_27018/data/db
 </code></pre></div><p>新建或修改配置文件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/replica_sets/myrs_27018/mongod.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/replica_sets/myrs_27018/mongod.conf
 </code></pre></div><p>myrs_27018:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemLog:
-  <span style="color:#75715e">#MongoDB发送所有日志输出的目标指定为文件</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemLog:
+  <span style="color:#6272a4">#MongoDB发送所有日志输出的目标指定为文件</span>
   destination: file
-  <span style="color:#75715e">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
-  path: <span style="color:#e6db74">&#34;/Users/didi/xzy/replica_sets/myrs_27018/log/mongod.log&#34;</span>
-  <span style="color:#75715e">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
-  logAppend: true
+  <span style="color:#6272a4">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
+  path: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/replica_sets/myrs_27018/log/mongod.log&#34;</span>
+  <span style="color:#6272a4">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
+  logAppend: <span style="color:#8be9fd;font-style:italic">true</span>
 storage:
-  <span style="color:#75715e">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
-  dbPath: <span style="color:#e6db74">&#34;/Users/didi/xzy/replica_sets/myrs_27018/data/db&#34;</span>
+  <span style="color:#6272a4">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
+  dbPath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/replica_sets/myrs_27018/data/db&#34;</span>
   journal:
-    <span style="color:#75715e">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
-    enabled: true
+    <span style="color:#6272a4">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
+    enabled: <span style="color:#8be9fd;font-style:italic">true</span>
 processManagement:
-  <span style="color:#75715e">#启用在后台运行mongos或mongod进程的守护进程模式</span>
-  fork: true
-  <span style="color:#75715e">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
-  pidFilePath: <span style="color:#e6db74">&#34;/Users/didi/xzy/replica_sets/myrs_27018/log/mongod.pid&#34;</span>
+  <span style="color:#6272a4">#启用在后台运行mongos或mongod进程的守护进程模式</span>
+  fork: <span style="color:#8be9fd;font-style:italic">true</span>
+  <span style="color:#6272a4">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
+  pidFilePath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/replica_sets/myrs_27018/log/mongod.pid&#34;</span>
 net:
-  <span style="color:#75715e">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
-  <span style="color:#75715e">#bindIpAll:true</span>
-  <span style="color:#75715e">#服务实例绑定的IP</span>
+  <span style="color:#6272a4">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
+  <span style="color:#6272a4">#bindIpAll:true</span>
+  <span style="color:#6272a4">#服务实例绑定的IP</span>
   bindIp: localhost
-  <span style="color:#75715e">#bindIp</span>
-  <span style="color:#75715e">#绑定的端口</span>
+  <span style="color:#6272a4">#bindIp</span>
+  <span style="color:#6272a4">#绑定的端口</span>
   port: 27018
 replication:
-  <span style="color:#75715e">#副本集的名称</span>
+  <span style="color:#6272a4">#副本集的名称</span>
   replSetName: myrs
 </code></pre></div><p>启动服务</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongod -f /Users/didi/xzy/replica_sets/myrs_27018/mongod.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongod -f /Users/didi/xzy/replica_sets/myrs_27018/mongod.conf
 
 mongod --dbpath /Users/didi/xzy/replica_sets/myrs_27018/data/db --logpath /Users/didi/xzy/replica_sets/myrs_27018/log/mongod.log --fork
 </code></pre></div><h3 id="仲裁节点">仲裁节点</h3>
 <p>建立存放数据和日志的目录</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#---------myrs</span>
-<span style="color:#75715e">#从节点</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4">#---------myrs</span>
+<span style="color:#6272a4">#从节点</span>
 mkdir -p /Users/didi/xzy/replica_sets/myrs_27019/log
 mkdir -p /Users/didi/xzy/replica_sets/myrs_27019/data/db
 </code></pre></div><p>新建或修改配置文件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/replica_sets/myrs_27019/mongod.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/replica_sets/myrs_27019/mongod.conf
 </code></pre></div><p>myrs_27019:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
-  <span style="color:#75715e">#MongoDB发送所有日志输出的目标指定为文件</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
+  <span style="color:#6272a4">#MongoDB发送所有日志输出的目标指定为文件</span>
   destination: file
-  <span style="color:#75715e">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
-  path: <span style="color:#e6db74">&#34;/Users/didi/xzy/replica_sets/myrs_27019/log/mongod.log&#34;</span>
-  <span style="color:#75715e">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
-  logAppend: true
+  <span style="color:#6272a4">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
+  path: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/replica_sets/myrs_27019/log/mongod.log&#34;</span>
+  <span style="color:#6272a4">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
+  logAppend: <span style="color:#8be9fd;font-style:italic">true</span>
 storage:
-  <span style="color:#75715e">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
-  dbPath: <span style="color:#e6db74">&#34;/Users/didi/xzy/replica_sets/myrs_27019/data/db&#34;</span>
+  <span style="color:#6272a4">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
+  dbPath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/replica_sets/myrs_27019/data/db&#34;</span>
   journal:
-    <span style="color:#75715e">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
-    enabled: true
+    <span style="color:#6272a4">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
+    enabled: <span style="color:#8be9fd;font-style:italic">true</span>
 processManagement:
-  <span style="color:#75715e">#启用在后台运行mongos或mongod进程的守护进程模式</span>
-  fork: true
-  <span style="color:#75715e">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
-  pidFilePath: <span style="color:#e6db74">&#34;/Users/didi/xzy/replica_sets/myrs_27019/log/mongod.pid&#34;</span>
+  <span style="color:#6272a4">#启用在后台运行mongos或mongod进程的守护进程模式</span>
+  fork: <span style="color:#8be9fd;font-style:italic">true</span>
+  <span style="color:#6272a4">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
+  pidFilePath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/replica_sets/myrs_27019/log/mongod.pid&#34;</span>
 net:
-  <span style="color:#75715e">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
-  <span style="color:#75715e">#bindIpAll:true</span>
-  <span style="color:#75715e">#服务实例绑定的IP</span>
+  <span style="color:#6272a4">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
+  <span style="color:#6272a4">#bindIpAll:true</span>
+  <span style="color:#6272a4">#服务实例绑定的IP</span>
   bindIp: localhost
-  <span style="color:#75715e">#bindIp</span>
-  <span style="color:#75715e">#绑定的端口</span>
+  <span style="color:#6272a4">#bindIp</span>
+  <span style="color:#6272a4">#绑定的端口</span>
   port: 27019
 replication:
-  <span style="color:#75715e">#副本集的名称</span>
+  <span style="color:#6272a4">#副本集的名称</span>
   replSetName: myrs
 </code></pre></div><p>启动服务</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongod -f /Users/didi/xzy/replica_sets/myrs_27019/mongod.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongod -f /Users/didi/xzy/replica_sets/myrs_27019/mongod.conf
 
 mongod --dbpath /Users/didi/xzy/replica_sets/myrs_27019/data/db --logpath /Users/didi/xzy/replica_sets/myrs_27019/log/mongod.log --fork
 </code></pre></div><h2 id="连接节点">连接节点</h2>
 <p>使用客户端命令连接任意一个节点，但这里尽量要连接主节点（27017节点）使之成为主节点：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongo --host<span style="color:#f92672">=</span>localhost --port<span style="color:#f92672">=</span>27017
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongo --host<span style="color:#ff79c6">=</span>localhost --port<span style="color:#ff79c6">=</span>27017
 </code></pre></div><p>连入后必须初始化副本才行</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">rs.initiate<span style="color:#f92672">(</span><span style="color:#f92672">)</span>  <span style="color:#75715e">#可加参数configuration</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">rs.initiate<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>  <span style="color:#6272a4">#可加参数configuration</span>
 </code></pre></div><p>初始化之后按一下回车从secondary变为primary</p>
 <p>之后可以使用</p>
 <p>rs.conf()和rs.status()来查看相应的信息</p>
 <h3 id="添加副本从节点">添加副本从节点</h3>
 <p>在主节点添加从节点，将其他成员加入到副本集中</p>
 <p>语法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">rs.add<span style="color:#f92672">(</span>host,arbiterOnly<span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">rs.add<span style="color:#ff79c6">(</span>host,arbiterOnly<span style="color:#ff79c6">)</span>
 </code></pre></div><table>
 <thead>
 <tr>
@@ -997,32 +1043,32 @@ mongod --dbpath /Users/didi/xzy/replica_sets/myrs_27019/data/db --logpath /Users
 </tbody>
 </table>
 <p>主机成员的配置文档：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#960050;background-color:#1e0010">_</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">g</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">O</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">I</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">x</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">g</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">D</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">&gt;</span><span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">v</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  _id:&lt;int&gt;,
+  host:&lt;string&gt;,
+  arbiterOnly:&lt;boolean&gt;,
+  buildIndexes:&lt;boolean&gt;,
+  hidden:&lt;boolean&gt;,
+  priority:&lt;number&gt;,
+  tags:&lt;document&gt;,
+  slaveDelay:&lt;int&gt;,
+  votes:&lt;number&gt;
 }
 </code></pre></div><p>示例：</p>
 <p>将27018的副本节点加添加到副本集汇总：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#e6db74">&#34;localhost:27018&#34;</span><span style="color:#960050;background-color:#1e0010">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">rs.add(<span style="color:#f1fa8c">&#34;localhost:27018&#34;</span>)
 </code></pre></div><h3 id="添加仲裁者节点">添加仲裁者节点</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">,</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">O</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">y</span><span style="color:#960050;background-color:#1e0010">)</span>
-<span style="color:#960050;background-color:#1e0010">或</span>
-<span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">A</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">rs.add(host,arbiterOnly)
+或
+rs.addArb(host)
 
-<span style="color:#960050;background-color:#1e0010">例</span><span style="color:#960050;background-color:#1e0010">子</span><span style="color:#960050;background-color:#1e0010">：</span>
-<span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">A</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#e6db74">&#34;localhost:27019&#34;</span><span style="color:#960050;background-color:#1e0010">)</span>
+例子：
+rs.addArb(<span style="color:#f1fa8c">&#34;localhost:27019&#34;</span>)
 </code></pre></div><h2 id="副本集读写操作">副本集读写操作</h2>
 <p>登陆主节点27017，写入和读取数据：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">g</span><span style="color:#960050;background-color:#1e0010">o</span> <span style="color:#960050;background-color:#1e0010">-</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">t</span> <span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">l</span><span style="color:#960050;background-color:#1e0010">h</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">t</span> <span style="color:#960050;background-color:#1e0010">-</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#960050;background-color:#1e0010">p</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">t</span> <span style="color:#ae81ff">27017</span>
-<span style="color:#960050;background-color:#1e0010">u</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">e</span> <span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">t</span>
-<span style="color:#960050;background-color:#1e0010">d</span><span style="color:#960050;background-color:#1e0010">b</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">c</span><span style="color:#960050;background-color:#1e0010">o</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">m</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">i</span><span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">s</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">r</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">(</span>{<span style="color:#f92672">&#34;articleid&#34;</span>:<span style="color:#e6db74">&#34;100000&#34;</span>,<span style="color:#f92672">&#34;content&#34;</span>:<span style="color:#e6db74">&#34;今天天气真好，阳光明媚&#34;</span>,<span style="color:#f92672">&#34;userid&#34;</span>:<span style="color:#e6db74">&#34;1001&#34;</span>,<span style="color:#f92672">&#34;nickname&#34;</span>:<span style="color:#e6db74">&#34;Aoi&#34;</span>,<span style="color:#f92672">&#34;createdatetime&#34;</span>:<span style="color:#960050;background-color:#1e0010">n</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">w</span> <span style="color:#960050;background-color:#1e0010">D</span><span style="color:#960050;background-color:#1e0010">a</span><span style="color:#960050;background-color:#1e0010">t</span><span style="color:#960050;background-color:#1e0010">e</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#960050;background-color:#1e0010">)</span>}<span style="color:#960050;background-color:#1e0010">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">mongo --host localhost --port <span style="color:#bd93f9">27017</span>
+use test
+db.comment.insert({<span style="color:#ff79c6">&#34;articleid&#34;</span>:<span style="color:#f1fa8c">&#34;100000&#34;</span>,<span style="color:#ff79c6">&#34;content&#34;</span>:<span style="color:#f1fa8c">&#34;今天天气真好，阳光明媚&#34;</span>,<span style="color:#ff79c6">&#34;userid&#34;</span>:<span style="color:#f1fa8c">&#34;1001&#34;</span>,<span style="color:#ff79c6">&#34;nickname&#34;</span>:<span style="color:#f1fa8c">&#34;Aoi&#34;</span>,<span style="color:#ff79c6">&#34;createdatetime&#34;</span>:new Date()})
 
 </code></pre></div><p>登陆从节点：</p>
 <pre><code class="language-jaon" data-lang="jaon">mongo --host localhost --port 27018
@@ -1054,7 +1100,7 @@ rs.slaveOk(false)
 <p>数据的新旧是通过操作日志oplog来对比的。</p>
 <h2 id="springdatamongodb连接副本集">SpringDataMongoDB连接副本集</h2>
 <p>语法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">mongodb://host1,host2,host3/?connect=replicaSet<span style="color:#960050;background-color:#1e0010">&amp;</span>slaveOk=true<span style="color:#960050;background-color:#1e0010">&amp;</span>replicaSet=副本集名字
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">mongodb://host1,host2,host3/?connect=replicaSet&amp;slaveOk=true&amp;replicaSet=副本集名字
 </code></pre></div><p>其中：</p>
 <ul>
 <li>slaveOk=true：开启副本节点读的功能，可实现读写分离。</li>
@@ -1062,18 +1108,18 @@ rs.slaveOk(false)
 </ul>
 <p>示例：</p>
 <p>连接replica set三台服务器（端口27017，27018，27019），直接连接第一个服务器，无论是replica set一部分或者主服务器或者从服务器，写入操作应用在主服务器并且分布查询到从服务器。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">spring</span>: 
-	<span style="color:#75715e">#数据源配置</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#ff79c6">spring</span>: 
+	<span style="color:#6272a4">#数据源配置</span>
 	data:
-		<span style="color:#66d9ef">mongodb</span>: 
-			<span style="color:#75715e">#主机地址</span>
-			<span style="color:#75715e">#host: localhost</span>
-			<span style="color:#75715e">#数据库</span>
-			<span style="color:#75715e">#database: test</span>
-			<span style="color:#75715e">#默认端口号是27017</span>
-			<span style="color:#75715e">#port: 27017</span>
-			<span style="color:#75715e">#也可以使用uri连接</span>
-			<span style="color:#66d9ef">uri</span>: mongodb://localhost:<span style="color:#ae81ff">27017</span>,localhost:<span style="color:#ae81ff">27018</span>,localhost:<span style="color:#ae81ff">27019</span>/test?connect=replicaSet<span style="color:#75715e">&amp;slaveOk=true&amp;replicaSet=myrs</span>
+		<span style="color:#ff79c6">mongodb</span>: 
+			<span style="color:#6272a4">#主机地址</span>
+			<span style="color:#6272a4">#host: localhost</span>
+			<span style="color:#6272a4">#数据库</span>
+			<span style="color:#6272a4">#database: test</span>
+			<span style="color:#6272a4">#默认端口号是27017</span>
+			<span style="color:#6272a4">#port: 27017</span>
+			<span style="color:#6272a4">#也可以使用uri连接</span>
+			<span style="color:#ff79c6">uri</span>: mongodb://localhost:<span style="color:#bd93f9">27017</span>,localhost:<span style="color:#bd93f9">27018</span>,localhost:<span style="color:#bd93f9">27019</span>/test?connect=replicaSet<span style="color:#ff79c6">&amp;slaveOk=true&amp;replicaSet=myrs</span>
 </code></pre></div><h2 id="分片集群">分片集群</h2>
 <p>分片是一种跨多台机器分布数据的方法，MongoDB使用分片来支持具有非常大的数据集和高吞吐量操作的部署。</p>
 <p>换句话说：分片就是将数据拆分，将其分散到不同的机器上的过程。</p>
@@ -1086,7 +1132,7 @@ rs.slaveOk(false)
 </ul>
 <h3 id="第一套副本集">第一套副本集</h3>
 <p>准备存放数据和日志的目录</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#--------------------myshardrs01</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4">#--------------------myshardrs01</span>
 mkdir -p /Users/didi/xzy/sharded_cluster/myshardrs01_27018/log
 mkdir -p /Users/didi/xzy/sharded_cluster/myshardrs01_27018/data/db
 
@@ -1096,39 +1142,39 @@ mkdir -p /Users/didi/xzy/sharded_cluster/myshardrs01_27118/data/db
 mkdir -p /Users/didi/xzy/sharded_cluster/myshardrs01_27218/log
 mkdir -p /Users/didi/xzy/sharded_cluster/myshardrs01_27318/data/db
 </code></pre></div><p>新建或修改配置文件</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/sharded_cluster/myshardrs01_27018/mongod.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/sharded_cluster/myshardrs01_27018/mongod.conf
 </code></pre></div><p>Myshardrs01_27018</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
-  <span style="color:#75715e">#MongoDB发送所有日志输出的目标指定为文件</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
+  <span style="color:#6272a4">#MongoDB发送所有日志输出的目标指定为文件</span>
   destination: file
-  <span style="color:#75715e">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
-  path: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27018/log/mongod.log&#34;</span>
-  <span style="color:#75715e">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
-  logAppend: true
+  <span style="color:#6272a4">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
+  path: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27018/log/mongod.log&#34;</span>
+  <span style="color:#6272a4">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
+  logAppend: <span style="color:#8be9fd;font-style:italic">true</span>
 storage:
-  <span style="color:#75715e">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
-  dbPath: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27018/data/db&#34;</span>
+  <span style="color:#6272a4">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
+  dbPath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27018/data/db&#34;</span>
   journal:
-    <span style="color:#75715e">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
-    enabled: true
+    <span style="color:#6272a4">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
+    enabled: <span style="color:#8be9fd;font-style:italic">true</span>
 processManagement:
-  <span style="color:#75715e">#启用在后台运行mongos或mongod进程的守护进程模式</span>
-  fork: true
-  <span style="color:#75715e">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
-  pidFilePath: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27018/log/mongod.pid&#34;</span>
+  <span style="color:#6272a4">#启用在后台运行mongos或mongod进程的守护进程模式</span>
+  fork: <span style="color:#8be9fd;font-style:italic">true</span>
+  <span style="color:#6272a4">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
+  pidFilePath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27018/log/mongod.pid&#34;</span>
 net:
-  <span style="color:#75715e">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
-  <span style="color:#75715e">#bindIpAll:true</span>
-  <span style="color:#75715e">#服务实例绑定的IP</span>
+  <span style="color:#6272a4">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
+  <span style="color:#6272a4">#bindIpAll:true</span>
+  <span style="color:#6272a4">#服务实例绑定的IP</span>
   bindIp: localhost
-  <span style="color:#75715e">#bindIp</span>
-  <span style="color:#75715e">#绑定的端口</span>
+  <span style="color:#6272a4">#bindIp</span>
+  <span style="color:#6272a4">#绑定的端口</span>
   port: 27018
 replication:
-  <span style="color:#75715e">#副本集的名称</span>
+  <span style="color:#6272a4">#副本集的名称</span>
   replSetName: myshardrs01
 sharding:
-	<span style="color:#75715e">#分片角色</span>
+	<span style="color:#6272a4">#分片角色</span>
 	clusterRole: shardsvr
 </code></pre></div><p>sharding.clusterRole:</p>
 <table>
@@ -1153,114 +1199,114 @@ sharding:
 <p>设置sharding.clusterRole需要mongod示例运行复制。要将实例部署为副本集成员，请使用replSetName设置并指定副本集的名称。</p>
 <p>第二个服务：</p>
 <p>新建或修改配置文件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/sharded_cluster/myshardrs01_27118/mongod.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/sharded_cluster/myshardrs01_27118/mongod.conf
 </code></pre></div><p>Myshardrs01_27118</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
-  <span style="color:#75715e">#MongoDB发送所有日志输出的目标指定为文件</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
+  <span style="color:#6272a4">#MongoDB发送所有日志输出的目标指定为文件</span>
   destination: file
-  <span style="color:#75715e">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
-  path: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27118/log/mongod.log&#34;</span>
-  <span style="color:#75715e">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
-  logAppend: true
+  <span style="color:#6272a4">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
+  path: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27118/log/mongod.log&#34;</span>
+  <span style="color:#6272a4">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
+  logAppend: <span style="color:#8be9fd;font-style:italic">true</span>
 storage:
-  <span style="color:#75715e">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
-  dbPath: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27118/data/db&#34;</span>
+  <span style="color:#6272a4">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
+  dbPath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27118/data/db&#34;</span>
   journal:
-    <span style="color:#75715e">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
-    enabled: true
+    <span style="color:#6272a4">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
+    enabled: <span style="color:#8be9fd;font-style:italic">true</span>
 processManagement:
-  <span style="color:#75715e">#启用在后台运行mongos或mongod进程的守护进程模式</span>
-  fork: true
-  <span style="color:#75715e">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
-  pidFilePath: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27118/log/mongod.pid&#34;</span>
+  <span style="color:#6272a4">#启用在后台运行mongos或mongod进程的守护进程模式</span>
+  fork: <span style="color:#8be9fd;font-style:italic">true</span>
+  <span style="color:#6272a4">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
+  pidFilePath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27118/log/mongod.pid&#34;</span>
 net:
-  <span style="color:#75715e">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
-  <span style="color:#75715e">#bindIpAll:true</span>
-  <span style="color:#75715e">#服务实例绑定的IP</span>
+  <span style="color:#6272a4">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
+  <span style="color:#6272a4">#bindIpAll:true</span>
+  <span style="color:#6272a4">#服务实例绑定的IP</span>
   bindIp: localhost
-  <span style="color:#75715e">#bindIp</span>
-  <span style="color:#75715e">#绑定的端口</span>
+  <span style="color:#6272a4">#bindIp</span>
+  <span style="color:#6272a4">#绑定的端口</span>
   port: 27118
 replication:
-  <span style="color:#75715e">#副本集的名称</span>
+  <span style="color:#6272a4">#副本集的名称</span>
   replSetName: myshardrs01
 sharding:
-	<span style="color:#75715e">#分片角色</span>
+	<span style="color:#6272a4">#分片角色</span>
 	clusterRole: shardsvr
 </code></pre></div><p>第三个服务：</p>
 <p>新建或修改配置文件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/sharded_cluster/myshardrs01_27218/mongod.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/sharded_cluster/myshardrs01_27218/mongod.conf
 </code></pre></div><p>Myshardrs01_27218</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
-  <span style="color:#75715e">#MongoDB发送所有日志输出的目标指定为文件</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
+  <span style="color:#6272a4">#MongoDB发送所有日志输出的目标指定为文件</span>
   destination: file
-  <span style="color:#75715e">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
-  path: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27218/log/mongod.log&#34;</span>
-  <span style="color:#75715e">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
-  logAppend: true
+  <span style="color:#6272a4">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
+  path: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27218/log/mongod.log&#34;</span>
+  <span style="color:#6272a4">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
+  logAppend: <span style="color:#8be9fd;font-style:italic">true</span>
 storage:
-  <span style="color:#75715e">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
-  dbPath: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27218/data/db&#34;</span>
+  <span style="color:#6272a4">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
+  dbPath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27218/data/db&#34;</span>
   journal:
-    <span style="color:#75715e">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
-    enabled: true
+    <span style="color:#6272a4">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
+    enabled: <span style="color:#8be9fd;font-style:italic">true</span>
 processManagement:
-  <span style="color:#75715e">#启用在后台运行mongos或mongod进程的守护进程模式</span>
-  fork: true
-  <span style="color:#75715e">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
-  pidFilePath: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27218/log/mongod.pid&#34;</span>
+  <span style="color:#6272a4">#启用在后台运行mongos或mongod进程的守护进程模式</span>
+  fork: <span style="color:#8be9fd;font-style:italic">true</span>
+  <span style="color:#6272a4">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
+  pidFilePath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myshardrs01_27218/log/mongod.pid&#34;</span>
 net:
-  <span style="color:#75715e">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
-  <span style="color:#75715e">#bindIpAll:true</span>
-  <span style="color:#75715e">#服务实例绑定的IP</span>
+  <span style="color:#6272a4">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
+  <span style="color:#6272a4">#bindIpAll:true</span>
+  <span style="color:#6272a4">#服务实例绑定的IP</span>
   bindIp: localhost
-  <span style="color:#75715e">#bindIp</span>
-  <span style="color:#75715e">#绑定的端口</span>
+  <span style="color:#6272a4">#bindIp</span>
+  <span style="color:#6272a4">#绑定的端口</span>
   port: 27218
 replication:
-  <span style="color:#75715e">#副本集的名称</span>
+  <span style="color:#6272a4">#副本集的名称</span>
   replSetName: myshardrs01
 sharding:
-	<span style="color:#75715e">#分片角色</span>
+	<span style="color:#6272a4">#分片角色</span>
 	clusterRole: shardsvr
 </code></pre></div><h3 id="第二个副本集">第二个副本集</h3>
 <p>创建三个服务，将端口和存储路径以及副本集名称改为myshardrs02即可，其他都相同</p>
 <h3 id="配置集">配置集</h3>
 <p>同样创建三个服务</p>
 <p>新建或修改配置文件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/sharded_cluster/myconfigrs_27019/mongod.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/sharded_cluster/myconfigrs_27019/mongod.conf
 </code></pre></div><p>Myconfigrs_27019:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
-  <span style="color:#75715e">#MongoDB发送所有日志输出的目标指定为文件</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
+  <span style="color:#6272a4">#MongoDB发送所有日志输出的目标指定为文件</span>
   destination: file
-  <span style="color:#75715e">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
-  path: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myconfigrs_27019/log/mongod.log&#34;</span>
-  <span style="color:#75715e">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
-  logAppend: true
+  <span style="color:#6272a4">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
+  path: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myconfigrs_27019/log/mongod.log&#34;</span>
+  <span style="color:#6272a4">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
+  logAppend: <span style="color:#8be9fd;font-style:italic">true</span>
 storage:
-  <span style="color:#75715e">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
-  dbPath: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myconfigrs_27019/data/db&#34;</span>
+  <span style="color:#6272a4">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
+  dbPath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myconfigrs_27019/data/db&#34;</span>
   journal:
-    <span style="color:#75715e">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
-    enabled: true
+    <span style="color:#6272a4">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
+    enabled: <span style="color:#8be9fd;font-style:italic">true</span>
 processManagement:
-  <span style="color:#75715e">#启用在后台运行mongos或mongod进程的守护进程模式</span>
-  fork: true
-  <span style="color:#75715e">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
-  pidFilePath: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/myconfigrs_27019/log/mongod.pid&#34;</span>
+  <span style="color:#6272a4">#启用在后台运行mongos或mongod进程的守护进程模式</span>
+  fork: <span style="color:#8be9fd;font-style:italic">true</span>
+  <span style="color:#6272a4">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
+  pidFilePath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/myconfigrs_27019/log/mongod.pid&#34;</span>
 net:
-  <span style="color:#75715e">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
-  <span style="color:#75715e">#bindIpAll:true</span>
-  <span style="color:#75715e">#服务实例绑定的IP</span>
+  <span style="color:#6272a4">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
+  <span style="color:#6272a4">#bindIpAll:true</span>
+  <span style="color:#6272a4">#服务实例绑定的IP</span>
   bindIp: localhost
-  <span style="color:#75715e">#bindIp</span>
-  <span style="color:#75715e">#绑定的端口</span>
+  <span style="color:#6272a4">#bindIp</span>
+  <span style="color:#6272a4">#绑定的端口</span>
   port: 27019
 replication:
-  <span style="color:#75715e">#副本集的名称</span>
+  <span style="color:#6272a4">#副本集的名称</span>
   replSetName: myconfigrs
 sharding:
-	<span style="color:#75715e">#分片角色</span>
+	<span style="color:#6272a4">#分片角色</span>
 	clusterRole: configsvr
 </code></pre></div><h3 id="初始化副本集">初始化副本集</h3>
 <p>与上面连接节点处相同</p>
@@ -1268,65 +1314,65 @@ sharding:
 <h3 id="路由集">路由集</h3>
 <p>是mongos的服务，不是mongod的服务</p>
 <p>第一步：准备存放日志的目录：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#-------------------mongos01  路由节点不存放数据，所以不需要存放数据的目录</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4">#-------------------mongos01  路由节点不存放数据，所以不需要存放数据的目录</span>
 mkdir /Users/didi/xzy/sharded_cluster/mymongos_27019/log
 </code></pre></div><p>Mymongos_27017:</p>
 <p>新建或修改配置文件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/sharded_cluster/mymongos_27017/mongos.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /Users/didi/xzy/sharded_cluster/mymongos_27017/mongos.conf
 </code></pre></div><p>mongos.conf</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
-  <span style="color:#75715e">#MongoDB发送所有日志输出的目标指定为文件</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">systemLog:
+  <span style="color:#6272a4">#MongoDB发送所有日志输出的目标指定为文件</span>
   destination: file
-  <span style="color:#75715e">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
-  path: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/mymongos_27017/log/mongod.log&#34;</span>
-  <span style="color:#75715e">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
-  logAppend: true
+  <span style="color:#6272a4">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径</span>
+  path: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/mymongos_27017/log/mongod.log&#34;</span>
+  <span style="color:#6272a4">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。</span>
+  logAppend: <span style="color:#8be9fd;font-style:italic">true</span>
 storage:
-  <span style="color:#75715e">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
-  dbPath: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/mymongos_27017/data/db&#34;</span>
+  <span style="color:#6272a4">#mongod实例存储其数据的目录，storage.dbPath设置仅适用于mongod。</span>
+  dbPath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/mymongos_27017/data/db&#34;</span>
   journal:
-    <span style="color:#75715e">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
-    enabled: true
+    <span style="color:#6272a4">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。</span>
+    enabled: <span style="color:#8be9fd;font-style:italic">true</span>
 processManagement:
-  <span style="color:#75715e">#启用在后台运行mongos或mongod进程的守护进程模式</span>
-  fork: true
-  <span style="color:#75715e">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
-  pidFilePath: <span style="color:#e6db74">&#34;/Users/didi/xzy/sharded_cluster/mymongos_27017/log/mongod.pid&#34;</span>
+  <span style="color:#6272a4">#启用在后台运行mongos或mongod进程的守护进程模式</span>
+  fork: <span style="color:#8be9fd;font-style:italic">true</span>
+  <span style="color:#6272a4">#指定用于保存mongos或mongod进程的进程ID的文件位置，其中mongos或mongod将写入其PID</span>
+  pidFilePath: <span style="color:#f1fa8c">&#34;/Users/didi/xzy/sharded_cluster/mymongos_27017/log/mongod.pid&#34;</span>
 net:
-  <span style="color:#75715e">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
-  <span style="color:#75715e">#bindIpAll:true</span>
-  <span style="color:#75715e">#服务实例绑定的IP</span>
+  <span style="color:#6272a4">#服务实例绑定所有IP，有副作用，副本集初始化的时候，节点名字会自动设置为本地域名，而不是ip</span>
+  <span style="color:#6272a4">#bindIpAll:true</span>
+  <span style="color:#6272a4">#服务实例绑定的IP</span>
   bindIp: localhost
-  <span style="color:#75715e">#bindIp</span>
-  <span style="color:#75715e">#绑定的端口</span>
+  <span style="color:#6272a4">#bindIp</span>
+  <span style="color:#6272a4">#绑定的端口</span>
   port: 27017
 sharding:
-	<span style="color:#75715e">#指定配置节点副本集</span>
+	<span style="color:#6272a4">#指定配置节点副本集</span>
 	configDB: myconfigrs/localhost:27019,localhost:27119,localhost:27219
 </code></pre></div><p>启动mongos:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongoa -f /Users/didi/xzy/sharded_cluster/mymongos_27017/mongos.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongoa -f /Users/didi/xzy/sharded_cluster/mymongos_27017/mongos.conf
 </code></pre></div><p>此时路由还不能找到分片，所要要添加分片到路由中。</p>
 <p>使用命令添加分片：</p>
 <h3 id="1添加分片">(1)添加分片：</h3>
 <p>语法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sh.addShard<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;IP:Port&#34;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sh.addShard<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;IP:Port&#34;</span><span style="color:#ff79c6">)</span>
 </code></pre></div><p>将第一套副本集添加进来：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongos&gt;
-sh.addShard<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;myshardrs01/localhost:27018,localhost:27118,localhost:27218&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#75715e">#---------------查看分片状况情况</span>
-sh.status<span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongos&gt;
+sh.addShard<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;myshardrs01/localhost:27018,localhost:27118,localhost:27218&#34;</span><span style="color:#ff79c6">)</span>
+<span style="color:#6272a4">#---------------查看分片状况情况</span>
+sh.status<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
 </code></pre></div><p>将第二套副本集添加进来：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongos&gt;
-sh.addShard<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;myshardrs01/localhost:27318,localhost:27418,localhost:27518&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#75715e">#---------------查看分片状况情况</span>
-sh.status<span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mongos&gt;
+sh.addShard<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;myshardrs01/localhost:27318,localhost:27418,localhost:27518&#34;</span><span style="color:#ff79c6">)</span>
+<span style="color:#6272a4">#---------------查看分片状况情况</span>
+sh.status<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
 </code></pre></div><h3 id="2开启分片功能">(2)开启分片功能</h3>
 <p>sh.enableSharding(&ldquo;库名&rdquo;)、sh.shardCollection(&ldquo;库名.集合名&rdquo;,{&ldquo;key&rdquo;:1})</p>
 <pre><code>sh.enableSharding(&quot;&quot;)
 </code></pre><h3 id="3集合分片">(3)集合分片</h3>
 <p>对集合分片，必须使用sh.shardCollection()方法指定集合和分片键</p>
 <p>语法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sh.shardCollection<span style="color:#f92672">(</span>namespace,key,unique<span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sh.shardCollection<span style="color:#ff79c6">(</span>namespace,key,unique<span style="color:#ff79c6">)</span>
 </code></pre></div><table>
 <thead>
 <tr>
@@ -1354,10 +1400,10 @@ sh.status<span style="color:#f92672">(</span><span style="color:#f92672">)</span
 </tbody>
 </table>
 <p>例如在articled库中的comment集合中，以nickname为键，以哈希策略来分片。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#-------------------------首先开启article库的分片功能</span>
-sh.enableSharding<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;articledb&#34;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4">#-------------------------首先开启article库的分片功能</span>
+sh.enableSharding<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;articledb&#34;</span><span style="color:#ff79c6">)</span>
 
-sh.shardCollection<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;articledb.comment&#34;</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;nickname&#34;</span>:<span style="color:#e6db74">&#34;hashed&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+sh.shardCollection<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;articledb.comment&#34;</span>,<span style="color:#ff79c6">{</span><span style="color:#f1fa8c">&#34;nickname&#34;</span>:<span style="color:#f1fa8c">&#34;hashed&#34;</span><span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span>
 </code></pre></div><p>增加第二个路由节点：</p>
 <p>和创建第一个节点的方式相同，开启服务后不需要再添加分配，会由配置服务自动同步。</p>
 <h1 id="安全认证">安全认证</h1>
@@ -1449,13 +1495,27 @@ sh.shardCollection<span style="color:#f92672">(</span><span style="color:#e6db74
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -1754,16 +1814,6 @@ sh.shardCollection<span style="color:#f92672">(</span><span style="color:#e6db74
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -1776,48 +1826,44 @@ sh.shardCollection<span style="color:#f92672">(</span><span style="color:#e6db74
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1827,7 +1873,19 @@ sh.shardCollection<span style="color:#f92672">(</span><span style="color:#e6db74
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1847,7 +1905,7 @@ sh.shardCollection<span style="color:#f92672">(</span><span style="color:#e6db74
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1865,7 +1923,7 @@ sh.shardCollection<span style="color:#f92672">(</span><span style="color:#e6db74
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1877,12 +1935,76 @@ sh.shardCollection<span style="color:#f92672">(</span><span style="color:#e6db74
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

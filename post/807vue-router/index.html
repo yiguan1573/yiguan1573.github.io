@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>7、vue-router(Vue)-yiguan1573</title>
+    <title>7、vue-router(Vue) | yiguan1573</title>
 
     <link rel="canonical" href="/post/807vue-router/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>7、vue-router(Vue)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Monday, September 21, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Monday, September 21, 2020
+                            
+                                <span id="/post/807vue-router/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -213,57 +339,6 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#后端路由">后端路由</a></li>
-    <li><a href="#前端路由">前端路由</a>
-      <ul>
-        <li><a href="#前后端分离阶段">前后端分离阶段：</a></li>
-        <li><a href="#单页面富应用阶段">单页面富应用阶段:</a></li>
-      </ul>
-    </li>
-  </ul>
-
-  <ul>
-    <li><a href="#url的hash">URL的hash</a></li>
-    <li><a href="#html5的history模式">HTML5的history模式</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#简介">简介</a></li>
-    <li><a href="#安装和使用vue-router">安装和使用vue-router</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#路由的默认路径">路由的默认路径</a></li>
-    <li><a href="#html5的history模式-1">HTML5的History模式</a></li>
-    <li><a href="#router-link补充">router-link补充</a></li>
-    <li><a href="#修改linkactiveclass">修改linkActiveClass</a></li>
-    <li><a href="#路由代码跳转">路由代码跳转</a></li>
-    <li><a href="#动态路由">动态路由</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#简介-1">简介</a></li>
-    <li><a href="#效果">效果</a></li>
-    <li><a href="#懒加载的方式">懒加载的方式</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#传递参数的方式">传递参数的方式</a></li>
-    <li><a href="#获取参数">获取参数</a></li>
-    <li><a href="#route和router">$route和$router</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#简介-2">简介</a></li>
-    <li><a href="#导航守卫使用">导航守卫使用</a></li>
-  </ul>
-</nav>
                 
                 <h1 id="路由的简介">路由的简介</h1>
 <h2 id="后端路由">后端路由</h2>
@@ -297,7 +372,10 @@
 <li>
 <ul>
 <li>我们可以通过直接赋值location.hash来改变href, 但是页面不发生刷新
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbn88jb12j30io08ejso.jpg" alt="图片1.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbn88jb12j30io08ejso.jpg" alt="图片1.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -306,13 +384,22 @@
 <li><strong>history.pushState()</strong>
 <ul>
 <li>history接口是HTML5新增的, 它有五种模式改变URL而不刷新页面.
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbnbdvm0qj30jq08r3zt.jpg" alt="图片2.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbnbdvm0qj30jq08r3zt.jpg" alt="图片2.png">
+
+</li>
 </ul>
 </li>
 <li><strong>history.replaceState()</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbncm8hyfj30ja096gmx.jpg" alt="图片3.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbncm8hyfj30ja096gmx.jpg" alt="图片3.png">
+
+</li>
 <li><strong>history.go()</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbnct8o4hj30ez0a9wfq.jpg" alt="图片4.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbnct8o4hj30ez0a9wfq.jpg" alt="图片4.png">
+
+</li>
 <li>补充
 <ul>
 <li>history.back() 等价于 history.go(-1)</li>
@@ -340,9 +427,15 @@
 <ol>
 <li>导入路由对象，并且调用 Vue.use(VueRouter)</li>
 <li>创建路由实例，并且传入路由映射配置
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbnlfyobuj30wr0h1tcd.jpg" alt="图片5.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbnlfyobuj30wr0h1tcd.jpg" alt="图片5.png">
+
+</li>
 <li>在Vue实例中挂载创建的路由实例
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbnlv1bz8j30wo0fmgov.jpg" alt="图片6.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbnlv1bz8j30wo0fmgov.jpg" alt="图片6.png">
+
+</li>
 </ol>
 </li>
 </ul>
@@ -350,15 +443,27 @@
 <li><strong>使用vue-router的步骤</strong>
 <ul>
 <li>第一步: 创建路由组件
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbtzaoq3oj312g0cdgpr.jpg" alt="图片7.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbtzaoq3oj312g0cdgpr.jpg" alt="图片7.png">
+
+</li>
 <li>第二步: 配置路由映射: 组件和路径映射关系
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbtzpwka8j30u10h3jv9.jpg" alt="图片8.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbtzpwka8j30u10h3jv9.jpg" alt="图片8.png">
+
+</li>
 <li>第三步: 使用路由: 通过<code>&lt;router-link&gt;</code>和<code>&lt;router-view&gt;</code>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbu0202o2j30wn0hc0x2.jpg" alt="图片9.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbu0202o2j30wn0hc0x2.jpg" alt="图片9.png">
+
+</li>
 </ul>
 </li>
 <li>效果
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbu0rls8tj30r60hsjvl.jpg" alt="图片10.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbu0rls8tj30r60hsjvl.jpg" alt="图片10.png">
+
+</li>
 <li><code>&lt;router-link&gt;</code>: 该标签是一个vue-router中已经内置的组件, 它会被渲染成一个<code>&lt;a&gt;</code>标签</li>
 <li><code>&lt;router-view&gt;</code>: 该标签会根据当前的路径, 动态渲染出不同的组件</li>
 <li>在路由切换时, 切换的是<code>&lt;router-view&gt;</code>挂载的组件, 其他内容不会发生改变</li>
@@ -368,7 +473,10 @@
 <ul>
 <li>默认情况下, 进入网站的首页, 我们希望<code>&lt;router-view&gt;</code>渲染首页的内容,但是我们的实现中, 默认没有显示首页组件, 必须让用户点击才可以</li>
 <li>只需要配置多配置一个映射即可
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbu4qfp26j308002zgli.jpg" alt="图片11.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbu4qfp26j308002zgli.jpg" alt="图片11.png">
+
+</li>
 <li><strong>配置解析:</strong>
 <ul>
 <li>在routes中又配置了一个映射.</li>
@@ -381,8 +489,14 @@
 <ul>
 <li>默认情况下, 路径的改变使用的URL的hash</li>
 <li>如果希望使用HTML5的history模式,进行如下配置即可
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbu6oilajj30cd04g3yp.jpg" alt="图片12.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbu6xafwnj30hw0hujtf.jpg" alt="图片13.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbu6oilajj30cd04g3yp.jpg" alt="图片12.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbu6xafwnj30hw0hujtf.jpg" alt="图片13.png">
+
+</li>
 </ul>
 <h2 id="router-link补充">router-link补充</h2>
 <ul>
@@ -400,7 +514,10 @@
 </li>
 <li>
 <p><strong>active-class:</strong> 当<code>&lt;router-link&gt;</code>对应的路由匹配成功时, 会自动给当前元素设置一个router-link-active的class, 设置active-class可以修改默认的名称
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuclubt7j309r01hglp.jpg" alt="图片14.png"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuclubt7j309r01hglp.jpg" alt="图片14.png">
+
+</p>
 </li>
 </ul>
 </li>
@@ -408,14 +525,23 @@
 <h2 id="修改linkactiveclass">修改linkActiveClass</h2>
 <ul>
 <li>上面说的class具体的名称也可以通过router实例的属性进行修改
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbueca137j30wq0hr42y.jpg" alt="图片15.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbueh2ogzj309c023q33.jpg" alt="图片16.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbueca137j30wq0hr42y.jpg" alt="图片15.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbueh2ogzj309c023q33.jpg" alt="图片16.png">
+
+</li>
 <li>exact-active-class，类似于active-class, 只是在精准匹配下才会出现的class.</li>
 </ul>
 <h2 id="路由代码跳转">路由代码跳转</h2>
 <ul>
 <li>有时候, 页面的跳转可能需要执行对应的JavaScript代码, 这个时候, 就可以使用第二种跳转方式了
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbufvoosjj30t20hwgqe.jpg" alt="图片17.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbufvoosjj30t20hwgqe.jpg" alt="图片17.png">
+
+</li>
 </ul>
 <h2 id="动态路由">动态路由</h2>
 <ul>
@@ -424,10 +550,22 @@
 <li>/user/aaaa或/user/bbbb</li>
 <li>除了有前面的/user之外，后面还跟上了用户的ID</li>
 <li>这种path和Component的匹配关系，我们称之为动态路由(也是路由传递数据的一种方式)。
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuhdt6idj308p02qa9x.jpg" alt="图片18.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuho40pcj309y01z0sm.jpg" alt="图片19.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuht8spfj30ej00o0sl.jpg" alt="图片20.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuhwsf0xj30ba052wej.jpg" alt="图片21.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuhdt6idj308p02qa9x.jpg" alt="图片18.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuho40pcj309y01z0sm.jpg" alt="图片19.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuht8spfj30ej00o0sl.jpg" alt="图片20.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuhwsf0xj30ba052wej.jpg" alt="图片21.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -442,11 +580,23 @@
 <h2 id="效果">效果</h2>
 <ul>
 <li><strong>引用后直接使用</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuoqeg1kj30bp09hq3p.jpg" alt="图片22.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuowm5hzj308w040mx6.jpg" alt="图片23.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuoqeg1kj30bp09hq3p.jpg" alt="图片22.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuowm5hzj308w040mx6.jpg" alt="图片23.png">
+
+</li>
 <li><strong>懒加载后再使用</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbup446k4j30d805v0ti.jpg" alt="图片24.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbup9xrkoj309605174e.jpg" alt="图片25.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbup446k4j30d805v0ti.jpg" alt="图片24.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbup9xrkoj309605174e.jpg" alt="图片25.png">
+
+</li>
 </ul>
 <h2 id="懒加载的方式">懒加载的方式</h2>
 <ul>
@@ -467,14 +617,29 @@
 <ul>
 <li>创建对应的子组件, 并且在路由映射中配置对应的子路由.</li>
 <li>在组件内部使用<code>&lt;router-view&gt;</code>标签
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbutmg6iyj316m0fkdk8.jpg" alt="图片26.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuudzxwtj30sv0hvq7g.jpg" alt="图片28.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbutztv1rj30wq0h7q71.jpg" alt="图片27.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuumyirlj30i80hqacl.jpg" alt="图片29.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbutmg6iyj316m0fkdk8.jpg" alt="图片26.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuudzxwtj30sv0hvq7g.jpg" alt="图片28.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbutztv1rj30wq0h7q71.jpg" alt="图片27.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuumyirlj30i80hqacl.jpg" alt="图片29.png">
+
+</li>
 </ul>
 </li>
 <li>嵌套路由也可以配置默认的路径, 配置方式如下: 
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuv4qwr8j30wn0hfwid.jpg" alt="图片30.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbuv4qwr8j30wn0hfwid.jpg" alt="图片30.png">
+
+</li>
 </ul>
 <h1 id="传递参数">传递参数</h1>
 <h2 id="传递参数的方式">传递参数的方式</h2>
@@ -496,14 +661,23 @@
 </li>
 <li>使用的方法有两种：<code>&lt;router-link&gt;</code>的方式和JavaScript代码方式</li>
 <li><strong>传递参数方式一: <code>&lt;router-link&gt;</code></strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbv5swmamj30wo0ee78q.jpg" alt="图片31.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbv5swmamj30wo0ee78q.jpg" alt="图片31.png">
+
+</li>
 <li><strong>传递参数方式二: JavaScript代码</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbv5y7g0kj30wj0ed0w2.jpg" alt="图片32.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbv5y7g0kj30wj0ed0w2.jpg" alt="图片32.png">
+
+</li>
 </ul>
 <h2 id="获取参数">获取参数</h2>
 <ul>
 <li>获取参数通过<code>$</code>route对象获取的,在使用了 vue-router 的应用中，路由对象会被注入每个组件中，赋值为 this.<code>$</code>route ，并且当路由切换时，路由对象会被更新
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbvpbq4mkj30wl0d6gq8.jpg" alt="图片33.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbvpbq4mkj30wl0d6gq8.jpg" alt="图片33.png">
+
+</li>
 </ul>
 <h2 id="route和router"><code>$</code>route和<code>$</code>router</h2>
 <ul>
@@ -528,8 +702,14 @@
 <ul>
 <li>首先, 我们可以在钩子当中定义一些标题, 可以利用meta来定义</li>
 <li>其次, 利用导航守卫,修改我们的标题
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbvx9yk0uj30mr0hv0w8.jpg" alt="图片34.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbvxft8atj30vv0hxdk9.jpg" alt="图片35.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbvx9yk0uj30mr0hv0w8.jpg" alt="图片34.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbvxft8atj30vv0hxdk9.jpg" alt="图片35.png">
+
+</li>
 </ul>
 </li>
 <li><strong>导航钩子的三个参数解析:</strong>
@@ -550,7 +730,10 @@
 <li>include - 字符串或正则表达，只有匹配的组件会被缓存</li>
 <li>exclude - 字符串或正则表达式，任何匹配的组件都不会被缓存</li>
 <li>router-view 也是一个组件，如果直接被包在 keep-alive 里面，所有路径匹配到的视图组件都会被缓存
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbw4qon8ej30ls03wa9z.jpg" alt="图片36.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1glbw4qon8ej30ls03wa9z.jpg" alt="图片36.png">
+
+</li>
 <li>可通过create生命周期函数来验证</li>
 </ul>
 
@@ -572,13 +755,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -877,16 +1074,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -899,48 +1086,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -950,7 +1133,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -970,7 +1165,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -988,7 +1183,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1000,12 +1195,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

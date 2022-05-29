@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>3、组件化开发(Vue)-yiguan1573</title>
+    <title>3、组件化开发(Vue) | yiguan1573</title>
 
     <link rel="canonical" href="/post/803%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>3、组件化开发(Vue)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Sunday, September 13, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Sunday, September 13, 2020
+                            
+                                <span id="/post/803%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,30 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#父级向子级传递">父级向子级传递</a></li>
-    <li><a href="#子级向父级传递">子级向父级传递</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#children">$children</a></li>
-    <li><a href="#refs">$refs</a></li>
-    <li><a href="#parent">$parent</a></li>
-    <li><a href="#非父子组件通信">非父子组件通信</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#编译作用域">编译作用域</a></li>
-    <li><a href="#slot">slot</a></li>
-    <li><a href="#具名插槽slot">具名插槽slot</a></li>
-    <li><a href="#作用域插槽">作用域插槽</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="vue组件化思想">Vue组件化思想</h1>
 <ul>
 <li>组件化是Vue.js中的重要思想
@@ -251,7 +353,10 @@
 <li>有了组件化的思想，我们在之后的开发中就要充分的利用它。</li>
 <li>尽可能的将页面拆分成一个个小的、可复用的组件。</li>
 <li>这样让我们的代码更加方便组织和管理，并且扩展性也更强
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2b9j294j30a4033746.jpg" alt="QQ截图20201101225449.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2b9j294j30a4033746.jpg" alt="QQ截图20201101225449.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -262,8 +367,14 @@
 <li>创建组件构造器</li>
 <li>注册组件</li>
 <li>使用组件
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2cvru4aj309a0ewdi5.jpg" alt="图片1.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2d47t2lj30fz0eudm2.jpg" alt="图片2.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2cvru4aj309a0ewdi5.jpg" alt="图片1.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2d47t2lj30fz0eudm2.jpg" alt="图片2.png">
+
+</li>
 </ol>
 </li>
 <li>Vue.extend()：
@@ -281,14 +392,23 @@
 </ul>
 </li>
 <li>组件必须挂载在某个Vue实例下，否则它不会生效。
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2gr59plj30se0bodjv.jpg" alt="图片3.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2gr59plj30se0bodjv.jpg" alt="图片3.png">
+
+</li>
 </ul>
 <h1 id="全局组件和局部组件">全局组件和局部组件</h1>
 <ul>
 <li><strong>调用Vue.component()注册组件时，组件的注册是全局的，这意味着该组件可以在任意Vue示例下使用</strong></li>
-<li><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2i7zdrqj30k00hpdn3.jpg" alt="图片4.png"></li>
+<li>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2i7zdrqj30k00hpdn3.jpg" alt="图片4.png">
+
+</li>
 <li><strong>如果我们注册的组件是挂载在某个实例中, 那么就是一个局部组件</strong></li>
-<li><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2ifrzrqj30k00irqb3.jpg" alt="图片5.png"></li>
+<li>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2ifrzrqj30k00irqb3.jpg" alt="图片5.png">
+
+</li>
 </ul>
 <h1 id="父组件和子组件">父组件和子组件</h1>
 <ul>
@@ -299,7 +419,10 @@
 <li>该模板的内容已经决定了父组件将要渲染的HTML（相当于父组件中已经有了子组件中的内容了）</li>
 <li><code>&lt;child-cpn/&gt;&lt;child-cpn/&gt;</code>是只能在父组件中被识别的。</li>
 <li>类似这种用法，<code>&lt;child-cpn&gt;&lt;/child-cpn&gt;</code>是会被浏览器忽略的
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2nl3b4pj30k00jn482.jpg" alt="图片6.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2nl3b4pj30k00jn482.jpg" alt="图片6.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -309,8 +432,14 @@
 <ul>
 <li>Vue为了简化这个过程，提供了注册的语法糖。</li>
 <li>主要是省去了调用Vue.extend()的步骤，而是可以直接使用一个对象来代替
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2pwuy08j30k006dgp9.jpg" alt="图片7.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2q46r7fj30k008en17.jpg" alt="图片8.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2pwuy08j30k006dgp9.jpg" alt="图片7.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2q46r7fj30k008en17.jpg" alt="图片8.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -320,8 +449,14 @@
 <ul>
 <li>使用<code>&lt;script&gt;</code>标签</li>
 <li>使用<code>&lt;template&gt;</code>标签
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2u2zuzwj30e10dngn0.jpg" alt="图片9.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2u82aiyj30cg0dg79g.jpg" alt="图片10.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2u2zuzwj30e10dngn0.jpg" alt="图片9.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2u82aiyj30cg0dg79g.jpg" alt="图片10.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -331,12 +466,18 @@
 <li>组件对象也有一个data属性(也可以有methods等属性，下面我们有用到)</li>
 <li>只是这个data属性必须是一个函数</li>
 <li>而且这个函数返回一个对象，对象内部保存着数据
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2wil59kj30hs0f5wkl.jpg" alt="图片11.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2wil59kj30hs0f5wkl.jpg" alt="图片11.png">
+
+</li>
 <li><strong>为什么data在组件中必须是一个函数呢?</strong>
 <ul>
 <li>首先，如果不是一个函数，Vue直接就会报错。</li>
 <li>其次，原因是在于Vue让每个组件对象都返回一个新的对象，因为如果是同一个对象的，组件在多次使用后会相互影响
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2zh279nj30k00jxgty.jpg" alt="图片12.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka2zh279nj30k00jxgty.jpg" alt="图片12.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -353,7 +494,10 @@
 <ul>
 <li>通过props向子组件传递数据</li>
 <li>通过事件向父组件发送消息
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka32h359mj30fo06x0sx.jpg" alt="图片13.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka32h359mj30fo06x0sx.jpg" alt="图片13.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -364,7 +508,10 @@
 <ul>
 <li>方式一：字符串数组，数组中的字符串就是传递时的名称。</li>
 <li>方式二：对象，对象可以设置传递时的类型，也可以设置默认值等
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka35vhdc2j31030ex774.jpg" alt="图片14.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka35vhdc2j31030ex774.jpg" alt="图片14.png">
+
+</li>
 </ul>
 </li>
 <li>除了数组之外，我们也可以使用对象，当需要对props进行类型等验证时，就需要对象写法了</li>
@@ -381,8 +528,14 @@
 </ul>
 </li>
 <li>当我们有自定义构造函数时，验证也支持自定义的类型
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka3yebleaj30bp06bt8y.jpg" alt="图片15.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka3yjw9aqj30h70kc763.jpg" alt="图片16.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka3yebleaj30bp06bt8y.jpg" alt="图片15.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka3yjw9aqj30h70kc763.jpg" alt="图片16.png">
+
+</li>
 </ul>
 <h2 id="子级向父级传递">子级向父级传递</h2>
 <ul>
@@ -398,7 +551,10 @@
 <li>我们之前做过一个两个按钮+1和-1，点击后修改counter。</li>
 <li>我们整个操作的过程还是在子组件中完成，但是之后的展示交给父组件。</li>
 <li>这样，我们就需要将子组件中的counter，传给父组件的某个属性，比如total
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka40j4rssj314v0kd0wo.jpg" alt="图片17.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gka40j4rssj314v0kd0wo.jpg" alt="图片17.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -412,20 +568,32 @@
 </li>
 </ul>
 <h2 id="children">$children</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4p505skj30w70kvtf4.jpg" alt="图片1.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4p505skj30w70kvtf4.jpg" alt="图片1.png">
+
+</p>
 <h2 id="refs">$refs</h2>
 <ul>
 <li>通过<code>$</code>children访问子组件时，是一个数组类型，访问其中的子组件必须通过索引值。但是当子组件过多，我们需要拿到其中一个时，往往不能确定它的索引值，甚至还可能会发生变化。想明确获取其中一个特定的组件，这个时候就可以使用<code>$</code>refs</li>
 <li><code>$</code>refs和ref指令通常是一起使用的,首先，我们通过ref给某一个子组件绑定一个特定的ID。其次，通过this.$refs.ID就可以访问到该组件了
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4ud7gddj30g6025wen.jpg" alt="图片2.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4uhzyl2j30da02hgll.jpg" alt="图片3.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4ud7gddj30g6025wen.jpg" alt="图片2.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4uhzyl2j30da02hgll.jpg" alt="图片3.png">
+
+</li>
 </ul>
 <h2 id="parent">$parent</h2>
 <ul>
 <li><strong>尽管在Vue开发中，我们允许通过$parent来访问父组件，但是在真实开发中尽量不要这样做，子组件应该尽量避免直接访问父组件的数据，因为这样耦合度太高了</strong></li>
 <li>如果我们将子组件放在另外一个组件之内，很可能该父组件没有对应的属性，往往会引起问题</li>
 <li>另外，更不好做的是通过$parent直接修改父组件的状态，那么父组件中的状态将变得飘忽不定，很不利于我的调试和维护
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4wd0jqrj30up0k041p.jpg" alt="图片4.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkr4wd0jqrj30up0k041p.jpg" alt="图片4.png">
+
+</li>
 </ul>
 <h2 id="非父子组件通信">非父子组件通信</h2>
 <ul>
@@ -454,7 +622,10 @@
 <ul>
 <li><code>&lt;</code>my-cpn v-show=&quot;isShow&quot;&gt;&lt;/&gt;中，我们使用了isShow属性。</li>
 <li>isShow属性包含在组件中，也包含在Vue实例中。
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkt9kng81xj30eq0fzdha.jpg" alt="图片1.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkt9kng81xj30eq0fzdha.jpg" alt="图片1.png">
+
+</li>
 </ul>
 </li>
 <li>答案：最终可以渲染出来，也就是使用的是Vue实例的属性</li>
@@ -465,22 +636,40 @@
 <ul>
 <li>组件的插槽也是为了让我们封装的组件更加具有扩展性</li>
 <li><strong><code>&lt;</code>slot&gt;中的内容表示，如果没有在该组件中插入任何其他内容，就默认显示该内容</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkt9o7yz5kj30cd09pmxz.jpg" alt="图片2.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkt9odisxej30ih057wfj.jpg" alt="图片3.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkt9o7yz5kj30cd09pmxz.jpg" alt="图片2.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gkt9odisxej30ih057wfj.jpg" alt="图片3.png">
+
+</li>
 </ul>
 <h2 id="具名插槽slot">具名插槽slot</h2>
 <ul>
 <li>当子组件的功能复杂时，子组件的插槽可能并非是一个。这个时候，我们就需要给插槽起一个名字
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktad2s40vj30co0b175b.jpg" alt="图片4.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktad8gw5xj30kc0af40f.jpg" alt="图片5.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktad2s40vj30co0b175b.jpg" alt="图片4.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktad8gw5xj30kc0af40f.jpg" alt="图片5.png">
+
+</li>
 </ul>
 <h2 id="作用域插槽">作用域插槽</h2>
 <ul>
 <li>父组件替换插槽的标签，但是内容由子组件来提供</li>
 <li>子组件中包括一组数据，需要在多个界面进行展示，某些界面是以水平方向一一展示的，某些界面是以列表形式展示的，某些界面直接展示一个数组
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktai4fulqj30hh0b075b.jpg" alt="图片6.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktai4fulqj30hh0b075b.jpg" alt="图片6.png">
+
+</li>
 <li>在父组件使用我们的子组件时，从子组件中拿到数据，通过<code>&lt;</code>template slot-scope=&quot;slotProps&quot;&gt;获取到slotProps属性，在通过slotProps.data就可以获取到刚才我们传入的data了
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktaiaa5srj30r80bmjt1.jpg" alt="图片7.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gktaiaa5srj30r80bmjt1.jpg" alt="图片7.png">
+
+</li>
 </ul>
 
 
@@ -501,13 +690,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -806,16 +1009,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -828,48 +1021,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -879,7 +1068,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -899,7 +1100,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -917,7 +1118,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -929,12 +1130,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

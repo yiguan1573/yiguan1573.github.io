@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>5、工厂模式(设计模式)-yiguan1573</title>
+    <title>5、工厂模式(设计模式) | yiguan1573</title>
 
     <link rel="canonical" href="/post/705%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>5、工厂模式(设计模式)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Wednesday, August 19, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Wednesday, August 19, 2020
+                            
+                                <span id="/post/705%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,31 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#需求">需求</a></li>
-    <li><a href="#使用传统的方式来完成">使用传统的方式来完成</a></li>
-    <li><a href="#传统的方式的优缺点">传统的方式的优缺点</a></li>
-    <li><a href="#基本介绍">基本介绍</a></li>
-    <li><a href="#使用简单工厂模式">使用简单工厂模式</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#新的需求">新的需求</a></li>
-    <li><a href="#思路">思路</a></li>
-    <li><a href="#工厂方法模式介绍">工厂方法模式介绍</a></li>
-    <li><a href="#工厂方法模式应用案例">工厂方法模式应用案例</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#基本介绍-1">基本介绍</a></li>
-    <li><a href="#抽象工厂模式应用实例">抽象工厂模式应用实例</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="简单工厂模式">简单工厂模式</h1>
 <h2 id="需求">需求</h2>
 <ul>
@@ -250,17 +351,29 @@
 <h2 id="使用传统的方式来完成">使用传统的方式来完成</h2>
 <ul>
 <li>思路分析(类图)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6lw1seo9j30fv07cjsq.jpg" alt="QQ截图20200828162847.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6lw1seo9j30fv07cjsq.jpg" alt="QQ截图20200828162847.png">
+
+</li>
 <li>编写 OrderPizza.java 去订购需要的各种 Pizza
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6lzscyysj30li01sdfm.jpg" alt="QQ截图20200828163244.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6lzyxd3kj30mz0s7myf.jpg" alt="QQ截图20200828163253.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6lzscyysj30li01sdfm.jpg" alt="QQ截图20200828163244.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6lzyxd3kj30mz0s7myf.jpg" alt="QQ截图20200828163253.png">
+
+</li>
 </ul>
 <h2 id="传统的方式的优缺点">传统的方式的优缺点</h2>
 <ul>
 <li>优点是比较好理解，简单易操作。</li>
 <li>缺点是违反了设计模式的 ocp 原则，即对扩展开放，对修改关闭。即当我们给类增加新功能的时候，尽量不修改代码，或者尽可能少修改代码.</li>
 <li>比如我们这时要新增加一个 Pizza 的种类(Pepper 披萨)，我们需要做如下修改. 如果我们增加一个 Pizza 类，只要是订购 Pizza 的代码都需要修改
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6m168h30j30gs07q0ws.jpg" alt="QQ截图20200828163414.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6m168h30j30gs07q0ws.jpg" alt="QQ截图20200828163414.png">
+
+</li>
 <li>改进的思路分析
 <ul>
 <li>把创建 Pizza 对象封装到一个类中，这样我们有新的 Pizza 种类时，只需要修改该类就可，其它有创建到 Pizza对象的代码就不需要修改了&ndash;&gt; 简单工厂模式</li>
@@ -276,13 +389,31 @@
 <h2 id="使用简单工厂模式">使用简单工厂模式</h2>
 <ul>
 <li>简单工厂模式的设计方案: 定义一个可以实例化 Pizaa 对象的类，封装创建对象的代码
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6m39u31bj30ip0dbdiu.jpg" alt="QQ截图20200828163603.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6m39u31bj30ip0dbdiu.jpg" alt="QQ截图20200828163603.png">
+
+</li>
 <li>代码
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6m7bdzbwj30kd0qwq42.jpg" alt="QQ截图20200828163952.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mazpwowj30pp0tsmy8.jpg" alt="QQ截图20200828164221.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mb5c9kvj30qt0srwfr.jpg" alt="QQ截图20200828164314.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mba757gj30o60timy6.jpg" alt="QQ截图20200828164327.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mbfttivj30oq0tsab4.jpg" alt="QQ截图20200828164335.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6m7bdzbwj30kd0qwq42.jpg" alt="QQ截图20200828163952.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mazpwowj30pp0tsmy8.jpg" alt="QQ截图20200828164221.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mb5c9kvj30qt0srwfr.jpg" alt="QQ截图20200828164314.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mba757gj30o60timy6.jpg" alt="QQ截图20200828164327.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mbfttivj30oq0tsab4.jpg" alt="QQ截图20200828164335.png">
+
+</li>
 </ul>
 <h1 id="工厂方法模式">工厂方法模式</h1>
 <h2 id="新的需求">新的需求</h2>
@@ -306,14 +437,29 @@
 </li>
 <li>
 <p>思路分析图解
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mhk994yj30jc0dwgp2.jpg" alt="QQ截图20200828164955.png"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mhk994yj30jc0dwgp2.jpg" alt="QQ截图20200828164955.png">
+
+</p>
 </li>
 <li>
 <p>代码
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mo2bzqbj30oi0pb0to.jpg" alt="QQ截图20200828165236.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mo8zruvj30sf0tf3zl.jpg" alt="QQ截图20200828165248.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mr0z905j30qq0trdgx.jpg" alt="QQ截图20200828165651.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mr7845bj30jp0h0t91.jpg" alt="QQ截图20200828165845.png"></p>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mo2bzqbj30oi0pb0to.jpg" alt="QQ截图20200828165236.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mo8zruvj30sf0tf3zl.jpg" alt="QQ截图20200828165248.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mr0z905j30qq0trdgx.jpg" alt="QQ截图20200828165651.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mr7845bj30jp0h0t91.jpg" alt="QQ截图20200828165845.png">
+
+</p>
 </li>
 </ul>
 <h1 id="抽象工厂模式">抽象工厂模式</h1>
@@ -324,21 +470,48 @@
 <li>从设计层面看，抽象工厂模式就是对简单工厂模式的改进(或者称为进一步的抽象)。</li>
 <li>将工厂抽象成两层，AbsFactory(抽象工厂) 和 具体实现的工厂子类。程序员可以根据创建对象类型使用对应的工厂子类。这样将单个的简单工厂类变成了工厂簇，更利于代码的维护和扩展。</li>
 <li>类图
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mtme09jj30ju0e7gpa.jpg" alt="QQ截图20200828170132.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mtme09jj30ju0e7gpa.jpg" alt="QQ截图20200828170132.png">
+
+</li>
 </ul>
 <h2 id="抽象工厂模式应用实例">抽象工厂模式应用实例</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mutyb9vj30o509v74l.jpg" alt="QQ截图20200828170211.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6muzvphxj30rj0tmwfo.jpg" alt="QQ截图20200828170220.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mv45rh5j30t20u275e.jpg" alt="QQ截图20200828170229.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mwigsrsj30qi0tot9t.jpg" alt="QQ截图20200828170411.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mwnkh8hj30on0o0dgm.jpg" alt="QQ截图20200828170421.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mutyb9vj30o509v74l.jpg" alt="QQ截图20200828170211.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6muzvphxj30rj0tmwfo.jpg" alt="QQ截图20200828170220.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mv45rh5j30t20u275e.jpg" alt="QQ截图20200828170229.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mwigsrsj30qi0tot9t.jpg" alt="QQ截图20200828170411.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mwnkh8hj30on0o0dgm.jpg" alt="QQ截图20200828170421.png">
+
+</p>
 <h1 id="工厂模式在-jdk-calendar-应用的源码分析">工厂模式在 JDK-Calendar 应用的源码分析</h1>
 <ul>
 <li>JDK 中的 Calendar 类中，就使用了简单工厂模式</li>
 <li>源码分析+Debug 源码+说明
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6myrqequj30on0ql3zp.jpg" alt="QQ截图20200828170556.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6myvvx9xj30sz0tbt9t.jpg" alt="QQ截图20200828170606.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mz078cvj30pj0g3dg6.jpg" alt="QQ截图20200828170631.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6myrqequj30on0ql3zp.jpg" alt="QQ截图20200828170556.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6myvvx9xj30sz0tbt9t.jpg" alt="QQ截图20200828170606.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gi6mz078cvj30pj0g3dg6.jpg" alt="QQ截图20200828170631.png">
+
+</li>
 </ul>
 <h1 id="工厂模式小结">工厂模式小结</h1>
 <ul>
@@ -372,13 +545,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -677,16 +864,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -699,48 +876,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -750,7 +923,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -770,7 +955,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -788,7 +973,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -800,12 +985,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

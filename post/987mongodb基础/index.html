@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>2、MongoDB基础（MongoDB）-yiguan1573</title>
+    <title>2、MongoDB基础（MongoDB） | yiguan1573</title>
 
     <link rel="canonical" href="/post/987mongodb%E5%9F%BA%E7%A1%80/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>2、MongoDB基础（MongoDB）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Thursday, April 28, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Thursday, April 28, 2022
+                            
+                                <span id="/post/987mongodb%E5%9F%BA%E7%A1%80/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -213,62 +339,6 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#1-mongodb相关概念">1 MongoDB相关概念</a>
-      <ul>
-        <li><a href="#11-业务应用场景">1.1 业务应用场景</a></li>
-        <li><a href="#12-mongodb简介">1.2 MongoDB简介</a></li>
-        <li><a href="#13-体系结构">1.3 体系结构</a></li>
-        <li><a href="#14-数据模型">1.4 数据模型</a></li>
-        <li><a href="#15-mongodb的特点">1.5 MongoDB的特点</a></li>
-      </ul>
-    </li>
-    <li><a href="#2-单机部署">2 单机部署</a>
-      <ul>
-        <li><a href="#21-windows系统中的安装启动">2.1 Windows系统中的安装启动</a></li>
-        <li><a href="#22-shell连接mongo命令">2.2 Shell连接(mongo命令)</a></li>
-        <li><a href="#23-compass-图形化界面客户端">2.3 Compass-图形化界面客户端</a></li>
-        <li><a href="#24-linux系统中的安装启动和连接">2.4 Linux系统中的安装启动和连接</a></li>
-      </ul>
-    </li>
-    <li><a href="#3-基本常用命令">3 基本常用命令</a>
-      <ul>
-        <li><a href="#31-案例需求">3.1 案例需求</a></li>
-        <li><a href="#32-数据库操作">3.2 数据库操作</a></li>
-        <li><a href="#33-集合操作">3.3 集合操作</a></li>
-        <li><a href="#34-文档基本crud">3.4 文档基本CRUD</a></li>
-        <li><a href="#35-文档的分页查询">3.5 文档的分页查询</a></li>
-        <li><a href="#36-文档的更多查询">3.6 文档的更多查询</a></li>
-        <li><a href="#37-常用命令小结">3.7 常用命令小结</a></li>
-      </ul>
-    </li>
-    <li><a href="#4-索引-index">4 索引-Index</a>
-      <ul>
-        <li><a href="#41-概述">4.1 概述</a></li>
-        <li><a href="#42-索引的类型">4.2 索引的类型</a></li>
-        <li><a href="#43-索引的管理操作">4.3 索引的管理操作</a></li>
-        <li><a href="#44-索引的使用">4.4 索引的使用</a></li>
-      </ul>
-    </li>
-    <li><a href="#5-文章评论">5 文章评论</a>
-      <ul>
-        <li><a href="#51-需求分析">5.1 需求分析</a></li>
-        <li><a href="#52-表结构分析">5.2 表结构分析</a></li>
-        <li><a href="#53-技术选型">5.3 技术选型</a></li>
-        <li><a href="#54-文章微服务模块搭建">5.4 文章微服务模块搭建</a></li>
-        <li><a href="#55-文章评论实体类的编写">5.5 文章评论实体类的编写</a></li>
-        <li><a href="#56-文章评论的基本增删改查">5.6 文章评论的基本增删改查</a></li>
-        <li><a href="#57-根据上级id查询文章评论的分页列表">5.7 根据上级ID查询文章评论的分页列表</a></li>
-        <li><a href="#58-mongotemplate实现评论点赞">5.8 MongoTemplate实现评论点赞</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
                 
                 <h2 id="1-mongodb相关概念">1 MongoDB相关概念</h2>
 <h3 id="11-业务应用场景">1.1 业务应用场景</h3>
@@ -321,7 +391,10 @@
 <h3 id="13-体系结构">1.3 体系结构</h3>
 <ul>
 <li><strong>MySQL和MongoDB对比</strong>
-<img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pm4j9bl3j30n70lt44e.jpg" alt="QQ截图20220428182931.png"></li>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pm4j9bl3j30n70lt44e.jpg" alt="QQ截图20220428182931.png">
+
+</li>
 </ul>
 <h3 id="14-数据模型">1.4 数据模型</h3>
 <ul>
@@ -342,7 +415,10 @@
 </li>
 <li>
 <p>BSON数据类型参考列表：
-<img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pm63s3czj30mz0j7dqv.jpg" alt="QQ截图20220428183102.png"></p>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pm63s3czj30mz0j7dqv.jpg" alt="QQ截图20220428183102.png">
+
+</p>
 </li>
 </ul>
 <h3 id="15-mongodb的特点">1.5 MongoDB的特点</h3>
@@ -370,7 +446,10 @@
 <li>
 <p>第一步：下载安装包</p>
 <p>MongoDB 提供了可用于 32 位和 64 位系统的预编译二进制包，你可以从MongoDB官网下载安装，MongoDB 预编译二进制包下载地址： <a href="https://www.mongodb.com/download-center#community">https://www.mongodb.com/download-center#community</a>
-<img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pm9m35x5j30la0e7784.jpg" alt="QQ截图20220428183422.png"></p>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pm9m35x5j30la0e7784.jpg" alt="QQ截图20220428183422.png">
+
+</p>
 <p>根据上图所示下载zip包。</p>
 <p>提示：版本的选择：</p>
 <p>MongoDB的版本命名规范如：x.y.z；</p>
@@ -438,7 +517,10 @@ setParameter:
 <p>地址：https://www.mongodb.com/download-center/v2/compass?initial=true</p>
 <p>如果是下载安装版，则按照步骤安装；如果是下载加压缩版，直接解压，执行里面的MongoDBCompassCommunity.exe文件即可。</p>
 <p>在打开的界面中，输入主机地址、端口等相关信息，点击连接：</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pmllmfqhj30mk0epq56.jpg" alt="QQ截图20220428184555.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pmllmfqhj30mk0epq56.jpg" alt="QQ截图20220428184555.png">
+
+</p>
 <h3 id="24-linux系统中的安装启动和连接">2.4 Linux系统中的安装启动和连接</h3>
 <p>目标：在Linux中部署一个单机的MongoDB，作为生产环境下使用。</p>
 <p>提示：和Windows下操作差不多。</p>
@@ -456,30 +538,30 @@ mkdir -p /mongodb/single/log
 </code></pre><p>（ 5 ）新建并修改配置文件</p>
 <pre><code>vi /mongodb/single/mongod.conf
 </code></pre><p>配置文件的内容如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">systemLog</span>: 
-	<span style="color:#75715e">#MongoDB发送所有日志输出的目标指定为文件 </span>
-	<span style="color:#75715e"># #The path of the log file to which mongod or mongos should send all diagnostic logging information </span>
-	<span style="color:#66d9ef">destination</span>: file 
-	<span style="color:#75715e">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径 </span>
-	<span style="color:#66d9ef">path</span>: <span style="color:#e6db74">&#34;/mongodb/single/log/mongod.log&#34;</span> 
-	<span style="color:#75715e">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。 </span>
-	<span style="color:#66d9ef">logAppend</span>: <span style="color:#66d9ef">true</span>
-	<span style="color:#66d9ef">storage</span>: 
-	<span style="color:#75715e">#mongod实例存储其数据的目录。storage.dbPath设置仅适用于mongod。 </span>
-	<span style="color:#75715e">##The directory where the mongod instance stores its data.Default Value is &#34;/data/db&#34;. </span>
-	<span style="color:#66d9ef">dbPath</span>: <span style="color:#e6db74">&#34;/mongodb/single/data/db&#34;</span> 
-	<span style="color:#66d9ef">journal</span>: 
-		<span style="color:#75715e">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。 </span>
-		<span style="color:#66d9ef">enabled</span>: <span style="color:#66d9ef">true</span>
-<span style="color:#66d9ef">processManagement</span>: 
-	<span style="color:#75715e">#启用在后台运行mongos或mongod进程的守护进程模式。 </span>
-	<span style="color:#66d9ef">fork</span>: <span style="color:#66d9ef">true</span> 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#ff79c6">systemLog</span>: 
+	<span style="color:#6272a4">#MongoDB发送所有日志输出的目标指定为文件 </span>
+	<span style="color:#6272a4"># #The path of the log file to which mongod or mongos should send all diagnostic logging information </span>
+	<span style="color:#ff79c6">destination</span>: file 
+	<span style="color:#6272a4">#mongod或mongos应向其发送所有诊断日志记录信息的日志文件的路径 </span>
+	<span style="color:#ff79c6">path</span>: <span style="color:#f1fa8c">&#34;/mongodb/single/log/mongod.log&#34;</span> 
+	<span style="color:#6272a4">#当mongos或mongod实例重新启动时，mongos或mongod会将新条目附加到现有日志文件的末尾。 </span>
+	<span style="color:#ff79c6">logAppend</span>: <span style="color:#ff79c6">true</span>
+	<span style="color:#ff79c6">storage</span>: 
+	<span style="color:#6272a4">#mongod实例存储其数据的目录。storage.dbPath设置仅适用于mongod。 </span>
+	<span style="color:#6272a4">##The directory where the mongod instance stores its data.Default Value is &#34;/data/db&#34;. </span>
+	<span style="color:#ff79c6">dbPath</span>: <span style="color:#f1fa8c">&#34;/mongodb/single/data/db&#34;</span> 
+	<span style="color:#ff79c6">journal</span>: 
+		<span style="color:#6272a4">#启用或禁用持久性日志以确保数据文件保持有效和可恢复。 </span>
+		<span style="color:#ff79c6">enabled</span>: <span style="color:#ff79c6">true</span>
+<span style="color:#ff79c6">processManagement</span>: 
+	<span style="color:#6272a4">#启用在后台运行mongos或mongod进程的守护进程模式。 </span>
+	<span style="color:#ff79c6">fork</span>: <span style="color:#ff79c6">true</span> 
 net:
-	<span style="color:#75715e">#服务实例绑定的IP，默认是localhost </span>
-	<span style="color:#66d9ef">bindIp</span>: localhost,<span style="color:#ae81ff">192.168</span><span style="color:#ae81ff">.0</span><span style="color:#ae81ff">.2</span>
-	<span style="color:#75715e">#bindIp </span>
-	<span style="color:#75715e">#绑定的端口，默认是27017 </span>
-	<span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">27017</span>
+	<span style="color:#6272a4">#服务实例绑定的IP，默认是localhost </span>
+	<span style="color:#ff79c6">bindIp</span>: localhost,<span style="color:#bd93f9">192.168</span><span style="color:#bd93f9">.0</span><span style="color:#bd93f9">.2</span>
+	<span style="color:#6272a4">#bindIp </span>
+	<span style="color:#6272a4">#绑定的端口，默认是27017 </span>
+	<span style="color:#ff79c6">port</span>: <span style="color:#bd93f9">27017</span>
 </code></pre></div><p>（6）启动MongoDB服务</p>
 <pre><code>[root@bobohost single] /usr/local/mongodb/bin/mongod -f /mongodb/single/mongod.conf 
 about to fork child process, waiting until server is ready for connections. 
@@ -500,12 +582,18 @@ systemctl stop firewalld
 systemctl disable firewalld
 </code></pre><p>（8）停止关闭服务</p>
 <p>停止服务的方式有两种：快速关闭和标准关闭，下面依次说明：</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pnw2ciz4j30my0jatee.jpg" alt="QQ截图20220428193035.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pnw2ciz4j30my0jatee.jpg" alt="QQ截图20220428193035.png">
+
+</p>
 <h2 id="3-基本常用命令">3 基本常用命令</h2>
 <h3 id="31-案例需求">3.1 案例需求</h3>
 <p>存放文章评论的数据存放到MongoDB中，数据结构参考如下：</p>
 <p>数据库：articledb</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pnxjbrylj30mi0bdq6v.jpg" alt="QQ截图20220428193200.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pnxjbrylj30mi0bdq6v.jpg" alt="QQ截图20220428193200.png">
+
+</p>
 <h3 id="32-数据库操作">3.2 数据库操作</h3>
 <h4 id="321-选择和创建数据库">3.2.1 选择和创建数据库</h4>
 <p>选择和创建数据库的语法格式：</p>
@@ -556,7 +644,10 @@ show databases
 <p>集合，类似关系型数据库中的表。</p>
 <p>可以显示的创建，也可以隐式的创建。</p>
 <h4 id="331-集合的显式创建了解">3.3.1 集合的显式创建（了解）</h4>
-<h4 id="qq截图20220428193758pnghttptva1sinaimgcnlarge006qqpifly1h1po3rsx04j30my0f90xujpg"><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1po3rsx04j30my0f90xu.jpg" alt="QQ截图20220428193758.png"></h4>
+<h4 id="qq截图20220428193758pnghttptva1sinaimgcnlarge006qqpifly1h1po3rsx04j30my0f90xujpg">
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1po3rsx04j30my0f90xu.jpg" alt="QQ截图20220428193758.png">
+
+</h4>
 <h4 id="332-集合的隐式创建">3.3.2 集合的隐式创建</h4>
 <p>当向一个集合中插入一个文档的时候，如果集合不存在，则会自动创建集合。</p>
 <p>详见文档的插入章节。</p>
@@ -576,20 +667,41 @@ db.集合.drop()
 <h4 id="341-文档的插入">3.4.1 文档的插入</h4>
 <p>（1）单个文档插入</p>
 <p>使用insert() 或 save() 方法向集合中插入文档，语法如下：</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1po8gss2pj30hu0lh10p.jpg" alt="QQ截图20220428194230.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1po8gss2pj30hu0lh10p.jpg" alt="QQ截图20220428194230.png">
+
+</p>
 <p>（2）批量插入</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1po9kfxt6j30gd04pgm3.jpg" alt="QQ截图20220428194324.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1po9pp7b6j30hf0m0dry.jpg" alt="QQ截图20220428194334.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1po9kfxt6j30gd04pgm3.jpg" alt="QQ截图20220428194324.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1po9pp7b6j30hf0m0dry.jpg" alt="QQ截图20220428194334.png">
+
+</p>
 <h4 id="342文档的基本查询">3.4.2文档的基本查询</h4>
 <p>查询数据的语法格式如下：</p>
 <pre><code>db.collection.find(&lt;query&gt;, [projection])
 </code></pre><p>参数：</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1podv08o7j30h503jta0.jpg" alt="QQ截图20220428194740.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1podzal0pj30jr0l6gt2.jpg" alt="QQ截图20220428194634.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1podv08o7j30h503jta0.jpg" alt="QQ截图20220428194740.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1podzal0pj30jr0l6gt2.jpg" alt="QQ截图20220428194634.png">
+
+</p>
 <h4 id="343-文档的更新">3.4.3 文档的更新</h4>
 <p>更新文档的语法：</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pog2hp08j30if06adhe.jpg" alt="QQ截图20220428194948.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pogocfqlj30k40hltex.jpg" alt="QQ截图20220428195023.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pog2hp08j30if06adhe.jpg" alt="QQ截图20220428194948.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pogocfqlj30k40hltex.jpg" alt="QQ截图20220428195023.png">
+
+</p>
 <h4 id="344-删除文档">3.4.4 删除文档</h4>
 <p>删除文档的语法结构：</p>
 <pre><code>db.集合名称.remove(条件)
@@ -599,9 +711,15 @@ db.集合.drop()
 <pre><code>db.comment.remove({_id:&quot;1&quot;})
 </code></pre><h3 id="35-文档的分页查询">3.5 文档的分页查询</h3>
 <h4 id="351-统计查询">3.5.1 统计查询</h4>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pojblldvj30ju0ew41q.jpg" alt="QQ截图20220428195241.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pojblldvj30ju0ew41q.jpg" alt="QQ截图20220428195241.png">
+
+</p>
 <h4 id="352-分页列表查询">3.5.2 分页列表查询</h4>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pon2q3v5j30is0bt42f.jpg" alt="QQ截图20220428195633.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pon2q3v5j30is0bt42f.jpg" alt="QQ截图20220428195633.png">
+
+</p>
 <h4 id="353-排序查询">3.5.3 排序查询</h4>
 <p>sort() 方法对数据进行排序，sort() 方法可以通过参数指定排序的字段，并使用 1 和 -1 来指定排序的方式，其中 1 为升序排列，而 -1 是用于降序排列。</p>
 <p>语法如下所示：</p>
@@ -675,12 +793,18 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
 <h4 id="421-单字段索引">4.2.1 单字段索引</h4>
 <p>MongoDB支持在文档的单个字段上创建用户定义的升序/降序索引，称为单字段索引（Single Field Index）。</p>
 <p>对于单个字段索引和排序操作，索引键的排序顺序（即升序或降序）并不重要，因为MongoDB可以在任何方向上遍历索引。</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1povuc226j30gf05a74t.jpg" alt="QQ截图20220428200457.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1povuc226j30gf05a74t.jpg" alt="QQ截图20220428200457.png">
+
+</p>
 <h4 id="422-复合索引">4.2.2 复合索引</h4>
 <p>MongoDB还支持多个字段的用户定义索引，即复合索引（Compound Index）。</p>
 <p>复合索引中列出的字段顺序具有重要意义。例如，如果复合索引由{ userid: 1 , score: - 1 }组成，则索引首先按userid正序排序，然后</p>
 <p>在每个userid的值内，再在按score倒序排序。</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1powbhec9j30ht06jdgp.jpg" alt="QQ截图20220428200526.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1powbhec9j30ht06jdgp.jpg" alt="QQ截图20220428200526.png">
+
+</p>
 <h4 id="423-其他索引">4.2.3 其他索引</h4>
 <p>地理空间索引（Geospatial Index）、文本索引（Text Indexes）、哈希索引（Hashed Indexes）。</p>
 <p><strong>地理空间索引（Geospatial Index）</strong></p>
@@ -692,48 +816,90 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
 <h3 id="43-索引的管理操作">4.3 索引的管理操作</h3>
 <h4 id="431-索引的查看">4.3.1 索引的查看</h4>
 <h4 id="heading"></h4>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1poy1q25uj30jj0dt41x.jpg" alt="QQ截图20220428200705.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1poy1q25uj30jj0dt41x.jpg" alt="QQ截图20220428200705.png">
+
+</p>
 <h4 id="432-索引的创建">4.3.2 索引的创建</h4>
 <p>说明：</p>
 <p>在集合上创建索引。</p>
 <p>语法：</p>
 <pre><code>db.collection.createIndex(keys, options)
-</code></pre><p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pozmw86yj30k20jvqdv.jpg" alt="QQ截图20220428200832.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp0jxiryj30j80f7go4.jpg" alt="QQ截图20220428200853.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp0qq8jdj30k40nkgq1.jpg" alt="QQ截图20220428200925.png"></p>
+</code></pre><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pozmw86yj30k20jvqdv.jpg" alt="QQ截图20220428200832.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp0jxiryj30j80f7go4.jpg" alt="QQ截图20220428200853.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp0qq8jdj30k40nkgq1.jpg" alt="QQ截图20220428200925.png">
+
+</p>
 <h4 id="433-索引的移除">4.3.3 索引的移除</h4>
 <p>说明：可以移除指定的索引，或移除所有索引</p>
 <p><strong>一、指定索引的移除</strong></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp261a7zj30iv081tav.jpg" alt="QQ截图20220428201057.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp261a7zj30iv081tav.jpg" alt="QQ截图20220428201057.png">
+
+</p>
 <p><strong>二、所有索引的移除</strong></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp2b0ar0j30j9076myi.jpg" alt="QQ截图20220428201103.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp2b0ar0j30j9076myi.jpg" alt="QQ截图20220428201103.png">
+
+</p>
 <h3 id="44-索引的使用">4.4 索引的使用</h3>
 <h4 id="441-执行计划">4.4.1 执行计划</h4>
 <p>分析查询性能（Analyze Query Performance）通常使用执行计划（解释计划、Explain Plan）来查看查询的情况，如查询耗费的时间、是否基于索引查询等。</p>
 <p>那么，通常，我们想知道，建立的索引是否有效，效果如何，都需要通过执行计划查看。</p>
 <p>语法：</p>
 <pre><code>db.collection.find(query,options).explain(options)
-</code></pre><p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp4qwqi9j30jg0f2n0m.jpg" alt="QQ截图20220428201300.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp4ynbrpj30jn0ecdi9.jpg" alt="QQ截图20220428201312.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp55mt8ij30kc0l8aes.jpg" alt="QQ截图20220428201321.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp5b8lnvj30jo0fmmyp.jpg" alt="QQ截图20220428201328.png"></p>
+</code></pre><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp4qwqi9j30jg0f2n0m.jpg" alt="QQ截图20220428201300.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp4ynbrpj30jn0ecdi9.jpg" alt="QQ截图20220428201312.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp55mt8ij30kc0l8aes.jpg" alt="QQ截图20220428201321.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp5b8lnvj30jo0fmmyp.jpg" alt="QQ截图20220428201328.png">
+
+</p>
 <h4 id="442-涵盖的查询">4.4.2 涵盖的查询</h4>
 <p>Covered Queries</p>
 <p>当查询条件和查询的投影仅包含索引字段时，MongoDB直接从索引返回结果，而不扫描任何文档或将文档带入内存。 这些覆盖的查询可以非常有效。</p>
 <p>更多：https://docs.mongodb.com/manual/core/query-optimization/#read-operations-covered-query</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp6wlzmoj30k90gdaej.jpg" alt="QQ截图20220428201521.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp75s51cj30ka0no0xz.jpg" alt="QQ截图20220428201532.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp6wlzmoj30k90gdaej.jpg" alt="QQ截图20220428201521.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pp75s51cj30ka0no0xz.jpg" alt="QQ截图20220428201532.png">
+
+</p>
 <h2 id="5-文章评论">5 文章评论</h2>
 <h3 id="51-需求分析">5.1 需求分析</h3>
 <p>某头条的文章评论业务如下：</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pst038ffj30jl0f7gon.jpg" alt="QQ截图20220428222037.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pst038ffj30jl0f7gon.jpg" alt="QQ截图20220428222037.png">
+
+</p>
 <p><strong>需要实现以下功能：</strong></p>
 <p>1）基本增删改查API</p>
 <p>2）根据文章id查询评论</p>
 <p>3）评论点赞</p>
 <h3 id="52-表结构分析">5.2 表结构分析</h3>
 <p>数据库：articledb</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pstm2f88j30id08yacw.jpg" alt="QQ截图20220428222113.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pstm2f88j30id08yacw.jpg" alt="QQ截图20220428222113.png">
+
+</p>
 <h3 id="53-技术选型">5.3 技术选型</h3>
 <h4 id="531-mongodb-driver了解">5.3.1 mongodb-driver（了解）</h4>
 <p>mongodb-driver是mongo官方推出的java连接mongoDB的驱动包，相当于JDBC驱动。我们通过一个入门的案例来了解mongodb-driver的基本使用。</p>
@@ -745,17 +911,29 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
 <p>我们十次方项目的吐槽微服务就采用SpringDataMongoDB框架。</p>
 <h3 id="54-文章微服务模块搭建">5.4 文章微服务模块搭建</h3>
 <p>（1）搭建项目工程article，pom.xml引入依赖：</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt2zcvavj30ii0f8dkv.jpg" alt="QQ截图20220428222953.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt2zcvavj30ii0f8dkv.jpg" alt="QQ截图20220428222953.png">
+
+</p>
 <p>（2）创建application.yml</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt36jlelj30hl05c0tn.jpg" alt="QQ截图20220428223013.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt36jlelj30hl05c0tn.jpg" alt="QQ截图20220428223013.png">
+
+</p>
 <p>（3）创建启动类</p>
 <p>cn.itcast.article.ArticleApplication</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt3oat2yj30gu04wmyr.jpg" alt="QQ截图20220428223051.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt3oat2yj30gu04wmyr.jpg" alt="QQ截图20220428223051.png">
+
+</p>
 <p>（4）启动项目，看是否能正常启动，控制台没有错误。</p>
 <h3 id="55-文章评论实体类的编写">5.5 文章评论实体类的编写</h3>
 <p>创建实体类 创建包cn.itcast.article，包下建包po用于存放实体类，创建实体类</p>
 <p>cn.itcast.article.po.Comment</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt5hh8hbj30hc0jhn4o.jpg" alt="QQ截图20220428223237.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt5hh8hbj30hc0jhn4o.jpg" alt="QQ截图20220428223237.png">
+
+</p>
 <p>说明：</p>
 <p><strong>索引可以大大提升查询效率，一般在查询字段上添加索引，索引的添加可以通过Mongo的命令来添加，也可以在Java的实体类中通过注解添加。</strong></p>
 <p>1）单字段索引注解@Indexed</p>
@@ -770,52 +948,79 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
 </code></pre><h3 id="56-文章评论的基本增删改查">5.6 文章评论的基本增删改查</h3>
 <p>（1）创建数据访问接口 cn.itcast.article包下创建dao包，包下创建接口</p>
 <p>cn.itcast.article.dao.CommentRepository</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt7z3zugj30eh04fgn4.jpg" alt="QQ截图20220428223434.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt7z3zugj30eh04fgn4.jpg" alt="QQ截图20220428223434.png">
+
+</p>
 <p>（2）创建业务逻辑类 cn.itcast.article包下创建service包，包下创建类</p>
 <p>cn.itcast.article.service.CommentService</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt8y5sf1j30hj0hsgpp.jpg" alt="QQ截图20220428223445.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt96aowgj30gw0ctwgo.jpg" alt="QQ截图20220428223456.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt8y5sf1j30hj0hsgpp.jpg" alt="QQ截图20220428223445.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1pt96aowgj30gw0ctwgo.jpg" alt="QQ截图20220428223456.png">
+
+</p>
 <p>（3）新建Junit测试类，测试保存和查询所有：</p>
 <p>cn.itcast.article.service.CommentServiceTest</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptabd9laj30hm0kvtex.jpg" alt="QQ截图20220428223707.png"></p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptahdjubj30hj0ewgog.jpg" alt="QQ截图20220428223716.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptabd9laj30hm0kvtex.jpg" alt="QQ截图20220428223707.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptahdjubj30hj0ewgog.jpg" alt="QQ截图20220428223716.png">
+
+</p>
 <h3 id="57-根据上级id查询文章评论的分页列表">5.7 根据上级ID查询文章评论的分页列表</h3>
 <p>（1）CommentRepository新增方法定义</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//根据父id，查询子评论的分页列表 
-</span><span style="color:#75715e"></span>Page<span style="color:#f92672">&lt;</span>Comment<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findByParentid</span><span style="color:#f92672">(</span>String parentid<span style="color:#f92672">,</span> Pageable pageable<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">//根据父id，查询子评论的分页列表 
+</span><span style="color:#6272a4"></span>Page<span style="color:#ff79c6">&lt;</span>Comment<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">findByParentid</span><span style="color:#ff79c6">(</span>String parentid<span style="color:#ff79c6">,</span> Pageable pageable<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
 </code></pre></div><p>（2）CommentService新增方法</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*** 根据父id查询分页列表 
-</span><span style="color:#75715e">    * @param parentid 
-</span><span style="color:#75715e">    * @param page 
-</span><span style="color:#75715e">    * @param size 
-</span><span style="color:#75715e">    * @return */</span> 
-	<span style="color:#66d9ef">public</span> Page<span style="color:#f92672">&lt;</span>Comment<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findCommentListPageByParentid</span><span style="color:#f92672">(</span>String parentid<span style="color:#f92672">,</span><span style="color:#66d9ef">int</span> page <span style="color:#f92672">,</span><span style="color:#66d9ef">int</span> size<span style="color:#f92672">)</span><span style="color:#f92672">{</span> 	
-        <span style="color:#66d9ef">return</span> commentRepository<span style="color:#f92672">.</span><span style="color:#a6e22e">findByParentid</span><span style="color:#f92672">(</span>parentid<span style="color:#f92672">,</span> PageRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>page<span style="color:#f92672">-</span>1<span style="color:#f92672">,</span>size<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> 
-	<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">/*** 根据父id查询分页列表 
+</span><span style="color:#6272a4">    * @param parentid 
+</span><span style="color:#6272a4">    * @param page 
+</span><span style="color:#6272a4">    * @param size 
+</span><span style="color:#6272a4">    * @return */</span> 
+	<span style="color:#8be9fd;font-style:italic">public</span> Page<span style="color:#ff79c6">&lt;</span>Comment<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">findCommentListPageByParentid</span><span style="color:#ff79c6">(</span>String parentid<span style="color:#ff79c6">,</span><span style="color:#8be9fd">int</span> page <span style="color:#ff79c6">,</span><span style="color:#8be9fd">int</span> size<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span> 	
+        <span style="color:#ff79c6">return</span> commentRepository<span style="color:#ff79c6">.</span><span style="color:#50fa7b">findByParentid</span><span style="color:#ff79c6">(</span>parentid<span style="color:#ff79c6">,</span> PageRequest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">of</span><span style="color:#ff79c6">(</span>page<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">,</span>size<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> 
+	<span style="color:#ff79c6">}</span>
 </code></pre></div><p>（3）junit测试用例：</p>
 <p>cn.itcast.article.service.CommentServiceTest</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/** 
-</span><span style="color:#75715e">    * 测试根据父id查询子评论的分页列表 
-</span><span style="color:#75715e">    */</span> 
-	<span style="color:#a6e22e">@Test</span> 
-	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testFindCommentListPageByParentid</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span> 
-        Page<span style="color:#f92672">&lt;</span>Comment<span style="color:#f92672">&gt;</span> pageResponse <span style="color:#f92672">=</span> commentService<span style="color:#f92672">.</span><span style="color:#a6e22e">findCommentListPageByParentid</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;3&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 2<span style="color:#f92672">)</span><span style="color:#f92672">;</span> 
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;----总记录数：&#34;</span><span style="color:#f92672">+</span>pageResponse<span style="color:#f92672">.</span><span style="color:#a6e22e">getTotalElements</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> 			           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;----当前页数据：&#34;</span><span style="color:#f92672">+</span>pageResponse<span style="color:#f92672">.</span><span style="color:#a6e22e">getContent</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> 
-    <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">/** 
+</span><span style="color:#6272a4">    * 测试根据父id查询子评论的分页列表 
+</span><span style="color:#6272a4">    */</span> 
+	@Test 
+	<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testFindCommentListPageByParentid</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span> 
+        Page<span style="color:#ff79c6">&lt;</span>Comment<span style="color:#ff79c6">&gt;</span> pageResponse <span style="color:#ff79c6">=</span> commentService<span style="color:#ff79c6">.</span><span style="color:#50fa7b">findCommentListPageByParentid</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;3&#34;</span><span style="color:#ff79c6">,</span> 1<span style="color:#ff79c6">,</span> 2<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> 
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;----总记录数：&#34;</span><span style="color:#ff79c6">+</span>pageResponse<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getTotalElements</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> 			           System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;----当前页数据：&#34;</span><span style="color:#ff79c6">+</span>pageResponse<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getContent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> 
+    <span style="color:#ff79c6">}</span>
 </code></pre></div><p>（4）测试</p>
 <p>使用compass快速插入一条测试数据，数据的内容是对 3 号评论内容进行评论。</p>
 <p>执行测试，结果：</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptdwax23j30hq0abadn.jpg" alt="QQ截图20220428224043.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptdwax23j30hq0abadn.jpg" alt="QQ截图20220428224043.png">
+
+</p>
 <h3 id="58-mongotemplate实现评论点赞">5.8 MongoTemplate实现评论点赞</h3>
 <p>我们看一下以下点赞的临时示例代码： CommentService 新增updateThumbup方法</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptf4sothj30gv03zdgz.jpg" alt="QQ截图20220428224128.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptf4sothj30gv03zdgz.jpg" alt="QQ截图20220428224128.png">
+
+</p>
 <p>以上方法虽然实现起来比较简单，但是执行效率并不高，因为我只需要将点赞数加 1 就可以了，没必要查询出所有字段修改后再更新所有字段。(蝴蝶效应)</p>
 <p>我们可以使用MongoTemplate类来实现对某列的操作。</p>
 <p>（1）修改CommentService</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptfduguyj30gd0dmgof.jpg" alt="QQ截图20220428224154.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptfduguyj30gd0dmgof.jpg" alt="QQ截图20220428224154.png">
+
+</p>
 <p>（2）测试用例：</p>
 <p>cn.itcast.article.service.CommentServiceTest</p>
-<p><img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptg0dk8uj30hf0b8abu.jpg" alt="QQ截图20220428224243.png"></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h1ptg0dk8uj30hf0b8abu.jpg" alt="QQ截图20220428224243.png">
+
+</p>
 
 
                 
@@ -835,13 +1040,27 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -1140,16 +1359,6 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -1162,48 +1371,44 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1213,7 +1418,19 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1233,7 +1450,7 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1251,7 +1468,7 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1263,12 +1480,76 @@ db.集合名称.find({ &quot;field&quot; : { $ne: value }}) // 不等于: field 
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

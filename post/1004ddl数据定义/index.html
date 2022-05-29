@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>4、DDL数据定义（Hive）-yiguan1573</title>
+    <title>4、DDL数据定义（Hive） | yiguan1573</title>
 
     <link rel="canonical" href="/post/1004ddl%E6%95%B0%E6%8D%AE%E5%AE%9A%E4%B9%89/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gblyz9ca5mj30rs14yb29.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>4、DDL数据定义（Hive）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Friday, March 4, 2022
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Friday, March 4, 2022
+                            
+                                <span id="/post/1004ddl%E6%95%B0%E6%8D%AE%E5%AE%9A%E4%B9%89/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,59 +340,26 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#创建数据库">创建数据库</a></li>
-    <li><a href="#查询数据库">查询数据库</a>
-      <ul>
-        <li><a href="#显示数据库">显示数据库</a></li>
-        <li><a href="#查看数据库详情">查看数据库详情</a></li>
-        <li><a href="#切换当前数据库">切换当前数据库</a></li>
-      </ul>
-    </li>
-    <li><a href="#修改数据库">修改数据库</a></li>
-    <li><a href="#删除数据库">删除数据库</a></li>
-    <li><a href="#创建表">创建表</a>
-      <ul>
-        <li><a href="#管理表">管理表</a></li>
-        <li><a href="#外部表">外部表</a></li>
-        <li><a href="#管理表与外部表的互相转换">管理表与外部表的互相转换</a></li>
-      </ul>
-    </li>
-    <li><a href="#修改表">修改表</a>
-      <ul>
-        <li><a href="#重命名表">重命名表</a></li>
-        <li><a href="#增加修改和删除表分区">增加、修改和删除表分区</a></li>
-        <li><a href="#增加修改替换列信息">增加/修改/替换列信息</a></li>
-      </ul>
-    </li>
-    <li><a href="#删除表">删除表</a></li>
-  </ul>
-</nav>
-                
                 <h2 id="创建数据库"><strong>创建数据库</strong></h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">DATABASE</span> [<span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">EXISTS</span>] database_name
-[<span style="color:#66d9ef">COMMENT</span> database_comment]
-[<span style="color:#66d9ef">LOCATION</span> hdfs_path]
-[<span style="color:#66d9ef">WITH</span> DBPROPERTIES (property_name<span style="color:#f92672">=</span>property_value, ...)];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">CREATE</span> <span style="color:#ff79c6">DATABASE</span> [<span style="color:#ff79c6">IF</span> <span style="color:#ff79c6">NOT</span> <span style="color:#ff79c6">EXISTS</span>] database_name
+[<span style="color:#ff79c6">COMMENT</span> database_comment]
+[<span style="color:#ff79c6">LOCATION</span> hdfs_path]
+[<span style="color:#ff79c6">WITH</span> DBPROPERTIES (property_name<span style="color:#ff79c6">=</span>property_value, ...)];
 </code></pre></div><ul>
 <li>
 <p><strong>创建一个数据库，数据库在</strong> <strong>HDFS</strong> <strong>上的默认存储路径是</strong>/user/hive/warehouse/*.db</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">create</span> <span style="color:#66d9ef">database</span> db_hive;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">create</span> <span style="color:#ff79c6">database</span> db_hive;
 </code></pre></div></li>
 <li>
 <p><strong>避免要创建的数据库已经存在错误，增加</strong> <strong>if not exists</strong> <strong>判断。（标准写法）</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">create</span> <span style="color:#66d9ef">database</span> db_hive;
-FAILED: Execution Error, <span style="color:#66d9ef">return</span> code <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">from</span> 
-org.apache.hadoop.hive.ql.<span style="color:#66d9ef">exec</span>.DDLTask. <span style="color:#66d9ef">Database</span> db_hive already <span style="color:#66d9ef">exists</span>
-hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">create</span> <span style="color:#66d9ef">database</span> <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">exists</span> db_hive;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">create</span> <span style="color:#ff79c6">database</span> db_hive;
+FAILED: Execution Error, <span style="color:#ff79c6">return</span> code <span style="color:#bd93f9">1</span> <span style="color:#ff79c6">from</span> 
+org.apache.hadoop.hive.ql.<span style="color:#ff79c6">exec</span>.DDLTask. <span style="color:#ff79c6">Database</span> db_hive already <span style="color:#ff79c6">exists</span>
+hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">create</span> <span style="color:#ff79c6">database</span> <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> <span style="color:#ff79c6">exists</span> db_hive;
 </code></pre></div></li>
 <li>
 <p><strong>创建一个数据库，指定数据库在</strong> <strong>HDFS</strong> <strong>上存放的位置</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">create</span> <span style="color:#66d9ef">database</span> db_hive2 <span style="color:#66d9ef">location</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/db_hive2.db</span><span style="color:#e6db74">&#39;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">create</span> <span style="color:#ff79c6">database</span> db_hive2 <span style="color:#ff79c6">location</span> <span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">/db_hive2.db</span><span style="color:#f1fa8c">&#39;</span>;
 </code></pre></div></li>
 </ul>
 <h2 id="查询数据库"><strong>查询数据库</strong></h2>
@@ -274,11 +367,11 @@ hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt
 <ul>
 <li>
 <p><strong>显示数据库</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">show</span> databases;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">show</span> databases;
 </code></pre></div></li>
 <li>
 <p><strong>过滤显示查询的数据库</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">show</span> databases <span style="color:#66d9ef">like</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">db_hive*</span><span style="color:#e6db74">&#39;</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">show</span> databases <span style="color:#ff79c6">like</span> <span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">db_hive*</span><span style="color:#f1fa8c">&#39;</span>;
 OK
 db_hive
 db_hive_1
@@ -288,71 +381,71 @@ db_hive_1
 <ul>
 <li>
 <p><strong>显示数据库信息</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> <span style="color:#66d9ef">database</span> db_hive;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> <span style="color:#ff79c6">database</span> db_hive;
 OK
-db_hive hdfs:<span style="color:#f92672">/</span><span style="color:#f92672">/</span>hadoop102:<span style="color:#ae81ff">9820</span><span style="color:#f92672">/</span><span style="color:#66d9ef">user</span><span style="color:#f92672">/</span>hive<span style="color:#f92672">/</span>warehouse<span style="color:#f92672">/</span>db_hive.db
+db_hive hdfs:<span style="color:#ff79c6">/</span><span style="color:#ff79c6">/</span>hadoop102:<span style="color:#bd93f9">9820</span><span style="color:#ff79c6">/</span><span style="color:#ff79c6">user</span><span style="color:#ff79c6">/</span>hive<span style="color:#ff79c6">/</span>warehouse<span style="color:#ff79c6">/</span>db_hive.db
 atguiguUSER
 </code></pre></div></li>
 <li>
 <p>**显示数据库详细信息，**extended</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> <span style="color:#66d9ef">database</span> extended db_hive;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> <span style="color:#ff79c6">database</span> extended db_hive;
 OK
-db_hive hdfs:<span style="color:#f92672">/</span><span style="color:#f92672">/</span>hadoop102:<span style="color:#ae81ff">9820</span><span style="color:#f92672">/</span><span style="color:#66d9ef">user</span><span style="color:#f92672">/</span>hive<span style="color:#f92672">/</span>warehouse<span style="color:#f92672">/</span>db_hive.db atguiguUSER
+db_hive hdfs:<span style="color:#ff79c6">/</span><span style="color:#ff79c6">/</span>hadoop102:<span style="color:#bd93f9">9820</span><span style="color:#ff79c6">/</span><span style="color:#ff79c6">user</span><span style="color:#ff79c6">/</span>hive<span style="color:#ff79c6">/</span>warehouse<span style="color:#ff79c6">/</span>db_hive.db atguiguUSER
 </code></pre></div></li>
 </ul>
 <h3 id="切换当前数据库"><strong>切换当前数据库</strong></h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> use db_hive;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> use db_hive;
 </code></pre></div><h2 id="修改数据库"><strong>修改数据库</strong></h2>
 <ul>
 <li>
 <p>用户可以使用 ALTER DATABASE 命令为某个数据库的 DBPROPERTIES 设置键-值对属性值，来描述这个数据库的属性信息。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">alter</span> <span style="color:#66d9ef">database</span> db_hive <span style="color:#66d9ef">set</span> dbproperties(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">createtime</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">20170830</span><span style="color:#e6db74">&#39;</span>);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">alter</span> <span style="color:#ff79c6">database</span> db_hive <span style="color:#ff79c6">set</span> dbproperties(<span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">createtime</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">20170830</span><span style="color:#f1fa8c">&#39;</span>);
 </code></pre></div></li>
 <li>
 <p>在 hive 中查看修改结果</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> <span style="color:#66d9ef">database</span> extended db_hive;
-db_name <span style="color:#66d9ef">comment</span> <span style="color:#66d9ef">location</span> owner_name owner_type <span style="color:#66d9ef">parameters</span>
-db_hive hdfs:<span style="color:#f92672">/</span><span style="color:#f92672">/</span>hadoop102:<span style="color:#ae81ff">9820</span><span style="color:#f92672">/</span><span style="color:#66d9ef">user</span><span style="color:#f92672">/</span>hive<span style="color:#f92672">/</span>warehouse<span style="color:#f92672">/</span>db_hive.db 
-atguigu <span style="color:#66d9ef">USER</span> <span style="color:#960050;background-color:#1e0010">{</span>createtime<span style="color:#f92672">=</span><span style="color:#ae81ff">20170830</span><span style="color:#960050;background-color:#1e0010">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> <span style="color:#ff79c6">database</span> extended db_hive;
+db_name <span style="color:#ff79c6">comment</span> <span style="color:#ff79c6">location</span> owner_name owner_type <span style="color:#ff79c6">parameters</span>
+db_hive hdfs:<span style="color:#ff79c6">/</span><span style="color:#ff79c6">/</span>hadoop102:<span style="color:#bd93f9">9820</span><span style="color:#ff79c6">/</span><span style="color:#ff79c6">user</span><span style="color:#ff79c6">/</span>hive<span style="color:#ff79c6">/</span>warehouse<span style="color:#ff79c6">/</span>db_hive.db 
+atguigu <span style="color:#ff79c6">USER</span> {createtime<span style="color:#ff79c6">=</span><span style="color:#bd93f9">20170830</span>}
 </code></pre></div></li>
 </ul>
 <h2 id="删除数据库"><strong>删除数据库</strong></h2>
 <ul>
 <li>
 <p><strong>删除空数据库</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span><span style="color:#66d9ef">drop</span> <span style="color:#66d9ef">database</span> db_hive2;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">drop</span> <span style="color:#ff79c6">database</span> db_hive2;
 </code></pre></div></li>
 <li>
 <p><strong>如果删除的数据库不存在，最好采用</strong> <strong>if exists</strong> <strong>判断数据库是否存在</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</span> <span style="color:#66d9ef">database</span> db_hive;
-FAILED: SemanticException [Error <span style="color:#ae81ff">10072</span>]: <span style="color:#66d9ef">Database</span> does <span style="color:#66d9ef">not</span> exist: db_hive
-hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</span> <span style="color:#66d9ef">database</span> <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">exists</span> db_hive2;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">drop</span> <span style="color:#ff79c6">database</span> db_hive;
+FAILED: SemanticException [Error <span style="color:#bd93f9">10072</span>]: <span style="color:#ff79c6">Database</span> does <span style="color:#ff79c6">not</span> exist: db_hive
+hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">drop</span> <span style="color:#ff79c6">database</span> <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">exists</span> db_hive2;
 </code></pre></div></li>
 <li>
 <p><strong>如果数据库不为空，可以采用</strong> <strong>cascade</strong> <strong>命令，强制删除</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</span> <span style="color:#66d9ef">database</span> db_hive;
-FAILED: Execution Error, <span style="color:#66d9ef">return</span> code <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">from</span> 
-org.apache.hadoop.hive.ql.<span style="color:#66d9ef">exec</span>.DDLTask. 
-InvalidOperationException(message:<span style="color:#66d9ef">Database</span> db_hive <span style="color:#66d9ef">is</span> <span style="color:#66d9ef">not</span> empty. One <span style="color:#66d9ef">or</span> 
-<span style="color:#66d9ef">more</span> tables exist.)
-hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</span> <span style="color:#66d9ef">database</span> db_hive <span style="color:#66d9ef">cascade</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">drop</span> <span style="color:#ff79c6">database</span> db_hive;
+FAILED: Execution Error, <span style="color:#ff79c6">return</span> code <span style="color:#bd93f9">1</span> <span style="color:#ff79c6">from</span> 
+org.apache.hadoop.hive.ql.<span style="color:#ff79c6">exec</span>.DDLTask. 
+InvalidOperationException(message:<span style="color:#ff79c6">Database</span> db_hive <span style="color:#ff79c6">is</span> <span style="color:#ff79c6">not</span> empty. One <span style="color:#ff79c6">or</span> 
+<span style="color:#ff79c6">more</span> tables exist.)
+hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">drop</span> <span style="color:#ff79c6">database</span> db_hive <span style="color:#ff79c6">cascade</span>;
 </code></pre></div></li>
 </ul>
 <h2 id="创建表"><strong>创建表</strong></h2>
 <ul>
 <li>
 <p><strong>建表语法</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> [<span style="color:#66d9ef">EXTERNAL</span>] <span style="color:#66d9ef">TABLE</span> [<span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">EXISTS</span>] <span style="color:#66d9ef">table_name</span>
-[(col_name data_type [<span style="color:#66d9ef">COMMENT</span> col_comment], ...)]
-[<span style="color:#66d9ef">COMMENT</span> table_comment]
-[PARTITIONED <span style="color:#66d9ef">BY</span> (col_name data_type [<span style="color:#66d9ef">COMMENT</span> col_comment], ...)]
-[CLUSTERED <span style="color:#66d9ef">BY</span> (col_name, col_name, ...)
-[SORTED <span style="color:#66d9ef">BY</span> (col_name [<span style="color:#66d9ef">ASC</span><span style="color:#f92672">|</span><span style="color:#66d9ef">DESC</span>], ...)] <span style="color:#66d9ef">INTO</span> num_buckets BUCKETS]
-[<span style="color:#66d9ef">ROW</span> FORMAT row_format]
-[STORED <span style="color:#66d9ef">AS</span> file_format]
-[<span style="color:#66d9ef">LOCATION</span> hdfs_path]
-[TBLPROPERTIES (property_name<span style="color:#f92672">=</span>property_value, ...)]
-[<span style="color:#66d9ef">AS</span> select_statement]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">CREATE</span> [<span style="color:#ff79c6">EXTERNAL</span>] <span style="color:#ff79c6">TABLE</span> [<span style="color:#ff79c6">IF</span> <span style="color:#ff79c6">NOT</span> <span style="color:#ff79c6">EXISTS</span>] <span style="color:#ff79c6">table_name</span>
+[(col_name data_type [<span style="color:#ff79c6">COMMENT</span> col_comment], ...)]
+[<span style="color:#ff79c6">COMMENT</span> table_comment]
+[PARTITIONED <span style="color:#ff79c6">BY</span> (col_name data_type [<span style="color:#ff79c6">COMMENT</span> col_comment], ...)]
+[CLUSTERED <span style="color:#ff79c6">BY</span> (col_name, col_name, ...)
+[SORTED <span style="color:#ff79c6">BY</span> (col_name [<span style="color:#ff79c6">ASC</span><span style="color:#ff79c6">|</span><span style="color:#ff79c6">DESC</span>], ...)] <span style="color:#ff79c6">INTO</span> num_buckets BUCKETS]
+[<span style="color:#ff79c6">ROW</span> FORMAT row_format]
+[STORED <span style="color:#ff79c6">AS</span> file_format]
+[<span style="color:#ff79c6">LOCATION</span> hdfs_path]
+[TBLPROPERTIES (property_name<span style="color:#ff79c6">=</span>property_value, ...)]
+[<span style="color:#ff79c6">AS</span> select_statement]
 </code></pre></div></li>
 <li>
 <p><strong>字段解释说明</strong></p>
@@ -414,25 +507,25 @@ hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</sp
 </code></pre></li>
 <li>
 <p>普通创建表</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">exists</span> student(
-id int, name string
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">create</span> <span style="color:#ff79c6">table</span> <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> <span style="color:#ff79c6">exists</span> student(
+id <span style="color:#8be9fd;font-style:italic">int</span>, name string
 )
-<span style="color:#66d9ef">row</span> format delimited fields terminated <span style="color:#66d9ef">by</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">\t</span><span style="color:#e6db74">&#39;</span>
-stored <span style="color:#66d9ef">as</span> textfile
-<span style="color:#66d9ef">location</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/user/hive/warehouse/student</span><span style="color:#e6db74">&#39;</span>;
+<span style="color:#ff79c6">row</span> format delimited fields terminated <span style="color:#ff79c6">by</span> <span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">\t</span><span style="color:#f1fa8c">&#39;</span>
+stored <span style="color:#ff79c6">as</span> textfile
+<span style="color:#ff79c6">location</span> <span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">/user/hive/warehouse/student</span><span style="color:#f1fa8c">&#39;</span>;
 </code></pre></div></li>
 <li>
 <p>根据查询结果创建表（查询的结果会添加到新创建的表中）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">exists</span> student2 <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">select</span> id, name <span style="color:#66d9ef">from</span> student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">create</span> <span style="color:#ff79c6">table</span> <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> <span style="color:#ff79c6">exists</span> student2 <span style="color:#ff79c6">as</span> <span style="color:#ff79c6">select</span> id, name <span style="color:#ff79c6">from</span> student;
 </code></pre></div></li>
 <li>
 <p>根据已经存在的表结构创建表</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">exists</span> student3 <span style="color:#66d9ef">like</span> student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">create</span> <span style="color:#ff79c6">table</span> <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> <span style="color:#ff79c6">exists</span> student3 <span style="color:#ff79c6">like</span> student;
 </code></pre></div></li>
 <li>
 <p>查询表的类型</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> formatted student2;
-<span style="color:#66d9ef">Table</span> <span style="color:#66d9ef">Type</span>: MANAGED_TABLE
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> formatted student2;
+<span style="color:#ff79c6">Table</span> <span style="color:#ff79c6">Type</span>: MANAGED_TABLE
 </code></pre></div></li>
 </ul>
 </li>
@@ -480,48 +573,48 @@ stored <span style="color:#66d9ef">as</span> textfile
 </code></pre></li>
 <li>
 <p>上传数据到 HDFS</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> dfs <span style="color:#f92672">-</span>mkdir <span style="color:#f92672">/</span>student;
-hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> dfs <span style="color:#f92672">-</span>put <span style="color:#f92672">/</span>opt<span style="color:#f92672">/</span>module<span style="color:#f92672">/</span>datas<span style="color:#f92672">/</span>student.txt <span style="color:#f92672">/</span>student;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> dfs <span style="color:#ff79c6">-</span>mkdir <span style="color:#ff79c6">/</span>student;
+hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> dfs <span style="color:#ff79c6">-</span>put <span style="color:#ff79c6">/</span>opt<span style="color:#ff79c6">/</span>module<span style="color:#ff79c6">/</span>datas<span style="color:#ff79c6">/</span>student.txt <span style="color:#ff79c6">/</span>student;
 </code></pre></div></li>
 <li>
 <p>建表语句，创建外部表</p>
 <ul>
 <li>
 <p>创建部门表</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">external</span> <span style="color:#66d9ef">table</span> <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">exists</span> dept(
-    deptno int,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">create</span> <span style="color:#ff79c6">external</span> <span style="color:#ff79c6">table</span> <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> <span style="color:#ff79c6">exists</span> dept(
+    deptno <span style="color:#8be9fd;font-style:italic">int</span>,
     dname string,
-    loc int
+    loc <span style="color:#8be9fd;font-style:italic">int</span>
 )
-<span style="color:#66d9ef">row</span> format delimited fields terminated <span style="color:#66d9ef">by</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">\t</span><span style="color:#e6db74">&#39;</span>;
+<span style="color:#ff79c6">row</span> format delimited fields terminated <span style="color:#ff79c6">by</span> <span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">\t</span><span style="color:#f1fa8c">&#39;</span>;
 </code></pre></div></li>
 <li>
 <p>创建员工表</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">external</span> <span style="color:#66d9ef">table</span> <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">exists</span> emp(
-    empno int,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">create</span> <span style="color:#ff79c6">external</span> <span style="color:#ff79c6">table</span> <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> <span style="color:#ff79c6">exists</span> emp(
+    empno <span style="color:#8be9fd;font-style:italic">int</span>,
     ename string,
     job string,
-    mgr int,
+    mgr <span style="color:#8be9fd;font-style:italic">int</span>,
     hiredate string,
     sal double,
     comm double,
-    deptno int)
-<span style="color:#66d9ef">row</span> format delimited fields terminated <span style="color:#66d9ef">by</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">\t</span><span style="color:#e6db74">&#39;</span>;
+    deptno <span style="color:#8be9fd;font-style:italic">int</span>)
+<span style="color:#ff79c6">row</span> format delimited fields terminated <span style="color:#ff79c6">by</span> <span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">\t</span><span style="color:#f1fa8c">&#39;</span>;
 </code></pre></div></li>
 </ul>
 </li>
 <li>
 <p>查看创建的表</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span><span style="color:#66d9ef">show</span> tables;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">show</span> tables;
 </code></pre></div></li>
 <li>
 <p>查看表格式化数据</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> formatted dept;
-<span style="color:#66d9ef">Table</span> <span style="color:#66d9ef">Type</span>: EXTERNAL_TABLE
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> formatted dept;
+<span style="color:#ff79c6">Table</span> <span style="color:#ff79c6">Type</span>: EXTERNAL_TABLE
 </code></pre></div></li>
 <li>
 <p>删除外部表</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</span> <span style="color:#66d9ef">table</span> dept;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">drop</span> <span style="color:#ff79c6">table</span> dept;
 </code></pre></div></li>
 <li>
 <p><strong>外部表删除后，hdfs 中的数据还在，但是 metadata 中 dept 的元数据已被删除</strong></p>
@@ -533,26 +626,26 @@ hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt
 <ul>
 <li>
 <p>查询表的类型</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> formatted student2;
-<span style="color:#66d9ef">Table</span> <span style="color:#66d9ef">Type</span>: MANAGED_TABLE
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> formatted student2;
+<span style="color:#ff79c6">Table</span> <span style="color:#ff79c6">Type</span>: MANAGED_TABLE
 </code></pre></div></li>
 <li>
 <p>修改内部表 student2 为外部表</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">alter</span> <span style="color:#66d9ef">table</span> student2 <span style="color:#66d9ef">set</span> tblproperties(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">EXTERNAL</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TRUE</span><span style="color:#e6db74">&#39;</span>);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">alter</span> <span style="color:#ff79c6">table</span> student2 <span style="color:#ff79c6">set</span> tblproperties(<span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">EXTERNAL</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">TRUE</span><span style="color:#f1fa8c">&#39;</span>);
 </code></pre></div></li>
 <li>
 <p>查询表的类型</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> formatted student2;
-<span style="color:#66d9ef">Table</span> <span style="color:#66d9ef">Type</span>: EXTERNAL_TABLE
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> formatted student2;
+<span style="color:#ff79c6">Table</span> <span style="color:#ff79c6">Type</span>: EXTERNAL_TABLE
 </code></pre></div></li>
 <li>
 <p>修改外部表 student2 为内部表</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">alter</span> <span style="color:#66d9ef">table</span> student2 <span style="color:#66d9ef">set</span> tblproperties(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">EXTERNAL</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">FALSE</span><span style="color:#e6db74">&#39;</span>);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">alter</span> <span style="color:#ff79c6">table</span> student2 <span style="color:#ff79c6">set</span> tblproperties(<span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">EXTERNAL</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">FALSE</span><span style="color:#f1fa8c">&#39;</span>);
 </code></pre></div></li>
 <li>
 <p>查询表的类型</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> formatted student2;
-<span style="color:#66d9ef">Table</span> <span style="color:#66d9ef">Type</span>: MANAGED_TABLE
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> formatted student2;
+<span style="color:#ff79c6">Table</span> <span style="color:#ff79c6">Type</span>: MANAGED_TABLE
 </code></pre></div></li>
 <li>
 <p><strong>注意：(&lsquo;EXTERNAL'='TRUE&rsquo;)和(&lsquo;EXTERNAL'='FALSE&rsquo;)为固定写法，区分大小写！</strong></p>
@@ -563,11 +656,11 @@ hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt
 <ul>
 <li>
 <p><strong>语法</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">table_name</span> <span style="color:#66d9ef">RENAME</span> <span style="color:#66d9ef">TO</span> new_table_name
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">ALTER</span> <span style="color:#ff79c6">TABLE</span> <span style="color:#ff79c6">table_name</span> <span style="color:#ff79c6">RENAME</span> <span style="color:#ff79c6">TO</span> new_table_name
 </code></pre></div></li>
 <li>
 <p><strong>实操案例</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">alter</span> <span style="color:#66d9ef">table</span> dept_partition2 <span style="color:#66d9ef">rename</span> <span style="color:#66d9ef">to</span> dept_partition3;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">alter</span> <span style="color:#ff79c6">table</span> dept_partition2 <span style="color:#ff79c6">rename</span> <span style="color:#ff79c6">to</span> dept_partition3;
 </code></pre></div></li>
 </ul>
 <h3 id="增加修改和删除表分区"><strong>增加、修改和删除表分区</strong></h3>
@@ -581,12 +674,12 @@ hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt
 <ul>
 <li>
 <p>更新列</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">table_name</span> CHANGE [<span style="color:#66d9ef">COLUMN</span>] col_old_name col_new_name 
-column_type [<span style="color:#66d9ef">COMMENT</span> col_comment] [<span style="color:#66d9ef">FIRST</span><span style="color:#f92672">|</span><span style="color:#66d9ef">AFTER</span> <span style="color:#66d9ef">column_name</span>]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">ALTER</span> <span style="color:#ff79c6">TABLE</span> <span style="color:#ff79c6">table_name</span> CHANGE [<span style="color:#ff79c6">COLUMN</span>] col_old_name col_new_name 
+column_type [<span style="color:#ff79c6">COMMENT</span> col_comment] [<span style="color:#ff79c6">FIRST</span><span style="color:#ff79c6">|</span><span style="color:#ff79c6">AFTER</span> <span style="color:#ff79c6">column_name</span>]
 </code></pre></div></li>
 <li>
 <p>增加和替换列</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">table_name</span> <span style="color:#66d9ef">ADD</span><span style="color:#f92672">|</span><span style="color:#66d9ef">REPLACE</span> COLUMNS (col_name data_type [<span style="color:#66d9ef">COMMENT</span> 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#ff79c6">ALTER</span> <span style="color:#ff79c6">TABLE</span> <span style="color:#ff79c6">table_name</span> <span style="color:#ff79c6">ADD</span><span style="color:#ff79c6">|</span><span style="color:#ff79c6">REPLACE</span> COLUMNS (col_name data_type [<span style="color:#ff79c6">COMMENT</span> 
 col_comment], ...)
 </code></pre></div><p>注：ADD 是代表新增一字段，字段位置在所有列后面(partition 列前)，REPLACE 则是表示替换表中所有字段。</p>
 </li>
@@ -597,35 +690,35 @@ col_comment], ...)
 </li>
 <li>
 <p>查询表结构</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> dept;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> dept;
 </code></pre></div></li>
 <li>
 <p>添加列</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">alter</span> <span style="color:#66d9ef">table</span> dept <span style="color:#66d9ef">add</span> columns(deptdesc string);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">alter</span> <span style="color:#ff79c6">table</span> dept <span style="color:#ff79c6">add</span> columns(deptdesc string);
 </code></pre></div></li>
 <li>
 <p>查询表结构</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> dept;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> dept;
 </code></pre></div></li>
 <li>
 <p>更新列</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">alter</span> <span style="color:#66d9ef">table</span> dept change <span style="color:#66d9ef">column</span> deptdesc <span style="color:#66d9ef">desc</span> string;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">alter</span> <span style="color:#ff79c6">table</span> dept change <span style="color:#ff79c6">column</span> deptdesc <span style="color:#ff79c6">desc</span> string;
 </code></pre></div></li>
 <li>
 <p>查询表结构</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> dept;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> dept;
 </code></pre></div></li>
 <li>
 <p>替换列</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">alter</span> <span style="color:#66d9ef">table</span> dept <span style="color:#66d9ef">replace</span> columns(deptno string, dname string, loc string);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">alter</span> <span style="color:#ff79c6">table</span> dept <span style="color:#ff79c6">replace</span> columns(deptno string, dname string, loc string);
 </code></pre></div></li>
 <li>
 <p>查询表结构</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">desc</span> dept;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">desc</span> dept;
 </code></pre></div></li>
 </ul>
 <h2 id="删除表"><strong>删除表</strong></h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#66d9ef">default</span>)<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</span> <span style="color:#66d9ef">table</span> dept;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">hive (<span style="color:#ff79c6">default</span>)<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">drop</span> <span style="color:#ff79c6">table</span> dept;
 </code></pre></div>
 
                 
@@ -645,13 +738,27 @@ col_comment], ...)
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -950,16 +1057,6 @@ col_comment], ...)
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -972,48 +1069,44 @@ col_comment], ...)
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1023,7 +1116,19 @@ col_comment], ...)
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1043,7 +1148,7 @@ col_comment], ...)
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1061,7 +1166,7 @@ col_comment], ...)
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1073,12 +1178,76 @@ col_comment], ...)
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

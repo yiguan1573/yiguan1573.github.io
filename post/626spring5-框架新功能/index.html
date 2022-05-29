@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>6、Spring5 框架新功能(Spring)-yiguan1573</title>
+    <title>6、Spring5 框架新功能(Spring) | yiguan1573</title>
 
     <link rel="canonical" href="/post/626spring5-%E6%A1%86%E6%9E%B6%E6%96%B0%E5%8A%9F%E8%83%BD/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>6、Spring5 框架新功能(Spring)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Friday, July 24, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Friday, July 24, 2020
+                            
+                                <span id="/post/626spring5-%E6%A1%86%E6%9E%B6%E6%96%B0%E5%8A%9F%E8%83%BD/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,18 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#springwebflux-介绍">SpringWebflux 介绍</a></li>
-    <li><a href="#响应式编程java-实现">响应式编程（Java 实现）</a></li>
-    <li><a href="#响应式编程reactor-实现">响应式编程（Reactor 实现）</a></li>
-    <li><a href="#springwebflux-执行流程和核心-api">SpringWebflux 执行流程和核心 API</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="spring5-框架新功能">Spring5 框架新功能</h1>
 <ul>
 <li><strong>整个Spring5框架的代码基于 Java8，运行时兼容 JDK9，许多不建议使用的类和方法在代码库中删除</strong></li>
@@ -237,7 +351,10 @@
 </li>
 </ul>
 <p>第一步 引入 jar 包
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9f8elftrj30cq04h0t1.jpg" alt="QQ截图20200730233518.png"><br>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9f8elftrj30cq04h0t1.jpg" alt="QQ截图20200730233518.png">
+
+<br>
 第二步 创建 log4j2.xml 配置文件</p>
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!--日志级别以及优先级排序: OFF &gt; FATAL &gt; ERROR &gt; WARN &gt; INFO &gt; DEBUG &gt; TRACE &gt; 
@@ -267,11 +384,20 @@ ALL --&gt;
 <ul>
 <li>@Nullable 注解可以使用在方法上面，属性上面，参数上面，表示方法返回可以为空，属性值可以为空，参数值可以为空</li>
 <li>注解用在方法上面，方法返回值可以为空
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9fd7gl50j30ck03o74f.jpg" alt="QQ截图20200730233917.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9fd7gl50j30ck03o74f.jpg" alt="QQ截图20200730233917.png">
+
+</li>
 <li>注解使用在方法参数里面，方法参数可以为空
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9fdf455yj30ra044abh.jpg" alt="QQ截图20200730233926.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9fdf455yj30ra044abh.jpg" alt="QQ截图20200730233926.png">
+
+</li>
 <li>注解使用在属性上面，属性值可以为空
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9fdljhicj30d503ujrp.jpg" alt="QQ截图20200730233932.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9fdljhicj30d503ujrp.jpg" alt="QQ截图20200730233932.png">
+
+</li>
 </ul>
 </li>
 <li>
@@ -297,7 +423,10 @@ public void testGenericApplicationContext() {
 <li>整合 JUnit4
 <ul>
 <li>第一步 引入 Spring 相关针对测试依赖
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9fg20wk3j30gq04zwf8.jpg" alt="QQ截图20200730234239.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9fg20wk3j30gq04zwf8.jpg" alt="QQ截图20200730234239.png">
+
+</li>
 <li>第二步 创建测试类，使用注解方式完成</li>
 </ul>
 <pre><code>@RunWith(SpringJUnit4ClassRunner.class) //单元测试框架
@@ -314,7 +443,10 @@ public class JTest4 {
 <li>整合 JUnit5
 <ul>
 <li>第一步 引入 JUnit5 的 jar 包
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9fhvn2mgj30gt04gt91.jpg" alt="QQ截图20200730234425.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gh9fhvn2mgj30gt04gt91.jpg" alt="QQ截图20200730234425.png">
+
+</li>
 <li>第二步 创建测试类，使用注解完成</li>
 </ul>
 <pre><code>@ExtendWith(SpringExtension.class)
@@ -347,7 +479,10 @@ public class JTest5 {
 <h2 id="springwebflux-介绍">SpringWebflux 介绍</h2>
 <ul>
 <li>是 Spring5 添加新的模块，用于 web 开发的，功能和 SpringMVC 类似的，Webflux 使用当前一种比较流程响应式编程出现的框架
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha6shka45j30ho0ac0t3.jpg" alt="QQ截图20200731152845.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha6shka45j30ho0ac0t3.jpg" alt="QQ截图20200731152845.png">
+
+</li>
 <li>使用传统 web 框架，比如 SpringMVC，这些基于 Servlet 容器，Webflux 是一种异步非阻
 塞的框架，异步非阻塞的框架在 Servlet3.1 以后才支持，核心是基于 Reactor 的相关 API 实现
 的。</li>
@@ -364,7 +499,10 @@ public class JTest5 {
 </ul>
 </li>
 <li>比较 SpringMVC
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha6u77ogfj30se0futin.jpg" alt="QQ截图20200731153026.png">
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha6u77ogfj30se0futin.jpg" alt="QQ截图20200731153026.png">
+
+
 <ul>
 <li>第一 两个框架都可以使用注解方式，都运行在 Tomet 等容器中</li>
 <li>第二 SpringMVC 采用命令式编程，Webflux 采用异步响应式编程</li>
@@ -403,7 +541,10 @@ public class JTest5 {
 <li>响应式编程操作中，Reactor 是满足 Reactive 规范框架</li>
 <li><strong>Reactor 有两个核心类，Mono 和 Flux，这两个类实现接口 Publisher，提供丰富操作符。Flux 对象实现发布者，返回 N 个元素；Mono 实现发布者，返回 0 或者 1 个元素</strong></li>
 <li>Flux 和 Mono 都是数据流的发布者，使用 Flux 和 Mono 都可以发出三种数据信号：元素值，错误信号，完成信号，错误信号和完成信号都代表终止信号，终止信号用于告诉订阅者数据流结束了，错误信号终止数据流同时把错误信息传递给订阅者
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha6xj2v7ij30sx0eldg6.jpg" alt="QQ截图20200731153338.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha6xj2v7ij30sx0eldg6.jpg" alt="QQ截图20200731153338.png">
+
+</li>
 <li>代码演示 Flux 和 Mono
 <ul>
 <li>第一步 引入依赖</li>
@@ -439,14 +580,23 @@ public class JTest5 {
 </li>
 <li>调用 just 或者其他方法只是声明数据流，数据流并没有发出，只有进行订阅之后才会触
 发数据流，不订阅什么都不会发生的
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha73adyu1j30ny04o0ud.jpg" alt="QQ截图20200731153910.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha73adyu1j30ny04o0ud.jpg" alt="QQ截图20200731153910.png">
+
+</li>
 <li>操作符
 <ul>
 <li>对数据流进行一道道操作，成为操作符，比如工厂流水线</li>
 <li>第一 map 元素映射为新元素
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha747gzubj30so0fsmyu.jpg" alt="QQ截图20200731154001.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha747gzubj30so0fsmyu.jpg" alt="QQ截图20200731154001.png">
+
+</li>
 <li>第二 flatMap 元素映射为流(把每个元素转换流，把转换之后多个流合并大的流)
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha74u1ce3j30sp0gqacl.jpg" alt="QQ截图20200731154037.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha74u1ce3j30sp0gqacl.jpg" alt="QQ截图20200731154037.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -457,17 +607,29 @@ public class JTest5 {
 <li>Netty
 <ul>
 <li>BIO
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha76h96tdj30sc0erwfv.jpg" alt="QQ截图20200731154213.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha76h96tdj30sc0erwfv.jpg" alt="QQ截图20200731154213.png">
+
+</li>
 <li>NIO
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha76zh9gcj30sn0h379j.jpg" alt="QQ截图20200731154241.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha76zh9gcj30sn0h379j.jpg" alt="QQ截图20200731154241.png">
+
+</li>
 </ul>
 </li>
 <li>SpringWebflux 执行过程和 SpringMVC 相似的
 <ul>
 <li>SpringWebflux 核心控制器 DispatchHandler，实现接口 WebHandler</li>
 <li>接口 WebHandler 有一个方法
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha77tp8lnj30ny0403zi.jpg" alt="QQ截图20200731154331.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha785zycij30sw08gmzt.jpg" alt="QQ截图20200731154350.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha77tp8lnj30ny0403zi.jpg" alt="QQ截图20200731154331.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gha785zycij30sw08gmzt.jpg" alt="QQ截图20200731154350.png">
+
+</li>
 </ul>
 </li>
 <li>SpringWebflux 里面 DispatcherHandler，负责请求的处理
@@ -483,13 +645,22 @@ public class JTest5 {
 <p>SpringWebflux 实现方式有两种：注解编程模型和函数式编程模型使用注解编程模型方式，和之前 SpringMVC 使用相似的，只需要把相关依赖配置到项目中，SpringBoot 自动配置相关运行容器，默认情况下使用 Netty 服务器</p>
 <ul>
 <li>第一步 创建 SpringBoot 工程，引入 Webflux 依赖
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghb8hv88ovj30rc05labz.jpg" alt="QQ截图20200801131319.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghb8hv88ovj30rc05labz.jpg" alt="QQ截图20200801131319.png">
+
+</li>
 <li>第二步 配置启动端口号
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghb8ic05jzj30fr03nt92.jpg" alt="QQ截图20200801131348.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghb8ic05jzj30fr03nt92.jpg" alt="QQ截图20200801131348.png">
+
+</li>
 <li>第三步 创建包和相关类
 <ul>
 <li>实体类
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghb8j6psolj30su0i2jux.jpg" alt="QQ截图20200801131437.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghb8j6psolj30su0i2jux.jpg" alt="QQ截图20200801131437.png">
+
+</li>
 <li>创建接口定义操作的方法</li>
 </ul>
 <pre><code>//用户操作接口
@@ -693,13 +864,27 @@ public void createReactorServer() {
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -998,16 +1183,6 @@ public void createReactorServer() {
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -1020,48 +1195,44 @@ public void createReactorServer() {
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1071,7 +1242,19 @@ public void createReactorServer() {
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1091,7 +1274,7 @@ public void createReactorServer() {
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1109,7 +1292,7 @@ public void createReactorServer() {
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1121,12 +1304,76 @@ public void createReactorServer() {
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

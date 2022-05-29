@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>7、Mybatis 连接池与事务深入(MyBatis)-yiguan1573</title>
+    <title>7、Mybatis 连接池与事务深入(MyBatis) | yiguan1573</title>
 
     <link rel="canonical" href="/post/657mybatis-%E8%BF%9E%E6%8E%A5%E6%B1%A0%E4%B8%8E%E4%BA%8B%E5%8A%A1%E6%B7%B1%E5%85%A5/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>7、Mybatis 连接池与事务深入(MyBatis)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Monday, August 10, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Monday, August 10, 2020
+                            
+                                <span id="/post/657mybatis-%E8%BF%9E%E6%8E%A5%E6%B1%A0%E4%B8%8E%E4%BA%8B%E5%8A%A1%E6%B7%B1%E5%85%A5/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,29 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#mybatis-连接池的分类">Mybatis 连接池的分类</a></li>
-    <li><a href="#mybatis-中数据源的配置">Mybatis 中数据源的配置</a></li>
-    <li><a href="#mybatis-中-datasource-的存取">Mybatis 中 DataSource 的存取</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#jdbc-中事务的回顾">JDBC 中事务的回顾</a></li>
-    <li><a href="#mybatis-中事务提交方式">Mybatis 中事务提交方式</a></li>
-    <li><a href="#mybatis-自动提交事务的设置">Mybatis 自动提交事务的设置</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#动态-sql-之if标签">动态 SQL 之\<if\>标签</a></li>
-    <li><a href="#动态-sql-之where标签">动态 SQL 之\<where\>标签</a></li>
-    <li><a href="#动态标签之foreach标签">动态标签之\<foreach\>标签</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="mybatis-的连接池技术">Mybatis 的连接池技术</h1>
 <h2 id="mybatis-连接池的分类">Mybatis 连接池的分类</h2>
 <ul>
@@ -248,12 +351,18 @@
 </ol>
 </li>
 <li>相应地，MyBatis 内部分别定义了实现了 java.sql.DataSource 接口的 UnpooledDataSource，PooledDataSource 类来表示 UNPOOLED、POOLED 类型的数据源
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsygydlrhj30ne0entf8.jpg" alt="QQ截图20200816210639.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsygydlrhj30ne0entf8.jpg" alt="QQ截图20200816210639.png">
+
+</li>
 <li>在这三种数据源中，我们一般采用的是 POOLED 数据源（很多时候我们所说的数据源就是为了更好的管理数据
 库连接，也就是我们所说的连接池技术）</li>
 </ul>
 <h2 id="mybatis-中数据源的配置">Mybatis 中数据源的配置</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyhp0d8qj30qk0avn06.jpg" alt="QQ截图20200816210723.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyhp0d8qj30qk0avn06.jpg" alt="QQ截图20200816210723.png">
+
+</p>
 <h2 id="mybatis-中-datasource-的存取">Mybatis 中 DataSource 的存取</h2>
 <ul>
 <li>MyBatis是通过工厂模式来创建数据源DataSource对象的，MyBatis定义了抽象的工厂接口:org.apache.ibatis.datasource.DataSourceFactory,通过其 getDataSource()方法返回数据源DataSource</li>
@@ -265,11 +374,23 @@
 <li>那么我们的 Mybatis 框架因为是对 JDBC 的封装，所以 Mybatis 框架的事务控制方式，本身也是用 JDBC 的setAutoCommit()方法来设置事务提交方式的</li>
 </ul>
 <h2 id="mybatis-中事务提交方式">Mybatis 中事务提交方式</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsys3d5gjj30qm0qgwiv.jpg" alt="QQ截图20200816211712.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsys8rtdjj30qs0hc7ak.jpg" alt="QQ截图20200816211721.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsys3d5gjj30qm0qgwiv.jpg" alt="QQ截图20200816211712.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsys8rtdjj30qs0hc7ak.jpg" alt="QQ截图20200816211721.png">
+
+</p>
 <h2 id="mybatis-自动提交事务的设置">Mybatis 自动提交事务的设置</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyt2fwpaj30qt0k278w.jpg" alt="QQ截图20200816211810.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyt97t6cj30qp0i7n2s.jpg" alt="QQ截图20200816211818.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyt2fwpaj30qt0k278w.jpg" alt="QQ截图20200816211810.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyt97t6cj30qp0i7n2s.jpg" alt="QQ截图20200816211818.png">
+
+</p>
 <h1 id="mybatis-的动态-sql-语句">Mybatis 的动态 SQL 语句</h1>
 <h2 id="动态-sql-之if标签">动态 SQL 之&lt;if&gt;标签</h2>
 <ul>
@@ -278,14 +399,23 @@
 <pre><code>List&lt;User&gt; findByUser(User user);
 </code></pre><ul>
 <li>持久层 Dao 映射配置
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyunu8b0j30pt0awq4c.jpg" alt="QQ截图20200816211950.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyunu8b0j30pt0awq4c.jpg" alt="QQ截图20200816211950.png">
+
+</li>
 <li>测试
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyvbcwz0j30pz09vmy0.jpg" alt="QQ截图20200816212028.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyvbcwz0j30pz09vmy0.jpg" alt="QQ截图20200816212028.png">
+
+</li>
 </ul>
 <h2 id="动态-sql-之where标签">动态 SQL 之&lt;where&gt;标签</h2>
 <ul>
 <li>持久层 Dao 映射配置
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyw0iyiuj30pn0auwfh.jpg" alt="QQ截图20200816212109.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsyw0iyiuj30pn0auwfh.jpg" alt="QQ截图20200816212109.png">
+
+</li>
 </ul>
 <h2 id="动态标签之foreach标签">动态标签之&lt;foreach&gt;标签</h2>
 <ul>
@@ -306,10 +436,19 @@
 <pre><code>List&lt;User&gt; findInIds(QueryVo vo);
 </code></pre><ul>
 <li>持久层 Dao 映射配置
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsz7skmjfj30qu0hkjtx.jpg" alt="QQ截图20200816213218.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsz7xwickj30ql01p3yp.jpg" alt="QQ截图20200816213226.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsz7skmjfj30qu0hkjtx.jpg" alt="QQ截图20200816213218.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsz7xwickj30ql01p3yp.jpg" alt="QQ截图20200816213226.png">
+
+</li>
 <li>编写测试方法
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsz8hv150j30qs0enjso.jpg" alt="QQ截图20200816213309.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsz8hv150j30qs0enjso.jpg" alt="QQ截图20200816213309.png">
+
+</li>
 </ul>
 
 
@@ -330,13 +469,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -635,16 +788,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -657,48 +800,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -708,7 +847,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -728,7 +879,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -746,7 +897,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -758,12 +909,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

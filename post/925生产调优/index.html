@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>5、生产调优（Hadoop）-yiguan1573</title>
+    <title>5、生产调优（Hadoop） | yiguan1573</title>
 
     <link rel="canonical" href="/post/925%E7%94%9F%E4%BA%A7%E8%B0%83%E4%BC%98/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>5、生产调优（Hadoop）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Sunday, October 24, 2021
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Sunday, October 24, 2021
+                            
+                                <span id="/post/925%E7%94%9F%E4%BA%A7%E8%B0%83%E4%BC%98/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,135 +340,85 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#hdfs核心参数">HDFS—核心参数</a>
-      <ul>
-        <li><a href="#namenode内存生产配置">NameNode内存生产配置</a></li>
-        <li><a href="#namenode心跳并发配置">NameNode心跳并发配置</a></li>
-        <li><a href="#开启回收站配置">开启回收站配置</a></li>
-      </ul>
-    </li>
-    <li><a href="#hdfs集群压测">HDFS—集群压测</a>
-      <ul>
-        <li><a href="#测试hdfs写性能">测试HDFS写性能</a></li>
-        <li><a href="#测试hdfs读性能">测试HDFS读性能</a></li>
-      </ul>
-    </li>
-    <li><a href="#hdfs多目录">HDFS—多目录</a>
-      <ul>
-        <li><a href="#namenode多目录配置">NameNode多目录配置</a></li>
-        <li><a href="#datanode多目录配置">DataNode多目录配置</a></li>
-        <li><a href="#集群数据均衡之磁盘间数据均衡">集群数据均衡之磁盘间数据均衡</a></li>
-      </ul>
-    </li>
-    <li><a href="#hdfs集群扩容及缩容">HDFS—集群扩容及缩容</a>
-      <ul>
-        <li><a href="#添加白名单">添加白名单</a></li>
-        <li><a href="#服役新服务器">服役新服务器</a></li>
-        <li><a href="#服务器间数据均衡">服务器间数据均衡</a></li>
-        <li><a href="#黑名单退役服务器">黑名单退役服务器</a></li>
-      </ul>
-    </li>
-    <li><a href="#hdfs存储优化">HDFS—存储优化</a>
-      <ul>
-        <li><a href="#纠删码">纠删码</a></li>
-        <li><a href="#异构存储冷热数据分离">异构存储（冷热数据分离）</a></li>
-      </ul>
-    </li>
-    <li><a href="#hdfs故障排除">HDFS—故障排除</a>
-      <ul>
-        <li><a href="#namenode故障处理">NameNode故障处理</a></li>
-        <li><a href="#集群安全模式磁盘修复">集群安全模式&磁盘修复</a></li>
-        <li><a href="#慢磁盘监控">慢磁盘监控</a></li>
-        <li><a href="#小文件归档">小文件归档</a></li>
-      </ul>
-    </li>
-    <li><a href="#hdfs集群迁移">HDFS—集群迁移</a>
-      <ul>
-        <li></li>
-      </ul>
-    </li>
-    <li><a href="#mapreduce生产经验">MapReduce生产经验</a>
-      <ul>
-        <li><a href="#mapreduce跑的慢的原因">MapReduce跑的慢的原因</a></li>
-        <li><a href="#mapreduce常用调优参数">MapReduce常用调优参数</a></li>
-        <li><a href="#mapreduce数据倾斜问题">MapReduce数据倾斜问题</a></li>
-      </ul>
-    </li>
-    <li><a href="#hadoop-yarn生产经验">Hadoop-Yarn生产经验</a>
-      <ul>
-        <li><a href="#常用的调优参数">常用的调优参数</a></li>
-      </ul>
-    </li>
-    <li><a href="#hadoop综合调优">Hadoop综合调优</a>
-      <ul>
-        <li><a href="#hadoop小文件优化方法">Hadoop小文件优化方法</a></li>
-        <li><a href="#测试mapreduce计算性能">测试MapReduce计算性能</a></li>
-        <li><a href="#企业开发场景案例">企业开发场景案例</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-                
                 <h2 id="hdfs核心参数">HDFS—核心参数</h2>
 <h3 id="namenode内存生产配置">NameNode内存生产配置</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiemlcookj30pn0qyk8d.jpg" alt="QQ截图20211117200830.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiemt8dt6j30oh0w2h3n.jpg" alt="QQ截图20211117200922.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiemlcookj30pn0qyk8d.jpg" alt="QQ截图20211117200830.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiemt8dt6j30oh0w2h3n.jpg" alt="QQ截图20211117200922.png">
+
+</p>
 <h3 id="namenode心跳并发配置">NameNode心跳并发配置</h3>
-<p>​	<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwienkvi11j30p40pmk8d.jpg" alt="QQ截图20211117201024.png"></p>
+<p>​	
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwienkvi11j30p40pmk8d.jpg" alt="QQ截图20211117201024.png">
+
+</p>
 <h3 id="开启回收站配置">开启回收站配置</h3>
 <ul>
 <li>
 <p>开启回收站功能，可以将删除的文件在不超时的情况下，恢复原数据，起到防止误删除、备份等作用。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwier2o4wuj30p011aqmw.jpg" alt="QQ截图20211117201346.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwier2o4wuj30p011aqmw.jpg" alt="QQ截图20211117201346.png">
+
+</p>
 </li>
 </ul>
 <h2 id="hdfs集群压测">HDFS—集群压测</h2>
 <ul>
 <li>
 <p>在企业中非常关心每天从Java后台拉取过来的数据，需要多久能上传到集群？消费者关心多久能从HDFS上拉取需要的数据？<strong>为了搞清楚HDFS的读写性能，生产环境上非常需要对集群进行压测。</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiey6e1zcj30hf06pmyy.jpg" alt="QQ截图20211117202022.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiey6e1zcj30hf06pmyy.jpg" alt="QQ截图20211117202022.png">
+
+</p>
 </li>
 <li>
 <p>HDFS的读写性能主要受<strong>网络和磁盘</strong>影响比较大。为了方便测试，将hadoop102、hadoop103、hadoop104虚拟机网络都设置为100mbps。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwieyhzmivj30nz0kdage.jpg" alt="QQ截图20211117202035.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwieyhzmivj30nz0kdage.jpg" alt="QQ截图20211117202035.png">
+
+</p>
 <p>100Mbps单位是bit；10M/s单位是byte ; 1byte=8bit，100Mbps/8=12.5M/s。</p>
 <p>测试网速：来到hadoop102的/opt/module目录，创建一个</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 software<span style="color:#f92672">]</span>$ python -m SimpleHTTPServer
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 software<span style="color:#ff79c6">]</span>$ python -m SimpleHTTPServer
 </code></pre></div></li>
 </ul>
 <h3 id="测试hdfs写性能">测试HDFS写性能</h3>
 <ul>
 <li>
 <p>写测试底层原理</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwif25pi3oj30nw08kdjo.jpg" alt="QQ截图20211117202425.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwif25pi3oj30nw08kdjo.jpg" alt="QQ截图20211117202425.png">
+
+</p>
 </li>
 <li>
 <p>测试内容：向HDFS集群写10个128M的文件</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 mapreduce<span style="color:#f92672">]</span>$ hadoop jar /opt/module/hadoop-3.1.3/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-3.1.3-tests.jar TestDFSIO -write -nrFiles <span style="color:#ae81ff">10</span> -fileSize 128MB
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 mapreduce<span style="color:#ff79c6">]</span>$ hadoop jar /opt/module/hadoop-3.1.3/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-3.1.3-tests.jar TestDFSIO -write -nrFiles <span style="color:#bd93f9">10</span> -fileSize 128MB
   
 2021-02-09 10:43:16,853 INFO fs.TestDFSIO: ----- TestDFSIO ----- : write
-2021-02-09 10:43:16,854 INFO fs.TestDFSIO:             Date &amp; time: Tue Feb <span style="color:#ae81ff">09</span> 10:43:16 CST 2021
+2021-02-09 10:43:16,854 INFO fs.TestDFSIO:             Date &amp; time: Tue Feb <span style="color:#bd93f9">09</span> 10:43:16 CST 2021
 2021-02-09 10:43:16,854 INFO fs.TestDFSIO:         Number of files: 10
 2021-02-09 10:43:16,854 INFO fs.TestDFSIO:  Total MBytes processed: 1280
 2021-02-09 10:43:16,854 INFO fs.TestDFSIO:       Throughput mb/sec: 1.61
 2021-02-09 10:43:16,854 INFO fs.TestDFSIO:  Average IO rate mb/sec: 1.9
 2021-02-09 10:43:16,854 INFO fs.TestDFSIO:   IO rate std deviation: 0.76
-2021-02-09 10:43:16,854 INFO fs.TestDFSIO:      Test exec time sec: 133.05
+2021-02-09 10:43:16,854 INFO fs.TestDFSIO:      Test <span style="color:#8be9fd;font-style:italic">exec</span> <span style="color:#8be9fd;font-style:italic">time</span> sec: 133.05
 2021-02-09 10:43:16,854 INFO fs.TestDFSIO:
 </code></pre></div><p>注意：nrFiles n为生成mapTask的数量，生产环境一般可通过hadoop103:8088查看CPU核数，设置为（CPU核数 - 1）</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwif6hc52jj30nl0dcai3.jpg" alt="QQ截图20211117202827.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwif6hc52jj30nl0dcai3.jpg" alt="QQ截图20211117202827.png">
+
+</p>
 </li>
 <li>
 <p><strong>注意：如果测试过程中，出现异常</strong></p>
 <ul>
 <li>
 <p>可以在yarn-site.xml中设置虚拟内存检测为false</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&lt;!--是否启动一个线程检查每个任务正使用的虚拟内存量，如果任务超出分配值，则直接将其杀掉，默认是true --&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&lt;!--是否启动一个线程检查每个任务正使用的虚拟内存量，如果任务超出分配值，则直接将其杀掉，默认是true --&gt;
 &lt;property&gt;
      &lt;name&gt;yarn.nodemanager.vmem-check-enabled&lt;/name&gt;
      &lt;value&gt;false&lt;/value&gt;
@@ -355,31 +431,37 @@
 </li>
 <li>
 <p>测试结果分析</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwif96df9rj30od0m0122.jpg" alt="QQ截图20211117203111.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwif96df9rj30od0m0122.jpg" alt="QQ截图20211117203111.png">
+
+</p>
 </li>
 </ul>
 <h3 id="测试hdfs读性能">测试HDFS读性能</h3>
 <ul>
 <li>
 <p>测试内容：读取HDFS集群10个128M的文件</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 mapreduce<span style="color:#f92672">]</span>$ hadoop jar /opt/module/hadoop-3.1.3/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-3.1.3-tests.jar TestDFSIO -read -nrFiles <span style="color:#ae81ff">10</span> -fileSize 128MB
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 mapreduce<span style="color:#ff79c6">]</span>$ hadoop jar /opt/module/hadoop-3.1.3/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-3.1.3-tests.jar TestDFSIO -read -nrFiles <span style="color:#bd93f9">10</span> -fileSize 128MB
   
-2021-02-09 11:34:15,847 INFO fs.TestDFSIO: ----- TestDFSIO ----- : read
-2021-02-09 11:34:15,847 INFO fs.TestDFSIO:             Date &amp; time: Tue Feb <span style="color:#ae81ff">09</span> 11:34:15 CST 2021
+2021-02-09 11:34:15,847 INFO fs.TestDFSIO: ----- TestDFSIO ----- : <span style="color:#8be9fd;font-style:italic">read</span>
+2021-02-09 11:34:15,847 INFO fs.TestDFSIO:             Date &amp; time: Tue Feb <span style="color:#bd93f9">09</span> 11:34:15 CST 2021
 2021-02-09 11:34:15,847 INFO fs.TestDFSIO:         Number of files: 10
 2021-02-09 11:34:15,847 INFO fs.TestDFSIO:  Total MBytes processed: 1280
 2021-02-09 11:34:15,848 INFO fs.TestDFSIO:       Throughput mb/sec: 200.28
 2021-02-09 11:34:15,848 INFO fs.TestDFSIO:  Average IO rate mb/sec: 266.74
 2021-02-09 11:34:15,848 INFO fs.TestDFSIO:   IO rate std deviation: 143.12
-2021-02-09 11:34:15,848 INFO fs.TestDFSIO:      Test exec time sec: 20.83
+2021-02-09 11:34:15,848 INFO fs.TestDFSIO:      Test <span style="color:#8be9fd;font-style:italic">exec</span> <span style="color:#8be9fd;font-style:italic">time</span> sec: 20.83
 </code></pre></div></li>
 <li>
 <p>删除测试生成数据</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 mapreduce<span style="color:#f92672">]</span>$ hadoop jar /opt/module/hadoop-3.1.3/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-3.1.3-tests.jar TestDFSIO -clean
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 mapreduce<span style="color:#ff79c6">]</span>$ hadoop jar /opt/module/hadoop-3.1.3/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-3.1.3-tests.jar TestDFSIO -clean
 </code></pre></div></li>
 <li>
 <p>测试结果分析：为什么读取文件速度大于网络带宽？由于目前只有三台服务器，且有三个副本，数据读取就近原则，相当于都是读取的本地磁盘数据，没有走网络。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiffdhchgj30o6066ac1.jpg" alt="QQ截图20211117203705.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiffdhchgj30o6066ac1.jpg" alt="QQ截图20211117203705.png">
+
+</p>
 </li>
 </ul>
 <h2 id="hdfs多目录">HDFS—多目录</h2>
@@ -393,64 +475,70 @@
 <ul>
 <li>
 <p>在hdfs-site.xml文件中添加如下内容</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&lt;property&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&lt;property&gt;
      &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
-        &lt;value&gt;file://<span style="color:#e6db74">${</span>hadoop.tmp.dir<span style="color:#e6db74">}</span>/dfs/name1,file://<span style="color:#e6db74">${</span>hadoop.tmp.dir<span style="color:#e6db74">}</span>/dfs/name2&lt;/value&gt;
+        &lt;value&gt;file://<span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">hadoop</span>.tmp.dir<span style="color:#f1fa8c">}</span>/dfs/name1,file://<span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">hadoop</span>.tmp.dir<span style="color:#f1fa8c">}</span>/dfs/name2&lt;/value&gt;
 &lt;/property&gt;
 </code></pre></div><p>注意：因为每台服务器节点的磁盘情况不同，所以这个配置配完之后，可以选择不分发</p>
 </li>
 <li>
 <p>停止集群，删除三台节点的data和logs中所有数据。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ rm -rf data/ logs/
-<span style="color:#f92672">[</span>atguigu@hadoop103 hadoop-3.1.3<span style="color:#f92672">]</span>$ rm -rf data/ logs/
-<span style="color:#f92672">[</span>atguigu@hadoop104 hadoop-3.1.3<span style="color:#f92672">]</span>$ rm -rf data/ logs/
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ rm -rf data/ logs/
+<span style="color:#ff79c6">[</span>atguigu@hadoop103 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ rm -rf data/ logs/
+<span style="color:#ff79c6">[</span>atguigu@hadoop104 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ rm -rf data/ logs/
 </code></pre></div></li>
 <li>
 <p>格式化集群并启动</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ bin/hdfs namenode -format
-<span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ sbin/start-dfs.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ bin/hdfs namenode -format
+<span style="color:#ff79c6">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ sbin/start-dfs.sh
 </code></pre></div></li>
 </ul>
 </li>
 <li>
 <p><strong>查看结果</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 dfs<span style="color:#f92672">]</span>$ ll
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 dfs<span style="color:#ff79c6">]</span>$ ll
 总用量 12
-drwx------. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="color:#ae81ff">4096</span> 12月 <span style="color:#ae81ff">11</span> 08:03 data
-drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="color:#ae81ff">4096</span> 12月 <span style="color:#ae81ff">11</span> 08:03 name1
-drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="color:#ae81ff">4096</span> 12月 <span style="color:#ae81ff">11</span> 08:03 name2
+drwx------. <span style="color:#bd93f9">3</span> atguigu atguigu <span style="color:#bd93f9">4096</span> 12月 <span style="color:#bd93f9">11</span> 08:03 data
+drwxrwxr-x. <span style="color:#bd93f9">3</span> atguigu atguigu <span style="color:#bd93f9">4096</span> 12月 <span style="color:#bd93f9">11</span> 08:03 name1
+drwxrwxr-x. <span style="color:#bd93f9">3</span> atguigu atguigu <span style="color:#bd93f9">4096</span> 12月 <span style="color:#bd93f9">11</span> 08:03 name2
 </code></pre></div></li>
 </ul>
 <h3 id="datanode多目录配置">DataNode多目录配置</h3>
 <ul>
 <li>
 <p>DataNode可以配置成多个目录，每个目录存储的数据不一样（数据不是副本）</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiftyw0ajj30g005v403.jpg" alt="QQ截图20211117205109.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwiftyw0ajj30g005v403.jpg" alt="QQ截图20211117205109.png">
+
+</p>
 </li>
 <li>
 <p>具体配置如下</p>
 <p>在hdfs-site.xml文件中添加如下内容</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-     <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.datanode.data.dir<span style="color:#f92672">&lt;/name&gt;</span>
-     <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>file://${hadoop.tmp.dir}/dfs/data1,file://${hadoop.tmp.dir}/dfs/data2<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+     <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.datanode.data.dir<span style="color:#ff79c6">&lt;/name&gt;</span>
+     <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>file://${hadoop.tmp.dir}/dfs/data1,file://${hadoop.tmp.dir}/dfs/data2<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 <li>
 <p><strong>查看结果</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 dfs<span style="color:#f92672">]</span>$ ll
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 dfs<span style="color:#ff79c6">]</span>$ ll
 总用量 12
-drwx------. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="color:#ae81ff">4096</span> 4月   <span style="color:#ae81ff">4</span> 14:22 data1
-drwx------. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="color:#ae81ff">4096</span> 4月   <span style="color:#ae81ff">4</span> 14:22 data2
-drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="color:#ae81ff">4096</span> 12月 <span style="color:#ae81ff">11</span> 08:03 name1
-drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="color:#ae81ff">4096</span> 12月 <span style="color:#ae81ff">11</span> 08:03 name2
+drwx------. <span style="color:#bd93f9">3</span> atguigu atguigu <span style="color:#bd93f9">4096</span> 4月   <span style="color:#bd93f9">4</span> 14:22 data1
+drwx------. <span style="color:#bd93f9">3</span> atguigu atguigu <span style="color:#bd93f9">4096</span> 4月   <span style="color:#bd93f9">4</span> 14:22 data2
+drwxrwxr-x. <span style="color:#bd93f9">3</span> atguigu atguigu <span style="color:#bd93f9">4096</span> 12月 <span style="color:#bd93f9">11</span> 08:03 name1
+drwxrwxr-x. <span style="color:#bd93f9">3</span> atguigu atguigu <span style="color:#bd93f9">4096</span> 12月 <span style="color:#bd93f9">11</span> 08:03 name2
 </code></pre></div></li>
 <li>
 <p><strong>向集群上传一个文件，再次观察两个文件夹里面的内容发现不一致（一个有数一个没有）</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#f92672">]</span>$ hadoop fs -put wcinput/word.txt /
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>atguigu@hadoop102 hadoop-3.1.3<span style="color:#ff79c6">]</span>$ hadoop fs -put wcinput/word.txt /
 </code></pre></div></li>
 </ul>
 <h3 id="集群数据均衡之磁盘间数据均衡">集群数据均衡之磁盘间数据均衡</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwifwuu3bqj30o50g6th4.jpg" alt="QQ截图20211117205356.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwifwuu3bqj30o50g6th4.jpg" alt="QQ截图20211117205356.png">
+
+</p>
 <h2 id="hdfs集群扩容及缩容">HDFS—集群扩容及缩容</h2>
 <h3 id="添加白名单">添加白名单</h3>
 <ul>
@@ -461,14 +549,32 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 <p>企业中：配置白名单，可以尽量防止黑客恶意访问攻击。</p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlnsvpxcvj30os0x6dy9.jpg" alt="QQ截图20211120154316.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlnt7sjc9j30oo0nmtjz.jpg" alt="QQ截图20211120154331.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlnsvpxcvj30os0x6dy9.jpg" alt="QQ截图20211120154316.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlnt7sjc9j30oo0nmtjz.jpg" alt="QQ截图20211120154331.png">
+
+</p>
 <h3 id="服役新服务器">服役新服务器</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlnyr48gmj30od0d7ahk.jpg" alt="QQ截图20211120154843.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlnyyrkw3j30os0yze0b.jpg" alt="QQ截图20211120154901.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlnz7005tj30m20cggoz.jpg" alt="QQ截图20211120154912.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlnyr48gmj30od0d7ahk.jpg" alt="QQ截图20211120154843.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlnyyrkw3j30os0yze0b.jpg" alt="QQ截图20211120154901.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlnz7005tj30m20cggoz.jpg" alt="QQ截图20211120154912.png">
+
+</p>
 <h3 id="服务器间数据均衡">服务器间数据均衡</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo0pj2tij30pl0l57gy.jpg" alt="QQ截图20211120155104.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo0pj2tij30pl0l57gy.jpg" alt="QQ截图20211120155104.png">
+
+</p>
 <h3 id="黑名单退役服务器">黑名单退役服务器</h3>
 <ul>
 <li>
@@ -476,8 +582,14 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 </li>
 <li>
 <p>企业中：配置黑名单，用来退役服务器。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo2j0bc3j30or0zo1fq.jpg" alt="QQ截图20211120155223.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo2r7ro4j30o904940n.jpg" alt="QQ截图20211120155236.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo2j0bc3j30or0zo1fq.jpg" alt="QQ截图20211120155223.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo2r7ro4j30o904940n.jpg" alt="QQ截图20211120155236.png">
+
+</p>
 </li>
 </ul>
 <h2 id="hdfs存储优化">HDFS—存储优化</h2>
@@ -489,135 +601,195 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 <ul>
 <li>
 <p>HDFS默认情况下，一个文件有3个副本，这样提高了数据的可靠性，但也带来了2倍的冗余开销。Hadoop3.x引入了纠删码，采用计算的方式，可以节省约50％左右的存储空间。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo6h0uwxj30ob0nxwt0.jpg" alt="QQ截图20211120155558.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo6o9pypj30ps10c1kx.jpg" alt="QQ截图20211120155628.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo6h0uwxj30ob0nxwt0.jpg" alt="QQ截图20211120155558.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo6o9pypj30ps10c1kx.jpg" alt="QQ截图20211120155628.png">
+
+</p>
 </li>
 </ul>
 <h4 id="纠删码案例实操">纠删码案例实操</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo7nof2ej30op0oeaps.jpg" alt="QQ截图20211120155745.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo7nof2ej30op0oeaps.jpg" alt="QQ截图20211120155745.png">
+
+</p>
 <h3 id="异构存储冷热数据分离">异构存储（冷热数据分离）</h3>
 <ul>
 <li>
 <p>异构存储主要解决，不同的数据，存储在不同类型的硬盘中，达到最佳性能的问题。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo9qpiyxj30o8079jto.jpg" alt="QQ截图20211120155929.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo9yfduxj30nz0buwiz.jpg" alt="QQ截图20211120155944.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo9qpiyxj30o8079jto.jpg" alt="QQ截图20211120155929.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlo9yfduxj30nz0buwiz.jpg" alt="QQ截图20211120155944.png">
+
+</p>
 </li>
 </ul>
 <h4 id="异构存储shell操作">异构存储Shell操作</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlobi0sb9j30nm0e5ajz.jpg" alt="QQ截图20211120160126.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlobi0sb9j30nm0e5ajz.jpg" alt="QQ截图20211120160126.png">
+
+</p>
 <h4 id="测试环境准备">测试环境准备</h4>
 <ul>
 <li>
 <p>测试环境描述</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlogbfiy6j30ol09f423.jpg" alt="QQ截图20211120160555.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlogbfiy6j30ol09f423.jpg" alt="QQ截图20211120160555.png">
+
+</p>
 </li>
 <li>
 <p>配置文件信息</p>
 <ul>
 <li>
 <p>为hadoop102节点的hdfs-site.xml添加如下信息</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.replication<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>2<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.storage.policy.enabled<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.datanode.data.dir<span style="color:#f92672">&lt;/name&gt;</span> 
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>[SSD]file:///opt/module/hadoop-3.1.3/hdfsdata/ssd,[RAM_DISK]file:///opt/module/hadoop-3.1.3/hdfsdata/ram_disk<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.replication<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>2<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.storage.policy.enabled<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>true<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.datanode.data.dir<span style="color:#ff79c6">&lt;/name&gt;</span> 
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>[SSD]file:///opt/module/hadoop-3.1.3/hdfsdata/ssd,[RAM_DISK]file:///opt/module/hadoop-3.1.3/hdfsdata/ram_disk<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 <li>
 <p>为hadoop103节点的hdfs-site.xml添加如下信息</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.replication<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>2<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.storage.policy.enabled<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.datanode.data.dir<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>[SSD]file:///opt/module/hadoop-3.1.3/hdfsdata/ssd,[DISK]file:///opt/module/hadoop-3.1.3/hdfsdata/disk<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.replication<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>2<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.storage.policy.enabled<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>true<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.datanode.data.dir<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>[SSD]file:///opt/module/hadoop-3.1.3/hdfsdata/ssd,[DISK]file:///opt/module/hadoop-3.1.3/hdfsdata/disk<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 <li>
 <p>为hadoop104节点的hdfs-site.xml添加如下信息</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.replication<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>2<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.storage.policy.enabled<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.datanode.data.dir<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>[RAM_DISK]file:///opt/module/hdfsdata/ram_disk,[DISK]file:///opt/module/hadoop-3.1.3/hdfsdata/disk<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.replication<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>2<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.storage.policy.enabled<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>true<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.datanode.data.dir<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>[RAM_DISK]file:///opt/module/hdfsdata/ram_disk,[DISK]file:///opt/module/hadoop-3.1.3/hdfsdata/disk<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 <li>
 <p>为hadoop105节点的hdfs-site.xml添加如下信息</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.replication<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>2<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.storage.policy.enabled<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.datanode.data.dir<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>[ARCHIVE]file:///opt/module/hadoop-3.1.3/hdfsdata/archive<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.replication<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>2<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.storage.policy.enabled<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>true<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.datanode.data.dir<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>[ARCHIVE]file:///opt/module/hadoop-3.1.3/hdfsdata/archive<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 <li>
 <p>为hadoop106节点的hdfs-site.xml添加如下信息</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.replication<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>2<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.storage.policy.enabled<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>dfs.datanode.data.dir<span style="color:#f92672">&lt;/name&gt;</span>
-    <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>[ARCHIVE]file:///opt/module/hadoop-3.1.3/hdfsdata/archive<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.replication<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>2<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.storage.policy.enabled<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>true<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>dfs.datanode.data.dir<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>[ARCHIVE]file:///opt/module/hadoop-3.1.3/hdfsdata/archive<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 </ul>
 </li>
 <li>
 <p><strong>数据准备</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlojpfkjhj30mw07578p.jpg" alt="QQ截图20211120160918.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlojpfkjhj30mw07578p.jpg" alt="QQ截图20211120160918.png">
+
+</p>
 </li>
 </ul>
 <h4 id="hot存储策略案例">HOT存储策略案例</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlol5822gj30nm09rdnj.jpg" alt="QQ截图20211120161044.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlol5822gj30nm09rdnj.jpg" alt="QQ截图20211120161044.png">
+
+</p>
 <h4 id="warm存储策略测试">WARM存储策略测试</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlolxqr29j30no0e1k1y.jpg" alt="QQ截图20211120161127.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlolxqr29j30no0e1k1y.jpg" alt="QQ截图20211120161127.png">
+
+</p>
 <h4 id="cold策略测试">COLD策略测试</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlomsxf7zj30oj0e2wns.jpg" alt="QQ截图20211120161218.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlomsxf7zj30oj0e2wns.jpg" alt="QQ截图20211120161218.png">
+
+</p>
 <h4 id="one_ssd策略测试">ONE_SSD策略测试</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlontwr40j30od0bhgtu.jpg" alt="QQ截图20211120161318.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlontwr40j30od0bhgtu.jpg" alt="QQ截图20211120161318.png">
+
+</p>
 <h4 id="all_ssd策略测试">ALL_SSD策略测试</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlooh8axbj30n90bgn5h.jpg" alt="QQ截图20211120161356.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlooh8axbj30n90bgn5h.jpg" alt="QQ截图20211120161356.png">
+
+</p>
 <h4 id="lazy_persist策略测试">LAZY_PERSIST策略测试</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlopm8x33j30nk0bvdo4.jpg" alt="QQ截图20211120161449.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlopsw9sxj30og0ju4dv.jpg" alt="QQ截图20211120161459.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlopm8x33j30nk0bvdo4.jpg" alt="QQ截图20211120161449.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlopsw9sxj30og0ju4dv.jpg" alt="QQ截图20211120161459.png">
+
+</p>
 <h2 id="hdfs故障排除">HDFS—故障排除</h2>
 <p><strong>注意：采用三台服务器即可，恢复到Yarn开始的服务器快照。</strong></p>
 <h3 id="namenode故障处理">NameNode故障处理</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpa4hc5jj30pn0n64b7.jpg" alt="QQ截图20211120163332.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpa4hc5jj30pn0n64b7.jpg" alt="QQ截图20211120163332.png">
+
+</p>
 <h3 id="集群安全模式磁盘修复">集群安全模式&amp;磁盘修复</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpc7klttj30m40d37az.jpg" alt="QQ截图20211120163531.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpcjsj73j30pj12kh9g.jpg" alt="QQ截图20211120163547.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpcq1cenj30qp12i1an.jpg" alt="QQ截图20211120163616.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpd0uqapj30pb0qxwsd.jpg" alt="QQ截图20211120163628.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpc7klttj30m40d37az.jpg" alt="QQ截图20211120163531.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpcjsj73j30pj12kh9g.jpg" alt="QQ截图20211120163547.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpcq1cenj30qp12i1an.jpg" alt="QQ截图20211120163616.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpd0uqapj30pb0qxwsd.jpg" alt="QQ截图20211120163628.png">
+
+</p>
 <h3 id="慢磁盘监控">慢磁盘监控</h3>
 <ul>
 <li>
@@ -631,14 +803,29 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 <p>可以采用如下方法找出是哪块磁盘慢：</p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpf98ty4j30p8127e4b.jpg" alt="QQ截图20211120163929.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpfgko7wj30nr089wlx.jpg" alt="QQ截图20211120163939.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpf98ty4j30p8127e4b.jpg" alt="QQ截图20211120163929.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpfgko7wj30nr089wlx.jpg" alt="QQ截图20211120163939.png">
+
+</p>
 <h3 id="小文件归档">小文件归档</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpgmfpukj30pq0s2nd3.jpg" alt="QQ截图20211120164046.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpgslb94j30ov09vn2r.jpg" alt="QQ截图20211120164056.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpgmfpukj30pq0s2nd3.jpg" alt="QQ截图20211120164046.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpgslb94j30ov09vn2r.jpg" alt="QQ截图20211120164056.png">
+
+</p>
 <h2 id="hdfs集群迁移">HDFS—集群迁移</h2>
 <h4 id="apache和apache集群间数据拷贝">Apache和Apache集群间数据拷贝</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpraw0u2j30pp0blgu4.jpg" alt="QQ截图20211120165107.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpraw0u2j30pp0blgu4.jpg" alt="QQ截图20211120165107.png">
+
+</p>
 <h2 id="mapreduce生产经验">MapReduce生产经验</h2>
 <h3 id="mapreduce跑的慢的原因">MapReduce跑的慢的原因</h3>
 <ul>
@@ -659,7 +846,10 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 </li>
 </ul>
 <h3 id="mapreduce常用调优参数">MapReduce常用调优参数</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpx66fvyj30o00onduq.jpg" alt="QQ截图20211120165651.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlpx66fvyj30o00onduq.jpg" alt="QQ截图20211120165651.png">
+
+</p>
 <h3 id="mapreduce数据倾斜问题">MapReduce数据倾斜问题</h3>
 <ul>
 <li>
@@ -690,8 +880,14 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 <ul>
 <li>
 <p>调优参数列表</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlq22p1zrj30n707ctdp.jpg" alt="QQ截图20211120170127.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlq2a70kxj30nx0by49q.jpg" alt="QQ截图20211120170135.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlq22p1zrj30n707ctdp.jpg" alt="QQ截图20211120170127.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlq2a70kxj30nx0by49q.jpg" alt="QQ截图20211120170135.png">
+
+</p>
 </li>
 </ul>
 <h2 id="hadoop综合调优">Hadoop综合调优</h2>
@@ -728,14 +924,23 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 </li>
 <li>
 <p>开启uber模式，实现JVM重用（计算方向）</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqa722pdj30q20vqqmj.jpg" alt="QQ截图20211120170909.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqajv9waj30ok0fpqbl.jpg" alt="QQ截图20211120170922.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqa722pdj30q20vqqmj.jpg" alt="QQ截图20211120170909.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqajv9waj30ok0fpqbl.jpg" alt="QQ截图20211120170922.png">
+
+</p>
 </li>
 </ul>
 </li>
 </ul>
 <h3 id="测试mapreduce计算性能">测试MapReduce计算性能</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqb7o1ycj30ow0fagxu.jpg" alt="QQ截图20211120171023.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqb7o1ycj30ow0fagxu.jpg" alt="QQ截图20211120171023.png">
+
+</p>
 <h3 id="企业开发场景案例">企业开发场景案例</h3>
 <h4 id="需求">需求</h4>
 <ul>
@@ -749,17 +954,41 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 </li>
 </ul>
 <h4 id="hdfs参数调优">HDFS参数调优</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqdwv4t5j30ng0gyn5t.jpg" alt="QQ截图20211120171257.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqdwv4t5j30ng0gyn5t.jpg" alt="QQ截图20211120171257.png">
+
+</p>
 <h4 id="mapreduce参数调优">MapReduce参数调优</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqftlihoj30nu0dyn30.jpg" alt="QQ截图20211120171424.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqg5k0edj30nx1281h5.jpg" alt="QQ截图20211120171434.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqgd8aabj30nd0jktjb.jpg" alt="QQ截图20211120171445.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqftlihoj30nu0dyn30.jpg" alt="QQ截图20211120171424.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqg5k0edj30nx1281h5.jpg" alt="QQ截图20211120171434.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqgd8aabj30nd0jktjb.jpg" alt="QQ截图20211120171445.png">
+
+</p>
 <h4 id="yarn参数调优">Yarn参数调优</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqhlzczjj30nu0huamj.jpg" alt="QQ截图20211120171602.png"></p>
-<p>​	<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqhvbxboj30ni12j1kx.jpg" alt="QQ截图20211120171617.png"></p>
-<p>​	<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqi5anhhj30nh0w7e0p.jpg" alt="QQ截图20211120171628.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqhlzczjj30nu0huamj.jpg" alt="QQ截图20211120171602.png">
+
+</p>
+<p>​	
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqhvbxboj30ni12j1kx.jpg" alt="QQ截图20211120171617.png">
+
+</p>
+<p>​	
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqi5anhhj30nh0w7e0p.jpg" alt="QQ截图20211120171628.png">
+
+</p>
 <h4 id="执行程序">执行程序</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqj5552qj30o508kgqo.jpg" alt="QQ截图20211120171759.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gwlqj5552qj30o508kgqo.jpg" alt="QQ截图20211120171759.png">
+
+</p>
 
 
                 
@@ -779,13 +1008,27 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -1084,16 +1327,6 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -1106,48 +1339,44 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1157,7 +1386,19 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1177,7 +1418,7 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1195,7 +1436,7 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1207,12 +1448,76 @@ drwxrwxr-x. <span style="color:#ae81ff">3</span> atguigu atguigu <span style="co
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

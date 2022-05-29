@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>1、SparkCore（Spark）-yiguan1573</title>
+    <title>1、SparkCore（Spark） | yiguan1573</title>
 
     <link rel="canonical" href="/post/941sparkcore/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>1、SparkCore（Spark）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Thursday, December 2, 2021
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Thursday, December 2, 2021
+                            
+                                <span id="/post/941sparkcore/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -213,44 +339,6 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#spark概述">Spark概述</a>
-      <ul>
-        <li><a href="#spark-是什么">Spark 是什么</a></li>
-        <li><a href="#spark-and-hadoop">Spark and Hadoop</a></li>
-        <li><a href="#spark-or-hadoop">Spark or Hadoop</a></li>
-        <li><a href="#spark-核心模块">Spark 核心模块</a></li>
-      </ul>
-    </li>
-    <li><a href="#spark-快速上手">Spark 快速上手</a>
-      <ul>
-        <li><a href="#创建maven项目">创建Maven项目</a></li>
-      </ul>
-    </li>
-    <li><a href="#spark-运行环境">Spark 运行环境</a>
-      <ul>
-        <li><a href="#local-模式">Local 模式</a></li>
-        <li><a href="#standalone-模式">Standalone 模式</a></li>
-        <li><a href="#yarn-模式">Yarn 模式</a></li>
-        <li><a href="#部署模式对比">部署模式对比</a></li>
-        <li><a href="#端口号">端口号</a></li>
-      </ul>
-    </li>
-    <li><a href="#spark运行架构">Spark运行架构</a>
-      <ul>
-        <li><a href="#运行架构">运行架构</a></li>
-        <li><a href="#核心组件">核心组件</a></li>
-        <li><a href="#核心概念">核心概念</a></li>
-        <li><a href="#提交流程">提交流程</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
                 
                 <h2 id="spark概述">Spark概述</h2>
 <h3 id="spark-是什么">Spark 是什么</h3>
@@ -324,8 +412,14 @@
 <ul>
 <li><strong>Hadoop在设计时考虑为一次性计算，将计算的结果存储在磁盘中；而Spark将计算的结果放到内存中方便下一次的计算。</strong></li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx494z1lyoj319o0iyjzp.jpg" alt="QQ截图20211206174121.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4957rs12j31ba0b8dky.jpg" alt="QQ截图20211206174149.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx494z1lyoj319o0iyjzp.jpg" alt="QQ截图20211206174121.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4957rs12j31ba0b8dky.jpg" alt="QQ截图20211206174149.png">
+
+</p>
 <ul>
 <li>Hadoop MapReduce 由于其设计初衷并不是为了满足循环迭代式数据流处理，因此在多并行运行的数据可复用场景（如：机器学习、图挖掘算法、交互式数据挖掘算法）中存在诸多计算效率等问题。所以 Spark 应运而生，Spark 就是在传统的MapReduce 计算框架的基础上，利用其计算过程的优化，从而大大加快了数据分析、挖掘的运行和读写速度，并将计算单元缩小到更适合并行计算和重复使用的RDD 计算模型。</li>
 <li>机器学习中 ALS、凸优化梯度下降等。这些都需要基于数据集或者数据集的衍生数据反复查询反复操作。MR 这种模式不太合适，即使多 MR 串行处理，性能和时间也是一个问题。数据的共享依赖于磁盘。另外一种是交互式数据挖掘，MR 显然不擅长。而Spark 所基于的 scala 语言恰恰擅长函数的处理。</li>
@@ -341,7 +435,10 @@
 </li>
 </ul>
 <h3 id="spark-核心模块">Spark 核心模块</h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx49cv8b8jj30o909nwhf.jpg" alt="QQ截图20211206174930.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx49cv8b8jj30o909nwhf.jpg" alt="QQ截图20211206174930.png">
+
+</p>
 <ul>
 <li>
 <p>Spark Core 中提供了 Spark 最基础与最核心的功能，Spark 其他的功能如：Spark SQL， Spark Streaming，GraphX, MLlib 都是在 Spark Core 的基础上进行扩展的</p>
@@ -370,90 +467,90 @@
 </li>
 <li>
 <p>增加依赖关系</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
-     <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-         <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.spark<span style="color:#f92672">&lt;/groupId&gt;</span>
-         <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>spark-core_2.12<span style="color:#f92672">&lt;/artifactId&gt;</span>
-         <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.0.0<span style="color:#f92672">&lt;/version&gt;</span>
-     <span style="color:#f92672">&lt;/dependency&gt;</span>
-<span style="color:#f92672">&lt;/dependencies&gt;</span>
-<span style="color:#f92672">&lt;build</span><span style="color:#f92672">&gt;</span>
-     <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-         <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 该插件用于将 Scala 代码编译成 class 文件 </span><span style="color:#75715e">--&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;dependencies</span><span style="color:#ff79c6">&gt;</span>
+     <span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+         <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.apache.spark<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+         <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>spark-core_2.12<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+         <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>3.0.0<span style="color:#ff79c6">&lt;/version&gt;</span>
+     <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+<span style="color:#ff79c6">&lt;/dependencies&gt;</span>
+<span style="color:#ff79c6">&lt;build</span><span style="color:#ff79c6">&gt;</span>
+     <span style="color:#ff79c6">&lt;plugins</span><span style="color:#ff79c6">&gt;</span>
+         <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 该插件用于将 Scala 代码编译成 class 文件 </span><span style="color:#6272a4">--&gt;</span>
            
-         <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-             <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>net.alchim31.maven<span style="color:#f92672">&lt;/groupId&gt;</span>
-             <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>scala-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-             <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.2.2<span style="color:#f92672">&lt;/version&gt;</span>
-             <span style="color:#f92672">&lt;executions</span><span style="color:#f92672">&gt;</span>
-                 <span style="color:#f92672">&lt;execution</span><span style="color:#f92672">&gt;</span>
-                     <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 声明绑定到 maven 的 compile 阶段 </span><span style="color:#75715e">--&gt;</span>
+         <span style="color:#ff79c6">&lt;plugin</span><span style="color:#ff79c6">&gt;</span>
+             <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>net.alchim31.maven<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+             <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>scala-maven-plugin<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+             <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>3.2.2<span style="color:#ff79c6">&lt;/version&gt;</span>
+             <span style="color:#ff79c6">&lt;executions</span><span style="color:#ff79c6">&gt;</span>
+                 <span style="color:#ff79c6">&lt;execution</span><span style="color:#ff79c6">&gt;</span>
+                     <span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4"> 声明绑定到 maven 的 compile 阶段 </span><span style="color:#6272a4">--&gt;</span>
                        
-                     <span style="color:#f92672">&lt;goals</span><span style="color:#f92672">&gt;</span>
-                        <span style="color:#f92672">&lt;goal</span><span style="color:#f92672">&gt;</span>testCompile<span style="color:#f92672">&lt;/goal&gt;</span>
-                     <span style="color:#f92672">&lt;/goals&gt;</span>
-                 <span style="color:#f92672">&lt;/execution&gt;</span>
-             <span style="color:#f92672">&lt;/executions&gt;</span>
-         <span style="color:#f92672">&lt;/plugin&gt;</span>
-         <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-             <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-             <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-assembly-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-             <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.1.0<span style="color:#f92672">&lt;/version&gt;</span>
-             <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-                 <span style="color:#f92672">&lt;descriptorRefs</span><span style="color:#f92672">&gt;</span>
-                  <span style="color:#f92672">&lt;descriptorRef</span><span style="color:#f92672">&gt;</span>jar-with-dependencies<span style="color:#f92672">&lt;/descriptorRef&gt;</span>
-                 <span style="color:#f92672">&lt;/descriptorRefs&gt;</span>
-             <span style="color:#f92672">&lt;/configuration&gt;</span>
-             <span style="color:#f92672">&lt;executions</span><span style="color:#f92672">&gt;</span>
-                 <span style="color:#f92672">&lt;execution</span><span style="color:#f92672">&gt;</span>
-                     <span style="color:#f92672">&lt;id</span><span style="color:#f92672">&gt;</span>make-assembly<span style="color:#f92672">&lt;/id&gt;</span>
-                     <span style="color:#f92672">&lt;phase</span><span style="color:#f92672">&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
-                     <span style="color:#f92672">&lt;goals</span><span style="color:#f92672">&gt;</span>
-                      <span style="color:#f92672">&lt;goal</span><span style="color:#f92672">&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
-                     <span style="color:#f92672">&lt;/goals&gt;</span>
-                 <span style="color:#f92672">&lt;/execution&gt;</span>
-             <span style="color:#f92672">&lt;/executions&gt;</span>
-         <span style="color:#f92672">&lt;/plugin&gt;</span>
-     <span style="color:#f92672">&lt;/plugins&gt;</span>
-<span style="color:#f92672">&lt;/build&gt;</span>
+                     <span style="color:#ff79c6">&lt;goals</span><span style="color:#ff79c6">&gt;</span>
+                        <span style="color:#ff79c6">&lt;goal</span><span style="color:#ff79c6">&gt;</span>testCompile<span style="color:#ff79c6">&lt;/goal&gt;</span>
+                     <span style="color:#ff79c6">&lt;/goals&gt;</span>
+                 <span style="color:#ff79c6">&lt;/execution&gt;</span>
+             <span style="color:#ff79c6">&lt;/executions&gt;</span>
+         <span style="color:#ff79c6">&lt;/plugin&gt;</span>
+         <span style="color:#ff79c6">&lt;plugin</span><span style="color:#ff79c6">&gt;</span>
+             <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.apache.maven.plugins<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+             <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>maven-assembly-plugin<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+             <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>3.1.0<span style="color:#ff79c6">&lt;/version&gt;</span>
+             <span style="color:#ff79c6">&lt;configuration</span><span style="color:#ff79c6">&gt;</span>
+                 <span style="color:#ff79c6">&lt;descriptorRefs</span><span style="color:#ff79c6">&gt;</span>
+                  <span style="color:#ff79c6">&lt;descriptorRef</span><span style="color:#ff79c6">&gt;</span>jar-with-dependencies<span style="color:#ff79c6">&lt;/descriptorRef&gt;</span>
+                 <span style="color:#ff79c6">&lt;/descriptorRefs&gt;</span>
+             <span style="color:#ff79c6">&lt;/configuration&gt;</span>
+             <span style="color:#ff79c6">&lt;executions</span><span style="color:#ff79c6">&gt;</span>
+                 <span style="color:#ff79c6">&lt;execution</span><span style="color:#ff79c6">&gt;</span>
+                     <span style="color:#ff79c6">&lt;id</span><span style="color:#ff79c6">&gt;</span>make-assembly<span style="color:#ff79c6">&lt;/id&gt;</span>
+                     <span style="color:#ff79c6">&lt;phase</span><span style="color:#ff79c6">&gt;</span>package<span style="color:#ff79c6">&lt;/phase&gt;</span>
+                     <span style="color:#ff79c6">&lt;goals</span><span style="color:#ff79c6">&gt;</span>
+                      <span style="color:#ff79c6">&lt;goal</span><span style="color:#ff79c6">&gt;</span>single<span style="color:#ff79c6">&lt;/goal&gt;</span>
+                     <span style="color:#ff79c6">&lt;/goals&gt;</span>
+                 <span style="color:#ff79c6">&lt;/execution&gt;</span>
+             <span style="color:#ff79c6">&lt;/executions&gt;</span>
+         <span style="color:#ff79c6">&lt;/plugin&gt;</span>
+     <span style="color:#ff79c6">&lt;/plugins&gt;</span>
+<span style="color:#ff79c6">&lt;/build&gt;</span>
 </code></pre></div></li>
 <li>
 <p>WordCount</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#75715e">// 创建 Spark 运行配置对象
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">val</span> sparkConf <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SparkConf</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span>setMaster<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;local[*]&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span>setAppName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;WordCount&#34;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#6272a4">// 创建 Spark 运行配置对象
+</span><span style="color:#6272a4"></span>  
+<span style="color:#ff79c6">val</span> sparkConf <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#50fa7b">SparkConf</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span>setMaster<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;local[*]&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span>setAppName<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;WordCount&#34;</span><span style="color:#ff79c6">)</span>
   
-<span style="color:#75715e">// 创建 Spark 上下文环境对象（连接对象）
-</span><span style="color:#75715e"></span>      
-<span style="color:#66d9ef">val</span> sc <span style="color:#66d9ef">:</span> <span style="color:#66d9ef">SparkContext</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SparkContext</span><span style="color:#f92672">(</span>sparkConf<span style="color:#f92672">)</span>
+<span style="color:#6272a4">// 创建 Spark 上下文环境对象（连接对象）
+</span><span style="color:#6272a4"></span>      
+<span style="color:#ff79c6">val</span> sc <span style="color:#ff79c6">:</span> <span style="color:#8be9fd">SparkContext</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#50fa7b">SparkContext</span><span style="color:#ff79c6">(</span>sparkConf<span style="color:#ff79c6">)</span>
   
-<span style="color:#75715e">// 读取文件数据
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">val</span> fileRDD<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">RDD</span><span style="color:#f92672">[</span><span style="color:#66d9ef">String</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> sc<span style="color:#f92672">.</span>textFile<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;input/word.txt&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#6272a4">// 读取文件数据
+</span><span style="color:#6272a4"></span>  
+<span style="color:#ff79c6">val</span> fileRDD<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">RDD</span><span style="color:#ff79c6">[</span><span style="color:#8be9fd">String</span><span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> sc<span style="color:#ff79c6">.</span>textFile<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;input/word.txt&#34;</span><span style="color:#ff79c6">)</span>
   
-<span style="color:#75715e">// 将文件中的数据进行分词
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">val</span> wordRDD<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">RDD</span><span style="color:#f92672">[</span><span style="color:#66d9ef">String</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> fileRDD<span style="color:#f92672">.</span>flatMap<span style="color:#f92672">(</span> <span style="color:#66d9ef">_</span><span style="color:#f92672">.</span>split<span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">)</span>
+<span style="color:#6272a4">// 将文件中的数据进行分词
+</span><span style="color:#6272a4"></span>  
+<span style="color:#ff79c6">val</span> wordRDD<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">RDD</span><span style="color:#ff79c6">[</span><span style="color:#8be9fd">String</span><span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> fileRDD<span style="color:#ff79c6">.</span>flatMap<span style="color:#ff79c6">(</span> <span style="color:#ff79c6">_</span><span style="color:#ff79c6">.</span>split<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; &#34;</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">)</span>
   
-<span style="color:#75715e">// 转换数据结构 word =&gt; (word, 1)
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">val</span> word2OneRDD<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">RDD</span><span style="color:#f92672">[</span><span style="color:#f92672">(</span><span style="color:#66d9ef">String</span>, <span style="color:#66d9ef">Int</span><span style="color:#f92672">)</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> wordRDD<span style="color:#f92672">.</span>map<span style="color:#f92672">(</span><span style="color:#f92672">(</span><span style="color:#66d9ef">_</span><span style="color:#f92672">,</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+<span style="color:#6272a4">// 转换数据结构 word =&gt; (word, 1)
+</span><span style="color:#6272a4"></span>  
+<span style="color:#ff79c6">val</span> word2OneRDD<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">RDD</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">String</span>, <span style="color:#8be9fd">Int</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> wordRDD<span style="color:#ff79c6">.</span>map<span style="color:#ff79c6">(</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">_</span><span style="color:#ff79c6">,</span><span style="color:#bd93f9">1</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span>
   
-<span style="color:#75715e">// 将转换结构后的数据按照相同的单词进行分组聚合
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">val</span> word2CountRDD<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">RDD</span><span style="color:#f92672">[</span><span style="color:#f92672">(</span><span style="color:#66d9ef">String</span>, <span style="color:#66d9ef">Int</span><span style="color:#f92672">)</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> word2OneRDD<span style="color:#f92672">.</span>reduceByKey<span style="color:#f92672">(</span><span style="color:#66d9ef">_</span><span style="color:#f92672">+</span><span style="color:#66d9ef">_</span><span style="color:#f92672">)</span>
+<span style="color:#6272a4">// 将转换结构后的数据按照相同的单词进行分组聚合
+</span><span style="color:#6272a4"></span>  
+<span style="color:#ff79c6">val</span> word2CountRDD<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">RDD</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">String</span>, <span style="color:#8be9fd">Int</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> word2OneRDD<span style="color:#ff79c6">.</span>reduceByKey<span style="color:#ff79c6">(</span><span style="color:#ff79c6">_</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">_</span><span style="color:#ff79c6">)</span>
   
-<span style="color:#75715e">// 将数据聚合结果采集到内存中
-</span><span style="color:#75715e"></span>  
-<span style="color:#66d9ef">val</span> word2Count<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Array</span><span style="color:#f92672">[</span><span style="color:#f92672">(</span><span style="color:#66d9ef">String</span>, <span style="color:#66d9ef">Int</span><span style="color:#f92672">)</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> word2CountRDD<span style="color:#f92672">.</span>collect<span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<span style="color:#6272a4">// 将数据聚合结果采集到内存中
+</span><span style="color:#6272a4"></span>  
+<span style="color:#ff79c6">val</span> word2Count<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">Array</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">String</span>, <span style="color:#8be9fd">Int</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> word2CountRDD<span style="color:#ff79c6">.</span>collect<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
   
-<span style="color:#75715e">// 打印结果
-</span><span style="color:#75715e"></span>  
-word2Count<span style="color:#f92672">.</span>foreach<span style="color:#f92672">(</span>println<span style="color:#f92672">)</span>
+<span style="color:#6272a4">// 打印结果
+</span><span style="color:#6272a4"></span>  
+word2Count<span style="color:#ff79c6">.</span>foreach<span style="color:#ff79c6">(</span>println<span style="color:#ff79c6">)</span>
   
-<span style="color:#75715e">//关闭 Spark 连接
-</span><span style="color:#75715e"></span>  
-sc<span style="color:#f92672">.</span>stop<span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<span style="color:#6272a4">//关闭 Spark 连接
+</span><span style="color:#6272a4"></span>  
+sc<span style="color:#ff79c6">.</span>stop<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
 </code></pre></div></li>
 <li>
 <p>执行过程中，会产生大量的执行日志，如果为了能够更好的查看程序的执行结果，可以在项目的 resources 目录中创建log4j.properties 文件，并添加日志配置信息：</p>
@@ -472,17 +569,29 @@ log4j.logger.parquet=ERROR
 <li>
 <p>异常处理</p>
 <p>如果本机操作系统是 Windows，在程序中使用了 Hadoop 相关的东西，比如写入文件到HDFS，则会遇到如下异常：</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4c36n10oj30ob05o41z.jpg" alt="QQ截图20211206192224.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4c36n10oj30ob05o41z.jpg" alt="QQ截图20211206192224.png">
+
+</p>
 <p>出现这个问题的原因，并不是程序的错误，而是windows 系统用到了 hadoop 相关的服务，解决办法是通过配置关联到 windows 的系统依赖就可以了</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4c3feakij30o0090afe.jpg" alt="QQ截图20211206192305.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4c3lp7j3j30n90g2432.jpg" alt="QQ截图20211206192319.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4c3feakij30o0090afe.jpg" alt="QQ截图20211206192305.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4c3lp7j3j30n90g2432.jpg" alt="QQ截图20211206192319.png">
+
+</p>
 </li>
 </ul>
 <h2 id="spark-运行环境">Spark 运行环境</h2>
 <ul>
 <li>
 <p>Spark 作为一个数据处理框架和计算引擎，被设计在所有常见的集群环境中运行, 在国内工作中主流的环境为Yarn，不过逐渐容器式环境也慢慢流行起来。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4c4dxjwgj30et08t0vj.jpg" alt="QQ截图20211206192510.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4c4dxjwgj30et08t0vj.jpg" alt="QQ截图20211206192510.png">
+
+</p>
 </li>
 </ul>
 <h3 id="local-模式">Local 模式</h3>
@@ -493,8 +602,8 @@ log4j.logger.parquet=ERROR
 <ul>
 <li>
 <p>将 spark-3.0.0-bin-hadoop3.2.tgz 文件上传到Linux 并解压缩，放置在指定位置，路径中不要包含中文或空格，课件后续如果涉及到解压缩操作，不再强调。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tar -zxvf spark-3.0.0-bin-hadoop3.2.tgz -C /opt/module 
-cd /opt/module
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tar -zxvf spark-3.0.0-bin-hadoop3.2.tgz -C /opt/module 
+<span style="color:#8be9fd;font-style:italic">cd</span> /opt/module
 mv spark-3.0.0-bin-hadoop3.2 spark-local
 </code></pre></div></li>
 </ul>
@@ -502,34 +611,40 @@ mv spark-3.0.0-bin-hadoop3.2 spark-local
 <ul>
 <li>
 <p>进入解压缩后的路径，执行如下指令</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-shell
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-shell
 </code></pre></div></li>
 <li>
 <p>启动成功后，可以输入网址进行 Web UI 监控页面访问</p>
 <pre><code>http://虚拟机地址:4040
-</code></pre><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4ca0mw8kj30om04djsl.jpg" alt="QQ截图20211206193033.png"></p>
+</code></pre><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4ca0mw8kj30om04djsl.jpg" alt="QQ截图20211206193033.png">
+
+</p>
 </li>
 </ul>
 <h4 id="命令行工具">命令行工具</h4>
 <ul>
 <li>
 <p>在解压缩文件夹下的 data 目录中，添加 word.txt 文件。在命令行工具中执行如下代码指令（和 IDEA 中代码简化版一致）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala">sc<span style="color:#f92672">.</span>textFile<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;data/word.txt&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span>flatMap<span style="color:#f92672">(</span><span style="color:#66d9ef">_</span><span style="color:#f92672">.</span>split<span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span>map<span style="color:#f92672">(</span><span style="color:#f92672">(</span><span style="color:#66d9ef">_</span><span style="color:#f92672">,</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span>reduceByKey<span style="color:#f92672">(</span><span style="color:#66d9ef">_</span><span style="color:#f92672">+</span><span style="color:#66d9ef">_</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span>collect
-</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cbg3x1jj30p101h75q.jpg" alt="QQ截图20211206193157.png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala">sc<span style="color:#ff79c6">.</span>textFile<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;data/word.txt&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span>flatMap<span style="color:#ff79c6">(</span><span style="color:#ff79c6">_</span><span style="color:#ff79c6">.</span>split<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34; &#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span>map<span style="color:#ff79c6">(</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">_</span><span style="color:#ff79c6">,</span><span style="color:#bd93f9">1</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span>reduceByKey<span style="color:#ff79c6">(</span><span style="color:#ff79c6">_</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">_</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span>collect
+</code></pre></div><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cbg3x1jj30p101h75q.jpg" alt="QQ截图20211206193157.png">
+
+</p>
 </li>
 </ul>
 <h4 id="退出本地模式">退出本地模式</h4>
 <ul>
 <li>
 <p>按键 Ctrl+C 或输入 Scala 指令</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">:quit
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">:quit
 </code></pre></div></li>
 </ul>
 <h4 id="提交应用">提交应用</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-submit <span style="color:#ae81ff">\</span>
---class org.apache.spark.examples.SparkPi <span style="color:#ae81ff">\</span>
---master local<span style="color:#f92672">[</span>2<span style="color:#f92672">]</span> <span style="color:#ae81ff">\</span>
-./examples/jars/spark-examples_2.12-3.0.0.jar <span style="color:#ae81ff">\</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-submit <span style="color:#f1fa8c">\</span>
+--class org.apache.spark.examples.SparkPi <span style="color:#f1fa8c">\</span>
+--master local<span style="color:#ff79c6">[</span>2<span style="color:#ff79c6">]</span> <span style="color:#f1fa8c">\</span>
+./examples/jars/spark-examples_2.12-3.0.0.jar <span style="color:#f1fa8c">\</span>
 10
 </code></pre></div><ul>
 <li>
@@ -543,22 +658,28 @@ mv spark-3.0.0-bin-hadoop3.2 spark-local
 </li>
 <li>
 <p>数字 10 表示程序的入口参数，用于设定当前应用的任务数量</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cdv3vq0j30p808jn7q.jpg" alt="QQ截图20211206193415.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cdv3vq0j30p808jn7q.jpg" alt="QQ截图20211206193415.png">
+
+</p>
 </li>
 </ul>
 <h3 id="standalone-模式"><strong>Standalone</strong> 模式</h3>
 <ul>
 <li>
 <p>只使用 Spark 自身节点运行的集群模式，也就是我们所谓的独立部署（Standalone）模式。Spark 的 Standalone 模式体现了经典的 master-slave 模式。集群规划:</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cg5x1afj30ox02edgj.jpg" alt="QQ截图20211206193629.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cg5x1afj30ox02edgj.jpg" alt="QQ截图20211206193629.png">
+
+</p>
 </li>
 </ul>
 <h4 id="解压缩文件-1"><strong>解压缩文件</strong></h4>
 <ul>
 <li>
 <p>将 spark-3.0.0-bin-hadoop3.2.tgz 文件上传到 Linux 并解压缩在指定位置</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tar -zxvf spark-3.0.0-bin-hadoop3.2.tgz -C /opt/module
-cd /opt/module 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tar -zxvf spark-3.0.0-bin-hadoop3.2.tgz -C /opt/module
+<span style="color:#8be9fd;font-style:italic">cd</span> /opt/module 
 mv spark-3.0.0-bin-hadoop3.2 spark-standalone
 </code></pre></div></li>
 </ul>
@@ -566,60 +687,66 @@ mv spark-3.0.0-bin-hadoop3.2 spark-standalone
 <ul>
 <li>
 <p>进入解压缩后路径的 conf 目录，修改 slaves.template 文件名为 slaves</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mv slaves.template slaves
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mv slaves.template slaves
 </code></pre></div></li>
 <li>
 <p>修改 slaves 文件，添加 work 节点</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">linux1
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">linux1
 linux2
 linux3
 </code></pre></div></li>
 <li>
 <p>修改 spark-env.sh.template 文件名为 spark-env.sh</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mv spark-env.sh.template spark-env.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mv spark-env.sh.template spark-env.sh
 </code></pre></div></li>
 <li>
 <p>修改 spark-env.sh 文件，添加 JAVA_HOME 环境变量和集群对应的 master 节点</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export JAVA_HOME<span style="color:#f92672">=</span>/opt/module/jdk1.8.0_144
-SPARK_MASTER_HOST<span style="color:#f92672">=</span>linux1
-SPARK_MASTER_PORT<span style="color:#f92672">=</span>7077
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">JAVA_HOME</span><span style="color:#ff79c6">=</span>/opt/module/jdk1.8.0_144
+<span style="color:#8be9fd;font-style:italic">SPARK_MASTER_HOST</span><span style="color:#ff79c6">=</span>linux1
+<span style="color:#8be9fd;font-style:italic">SPARK_MASTER_PORT</span><span style="color:#ff79c6">=</span>7077
 </code></pre></div><p><strong>注意：7077 端口，相当于 hadoop3 内部通信的 8020 端口，此处的端口需要确认自己的 Hadoop配置</strong></p>
 </li>
 <li>
 <p>分发 spark-standalone 目录</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xsync spark-standalone
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xsync spark-standalone
 </code></pre></div></li>
 </ul>
 <h4 id="启动集群"><strong>启动集群</strong></h4>
 <ul>
 <li>
 <p>执行脚本命令：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sbin/start-all.sh
-</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4clg7tztj30p304h43b.jpg" alt="QQ截图20211206194133.png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sbin/start-all.sh
+</code></pre></div><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4clg7tztj30p304h43b.jpg" alt="QQ截图20211206194133.png">
+
+</p>
 </li>
 <li>
 <p>查看三台服务器运行进程</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span>linux1<span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span>
-<span style="color:#ae81ff">3330</span> Jps
-<span style="color:#ae81ff">3238</span> Worker
-<span style="color:#ae81ff">3163</span> Master
-<span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span>linux2<span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span>
-<span style="color:#ae81ff">2966</span> Jps
-<span style="color:#ae81ff">2908</span> Worker
-<span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span>linux3<span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#f92672">=</span>
-<span style="color:#ae81ff">2978</span> Worker
-<span style="color:#ae81ff">3036</span> Jps
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">linux1</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span>
+<span style="color:#bd93f9">3330</span> Jps
+<span style="color:#bd93f9">3238</span> Worker
+<span style="color:#bd93f9">3163</span> <span style="color:#8be9fd;font-style:italic">Master</span>
+<span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">linux2</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span>
+<span style="color:#bd93f9">2966</span> Jps
+<span style="color:#bd93f9">2908</span> <span style="color:#8be9fd;font-style:italic">Worker</span>
+<span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">linux3</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span>
+<span style="color:#bd93f9">2978</span> Worker
+<span style="color:#bd93f9">3036</span> Jps
 </code></pre></div></li>
 <li>
 <p>查看 Master 资源监控 Web UI 界面: http://linux1:8080</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cmoqqx8j30p90bdjvz.jpg" alt="QQ截图20211206194245.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cmoqqx8j30p90bdjvz.jpg" alt="QQ截图20211206194245.png">
+
+</p>
 </li>
 </ul>
 <h4 id="提交应用-1"><strong>提交应用</strong></h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-submit <span style="color:#ae81ff">\</span>
---class org.apache.spark.examples.SparkPi <span style="color:#ae81ff">\</span>
---master spark://linux1:7077 <span style="color:#ae81ff">\</span>
-./examples/jars/spark-examples_2.12-3.0.0.jar <span style="color:#ae81ff">\</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-submit <span style="color:#f1fa8c">\</span>
+--class org.apache.spark.examples.SparkPi <span style="color:#f1fa8c">\</span>
+--master spark://linux1:7077 <span style="color:#f1fa8c">\</span>
+./examples/jars/spark-examples_2.12-3.0.0.jar <span style="color:#f1fa8c">\</span>
 10
 </code></pre></div><ul>
 <li>
@@ -635,10 +762,19 @@ SPARK_MASTER_PORT<span style="color:#f92672">=</span>7077
 <p>数字 10 表示程序的入口参数，用于设定当前应用的任务数量</p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4coigcmnj30pt0lc4fj.jpg" alt="QQ截图20211206194427.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4coigcmnj30pt0lc4fj.jpg" alt="QQ截图20211206194427.png">
+
+</p>
 <h4 id="提交参数说明"><strong>提交参数说明</strong></h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cpjsf7cj30py0b1q8n.jpg" alt="QQ截图20211206194522.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cpph3pnj30ph03bjsi.jpg" alt="QQ截图20211206194530.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cpjsf7cj30py0b1q8n.jpg" alt="QQ截图20211206194522.png">
+
+</p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cpph3pnj30ph03bjsi.jpg" alt="QQ截图20211206194530.png">
+
+</p>
 <h4 id="配置历史服务"><strong>配置历史服务</strong></h4>
 <ul>
 <li>
@@ -646,95 +782,107 @@ SPARK_MASTER_PORT<span style="color:#f92672">=</span>7077
 </li>
 <li>
 <p>修改 spark-defaults.conf.template 文件名为 spark-defaults.conf</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mv spark-defaults.conf.template spark-defaults.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mv spark-defaults.conf.template spark-defaults.conf
 </code></pre></div></li>
 <li>
 <p>修改 spark-default.conf 文件，配置日志存储路径</p>
 <pre><code>spark.eventLog.enabled true
 spark.eventLog.dir hdfs://linux1:8020/directory
 </code></pre><p>注意：需要启动 hadoop 集群，HDFS 上的 directory 目录需要提前存在。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sbin/start-dfs.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sbin/start-dfs.sh
 hadoop fs -mkdir /directory
 </code></pre></div></li>
 <li>
 <p>修改 spark-env.sh 文件, 添加日志配置</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export SPARK_HISTORY_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;
-</span><span style="color:#e6db74">-Dspark.history.ui.port=18080 
-</span><span style="color:#e6db74">-Dspark.history.fs.logDirectory=hdfs://linux1:8020/directory 
-</span><span style="color:#e6db74">-Dspark.history.retainedApplications=30&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">SPARK_HISTORY_OPTS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;
+</span><span style="color:#f1fa8c">-Dspark.history.ui.port=18080 
+</span><span style="color:#f1fa8c">-Dspark.history.fs.logDirectory=hdfs://linux1:8020/directory 
+</span><span style="color:#f1fa8c">-Dspark.history.retainedApplications=30&#34;</span>
 </code></pre></div><p>参数 1 含义：WEB UI 访问的端口号为 18080</p>
 <p>参数 2 含义：指定历史服务器日志存储路径</p>
 <p>参数 3 含义：指定保存 Application 历史记录的个数，如果超过这个值，旧的应用程序信息将被删除，这个是内存中的应用数，而不是页面上显示的应用数。</p>
 </li>
 <li>
 <p>分发配置</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xsync conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xsync conf
 </code></pre></div></li>
 <li>
 <p>重新启动集群和历史服务</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sbin/start-all.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sbin/start-all.sh
 sbin/start-history-server.sh
 </code></pre></div></li>
 <li>
 <p>重新执行任务</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-submit <span style="color:#ae81ff">\</span>
---class org.apache.spark.examples.SparkPi <span style="color:#ae81ff">\</span>
---master spark://linux1:7077 <span style="color:#ae81ff">\</span>
-./examples/jars/spark-examples_2.12-3.0.0.jar <span style="color:#ae81ff">\</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-submit <span style="color:#f1fa8c">\</span>
+--class org.apache.spark.examples.SparkPi <span style="color:#f1fa8c">\</span>
+--master spark://linux1:7077 <span style="color:#f1fa8c">\</span>
+./examples/jars/spark-examples_2.12-3.0.0.jar <span style="color:#f1fa8c">\</span>
 10
-</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cwr3l96j30pg08nk2f.jpg" alt="QQ截图20211206195225.png"></p>
+</code></pre></div><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cwr3l96j30pg08nk2f.jpg" alt="QQ截图20211206195225.png">
+
+</p>
 </li>
 <li>
 <p>查看历史服务：http://linux1:18080</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cxgosebj30ow05fac2.jpg" alt="QQ截图20211206195306.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4cxgosebj30ow05fac2.jpg" alt="QQ截图20211206195306.png">
+
+</p>
 </li>
 </ul>
 <h4 id="配置高可用ha">配置高可用（HA）</h4>
 <ul>
 <li>
 <p>所谓的高可用是因为当前集群中的 Master 节点只有一个，所以会存在单点故障问题。所以为了解决单点故障问题，需要在集群中配置多个 Master 节点，一旦处于活动状态的 Master发生故障时，由备用 Master 提供服务，保证作业可以继续执行。这里的高可用一般采用Zookeeper 设置</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4d1q2o82j30pd05g400.jpg" alt="QQ截图20211206195709.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4d1q2o82j30pd05g400.jpg" alt="QQ截图20211206195709.png">
+
+</p>
 <ul>
 <li>
 <p>停止集群</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sbin/stop-all.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sbin/stop-all.sh
 </code></pre></div></li>
 <li>
 <p>启动 Zookeeper</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xstart zk
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xstart zk
 </code></pre></div></li>
 <li>
 <p>修改 spark-env.sh 文件添加如下配置</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">注释如下内容：
-<span style="color:#75715e">#SPARK_MASTER_HOST=linux1</span>
-<span style="color:#75715e">#SPARK_MASTER_PORT=7077</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">注释如下内容：
+<span style="color:#6272a4">#SPARK_MASTER_HOST=linux1</span>
+<span style="color:#6272a4">#SPARK_MASTER_PORT=7077</span>
 添加如下内容:
-<span style="color:#75715e">#Master 监控页面默认访问端口为 8080，但是可能会和 Zookeeper 冲突，所以改成 8989，也可以自定义，访问 UI 监控页面时请注意</span>
-SPARK_MASTER_WEBUI_PORT<span style="color:#f92672">=</span>8989
-export SPARK_DAEMON_JAVA_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;
-</span><span style="color:#e6db74">-Dspark.deploy.recoveryMode=ZOOKEEPER 
-</span><span style="color:#e6db74">-Dspark.deploy.zookeeper.url=linux1,linux2,linux3
-</span><span style="color:#e6db74">-Dspark.deploy.zookeeper.dir=/spark&#34;</span>
+<span style="color:#6272a4">#Master 监控页面默认访问端口为 8080，但是可能会和 Zookeeper 冲突，所以改成 8989，也可以自定义，访问 UI 监控页面时请注意</span>
+<span style="color:#8be9fd;font-style:italic">SPARK_MASTER_WEBUI_PORT</span><span style="color:#ff79c6">=</span>8989
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">SPARK_DAEMON_JAVA_OPTS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;
+</span><span style="color:#f1fa8c">-Dspark.deploy.recoveryMode=ZOOKEEPER 
+</span><span style="color:#f1fa8c">-Dspark.deploy.zookeeper.url=linux1,linux2,linux3
+</span><span style="color:#f1fa8c">-Dspark.deploy.zookeeper.dir=/spark&#34;</span>
 </code></pre></div></li>
 <li>
 <p>分发配置文件</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xsync conf/
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xsync conf/
 </code></pre></div></li>
 <li>
 <p>启动集群</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sbin/start-all.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sbin/start-all.sh
 </code></pre></div></li>
 <li>
 <p>启动 linux2 的单独 Master 节点，此时 linux2 节点 Master 状态处于备用状态</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@linux2 spark-standalone<span style="color:#f92672">]</span><span style="color:#75715e"># sbin/start-master.sh</span>
-</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4d53i00vj30pt099q61.jpg" alt="QQ截图20211206200027.png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ff79c6">[</span>root@linux2 spark-standalone<span style="color:#ff79c6">]</span><span style="color:#6272a4"># sbin/start-master.sh</span>
+</code></pre></div><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4d53i00vj30pt099q61.jpg" alt="QQ截图20211206200027.png">
+
+</p>
 </li>
 <li>
 <p>提交应用到高可用集群</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-submit <span style="color:#ae81ff">\</span>
---class org.apache.spark.examples.SparkPi <span style="color:#ae81ff">\</span>
---master spark://linux1:7077,linux2:7077 <span style="color:#ae81ff">\</span>
-./examples/jars/spark-examples_2.12-3.0.0.jar <span style="color:#ae81ff">\</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-submit <span style="color:#f1fa8c">\</span>
+--class org.apache.spark.examples.SparkPi <span style="color:#f1fa8c">\</span>
+--master spark://linux1:7077,linux2:7077 <span style="color:#f1fa8c">\</span>
+./examples/jars/spark-examples_2.12-3.0.0.jar <span style="color:#f1fa8c">\</span>
 10
 </code></pre></div></li>
 <li>
@@ -756,8 +904,8 @@ export SPARK_DAEMON_JAVA_OPTS<span style="color:#f92672">=</span><span style="co
 <ul>
 <li>
 <p>将 spark-3.0.0-bin-hadoop3.2.tgz 文件上传到 linux 并解压缩，放置在指定位置。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tar -zxvf spark-3.0.0-bin-hadoop3.2.tgz -C /opt/module
-cd /opt/module 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tar -zxvf spark-3.0.0-bin-hadoop3.2.tgz -C /opt/module
+<span style="color:#8be9fd;font-style:italic">cd</span> /opt/module 
 mv spark-3.0.0-bin-hadoop3.2 spark-yarn
 </code></pre></div></li>
 </ul>
@@ -767,23 +915,23 @@ mv spark-3.0.0-bin-hadoop3.2 spark-yarn
 <ul>
 <li>
 <p>修改 hadoop 配置文件/opt/module/hadoop/etc/hadoop/yarn-site.xml, 并分发</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e">是否启动一个线程检查每个任务正使用的物理内存量，如果任务超出分配值，则直接将其杀掉，默认是 true </span><span style="color:#75715e">--&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-   <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.nodemanager.pmem-check-enabled<span style="color:#f92672">&lt;/name&gt;</span>
-   <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>false<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#75715e">&lt;!--</span><span style="color:#75715e">是否启动一个线程检查每个任务正使用的虚拟内存量，如果任务超出分配值，则直接将其杀掉，默认是 true </span><span style="color:#75715e">--&gt;</span>
-<span style="color:#f92672">&lt;property</span><span style="color:#f92672">&gt;</span>
-   <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>yarn.nodemanager.vmem-check-enabled<span style="color:#f92672">&lt;/name&gt;</span>
-   <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>false<span style="color:#f92672">&lt;/value&gt;</span>
-<span style="color:#f92672">&lt;/property&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4">是否启动一个线程检查每个任务正使用的物理内存量，如果任务超出分配值，则直接将其杀掉，默认是 true </span><span style="color:#6272a4">--&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+   <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>yarn.nodemanager.pmem-check-enabled<span style="color:#ff79c6">&lt;/name&gt;</span>
+   <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>false<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
+<span style="color:#6272a4">&lt;!--</span><span style="color:#6272a4">是否启动一个线程检查每个任务正使用的虚拟内存量，如果任务超出分配值，则直接将其杀掉，默认是 true </span><span style="color:#6272a4">--&gt;</span>
+<span style="color:#ff79c6">&lt;property</span><span style="color:#ff79c6">&gt;</span>
+   <span style="color:#ff79c6">&lt;name</span><span style="color:#ff79c6">&gt;</span>yarn.nodemanager.vmem-check-enabled<span style="color:#ff79c6">&lt;/name&gt;</span>
+   <span style="color:#ff79c6">&lt;value</span><span style="color:#ff79c6">&gt;</span>false<span style="color:#ff79c6">&lt;/value&gt;</span>
+<span style="color:#ff79c6">&lt;/property&gt;</span>
 </code></pre></div></li>
 <li>
 <p>修改 conf/spark-env.sh，添加 JAVA_HOME 和 YARN_CONF_DIR 配置</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mv spark-env.sh.template spark-env.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mv spark-env.sh.template spark-env.sh
 。。。
-export JAVA_HOME<span style="color:#f92672">=</span>/opt/module/jdk1.8.0_144
-YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">JAVA_HOME</span><span style="color:#ff79c6">=</span>/opt/module/jdk1.8.0_144
+<span style="color:#8be9fd;font-style:italic">YARN_CONF_DIR</span><span style="color:#ff79c6">=</span>/opt/module/hadoop/etc/hadoop
 </code></pre></div></li>
 </ul>
 </li>
@@ -792,17 +940,23 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
 </li>
 <li>
 <p><strong>提交应用</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-submit <span style="color:#ae81ff">\</span>
---class org.apache.spark.examples.SparkPi <span style="color:#ae81ff">\</span>
---master yarn <span style="color:#ae81ff">\</span>
---deploy-mode cluster <span style="color:#ae81ff">\</span>
-./examples/jars/spark-examples_2.12-3.0.0.jar <span style="color:#ae81ff">\</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bin/spark-submit <span style="color:#f1fa8c">\</span>
+--class org.apache.spark.examples.SparkPi <span style="color:#f1fa8c">\</span>
+--master yarn <span style="color:#f1fa8c">\</span>
+--deploy-mode cluster <span style="color:#f1fa8c">\</span>
+./examples/jars/spark-examples_2.12-3.0.0.jar <span style="color:#f1fa8c">\</span>
 10
-</code></pre></div><p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4dcuwp94j30q80mp4g6.jpg" alt="QQ截图20211206200745.png"></p>
+</code></pre></div><p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4dcuwp94j30q80mp4g6.jpg" alt="QQ截图20211206200745.png">
+
+</p>
 </li>
 </ul>
 <h3 id="部署模式对比"><strong>部署模式对比</strong></h3>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4dfp88xpj30pb04hmzb.jpg" alt="QQ截图20211206201037.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4dfp88xpj30pb04hmzb.jpg" alt="QQ截图20211206201037.png">
+
+</p>
 <h3 id="端口号">端口号</h3>
 <ul>
 <li>Spark 查看当前 Spark-shell 运行任务情况端口号：4040（计算）</li>
@@ -819,7 +973,10 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
 </li>
 <li>
 <p>如下图所示，它展示了一个 Spark 执行时的基本结构。图形中的 Driver 表示 master，负责管理整个集群中的作业任务调度。图形中的 Executor 则是 slave，负责实际执行任务。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4dhomv3uj30kx07rmyi.jpg" alt="QQ截图20211206201233.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4dhomv3uj30kx07rmyi.jpg" alt="QQ截图20211206201233.png">
+
+</p>
 </li>
 </ul>
 <h3 id="核心组件"><strong>核心组件</strong></h3>
@@ -879,7 +1036,10 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
 </li>
 <li>
 <p>应用程序相关启动参数如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4e4woj09j30ok04umyv.jpg" alt="QQ截图20211206203451.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4e4woj09j30ok04umyv.jpg" alt="QQ截图20211206203451.png">
+
+</p>
 </li>
 </ul>
 <h4 id="并行度parallelism">并行度（Parallelism）</h4>
@@ -887,7 +1047,10 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
 <li>将整个集群并行执行任务的数量称之为并行度</li>
 </ul>
 <h4 id="有向无环图dag">有向无环图（DAG）</h4>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4e6pq872j30fu079gmb.jpg" alt="QQ截图20211206203636.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4e6pq872j30fu079gmb.jpg" alt="QQ截图20211206203636.png">
+
+</p>
 <ul>
 <li>
 <p>大数据计算引擎框架我们根据使用方式的不同一般会分为四类，其中第一类就是Hadoop 所承载的 MapReduce,它将计算分为两个阶段，分别为 Map 阶段 和 Reduce 阶段。对于上层应用来说，就不得不想方设法去拆分算法，甚至于不得不在上层应用实现多个 Job 的串联，以完成一个完整的算法，例如迭代计算。 由于这样的弊端，催生了支持 DAG 框架的产生。因此，支持 DAG 的框架被划分为第二代计算引擎。如 Tez 以及更上层的Oozie。这里我们不去细究各种 DAG 实现之间的区别，不过对于当时的 Tez 和 Oozie 来说，大多还是批处理的任务。接下来就是以 Spark 为代表的第三代的计算引擎。第三代计算引擎的特点主要是 Job 内部的 DAG 支持（不跨越 Job），以及实时计算。</p>
@@ -903,7 +1066,10 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
 <ul>
 <li>
 <p>所谓的提交流程，其实就是我们开发人员根据需求写的应用程序通过 Spark 客户端提交给 Spark 运行环境执行计算的流程。在不同的部署环境中，这个提交过程基本相同，但是又有细微的区别，我们这里不进行详细的比较，但是因为国内工作中，将 Spark 引用部署到Yarn 环境中会更多一些，所以本课程中的提交流程是基于 Yarn 环境的。</p>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4e8t1ifmj30n10cgabp.jpg" alt="QQ截图20211206203833.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gx4e8t1ifmj30n10cgabp.jpg" alt="QQ截图20211206203833.png">
+
+</p>
 </li>
 <li>
 <p>Spark 应用程序提交到 Yarn 环境中执行的时候，一般会有两种部署执行的方式：Client 和 Cluster。<strong>两种模式主要区别在于：Driver 程序的运行节点位置。</strong></p>
@@ -953,13 +1119,27 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -1258,16 +1438,6 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -1280,48 +1450,44 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -1331,7 +1497,19 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -1351,7 +1529,7 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -1369,7 +1547,7 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -1381,12 +1559,76 @@ YARN_CONF_DIR<span style="color:#f92672">=</span>/opt/module/hadoop/etc/hadoop
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

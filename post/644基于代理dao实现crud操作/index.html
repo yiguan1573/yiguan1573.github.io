@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>4、基于代理 Dao 实现 CRUD 操作(MyBatis)-yiguan1573</title>
+    <title>4、基于代理 Dao 实现 CRUD 操作(MyBatis) | yiguan1573</title>
 
     <link rel="canonical" href="/post/644%E5%9F%BA%E4%BA%8E%E4%BB%A3%E7%90%86dao%E5%AE%9E%E7%8E%B0crud%E6%93%8D%E4%BD%9C/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gh0wuilf8mj31hc0u0kh8.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>4、基于代理 Dao 实现 CRUD 操作(MyBatis)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Friday, August 7, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Friday, August 7, 2020
+                            
+                                <span id="/post/644%E5%9F%BA%E4%BA%8E%E4%BB%A3%E7%90%86dao%E5%AE%9E%E7%8E%B0crud%E6%93%8D%E4%BD%9C/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,51 +340,6 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li><a href="#在持久层接口中添加-findbyid-方法">在持久层接口中添加 findById 方法</a></li>
-    <li><a href="#在用户的映射配置文件中配置">在用户的映射配置文件中配置</a></li>
-    <li><a href="#在测试类添加测试">在测试类添加测试</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#在持久层接口中添加新增方法">在持久层接口中添加新增方法</a></li>
-    <li><a href="#在用户的映射配置文件中配置-1">在用户的映射配置文件中配置</a></li>
-    <li><a href="#添加测试类中的测试方法">添加测试类中的测试方法</a></li>
-    <li><a href="#问题扩展新增用户-id-的返回值">问题扩展：新增用户 id 的返回值</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#在持久层接口中添加更新方法">在持久层接口中添加更新方法</a></li>
-    <li><a href="#在用户的映射配置文件中配置-2">在用户的映射配置文件中配置</a></li>
-    <li><a href="#加入更新的测试方法">加入更新的测试方法</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#在持久层接口中添加删除方法">在持久层接口中添加删除方法</a></li>
-    <li><a href="#在用户的映射配置文件中配置-3">在用户的映射配置文件中配置</a></li>
-    <li><a href="#加入删除的测试方法">加入删除的测试方法</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#在持久层接口中添加模糊查询方法">在持久层接口中添加模糊查询方法</a></li>
-    <li><a href="#在用户的映射配置文件中配置-4">在用户的映射配置文件中配置</a></li>
-    <li><a href="#加入模糊查询的测试方法">加入模糊查询的测试方法</a></li>
-    <li><a href="#模糊查询的另一种配置方式">模糊查询的另一种配置方式</a></li>
-    <li><a href="#heading"></a></li>
-    <li><a href="#模糊查询的value源码分析">模糊查询的${value}源码分析</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#在持久层接口中添加模糊查询方法-1">在持久层接口中添加模糊查询方法</a></li>
-    <li><a href="#在用户的映射配置文件中配置-5">在用户的映射配置文件中配置</a></li>
-    <li><a href="#加入聚合查询的测试方法">加入聚合查询的测试方法</a></li>
-  </ul>
-</nav>
-                
                 <h1 id="根据-id-查询">根据 ID 查询</h1>
 <h2 id="在持久层接口中添加-findbyid-方法">在持久层接口中添加 findById 方法</h2>
 <pre><code>User findById(Integer userId);
@@ -278,8 +359,14 @@ sql 语句中使用#{}字符：
 #{}中内容的写法：
     由于数据类型是基本类型，所以此处可以随意写。
 </code></pre><h2 id="在测试类添加测试">在测试类添加测试</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsgv0o9a0j30qm0vy78d.jpg" alt="QQ截图20200816105713.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsgv5r9rgj30qr06ujry.jpg" alt="QQ截图20200816105723.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsgv0o9a0j30qm0vy78d.jpg" alt="QQ截图20200816105713.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsgv5r9rgj30qr06ujry.jpg" alt="QQ截图20200816105723.png">
+
+</p>
 <h1 id="保存操作">保存操作</h1>
 <h2 id="在持久层接口中添加新增方法">在持久层接口中添加新增方法</h2>
 <pre><code>int saveUser(User user);
@@ -301,9 +388,15 @@ ognl 表达式：
     它是 apache 提供的一种表达式语言，全称是：Object Graphic Navigation Language 对象图导航语言,它是按照一定的语法格式来获取数据的。语法格式就是使用 #{对象.对象}的方式
     #{user.username}它会先去找 user 对象，然后在 user 对象中找到 username 属性，并调用getUsername()方法把值取出来。但是我们在 parameterType 属性上指定了实体类名称，所以可以省略 user.而直接写 username
 </code></pre><h2 id="添加测试类中的测试方法">添加测试类中的测试方法</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsgz9s12vj30qv0lxn0z.jpg" alt="QQ截图20200816110129.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsgz9s12vj30qv0lxn0z.jpg" alt="QQ截图20200816110129.png">
+
+</p>
 <h2 id="问题扩展新增用户-id-的返回值">问题扩展：新增用户 id 的返回值</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsgzzmlvoj30qs097abv.jpg" alt="QQ截图20200816110210.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsgzzmlvoj30qs097abv.jpg" alt="QQ截图20200816110210.png">
+
+</p>
 <h1 id="用户更新">用户更新</h1>
 <h2 id="在持久层接口中添加更新方法">在持久层接口中添加更新方法</h2>
 <pre><code>int updateUser(User user);
@@ -313,7 +406,10 @@ ognl 表达式：
     update user set username=#{username},birthday=#{birthday},sex=#{sex},address=#{address} where id=#{id}
 &lt;/update&gt;
 </code></pre><h2 id="加入更新的测试方法">加入更新的测试方法</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsh1d8uaej30qs082wff.jpg" alt="QQ截图20200816110331.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsh1d8uaej30qs082wff.jpg" alt="QQ截图20200816110331.png">
+
+</p>
 <h1 id="用户删除">用户删除</h1>
 <h2 id="在持久层接口中添加删除方法">在持久层接口中添加删除方法</h2>
 <pre><code>int deleteUser(Integer userId);
@@ -347,11 +443,17 @@ public void testFindByName(){
 }
 </code></pre><ul>
 <li>在控制台输出的执行 SQL 语句如下：
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsh64wty8j30qk0200to.jpg" alt="QQ截图20200816110805.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsh64wty8j30qk0200to.jpg" alt="QQ截图20200816110805.png">
+
+</li>
 <li>我们在配置文件中没有加入%来作为模糊查询的条件，所以在传入字符串实参时，就需要给定模糊查询的标识%。配置文件中的#{username}也只是一个占位符，所以 SQL 语句显示为“？”</li>
 </ul>
 <h2 id="模糊查询的另一种配置方式">模糊查询的另一种配置方式</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsh7g7qogj30qr0nsgqs.jpg" alt="QQ截图20200816110922.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsh7g7qogj30qr0nsgqs.jpg" alt="QQ截图20200816110922.png">
+
+</p>
 <h2 id="heading"></h2>
 <ul>
 <li><strong>#{}表示一个占位符号</strong><br>
@@ -360,7 +462,10 @@ public void testFindByName(){
 通过${}可以将 parameterType 传入的内容拼接在 sql 中且不进行 jdbc 类型转换， ${}可以接收简单类型值或 pojo 属性值，如果 parameterType 传输单个简单类型值，${}括号中只能是 value</li>
 </ul>
 <h2 id="模糊查询的value源码分析">模糊查询的${value}源码分析</h2>
-<p><img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsh9eky6pj30qo0bntdd.jpg" alt="QQ截图20200816111113.png"></p>
+<p>
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1ghsh9eky6pj30qo0bntdd.jpg" alt="QQ截图20200816111113.png">
+
+</p>
 <h1 id="查询使用聚合函数">查询使用聚合函数</h1>
 <h2 id="在持久层接口中添加模糊查询方法-1">在持久层接口中添加模糊查询方法</h2>
 <pre><code>int findTotal();
@@ -395,13 +500,27 @@ public void testFindTotal() throws Exception {
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -700,16 +819,6 @@ public void testFindTotal() throws Exception {
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -722,48 +831,44 @@ public void testFindTotal() throws Exception {
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -773,7 +878,19 @@ public void testFindTotal() throws Exception {
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -793,7 +910,7 @@ public void testFindTotal() throws Exception {
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -811,7 +928,7 @@ public void testFindTotal() throws Exception {
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -823,12 +940,76 @@ public void testFindTotal() throws Exception {
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

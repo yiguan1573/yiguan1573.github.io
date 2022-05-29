@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="referrer" content="never">
-	
+
     
     <meta property="og:site_name" content="亿观的博客">
     <meta property="og:type" content="article">
@@ -37,46 +34,35 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>2、反射机制(Java)-yiguan1573</title>
+    <title>2、反射机制(Java) | yiguan1573</title>
 
     <link rel="canonical" href="/post/402%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
-    
-    <link rel="stylesheet" href="/css/syntax.css">
-    
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
-    
-    <script src="/js/bootstrap.min.js"></script>
-    
-    
-    <script src="/js/hux-blog.min.js"></script>
 
     
+    <script src="/js/bootstrap.min.js"></script>
+
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/hux-blog.min.js"></script>
 
     
     
@@ -85,7 +71,9 @@
 
 
 
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -104,7 +92,7 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">主页</a>
+                        <a href="/">首页</a>
                     </li>
                     
                         
@@ -115,14 +103,14 @@
                     
                     
 		    
-                        <li><a href="/#">图书</a></li>
+                        <li><a href="/top/archive/">档案</a></li>
                     
-                        <li><a href="/#">关于</a></li>
+                        <li><a href="/top/about/">关于</a></li>
                     
 
                     
 		    <li>
-                        <a href="/search">搜索 <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+                        <a href="/search"><i class="fa fa-search"></i></a>
 		    </li>
                     
                 </ul>
@@ -169,7 +157,9 @@
         background-image: url('http://ww1.sinaimg.cn/large/006QQPIfly1gekc33ler8j32bc17lqv5.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -184,15 +174,151 @@
                     <h1>2、反射机制(Java)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by 
                         
-                                 &#34;亿观&#34;
-                         
-                        on 
-                        Thursday, May 14, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                     &#34;亿观&#34;
+                             
+                            on 
+                            Thursday, May 14, 2020
+                            
+                                <span id="/post/402%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -214,18 +340,16 @@
                 post-container">
 
                 
-                <header>
-                    <h2></h2>
-                </header>
-                <nav id="TableOfContents"></nav>
-                
                 <h1 id="简介">简介</h1>
 <ul>
 <li><strong>动态语言：程序运行时,可以改变程序结构或变量类型。典型的语言:，Python、 ruby、javascript等</strong></li>
 <li><strong>C，C++, JAVA不是动态语言,但是JAVA有一定的动态性,我们可以利用反射机制、字节码操作获得类似动态语言的特性</strong></li>
 <li><strong>反射机制指的是可以于运行时加载、探知、使用编译期间完全未知的类</strong></li>
 <li><strong>程序在运行状态中,可以动态加载一个只有名称的类 ,对于任意一个已加载的类,都能够知道这个类的所有属性和方法;对于任意一个对象，都能够调用它的任意一个 方法和属性</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevljv023qj30it04babr.jpg" alt="QQ截图20200517175519.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevljv023qj30it04babr.jpg" alt="QQ截图20200517175519.png">
+
+</li>
 <li><strong>Class类</strong>
 <ul>
 <li>java.lang.Class类十分特殊,用来表示java中类型(class/interface/enum/annotation/ primitive type/void)本身</li>
@@ -249,28 +373,52 @@
 <li><strong>运用getClass()</strong></li>
 <li><strong>运用Class.forName() (最常被使用)</strong></li>
 <li><strong>运用.class语法</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevm682h62j30r10ej100.jpg" alt="QQ截图20200517181648.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevm9aslcej30m70e7q90.jpg" alt="QQ截图20200517181945.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevm682h62j30r10ej100.jpg" alt="QQ截图20200517181648.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevm9aslcej30m70e7q90.jpg" alt="QQ截图20200517181945.png">
+
+</li>
 </ul>
 <hr>
 <h1 id="获取属性方法构造器">获取属性、方法、构造器</h1>
 <ul>
 <li><strong>获取属性</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevmiy68mqj30r30g2k05.jpg" alt="QQ截图20200517182902.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevmiy68mqj30r30g2k05.jpg" alt="QQ截图20200517182902.png">
+
+</li>
 <li><strong>获取方法</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevmmh3o3dj30no0d8wo4.jpg" alt="QQ截图20200517183225.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevmmh3o3dj30no0d8wo4.jpg" alt="QQ截图20200517183225.png">
+
+</li>
 <li><strong>获取构造器</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevmox8jflj30pn09rqaa.jpg" alt="QQ截图20200517183444.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevmox8jflj30pn09rqaa.jpg" alt="QQ截图20200517183444.png">
+
+</li>
 </ul>
 <hr>
 <h1 id="动态操作">动态操作</h1>
 <ul>
 <li><strong>通过反射API调用构造方法、构造对象</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevmxr0yrlj30nz05ptbp.jpg" alt="QQ截图20200517184316.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevmxr0yrlj30nz05ptbp.jpg" alt="QQ截图20200517184316.png">
+
+</li>
 <li><strong>过反射API调用普通方法</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevn1i2ravj30pb0d3tdc.jpg" alt="QQ截图20200517184610.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevn1i2ravj30pb0d3tdc.jpg" alt="QQ截图20200517184610.png">
+
+</li>
 <li><strong>通过反射API操作属性</strong>
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevn8rukjzj30mn0c2gqf.jpg" alt="QQ截图20200517185351.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevn8rukjzj30mn0c2gqf.jpg" alt="QQ截图20200517185351.png">
+
+</li>
 <li><strong>反射操作泛型</strong>
 <ul>
 <li>Java采用泛型擦除的机制来引入泛型。Java中的泛型仅仅是给编译器javac使用的,确保数据的安全性和免去强制类型转换的麻烦。但是, 一旦编译完成,所有的和泛型有关的类型全部擦除</li>
@@ -279,14 +427,23 @@
 <li>GenericArrayType:表示种元素类型是参数化类型或者类型变量的数组类型</li>
 <li>TypeVariable:是各种类型变量的公共父接口</li>
 <li>WildcardType:代表一种通配符类型表达式,比如?, ? extends Number, ? super Integer[wildcard是一个单词 :就是“通配符”]
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevu3hocdej30r20dn0yt.jpg" alt="QQ截图20200517225054.png">
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevu7s02k7j30wv0g4qdi.jpg" alt="QQ截图20200517225503.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevu3hocdej30r20dn0yt.jpg" alt="QQ截图20200517225054.png">
+
+
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevu7s02k7j30wv0g4qdi.jpg" alt="QQ截图20200517225503.png">
+
+</li>
 </ul>
 </li>
 <li><strong>反射操作注释</strong>
 <ul>
 <li>可以通过反射API:getAnnotations, getAnnotation获得相关的注解信息
-<img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevuhfdyhgj30nm07a784.jpg" alt="QQ截图20200517230419.png"></li>
+
+  <img src="http://ww1.sinaimg.cn/large/006QQPIfly1gevuhfdyhgj30nm07a784.jpg" alt="QQ截图20200517230419.png">
+
+</li>
 </ul>
 </li>
 </ul>
@@ -320,13 +477,27 @@
                     </li>
                     
                 </ul>
-
                 
-<div id="disqus-comment"></div>
-
-
 
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -625,16 +796,6 @@
 
                 
                 
-                <section>
-                    <hr>
-                    <h5>朋友</h5>
-                    <ul class="list-inline">
-                        
-                        <li><a target="_blank" href=""></a></li>
-                        
-                    </ul>
-                </section>
-                
             </div>
         </div>
     </div>
@@ -647,48 +808,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                 
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:1424197205@qq.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     <li>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="/#">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     <li>
                         <a target="_blank" href="https://github.com/yiguan1573">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
+                    
                     
                     
                     
@@ -698,7 +855,19 @@
                     
                     
             
-                </ul>
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
                     Copyright &copy; 亿观的博客 2022
                     <br>
@@ -718,7 +887,7 @@
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -736,7 +905,7 @@
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -748,12 +917,76 @@
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
 
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 
