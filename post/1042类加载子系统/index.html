@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="2、类加载子系统（JVM）" />
+    <meta property="og:title" content="2、类加载子系统（JVM）" />
+    <meta property="twitter:title" content="2、类加载子系统（JVM）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>2、类加载子系统（JVM） | yiguan1573</title>
+
+    <link rel="canonical" href="/post/1042%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive/">档案</a></li>
+                    
+                        <li><a href="/top/about/">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/03.JPG')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                    </div>
+                    <h1>2、类加载子系统（JVM）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                亿观
+                             
+                            on 
+                            Tuesday, June 21, 2022
+                            
+                                <span id="/post/1042%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="内存结构概述">内存结构概述</h2>
+<h3 id="简图">简图</h3>
+<!-- raw HTML omitted -->
+<h3 id="详细图">详细图</h3>
+<p>英文版</p>
+<!-- raw HTML omitted -->
+<p>中文版</p>
+<!-- raw HTML omitted -->
+<p>注意：方法区只有HotSpot虚拟机有，J9，JRockit都没有</p>
+<p>如果自己想手写一个Java虚拟机的话，主要考虑哪些结构呢？</p>
+<ol>
+<li>类加载器</li>
+<li>执行引擎</li>
+</ol>
+<h2 id="类加载器子系统">类加载器子系统</h2>
+<p><strong>类加载器子系统作用：</strong></p>
+<ol>
+<li>
+<p>类加载器子系统负责从文件系统或者网络中加载Class文件，class文件在文件开头有特定的文件标识。</p>
+</li>
+<li>
+<p>ClassLoader只负责class文件的加载，至于它是否可以运行，则由Execution Engine决定。</p>
+</li>
+<li>
+<p><strong>加载的类信息存放于一块称为方法区的内存空间</strong>。除了类的信息外，方法区中还会存放运行时常量池信息，可能还包括字符串字面量和数字常量（这部分常量信息是Class文件中常量池部分的内存映射）</p>
+</li>
+</ol>
+<!-- raw HTML omitted -->
+<h2 id="类加载器classloader角色">类加载器ClassLoader角色</h2>
+<ol>
+<li>class file（在下图中就是Car.class文件）存在于本地硬盘上，可以理解为设计师画在纸上的模板，而最终这个模板在执行的时候是要加载到JVM当中来根据这个文件实例化出n个一模一样的实例。</li>
+<li>class file加载到JVM中，被称为DNA元数据模板（在下图中就是内存中的Car Class），放在方法区。</li>
+<li>在.class文件–&gt;JVM–&gt;最终成为元数据模板，此过程就要一个运输工具（类装载器Class Loader），扮演一个快递员的角色。</li>
+</ol>
+<!-- raw HTML omitted -->
+<h2 id="类加载过程">类加载过程</h2>
+<h3 id="概述">概述</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">HelloLoader</span> <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;谢谢ClassLoader加载我....&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;你的大恩大德，我下辈子再报！&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>它的加载过程是怎么样的呢?</p>
+<ul>
+<li>执行 main() 方法（静态方法）就需要先加载main方法所在类 HelloLoader</li>
+<li>加载成功，则进行链接、初始化等操作。完成后调用 HelloLoader 类中的静态方法 main</li>
+<li>加载失败则抛出异常</li>
+</ul>
+<!-- raw HTML omitted -->
+<p>完整的流程图如下所示：</p>
+<!-- raw HTML omitted -->
+<h3 id="加载阶段">加载阶段</h3>
+<p><strong>加载：</strong></p>
+<ol>
+<li>
+<p>通过一个类的全限定名获取定义此类的二进制字节流</p>
+</li>
+<li>
+<p>将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构</p>
+</li>
+<li>
+<p><strong>在内存中生成一个代表这个类的java.lang.Class对象</strong>，作为方法区这个类的各种数据的访问入口</p>
+</li>
+</ol>
+<p><strong>加载class文件的方式：</strong></p>
+<ol>
+<li>从本地系统中直接加载</li>
+<li>通过网络获取，典型场景：Web Applet</li>
+<li>从zip压缩包中读取，成为日后jar、war格式的基础</li>
+<li>运行时计算生成，使用最多的是：动态代理技术</li>
+<li>由其他文件生成，典型场景：JSP应用从专有数据库中提取.class文件，比较少见</li>
+<li>从加密文件中获取，典型的防Class文件被反编译的保护措施</li>
+</ol>
+<h3 id="链接阶段">链接阶段</h3>
+<p>链接分为三个子阶段：验证 -&gt; 准备 -&gt; 解析</p>
+<h4 id="验证verify">验证(Verify)</h4>
+<ol>
+<li>目的在于确保Class文件的字节流中包含信息符合当前虚拟机要求，保证被加载类的正确性，不会危害虚拟机自身安全</li>
+<li>主要包括四种验证，文件格式验证，元数据验证，字节码验证，符号引用验证。</li>
+</ol>
+<p><strong>举例</strong></p>
+<p>使用 BinaryViewer软件查看字节码文件，其开头均为 CAFE BABE ，如果出现不合法的字节码文件，那么将会验证不通过。</p>
+<!-- raw HTML omitted -->
+<h4 id="准备prepare">准备(Prepare)</h4>
+<ol>
+<li>为类变量（static变量）分配内存并且设置该类变量的默认初始值，即零值</li>
+<li>这里不包含用final修饰的static，因为final在编译的时候就会分配好了默认值，准备阶段会显式初始化</li>
+<li>注意：这里不会为实例变量分配初始化，类变量会分配在方法区中，而实例变量是会随着对象一起分配到Java堆中</li>
+</ol>
+<p><strong>举例</strong></p>
+<p>代码：变量a在准备阶段会赋初始值，但不是1，而是0，在初始化阶段会被赋值为 1</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">HelloApp</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">int</span> a <span style="color:#ff79c6">=</span> 1<span style="color:#ff79c6">;</span><span style="color:#6272a4">//prepare：a = 0 ---&gt; initial : a = 1
+</span><span style="color:#6272a4"></span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>a<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="解析resolve">解析(Resolve)</h4>
+<ol>
+<li>
+<p><strong>将常量池内的符号引用转换为直接引用的过程</strong></p>
+</li>
+<li>
+<p>事实上，解析操作往往会伴随着JVM在执行完初始化之后再执行</p>
+</li>
+<li>
+<p>符号引用就是一组符号来描述所引用的目标。符号引用的字面量形式明确定义在《java虚拟机规范》的class文件格式中。直接引用就是直接指向目标的指针、相对偏移量或一个间接定位到目标的句柄</p>
+</li>
+<li>
+<p>解析动作主要针对类或接口、字段、类方法、接口方法、方法类型等。对应常量池中的CONSTANT Class info、CONSTANT Fieldref info、CONSTANT Methodref info等</p>
+</li>
+</ol>
+<p><strong>符号引用</strong></p>
+<ul>
+<li>反编译 class 文件后可以查看符号引用，下面带# 的就是符号引用</li>
+</ul>
+<!-- raw HTML omitted -->
+<h3 id="初始化阶段">初始化阶段</h3>
+<h4 id="类的初始化时机">类的初始化时机</h4>
+<ol>
+<li>创建类的实例</li>
+<li>访问某个类或接口的静态变量，或者对该静态变量赋值</li>
+<li>调用类的静态方法</li>
+<li>反射（比如：Class.forName(“com.atguigu.Test”)）</li>
+<li>初始化一个类的子类</li>
+<li>Java虚拟机启动时被标明为启动类的类</li>
+<li>JDK7开始提供的动态语言支持：java.lang.invoke.MethodHandle实例的解析结果REF_getStatic、REF putStatic、REF_invokeStatic句柄对应的类没有初始化，则初始化</li>
+</ol>
+<p>除了以上七种情况，其他使用Java类的方式都被看作是对类的被动使用，都不会导致类的初始化，即不会执行初始化阶段（不会调用 clinit() 方法和 init() 方法）</p>
+<h3 id="clinit">clinit()</h3>
+<ol>
+<li>
+<p>初始化阶段就是执行类构造器方法<code>&lt;clinit&gt;()</code>的过程</p>
+</li>
+<li>
+<p>此方法不需定义，是javac编译器自动收集类中的所有<strong>类变量</strong>的赋值动作和静态代码块中的语句合并而来。也就是说，当我们代码中包含static变量的时候，就会有clinit方法</p>
+</li>
+<li>
+<p><code>&lt;clinit&gt;()</code>方法中的指令按语句在源文件中出现的顺序执行</p>
+</li>
+<li>
+<p><code>&lt;clinit&gt;()</code>不同于类的构造器。（关联：构造器是虚拟机视角下的<code>&lt;init&gt;()</code>）</p>
+</li>
+<li>
+<p>若该类具有父类，JVM会保证子类的<code>&lt;clinit&gt;()</code>执行前，父类的<code>&lt;clinit&gt;()</code>已经执行完毕</p>
+</li>
+<li>
+<p>虚拟机必须保证一个类的<code>&lt;clinit&gt;()</code>方法在多线程下被同步加锁</p>
+</li>
+</ol>
+<blockquote>
+<p>IDEA 中安装 JClassLib Bytecode viewer 插件，可以很方便的看字节码。安装过程可以自行百度</p>
+</blockquote>
+<h4 id="123说明">1，2，3说明</h4>
+<p><strong>举例1：有static变量</strong></p>
+<p>查看下面这个代码的字节码，可以发现有一个<code>&lt;clinit&gt;()</code>方法。</p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ClassInitTest</span> <span style="color:#ff79c6">{</span>
+   <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">int</span> num <span style="color:#ff79c6">=</span> 1<span style="color:#ff79c6">;</span>
+
+   <span style="color:#8be9fd;font-style:italic">static</span><span style="color:#ff79c6">{</span>
+       num <span style="color:#ff79c6">=</span> 2<span style="color:#ff79c6">;</span>
+       number <span style="color:#ff79c6">=</span> 20<span style="color:#ff79c6">;</span>
+       System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>num<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+       <span style="color:#6272a4">//System.out.println(number);//报错：非法的前向引用。
+</span><span style="color:#6272a4"></span>   <span style="color:#ff79c6">}</span>
+
+   <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">    * 1、linking之prepare: number = 0 --&gt; initial: 20 --&gt; 10
+</span><span style="color:#6272a4">    * 2、这里因为静态代码块出现在声明变量语句前面，所以之前被准备阶段为0的number变量会
+</span><span style="color:#6272a4">    * 首先被初始化为20，再接着被初始化成10（这也是面试时常考的问题哦）
+</span><span style="color:#6272a4">    *
+</span><span style="color:#6272a4">    */</span>
+   <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">int</span> number <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>ClassInitTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">num</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//2
+</span><span style="color:#6272a4"></span>        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>ClassInitTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">number</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//10
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+</code></pre></div><p>&lt;clint字节码&gt;：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> 0 iconst_1
+ 1 putstatic #3 <span style="color:#ff79c6">&lt;</span>com<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java<span style="color:#ff79c6">/</span>ClassInitTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">num</span><span style="color:#ff79c6">&gt;</span>
+ 4 iconst_2
+ 5 putstatic #3 <span style="color:#ff79c6">&lt;</span>com<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java<span style="color:#ff79c6">/</span>ClassInitTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">num</span><span style="color:#ff79c6">&gt;</span>
+ 8 bipush 20	 <span style="color:#6272a4">//先赋20
+</span><span style="color:#6272a4"></span>10 putstatic #5 <span style="color:#ff79c6">&lt;</span>com<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java<span style="color:#ff79c6">/</span>ClassInitTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">number</span><span style="color:#ff79c6">&gt;</span>
+13 getstatic #2 <span style="color:#ff79c6">&lt;</span>java<span style="color:#ff79c6">/</span>lang<span style="color:#ff79c6">/</span>System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">&gt;</span>
+16 getstatic #3 <span style="color:#ff79c6">&lt;</span>com<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java<span style="color:#ff79c6">/</span>ClassInitTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">num</span><span style="color:#ff79c6">&gt;</span>
+19 invokevirtual #4 <span style="color:#ff79c6">&lt;</span>java<span style="color:#ff79c6">/</span>io<span style="color:#ff79c6">/</span>PrintStream<span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">&gt;</span>
+22 bipush 10	<span style="color:#6272a4">//再赋10
+</span><span style="color:#6272a4"></span>24 putstatic #5 <span style="color:#ff79c6">&lt;</span>com<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java<span style="color:#ff79c6">/</span>ClassInitTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">number</span><span style="color:#ff79c6">&gt;</span>
+27 <span style="color:#ff79c6">return</span>
+</code></pre></div><p>当我们代码中包含static变量的时候，就会有clinit方法</p>
+<p><strong>举例2：无 static 变量</strong></p>
+<!-- raw HTML omitted -->
+<p>加上之后就有了</p>
+<!-- raw HTML omitted -->
+<h4 id="4说明">4说明</h4>
+<!-- raw HTML omitted -->
+<p>在构造器中：</p>
+<ul>
+<li>先将类变量 a 赋值为 10</li>
+<li>再将局部变量赋值为 20</li>
+</ul>
+<h4 id="5说明">5说明</h4>
+<p>若该类具有父类，JVM会保证子类的<code>&lt;clinit&gt;()</code>执行前，父类的<code>&lt;clinit&gt;()</code>已经执行完毕</p>
+<!-- raw HTML omitted -->
+<p>如上代码，加载流程如下：</p>
+<ul>
+<li>首先，执行 main() 方法需要加载 ClinitTest1 类</li>
+<li>获取 Son.B 静态变量，需要加载 Son 类</li>
+<li>Son 类的父类是 Father 类，所以需要先执行 Father 类的加载，再执行 Son 类的加载</li>
+</ul>
+<h4 id="6说明">6说明</h4>
+<p>虚拟机必须保证一个类的<code>&lt;clinit&gt;()</code>方法在多线程下被同步加锁</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DeadThreadTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        Runnable r <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">-</span><span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;开始&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            DeadThread dead <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> DeadThread<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;结束&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">;</span>
+
+        Thread t1 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Thread<span style="color:#ff79c6">(</span>r<span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;线程1&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Thread t2 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Thread<span style="color:#ff79c6">(</span>r<span style="color:#ff79c6">,</span><span style="color:#f1fa8c">&#34;线程2&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        t1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        t2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DeadThread</span><span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">static</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;初始化当前类&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">while</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>输出结果：</p>
+<pre><code>线程2开始
+线程1开始
+线程2初始化当前类
+
+/然后程序卡死了
+</code></pre><p>程序卡死，分析原因：</p>
+<ul>
+<li>两个线程同时去加载 DeadThread 类，而 DeadThread 类中静态代码块中有一处死循环</li>
+<li>先加载 DeadThread 类的线程抢到了同步锁，然后在类的静态代码块中执行死循环，而另一个线程在等待同步锁的释放</li>
+<li>所以无论哪个线程先执行 DeadThread 类的加载，另外一个类也不会继续执行。（一个类只会被加载一次）</li>
+</ul>
+<h2 id="类加载器的分类">类加载器的分类</h2>
+<h3 id="概述-1">概述</h3>
+<ol>
+<li>
+<p>JVM严格来讲支持两种类型的类加载器 。分别为引导类加载器（Bootstrap ClassLoader）和自定义类加载器（User-Defined ClassLoader）</p>
+</li>
+<li>
+<p>从概念上来讲，自定义类加载器一般指的是程序中由开发人员自定义的一类类加载器，但是Java虚拟机规范却没有这么定义，而是<strong>将所有派生于抽象类ClassLoader的类加载器都划分为自定义类加载器</strong></p>
+</li>
+<li>
+<p>无论类加载器的类型如何划分，在程序中我们最常见的类加载器始终只有3个，如下所示</p>
+</li>
+</ol>
+<!-- raw HTML omitted -->
+<p><strong>ExtClassLoader</strong></p>
+<!-- raw HTML omitted -->
+<p><strong>AppClassLoader</strong></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ClassLoaderTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+
+        <span style="color:#6272a4">//获取系统类加载器
+</span><span style="color:#6272a4"></span>        ClassLoader systemClassLoader <span style="color:#ff79c6">=</span> ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSystemClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>systemClassLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//sun.misc.Launcher$AppClassLoader@18b4aac2
+</span><span style="color:#6272a4"></span>
+        <span style="color:#6272a4">//获取其上层：扩展类加载器
+</span><span style="color:#6272a4"></span>        ClassLoader extClassLoader <span style="color:#ff79c6">=</span> systemClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>extClassLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//sun.misc.Launcher$ExtClassLoader@1540e19d
+</span><span style="color:#6272a4"></span>
+        <span style="color:#6272a4">//获取其上层：获取不到引导类加载器
+</span><span style="color:#6272a4"></span>        ClassLoader bootstrapClassLoader <span style="color:#ff79c6">=</span> extClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>bootstrapClassLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//null
+</span><span style="color:#6272a4"></span>
+        <span style="color:#6272a4">//对于用户自定义类来说：默认使用系统类加载器进行加载
+</span><span style="color:#6272a4"></span>        ClassLoader classLoader <span style="color:#ff79c6">=</span> ClassLoaderTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//sun.misc.Launcher$AppClassLoader@18b4aac2
+</span><span style="color:#6272a4"></span>
+        <span style="color:#6272a4">//String类使用引导类加载器进行加载的。---&gt; Java的核心类库都是使用引导类加载器进行加载的。
+</span><span style="color:#6272a4"></span>        ClassLoader classLoader1 <span style="color:#ff79c6">=</span> String<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//null
+</span><span style="color:#6272a4"></span>
+
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>我们尝试获取引导类加载器，获取到的值为 null ，这并不代表引导类加载器不存在，<strong>因为引导类加载器右 C/C++ 语言，我们获取不到</strong></li>
+<li>两次获取系统类加载器的值都相同：sun.misc.Launcher$AppClassLoader@18b4aac2 ，这说明<strong>系统类加载器是全局唯一的</strong></li>
+</ul>
+<h3 id="虚拟机自带的加载器">虚拟机自带的加载器</h3>
+<h4 id="启动类加载器">启动类加载器</h4>
+<blockquote>
+<p><strong>启动类加载器（引导类加载器，Bootstrap ClassLoader）</strong></p>
+</blockquote>
+<ol>
+<li>这个类加载使用C/C++语言实现的，嵌套在JVM内部</li>
+<li>它用来加载Java的核心库（JAVA_HOME/jre/lib/rt.jar、resources.jar或sun.boot.class.path路径下的内容），用于提供JVM自身需要的类</li>
+<li>并不继承自java.lang.ClassLoader，没有父加载器</li>
+<li>加载扩展类和应用程序类加载器，并作为他们的父类加载器</li>
+<li>出于安全考虑，Bootstrap启动类加载器只加载包名为java、javax、sun等开头的类</li>
+</ol>
+<h4 id="扩展类加载器">扩展类加载器</h4>
+<blockquote>
+<p><strong>扩展类加载器（Extension ClassLoader）</strong></p>
+</blockquote>
+<ol>
+<li>Java语言编写，由sun.misc.Launcher$ExtClassLoader实现</li>
+<li>派生于ClassLoader类</li>
+<li>父类加载器为启动类加载器</li>
+<li>从java.ext.dirs系统属性所指定的目录中加载类库，或从JDK的安装目录的jre/lib/ext子目录（扩展目录）下加载类库。如果用户创建的JAR放在此目录下，也会自动由扩展类加载器加载</li>
+</ol>
+<h4 id="系统类加载器">系统类加载器</h4>
+<blockquote>
+<p><strong>应用程序类加载器（也称为系统类加载器，AppClassLoader）</strong></p>
+</blockquote>
+<ol>
+<li>Java语言编写，由sun.misc.LaunchersAppClassLoader实现</li>
+<li>派生于ClassLoader类</li>
+<li>父类加载器为扩展类加载器</li>
+<li>它负责加载环境变量classpath或系统属性java.class.path指定路径下的类库</li>
+<li>该类加载是程序中默认的类加载器，一般来说，Java应用的类都是由它来完成加载</li>
+<li>通过classLoader.getSystemclassLoader()方法可以获取到该类加载器</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ClassLoaderTest1</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;**********启动类加载器**************&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//获取BootstrapClassLoader能够加载的api的路径
+</span><span style="color:#6272a4"></span>        URL<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> urLs <span style="color:#ff79c6">=</span> sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">misc</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Launcher</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getBootstrapClassPath</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getURLs</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>URL element <span style="color:#ff79c6">:</span> urLs<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>element<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toExternalForm</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#6272a4">//从上面的路径中随意选择一个类,来看看他的类加载器是什么:引导类加载器
+</span><span style="color:#6272a4"></span>        ClassLoader classLoader <span style="color:#ff79c6">=</span> Provider<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;***********扩展类加载器*************&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        String extDirs <span style="color:#ff79c6">=</span> System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getProperty</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;java.ext.dirs&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>String path <span style="color:#ff79c6">:</span> extDirs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">split</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;;&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>path<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+
+        <span style="color:#6272a4">//从上面的路径中随意选择一个类,来看看他的类加载器是什么:扩展类加载器
+</span><span style="color:#6272a4"></span>        ClassLoader classLoader1 <span style="color:#ff79c6">=</span> CurveDB<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//sun.misc.Launcher$ExtClassLoader@1540e19d
+</span><span style="color:#6272a4"></span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+</code></pre></div><p><strong>输出结果</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span>启动类加载器<span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Program<span style="color:#ff79c6">%</span>20Files<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_131</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>resources<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Program<span style="color:#ff79c6">%</span>20Files<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_131</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>rt<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Program<span style="color:#ff79c6">%</span>20Files<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_131</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>sunrsasign<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Program<span style="color:#ff79c6">%</span>20Files<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_131</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>jsse<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Program<span style="color:#ff79c6">%</span>20Files<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_131</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>jce<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Program<span style="color:#ff79c6">%</span>20Files<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_131</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>charsets<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Program<span style="color:#ff79c6">%</span>20Files<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_131</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>jfr<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Program<span style="color:#ff79c6">%</span>20Files<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_131</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>classes
+<span style="color:#ff79c6">null</span>
+<span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span>扩展类加载器<span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span>
+<span style="color:#8be9fd;font-style:italic">C:</span>\Program Files\Java\jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_131</span>\jre\lib\ext
+<span style="color:#8be9fd;font-style:italic">C:</span>\Windows\Sun\Java\lib\ext
+sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">misc</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Launcher$ExtClassLoader</span>@29453f44
+</code></pre></div><h3 id="用户自定义类加载器">用户自定义类加载器</h3>
+<h4 id="什么时候需要自定义类加载器">什么时候需要自定义类加载器？</h4>
+<p>在Java的日常应用程序开发中，类的加载几乎是由上述3种类加载器相互配合执行的，在必要时，我们还可以自定义类加载器，来定制类的加载方式。那为什么还需要自定义类加载器？</p>
+<ol>
+<li>隔离加载类（比如说我假设现在Spring框架，和RocketMQ有包名路径完全一样的类，类名也一样，这个时候类就冲突了。不过一般的主流框架和中间件都会自定义类加载器，实现不同的框架，中间价之间是隔离的）</li>
+<li>修改类加载的方式</li>
+<li>扩展加载源（还可以考虑从数据库中加载类，路由器等等不同的地方）</li>
+<li>防止源码泄漏（对字节码文件进行解密，自己用的时候通过自定义类加载器来对其进行解密）</li>
+</ol>
+<h4 id="如何自定义类加载器">如何自定义类加载器？</h4>
+<ol>
+<li>开发人员可以通过继承抽象类java.lang.ClassLoader类的方式，实现自己的类加载器，以满足一些特殊的需求</li>
+<li>在JDK1.2之前，在自定义类加载器时，总会去继承ClassLoader类并重写loadClass()方法，从而实现自定义的类加载类，但是在JDK1.2之后已不再建议用户去覆盖loadClass()方法，而是建议把自定义的类加载逻辑写在findclass()方法中</li>
+<li>在编写自定义类加载器时，如果没有太过于复杂的需求，可以直接继承URIClassLoader类，这样就可以避免自己去编写findclass()方法及其获取字节码流的方式，使自定义类加载器编写更加简洁。</li>
+</ol>
+<p><strong>代码示例</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">CustomClassLoader</span> <span style="color:#8be9fd;font-style:italic">extends</span> ClassLoader <span style="color:#ff79c6">{</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> findClass<span style="color:#ff79c6">(</span>String name<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> ClassNotFoundException <span style="color:#ff79c6">{</span>
+
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> result <span style="color:#ff79c6">=</span> getClassFromCustomPath<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>result <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> FileNotFoundException<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#6272a4">//defineClass和findClass搭配使用
+</span><span style="color:#6272a4"></span>                <span style="color:#ff79c6">return</span> defineClass<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">,</span> result<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> result<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>FileNotFoundException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+
+        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> ClassNotFoundException<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+	<span style="color:#6272a4">//自定义流的获取方式
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> <span style="color:#50fa7b">getClassFromCustomPath</span><span style="color:#ff79c6">(</span>String name<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//从自定义路径中加载指定类:细节略
+</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">//如果指定路径的字节码文件进行了加密，则需要在此方法中进行解密操作。
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        CustomClassLoader customClassLoader <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> CustomClassLoader<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> clazz <span style="color:#ff79c6">=</span> Class<span style="color:#ff79c6">.</span><span style="color:#50fa7b">forName</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;One&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">,</span> customClassLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            Object obj <span style="color:#ff79c6">=</span> clazz<span style="color:#ff79c6">.</span><span style="color:#50fa7b">newInstance</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>obj<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h3 id="关于classloader">关于ClassLoader</h3>
+<blockquote>
+<p><strong>ClassLoader 类介绍</strong></p>
+</blockquote>
+<p>ClassLoader类，它是一个抽象类，其后所有的类加载器都继承自ClassLoader（不包括启动类加载器）</p>
+<!-- raw HTML omitted -->
+<p>sun.misc.Launcher 它是一个java虚拟机的入口应用</p>
+<!-- raw HTML omitted -->
+<h4 id="获取classloader途径">获取ClassLoader途径</h4>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ClassLoaderTest2</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//1.
+</span><span style="color:#6272a4"></span>            ClassLoader classLoader <span style="color:#ff79c6">=</span> Class<span style="color:#ff79c6">.</span><span style="color:#50fa7b">forName</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;java.lang.String&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">//2.
+</span><span style="color:#6272a4"></span>            ClassLoader classLoader1 <span style="color:#ff79c6">=</span> Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getContextClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+            <span style="color:#6272a4">//3.
+</span><span style="color:#6272a4"></span>            ClassLoader classLoader2 <span style="color:#ff79c6">=</span> ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSystemClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader2<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>ClassNotFoundException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+</code></pre></div><p>输出结果：</p>
+<pre><code>null
+sun.misc.Launcher$AppClassLoader@18b4aac2
+sun.misc.Launcher$ExtClassLoader@1540e19d
+
+Process finished with exit code 0
+</code></pre><h2 id="双亲委派机制">双亲委派机制</h2>
+<h3 id="双亲委派机制原理">双亲委派机制原理</h3>
+<p>Java虚拟机对class文件采用的是<strong>按需加载</strong>的方式，也就是说当需要使用该类时才会将它的class文件加载到内存生成class对象。而且加载某个类的class文件时，Java虚拟机采用的是双亲委派模式，即把请求交由父类处理，它是一种任务委派模式</p>
+<ol>
+<li>如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行；</li>
+<li>如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器；</li>
+<li>如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派模式。</li>
+<li>父类加载器一层一层往下分配任务，如果子类加载器能加载，则加载此类，如果将加载任务分配至系统类加载器也无法加载此类，则抛出异常</li>
+</ol>
+<!-- raw HTML omitted -->
+<h3 id="双亲委派机制代码演示">双亲委派机制代码演示</h3>
+<h4 id="举例1">举例1</h4>
+<p>1、我们自己建立一个 java.lang.String 类，写上 static 代码块</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">String</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">static</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;我是自定义的String类的静态代码块&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>2、在另外的程序中加载 String 类，看看加载的 String 类是 JDK 自带的 String 类，还是我们自己编写的 String 类</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StringTest</span> <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">String</span> str <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">String</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hello,atguigu.com&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        StringTest test <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringTest<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>test<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>输出结果：</p>
+<pre><code>hello,atguigu.com
+sun.misc.Launcher$AppClassLoader@18b4aac2
+</code></pre><p>程序并没有输出我们静态代码块中的内容，可见仍然加载的是 JDK 自带的 String 类。</p>
+<p>把刚刚的类改一下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> java.lang<span style="color:#ff79c6">;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">String</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">static</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;我是自定义的String类的静态代码块&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">//错误: 在类 java.lang.String 中找不到 main 方法
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hello,String&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><!-- raw HTML omitted -->
+<p>由于双亲委派机制一直找父类，所以最后找到了Bootstrap ClassLoader，Bootstrap ClassLoader找到的是 JDK 自带的 String 类，在那个String类中并没有 main() 方法，所以就报了上面的错误。</p>
+<h4 id="举例2">举例2</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> java.lang<span style="color:#ff79c6">;</span>
+
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ShkStart</span> <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hello!&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>输出结果：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">SecurityException</span><span style="color:#ff79c6">:</span> Prohibited <span style="color:#ff79c6">package</span> name<span style="color:#ff79c6">:</span> java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">ClassLoader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">preDefineClass</span><span style="color:#ff79c6">(</span>ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>662<span style="color:#ff79c6">)</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">ClassLoader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">defineClass</span><span style="color:#ff79c6">(</span>ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>761<span style="color:#ff79c6">)</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">security</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">SecureClassLoader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">defineClass</span><span style="color:#ff79c6">(</span>SecureClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>142<span style="color:#ff79c6">)</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">net</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">URLClassLoader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">defineClass</span><span style="color:#ff79c6">(</span>URLClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>467<span style="color:#ff79c6">)</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">net</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">URLClassLoader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">access$100</span><span style="color:#ff79c6">(</span>URLClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>73<span style="color:#ff79c6">)</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">net</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">URLClassLoader$1</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span>URLClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>368<span style="color:#ff79c6">)</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">net</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">URLClassLoader$1</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span>URLClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>362<span style="color:#ff79c6">)</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">security</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">AccessController</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">doPrivileged</span><span style="color:#ff79c6">(</span>Native Method<span style="color:#ff79c6">)</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">net</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">URLClassLoader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span>URLClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>361<span style="color:#ff79c6">)</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">ClassLoader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span>ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>424<span style="color:#ff79c6">)</span>
+	at sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">misc</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Launcher$AppClassLoader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span>Launcher<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>335<span style="color:#ff79c6">)</span>
+	at java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">ClassLoader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span>ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>357<span style="color:#ff79c6">)</span>
+	at sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">launcher</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">LauncherHelper</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">checkAndLoadMain</span><span style="color:#ff79c6">(</span>LauncherHelper<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>495<span style="color:#ff79c6">)</span>
+<span style="color:#8be9fd;font-style:italic">Error:</span> A JNI error has occurred<span style="color:#ff79c6">,</span> please check your installation and <span style="color:#ff79c6">try</span> again
+Exception in thread <span style="color:#f1fa8c">&#34;main&#34;</span> 
+Process finished with exit code 1
+</code></pre></div><p>即使类名没有重复，也禁止使用java.lang这种包名。这是一种保护机制</p>
+<h4 id="举例3">举例3</h4>
+<p>当我们加载jdbc.jar 用于实现数据库连接的时候</p>
+<ol>
+<li>我们现在程序中需要用到SPI接口，而SPI接口属于rt.jar包中Java核心api</li>
+<li>然后使用双清委派机制，引导类加载器把rt.jar包加载进来，而rt.jar包中的SPI存在一些接口，接口我们就需要具体的实现类了</li>
+<li>具体的实现类就涉及到了某些第三方的jar包了，比如我们加载SPI的实现类jdbc.jar包【首先我们需要知道的是 jdbc.jar是基于SPI接口进行实现的】</li>
+<li>第三方的jar包中的类属于系统类加载器来加载</li>
+<li>从这里面就可以看到SPI核心接口由引导类加载器来加载，SPI具体实现类由系统类加载器来加载</li>
+</ol>
+<!-- raw HTML omitted -->
+<h3 id="双亲委派机制优势">双亲委派机制优势</h3>
+<p>通过上面的例子，我们可以知道，双亲机制可以</p>
+<ol>
+<li>
+<p>避免类的重复加载</p>
+</li>
+<li>
+<p>保护程序安全，防止核心API被随意篡改</p>
+<ul>
+<li>自定义类：自定义java.lang.String 没有被加载。</li>
+<li>自定义类：java.lang.ShkStart（报错：阻止创建 java.lang开头的类）</li>
+</ul>
+</li>
+</ol>
+<h2 id="沙箱安全机制">沙箱安全机制</h2>
+<ol>
+<li>自定义String类时：在加载自定义String类的时候会率先使用引导类加载器加载，而引导类加载器在加载的过程中会先加载jdk自带的文件（rt.jar包中java.lang.String.class），报错信息说没有main方法，就是因为加载的是rt.jar包中的String类。</li>
+<li>这样可以保证对java核心源代码的保护，这就是沙箱安全机制。</li>
+</ol>
+<h2 id="其他">其他</h2>
+<h3 id="如何判断两个class对象是否相同">如何判断两个class对象是否相同？</h3>
+<p>在JVM中表示两个class对象是否为同一个类存在两个必要条件：</p>
+<ol>
+<li>类的完整类名必须一致，包括包名</li>
+<li><strong>加载这个类的ClassLoader（指ClassLoader实例对象）必须相同</strong></li>
+<li>换句话说，在JVM中，即使这两个类对象（class对象）来源同一个Class文件，被同一个虚拟机所加载，但只要加载它们的ClassLoader实例对象不同，那么这两个类对象也是不相等的</li>
+</ol>
+<h3 id="对类加载器的引用">对类加载器的引用</h3>
+<ol>
+<li>JVM必须知道一个类型是由启动加载器加载的还是由用户类加载器加载的</li>
+<li><strong>如果一个类型是由用户类加载器加载的，那么JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中</strong></li>
+<li>当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的（后面讲）</li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1041jvm%E4%B8%8Ejava%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" data-toggle="tooltip" data-placement="top" title="1、JVM与Java体系结构（JVM）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1043%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/" data-toggle="tooltip" data-placement="top" title="3、运行时数据区（JVM）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/elasticsearch" title="elasticsearch">
+                            elasticsearch
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jvm" title="jvm">
+                            jvm
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/netty" title="netty">
+                            netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    <li>
+                        <a target="_blank" href="/#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+</html>

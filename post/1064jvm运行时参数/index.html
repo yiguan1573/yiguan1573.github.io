@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="24、JVM运行时参数（JVM）" />
+    <meta property="og:title" content="24、JVM运行时参数（JVM）" />
+    <meta property="twitter:title" content="24、JVM运行时参数（JVM）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>24、JVM运行时参数（JVM） | yiguan1573</title>
+
+    <link rel="canonical" href="/post/1064jvm%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8F%82%E6%95%B0/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive/">档案</a></li>
+                    
+                        <li><a href="/top/about/">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/03.JPG')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                    </div>
+                    <h1>24、JVM运行时参数（JVM）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                亿观
+                             
+                            on 
+                            Thursday, September 8, 2022
+                            
+                                <span id="/post/1064jvm%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8F%82%E6%95%B0/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="41-jvm-参数选项">4.1. JVM 参数选项</h2>
+<p>官网地址：<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/windows/java.html">https://docs.oracle.com/javase/8/docs/technotes/tools/windows/java.html</a></p>
+<h3 id="411-类型一标准参数选项">4.1.1. 类型一：标准参数选项</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; java -help
+用法: java <span style="color:#ff79c6">[</span>-options<span style="color:#ff79c6">]</span> class <span style="color:#ff79c6">[</span>args...<span style="color:#ff79c6">]</span>
+           <span style="color:#ff79c6">(</span>执行类<span style="color:#ff79c6">)</span>
+   或  java <span style="color:#ff79c6">[</span>-options<span style="color:#ff79c6">]</span> -jar jarfile <span style="color:#ff79c6">[</span>args...<span style="color:#ff79c6">]</span>
+           <span style="color:#ff79c6">(</span>执行 jar 文件<span style="color:#ff79c6">)</span>
+其中选项包括:
+    -d32          使用 <span style="color:#bd93f9">32</span> 位数据模型 <span style="color:#ff79c6">(</span>如果可用<span style="color:#ff79c6">)</span>
+    -d64          使用 <span style="color:#bd93f9">64</span> 位数据模型 <span style="color:#ff79c6">(</span>如果可用<span style="color:#ff79c6">)</span>
+    -server       选择 <span style="color:#f1fa8c">&#34;server&#34;</span> VM
+                  默认 VM 是 server.
+
+    -cp &lt;目录和 zip/jar 文件的类搜索路径&gt;
+    -classpath &lt;目录和 zip/jar 文件的类搜索路径&gt;
+                  用 ; 分隔的目录, JAR 档案
+                  和 ZIP 档案列表, 用于搜索类文件。
+    -D&lt;名称&gt;<span style="color:#ff79c6">=</span>&lt;值&gt;
+                  设置系统属性
+    -verbose:<span style="color:#ff79c6">[</span>class|gc|jni<span style="color:#ff79c6">]</span>
+                  启用详细输出
+    -version      输出产品版本并退出
+    -version:&lt;值&gt;
+                  警告: 此功能已过时, 将在
+                  未来发行版中删除。
+                  需要指定的版本才能运行
+    -showversion  输出产品版本并继续
+    -jre-restrict-search | -no-jre-restrict-search
+                  警告: 此功能已过时, 将在
+                  未来发行版中删除。
+                  在版本搜索中包括/排除用户专用 JRE
+    -? -help      输出此帮助消息
+    -X            输出非标准选项的帮助
+    -ea<span style="color:#ff79c6">[</span>:&lt;packagename&gt;...|:&lt;classname&gt;<span style="color:#ff79c6">]</span>
+    -enableassertions<span style="color:#ff79c6">[</span>:&lt;packagename&gt;...|:&lt;classname&gt;<span style="color:#ff79c6">]</span>
+                  按指定的粒度启用断言
+    -da<span style="color:#ff79c6">[</span>:&lt;packagename&gt;...|:&lt;classname&gt;<span style="color:#ff79c6">]</span>
+    -disableassertions<span style="color:#ff79c6">[</span>:&lt;packagename&gt;...|:&lt;classname&gt;<span style="color:#ff79c6">]</span>
+                  禁用具有指定粒度的断言
+    -esa | -enablesystemassertions
+                  启用系统断言
+    -dsa | -disablesystemassertions
+                  禁用系统断言
+    -agentlib:&lt;libname&gt;<span style="color:#ff79c6">[</span><span style="color:#ff79c6">=</span>&lt;选项&gt;<span style="color:#ff79c6">]</span>
+                  加载本机代理库 &lt;libname&gt;, 例如 -agentlib:hprof
+                  另请参阅 -agentlib:jdwp<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">help</span> 和 -agentlib:hprof<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">help</span>
+    -agentpath:&lt;pathname&gt;<span style="color:#ff79c6">[</span><span style="color:#ff79c6">=</span>&lt;选项&gt;<span style="color:#ff79c6">]</span>
+                  按完整路径名加载本机代理库
+    -javaagent:&lt;jarpath&gt;<span style="color:#ff79c6">[</span><span style="color:#ff79c6">=</span>&lt;选项&gt;<span style="color:#ff79c6">]</span>
+                  加载 Java 编程语言代理, 请参阅 java.lang.instrument
+    -splash:&lt;imagepath&gt;
+                  使用指定的图像显示启动屏幕
+有关详细信息, 请参阅 http://www.oracle.com/technetwork/java/javase/documentation/index.html。
+</code></pre></div><p><strong>Server 模式和 Client 模式</strong></p>
+<p>Hotspot JVM 有两种模式，分别是 server 和 client，分别通过-server 和-client 模式设置</p>
+<ul>
+<li>32 位系统上，默认使用 Client 类型的 JVM。要想使用 Server 模式，机器配置至少有 2 个以上的 CPU 和 2G 以上的物理内存。client 模式适用于对内存要求较小的桌面应用程序，默认使用 Serial 串行垃圾收集器</li>
+<li>64 位系统上，只支持 server 模式的 JVM，适用于需要大内存的应用程序，默认使用并行垃圾收集器</li>
+</ul>
+<p>官网地址：<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/server-class.html">https://docs.oracle.com/javase/8/docs/technotes/guides/vm/server-class.html</a></p>
+<p>如何知道系统默认使用的是那种模式呢？</p>
+<p>通过 java -version 命令：可以看到 Server VM 字样，代表当前系统使用是 Server 模式</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; java -version
+java version <span style="color:#f1fa8c">&#34;1.8.0_201&#34;</span>
+Java<span style="color:#ff79c6">(</span>TM<span style="color:#ff79c6">)</span> SE Runtime Environment <span style="color:#ff79c6">(</span>build 1.8.0_201-b09<span style="color:#ff79c6">)</span>
+Java HotSpot<span style="color:#ff79c6">(</span>TM<span style="color:#ff79c6">)</span> 64-Bit Server VM <span style="color:#ff79c6">(</span>build 25.201-b09, mixed mode<span style="color:#ff79c6">)</span>
+</code></pre></div><h3 id="412-类型二-x-参数选项">4.1.2. 类型二：-X 参数选项</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; java -X
+    -Xmixed           混合模式执行 <span style="color:#ff79c6">(</span>默认<span style="color:#ff79c6">)</span>
+    -Xint             仅解释模式执行
+    -Xbootclasspath:&lt;用 ; 分隔的目录和 zip/jar 文件&gt;
+                      设置搜索路径以引导类和资源
+    -Xbootclasspath/a:&lt;用 ; 分隔的目录和 zip/jar 文件&gt;
+                      附加在引导类路径末尾
+    -Xbootclasspath/p:&lt;用 ; 分隔的目录和 zip/jar 文件&gt;
+                      置于引导类路径之前
+    -Xdiag            显示附加诊断消息
+    -Xnoclassgc       禁用类垃圾收集
+    -Xincgc           启用增量垃圾收集
+    -Xloggc:&lt;file&gt;    将 GC 状态记录在文件中 <span style="color:#ff79c6">(</span>带时间戳<span style="color:#ff79c6">)</span>
+    -Xbatch           禁用后台编译
+    -Xms&lt;size&gt;        设置初始 Java 堆大小
+    -Xmx&lt;size&gt;        设置最大 Java 堆大小
+    -Xss&lt;size&gt;        设置 Java 线程堆栈大小
+    -Xprof            输出 cpu 配置文件数据
+    -Xfuture          启用最严格的检查, 预期将来的默认值
+    -Xrs              减少 Java/VM 对操作系统信号的使用 <span style="color:#ff79c6">(</span>请参阅文档<span style="color:#ff79c6">)</span>
+    -Xcheck:jni       对 JNI 函数执行其他检查
+    -Xshare:off       不尝试使用共享类数据
+    -Xshare:auto      在可能的情况下使用共享类数据 <span style="color:#ff79c6">(</span>默认<span style="color:#ff79c6">)</span>
+    -Xshare:on        要求使用共享类数据, 否则将失败。
+    -XshowSettings    显示所有设置并继续
+    -XshowSettings:all
+                      显示所有设置并继续
+    -XshowSettings:vm 显示所有与 vm 相关的设置并继续
+    -XshowSettings:properties
+                      显示所有属性设置并继续
+    -XshowSettings:locale
+                      显示所有与区域设置相关的设置并继续
+
+-X 选项是非标准选项, 如有更改, 恕不另行通知。
+</code></pre></div><p>如何知道 JVM 默认使用的是混合模式呢？</p>
+<p>同样地，通过 java -version 命令：可以看到 mixed mode 字样，代表当前系统使用的是混合模式</p>
+<h3 id="413-类型三-xx-参数选项">4.1.3. 类型三：-XX 参数选项</h3>
+<p><strong>Boolean 类型格式</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-XX:+&lt;option&gt;  启用option属性
+-XX:-&lt;option&gt;  禁用option属性
+</code></pre></div><p><strong>非 Boolean 类型格式</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-XX:&lt;option&gt;<span style="color:#ff79c6">=</span>&lt;number&gt;  设置option数值，可以带单位如k/K/m/M/g/G
+-XX:&lt;option&gt;<span style="color:#ff79c6">=</span>&lt;string&gt;  设置option字符值
+</code></pre></div><h2 id="42-添加-jvm-参数选项">4.2. 添加 JVM 参数选项</h2>
+<p>eclipse 和 idea 中配置不必多说，在 Run Configurations 中 VM Options 中配置即可，大同小异</p>
+<p><strong>运行 jar 包</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">java -Xms100m -Xmx100m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -jar demo.jar
+</code></pre></div><p><strong>Tomcat 运行 war 包</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4"># linux下catalina.sh添加</span>
+<span style="color:#8be9fd;font-style:italic">JAVA_OPTS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-Xms512M -Xmx1024M&#34;</span>
+<span style="color:#6272a4"># windows下catalina.bat添加</span>
+<span style="color:#8be9fd;font-style:italic">set</span> <span style="color:#f1fa8c">&#34;JAVA_OPTS=-Xms512M -Xmx1024M&#34;</span>
+</code></pre></div><p><strong>程序运行中</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4"># 设置Boolean类型参数</span>
+jinfo -flag <span style="color:#ff79c6">[</span>+|-<span style="color:#ff79c6">]</span>&lt;name&gt; &lt;pid&gt;
+<span style="color:#6272a4"># 设置非Boolean类型参数</span>
+jinfo -flag &lt;name&gt;<span style="color:#ff79c6">=</span>&lt;value&gt; &lt;pid&gt;
+</code></pre></div><h2 id="43-常用的-jvm-参数选项">4.3. 常用的 JVM 参数选项</h2>
+<h3 id="431-打印设置的-xx-选项及值">4.3.1. 打印设置的 XX 选项及值</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-XX:+PrintCommandLineFlags 程序运行时JVM默认设置或用户手动设置的XX选项
+-XX:+PrintFlagsInitial 打印所有XX选项的默认值
+-XX:+PrintFlagsFinal 打印所有XX选项的实际值
+-XX:+PrintVMOptions 打印JVM的参数
+</code></pre></div><h3 id="432-堆栈方法区等内存大小设置">4.3.2. 堆、栈、方法区等内存大小设置</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4"># 栈</span>
+-Xss128k &lt;<span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span>&gt; -XX:ThreadStackSize<span style="color:#ff79c6">=</span>128k 设置线程栈的大小为128K
+
+<span style="color:#6272a4"># 堆</span>
+-Xms2048m &lt;<span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span>&gt; -XX:InitialHeapSize<span style="color:#ff79c6">=</span>2048m 设置JVM初始堆内存为2048M
+-Xmx2048m &lt;<span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span>&gt; -XX:MaxHeapSize<span style="color:#ff79c6">=</span>2048m 设置JVM最大堆内存为2048M
+-Xmn2g &lt;<span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span>&gt; -XX:NewSize<span style="color:#ff79c6">=</span>2g -XX:MaxNewSize<span style="color:#ff79c6">=</span>2g 设置年轻代大小为2G
+-XX:SurvivorRatio<span style="color:#ff79c6">=</span><span style="color:#bd93f9">8</span> 设置Eden区与Survivor区的比值，默认为8
+-XX:NewRatio<span style="color:#ff79c6">=</span><span style="color:#bd93f9">2</span> 设置老年代与年轻代的比例，默认为2
+-XX:+UseAdaptiveSizePolicy 设置大小比例自适应，默认开启
+-XX:PretenureSizeThreadshold<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1024</span> 设置让大于此阈值的对象直接分配在老年代，只对Serial、ParNew收集器有效
+-XX:MaxTenuringThreshold<span style="color:#ff79c6">=</span><span style="color:#bd93f9">15</span> 设置新生代晋升老年代的年龄限制，默认为15
+-XX:TargetSurvivorRatio 设置MinorGC结束后Survivor区占用空间的期望比例
+
+<span style="color:#6272a4"># 方法区</span>
+-XX:MetaspaceSize / -XX:PermSize<span style="color:#ff79c6">=</span>256m 设置元空间/永久代初始值为256M
+-XX:MaxMetaspaceSize / -XX:MaxPermSize<span style="color:#ff79c6">=</span>256m 设置元空间/永久代最大值为256M
+-XX:+UseCompressedOops 使用压缩对象
+-XX:+UseCompressedClassPointers 使用压缩类指针
+-XX:CompressedClassSpaceSize 设置Klass Metaspace的大小，默认1G
+
+<span style="color:#6272a4"># 直接内存</span>
+-XX:MaxDirectMemorySize 指定DirectMemory容量，默认等于Java堆最大值
+</code></pre></div><h3 id="433-outofmemory-相关的选项">4.3.3. OutOfMemory 相关的选项</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-XX:+HeapDumpOnOutMemoryError 内存出现OOM时生成Heap转储文件，两者互斥
+-XX:+HeapDumpBeforeFullGC 出现FullGC时生成Heap转储文件，两者互斥
+-XX:HeapDumpPath<span style="color:#ff79c6">=</span>&lt;path&gt; 指定heap转储文件的存储路径，默认当前目录
+-XX:OnOutOfMemoryError<span style="color:#ff79c6">=</span>&lt;path&gt; 指定可行性程序或脚本的路径，当发生OOM时执行脚本
+</code></pre></div><h3 id="434-垃圾收集器相关选项">4.3.4. 垃圾收集器相关选项</h3>
+<p>首先需了解垃圾收集器之间的搭配使用关系</p>
+<ul>
+<li>红色虚线表示在 jdk8 时被 Deprecate，jdk9 时被删除</li>
+<li>绿色虚线表示在 jdk14 时被 Deprecate</li>
+<li>绿色虚框表示在 jdk9 时被 Deprecate，jdk14 时被删除</li>
+</ul>
+<p>
+  <img src="https://img-blog.csdnimg.cn/img_convert/46dec5b346fcc5b147491481787ea8ec.png" alt="image-20210506182458663">
+
+</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4"># Serial回收器</span>
+-XX:+UseSerialGC  年轻代使用Serial GC， 老年代使用Serial Old GC
+<span style="color:#6272a4"># ParNew回收器</span>
+-XX:+UseParNewGC  年轻代使用ParNew GC
+-XX:ParallelGCThreads  设置年轻代并行收集器的线程数。
+	一般地，最好与CPU数量相等，以避免过多的线程数影响垃圾收集性能。
+</code></pre></div><p>$$
+ParallelGCThreads =
+\begin{cases}
+CPU_Count &amp; \text (CPU_Count &lt;= 8) \<br>
+3 + (5 * CPU＿Count / 8) &amp; \text (CPU_Count &gt; 8)
+\end{cases}
+$$</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4"># Parallel回收器</span>
+-XX:+UseParallelGC  年轻代使用 Parallel Scavenge GC，互相激活
+-XX:+UseParallelOldGC  老年代使用 Parallel Old GC，互相激活
+-XX:ParallelGCThreads
+-XX:MaxGCPauseMillis  设置垃圾收集器最大停顿时间（即STW的时间），单位是毫秒。
+	为了尽可能地把停顿时间控制在MaxGCPauseMills以内，收集器在工作时会调整Java堆大小或者其他一些参数。
+	对于用户来讲，停顿时间越短体验越好；但是服务器端注重高并发，整体的吞吐量。
+	所以服务器端适合Parallel，进行控制。该参数使用需谨慎。
+-XX:GCTimeRatio  垃圾收集时间占总时间的比例（1 / <span style="color:#ff79c6">(</span>N＋1<span style="color:#ff79c6">)</span>），用于衡量吞吐量的大小
+	取值范围（0,100），默认值99，也就是垃圾回收时间不超过1％。
+	与前一个-XX：MaxGCPauseMillis参数有一定矛盾性。暂停时间越长，Radio参数就容易超过设定的比例。
+-XX:+UseAdaptiveSizePolicy  设置Parallel Scavenge收集器具有自适应调节策略。
+	在这种模式下，年轻代的大小、Eden和Survivor的比例、晋升老年代的对象年龄等参数会被自动调整，以达到在堆大小、吞吐量和停顿时间之间的平衡点。
+	在手动调优比较困难的场合，可以直接使用这种自适应的方式，仅指定虚拟机的最大堆、目标的吞吐量（GCTimeRatio）和停顿时间（MaxGCPauseMills），让虚拟机自己完成调优工作。
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4"># CMS回收器</span>
+-XX:+UseConcMarkSweepGC  年轻代使用CMS GC。
+	开启该参数后会自动将-XX：＋UseParNewGC打开。即：ParNew（Young区）+ CMS（Old区）+ Serial Old的组合
+-XX:CMSInitiatingOccupanyFraction  设置堆内存使用率的阈值，一旦达到该阈值，便开始进行回收。JDK5及以前版本的默认值为68，DK6及以上版本默认值为92％。
+	如果内存增长缓慢，则可以设置一个稍大的值，大的阈值可以有效降低CMS的触发频率，减少老年代回收的次数可以较为明显地改善应用程序性能。
+	反之，如果应用程序内存使用率增长很快，则应该降低这个阈值，以避免频繁触发老年代串行收集器。
+	因此通过该选项便可以有效降低Fu1l GC的执行次数。
+-XX:+UseCMSInitiatingOccupancyOnly  是否动态可调，使CMS一直按CMSInitiatingOccupancyFraction设定的值启动
+-XX:+UseCMSCompactAtFullCollection  用于指定在执行完Full GC后对内存空间进行压缩整理
+	以此避免内存碎片的产生。不过由于内存压缩整理过程无法并发执行，所带来的问题就是停顿时间变得更长了。
+-XX:CMSFullGCsBeforeCompaction  设置在执行多少次Full GC后对内存空间进行压缩整理。
+-XX:ParallelCMSThreads  设置CMS的线程数量。
+	CMS 默认启动的线程数是<span style="color:#ff79c6">(</span>ParallelGCThreads＋3<span style="color:#ff79c6">)</span>/4，ParallelGCThreads 是年轻代并行收集器的线程数。
+	当CPU 资源比较紧张时，受到CMS收集器线程的影响，应用程序的性能在垃圾回收阶段可能会非常糟糕。
+-XX:ConcGCThreads  设置并发垃圾收集的线程数，默认该值是基于ParallelGCThreads计算出来的
+-XX:+CMSScavengeBeforeRemark  强制hotspot在cms remark阶段之前做一次minor gc，用于提高remark阶段的速度
+-XX:+CMSClassUnloadingEnable  如果有的话，启用回收Perm 区（JDK8之前）
+-XX:+CMSParallelInitialEnabled  用于开启CMS initial-mark阶段采用多线程的方式进行标记
+	用于提高标记速度，在Java8开始已经默认开启
+-XX:+CMSParallelRemarkEnabled  用户开启CMS remark阶段采用多线程的方式进行重新标记，默认开启
+-XX:+ExplicitGCInvokesConcurrent
+-XX:+ExplicitGCInvokesConcurrentAndUnloadsClasses
+	这两个参数用户指定hotspot虚拟在执行System.gc<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>时使用CMS周期
+-XX:+CMSPrecleaningEnabled  指定CMS是否需要进行Pre cleaning阶段
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#6272a4"># G1回收器</span>
+-XX:+UseG1GC 手动指定使用G1收集器执行内存回收任务。
+-XX:G1HeapRegionSize 设置每个Region的大小。
+	值是2的幂，范围是1MB到32MB之间，目标是根据最小的Java堆大小划分出约2048个区域。默认是堆内存的1/2000。
+-XX:MaxGCPauseMillis  设置期望达到的最大GC停顿时间指标（JVM会尽力实现，但不保证达到）。默认值是200ms
+-XX:ParallelGCThread  设置STW时GC线程数的值。最多设置为8
+-XX:ConcGCThreads  设置并发标记的线程数。将n设置为并行垃圾回收线程数（ParallelGCThreads）的1/4左右。
+-XX:InitiatingHeapOccupancyPercent 设置触发并发GC周期的Java堆占用率阈值。超过此值，就触发GC。默认值是45。
+-XX:G1NewSizePercent  新生代占用整个堆内存的最小百分比（默认5％）
+-XX:G1MaxNewSizePercent  新生代占用整个堆内存的最大百分比（默认60％）
+-XX:G1ReservePercent<span style="color:#ff79c6">=</span><span style="color:#bd93f9">10</span>  保留内存区域，防止 to space（Survivor中的to区）溢出
+</code></pre></div><p>怎么选择垃圾回收器？</p>
+<ul>
+<li>优先让 JVM 自适应，调整堆的大小</li>
+<li>串行收集器：内存小于 100M；单核、单机程序，并且没有停顿时间的要求</li>
+<li>并行收集器：多 CPU、高吞吐量、允许停顿时间超过 1 秒</li>
+<li>并发收集器：多 CPU、追求低停顿时间、快速响应（比如延迟不能超过 1 秒，如互联网应用）</li>
+<li>官方推荐 G1，性能高。现在互联网的项目，基本都是使用 G1</li>
+</ul>
+<p>特别说明：</p>
+<ul>
+<li>没有最好的收集器，更没有万能的收集器</li>
+<li>调优永远是针对特定场景、特定需求，不存在一劳永逸的收集器</li>
+</ul>
+<h3 id="435-gc-日志相关选项">4.3.5. GC 日志相关选项</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-XX:+PrintGC &lt;<span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span>&gt; -verbose:gc  打印简要日志信息
+-XX:+PrintGCDetails            打印详细日志信息
+-XX:+PrintGCTimeStamps  打印程序启动到GC发生的时间，搭配-XX:+PrintGCDetails使用
+-XX:+PrintGCDateStamps  打印GC发生时的时间戳，搭配-XX:+PrintGCDetails使用
+-XX:+PrintHeapAtGC  打印GC前后的堆信息，如下图
+-Xloggc:&lt;file&gt; 输出GC导指定路径下的文件中
+</code></pre></div><p>
+  <img src="https://img-blog.csdnimg.cn/img_convert/9f323dd9b55235ed0a33e6a0af8adbca.png" alt="image-20210506195156935">
+
+</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-XX:+TraceClassLoading  监控类的加载
+-XX:+PrintGCApplicationStoppedTime  打印GC时线程的停顿时间
+-XX:+PrintGCApplicationConcurrentTime  打印垃圾收集之前应用未中断的执行时间
+-XX:+PrintReferenceGC 打印回收了多少种不同引用类型的引用
+-XX:+PrintTenuringDistribution  打印JVM在每次MinorGC后当前使用的Survivor中对象的年龄分布
+-XX:+UseGCLogFileRotation 启用GC日志文件的自动转储
+-XX:NumberOfGCLogFiles<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>  设置GC日志文件的循环数目
+-XX:GCLogFileSize<span style="color:#ff79c6">=</span>1M  设置GC日志文件的大小
+</code></pre></div><h3 id="436-其他参数">4.3.6. 其他参数</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-XX:+DisableExplicitGC  禁用hotspot执行System.gc<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>，默认禁用
+-XX:ReservedCodeCacheSize<span style="color:#ff79c6">=</span>&lt;n&gt;<span style="color:#ff79c6">[</span>g|m|k<span style="color:#ff79c6">]</span>、-XX:InitialCodeCacheSize<span style="color:#ff79c6">=</span>&lt;n&gt;<span style="color:#ff79c6">[</span>g|m|k<span style="color:#ff79c6">]</span>  指定代码缓存的大小
+-XX:+UseCodeCacheFlushing  放弃一些被编译的代码，避免代码缓存被占满时JVM切换到interpreted-only的情况
+-XX:+DoEscapeAnalysis  开启逃逸分析
+-XX:+UseBiasedLocking  开启偏向锁
+-XX:+UseLargePages  开启使用大页面
+-XX:+PrintTLAB  打印TLAB的使用情况
+-XX:TLABSize  设置TLAB大小
+</code></pre></div><h2 id="44-通过-java-代码获取-jvm-参数">4.4. 通过 Java 代码获取 JVM 参数</h2>
+<p>Java 提供了 java.lang.management 包用于监视和管理 Java 虚拟机和 Java 运行时中的其他组件，它允许本地或远程监控和管理运行的 Java 虚拟机。其中 ManagementFactory 类较为常用，另外 Runtime 类可获取内存、CPU 核数等相关的数据。通过使用这些 api，可以监控应用服务器的堆内存使用情况，设置一些阈值进行报警等处理。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">MemoryMonitor</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        MemoryMXBean memorymbean <span style="color:#ff79c6">=</span> ManagementFactory<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getMemoryMXBean</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        MemoryUsage usage <span style="color:#ff79c6">=</span> memorymbean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getHeapMemoryUsage</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;INIT HEAP: &#34;</span> <span style="color:#ff79c6">+</span> usage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getInit</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;m&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;MAX HEAP: &#34;</span> <span style="color:#ff79c6">+</span> usage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getMax</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;m&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;USE HEAP: &#34;</span> <span style="color:#ff79c6">+</span> usage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getUsed</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;m&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;\nFull Information:&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Heap Memory Usage: &#34;</span> <span style="color:#ff79c6">+</span> memorymbean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getHeapMemoryUsage</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Non-Heap Memory Usage: &#34;</span> <span style="color:#ff79c6">+</span> memorymbean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getNonHeapMemoryUsage</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;=======================通过java来获取相关系统状态============================ &#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;当前堆内存大小totalMemory &#34;</span> <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span><span style="color:#ff79c6">)</span> Runtime<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRuntime</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">totalMemory</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;m&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">// 当前堆内存大小
+</span><span style="color:#6272a4"></span>        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;空闲堆内存大小freeMemory &#34;</span> <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span><span style="color:#ff79c6">)</span> Runtime<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRuntime</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">freeMemory</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;m&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">// 空闲堆内存大小
+</span><span style="color:#6272a4"></span>        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;最大可用总堆内存maxMemory &#34;</span> <span style="color:#ff79c6">+</span> Runtime<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRuntime</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">maxMemory</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">/</span> 1024 <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;m&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">// 最大可用总堆内存大小
+</span><span style="color:#6272a4"></span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1063jvm%E7%9B%91%E6%8E%A7%E5%8F%8A%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7-gui/" data-toggle="tooltip" data-placement="top" title="23、JVM监控及诊断工具-GUI（JVM）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1065%E5%88%86%E6%9E%90gc%E6%97%A5%E5%BF%97/" data-toggle="tooltip" data-placement="top" title="25、分析GC日志（JVM）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/elasticsearch" title="elasticsearch">
+                            elasticsearch
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jvm" title="jvm">
+                            jvm
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/netty" title="netty">
+                            netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    <li>
+                        <a target="_blank" href="/#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+</html>

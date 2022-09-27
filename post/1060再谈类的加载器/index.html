@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="20、再谈类的加载器（JVM）" />
+    <meta property="og:title" content="20、再谈类的加载器（JVM）" />
+    <meta property="twitter:title" content="20、再谈类的加载器（JVM）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>20、再谈类的加载器（JVM） | yiguan1573</title>
+
+    <link rel="canonical" href="/post/1060%E5%86%8D%E8%B0%88%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%99%A8/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive/">档案</a></li>
+                    
+                        <li><a href="/top/about/">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/03.JPG')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                    </div>
+                    <h1>20、再谈类的加载器（JVM）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                亿观
+                             
+                            on 
+                            Sunday, September 4, 2022
+                            
+                                <span id="/post/1060%E5%86%8D%E8%B0%88%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%99%A8/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="概述">概述</h2>
+<p><strong>类加载器是 JVM 执行类加载机制的前提。</strong></p>
+<p><strong><strong>ClassLoader 的作用：</strong></strong></p>
+<p><strong>ClassLoader 是 Java 的核心组件，所有的 Class 都是由 ClassLoader 进行加载的，ClassLoader 负责通过各种方式将 Class 信息的二进制数据流读入 JVM 内部，转换为一个与目标类对应的 java.lang.Class 对象实例。然后交给 Java 虚拟机进行链接、初始化等操作。因此，ClassLoader 在整个装载阶段，只能影响到类的加载，而无法通过 ClassLoader 去改变类的链接和初始化行为。至于它是否可以运行，则由 Execution Engine 决定。</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68mt8ytwtj30lb0er41s.jpg" alt="image-20210125081037564.png">
+
+</p>
+<p><strong>类加载器最早出现在 Java 1.0 版本中，那个时候只是单纯地为了满足 Java Applet 应用而被研发出来，但如今类加载器却在 OSGI、字节码加解密领域大放异彩。这主要归功于 Java 虚拟机的设计者们当初在设计类加载器的时候，并没有考虑将它绑定在 JVM 内部，这样做的好处就是能够更加灵活和动态地执行类加载操作。</strong></p>
+<h3 id="大厂面试题">大厂面试题</h3>
+<pre><code>蚂蚁金服：
+深入分析 ClassLoader，双亲委派机制
+类加载器的双亲委派模型是什么？
+一面：双亲委派机制及使用原因
+
+百度：
+都有哪些类加载器，这些类加载器都加载哪些文件？
+手写一个类加载器 Demo
+Class的forName(&quot;java.lang.String&quot;) 和 Class的getClassLoader()的loadClass(&quot;java.lang.String&quot;)有什么区别？
+
+腾讯：
+什么是双亲委派模型？
+类加载器有哪些？
+
+小米：
+双亲委派模型介绍一下
+
+滴滴：
+简单说说你了解的类加载器
+一面：讲一下双亲委派模型，以及其优点
+
+字节跳动：
+什么是类加载器，类加载器有哪些？
+
+京东：
+类加载器的双亲委派模型是什么？
+双亲委派机制可以打破吗？为什么？
+</code></pre><h3 id="类加载的分类">类加载的分类</h3>
+<p><strong><strong>类的加载分类：显式加载 vs 隐式加载</strong></strong></p>
+<p><strong>Class 文件的显式加载与隐式加载的方式是指 JVM 加载 Class 文件到内存的方式</strong></p>
+<ul>
+<li><strong>显式加载指的是在代码中通过调用 ClassLoader 加载 Class 对象，如直接使用 Class.forName(name) 或 this.getClass().getClassLoader().loadClass() 加载 Class 对象。</strong></li>
+<li><strong>隐式加载则是不直接在代码中调用 ClassLoader 的方法加载 Class 对象，而是通过虚拟机自动加载到内存中，如在加载某个类的 class 文件时，该类的 class 文件中引用了另外一个类的对象，此时额外引用的类将通过 JVM 自动加载到内存中。</strong></li>
+</ul>
+<p><strong>在日常开发中以上两种方式一般会混合使用。</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _12<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">User</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">int</span> id<span style="color:#ff79c6">;</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#f1fa8c">&#34;User{&#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;id=&#34;</span> <span style="color:#ff79c6">+</span> id <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#39;}&#39;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _12<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_31_UserTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 调用构造器就要先加载该类
+</span><span style="color:#6272a4"></span>        User user <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> User<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">//隐式加载
+</span><span style="color:#6272a4"></span>
+        <span style="color:#6272a4">// ----------------------------------------------------------------------------------------
+</span><span style="color:#6272a4"></span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            Class clazz <span style="color:#ff79c6">=</span> Class<span style="color:#ff79c6">.</span><span style="color:#50fa7b">forName</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_12.User&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">//显式加载
+</span><span style="color:#6272a4"></span>            ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSystemClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_12.User&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//显式加载
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>ClassNotFoundException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h3 id="类加载器的必要性">类加载器的必要性</h3>
+<p><strong>一般情况下，Java 开发人员并不需要在程序中显式地使用类加载器，但是了解类加载器的加载机制却显得至关重要。从以下几个方面说：</strong></p>
+<ul>
+<li><strong>避免在开发中遇到 java.lang.ClassNotFoundException 异常或 java.lang.NoClassDefFoundError 异常时手足无措。只有了解类加载器的加载机制才能够在出现异常的时候快速地根据错误异常日志定位问题和解决问题。</strong></li>
+<li><strong>需要支持类的动态加载或需要对编译后的字节码文件进行加解密操作时，就需要与类加载器打交道了。</strong></li>
+<li><strong>开发人员可以在程序中编写自定义类加载器来重新定义类的加载规则，以便实现一些自定义的处理逻辑。</strong></li>
+</ul>
+<h3 id="命名空间">命名空间</h3>
+<p><strong><strong>1、何为类的唯一性？</strong></strong></p>
+<p><strong>对于任意一个类， <strong>都需要由加载它的类加载器和这个类本身一同确认其在 Java 虚拟机中的唯一性</strong> 。每一个类加载器，都拥有一个独立的类名称空间： <strong>比较两个类是否相等，只有在这两个类是由同一个类加载器加载的前提下才有意义。</strong> 否则，即使这两个类源自同一个 Class 文件，被同一个虚拟机加载，只要加载他们的类加载器不同，那这两个类就必定不相等。（原来命名空间是本质是这么一个概念）</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68mwatv9kj30m608ljt0.jpg" alt="image-20210125082844763.png">
+
+</p>
+<p><strong><strong>2、命名空间</strong></strong></p>
+<ul>
+<li><strong>每个类加载器都有自己的命名空间，命名空间由该加载器所有的父加载器所加载的类组成</strong></li>
+<li><strong>在同一命名空间中，不会出现类的完整名字(包括类的包名)相同的两个类（只加载一次是对于同一个加载器来说的，加载过的就不会再加载，就会使用已有的类模板。一般开发中默认都是系统类加载器，所以不允许相同的类出现。）</strong></li>
+<li><strong>在不同的命名空间中，有可能会出现类的完整名字(包括类的包名)相同的两个类</strong></li>
+</ul>
+<p><strong>在大型应用中，我们往往借助这一特性，来运行同一个类的不同版本。（比如Tomcat中，同一份class文件使用不同的类加载器实现不同的应用隔离。）</strong></p>
+<p><strong>例子：</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _12<span style="color:#ff79c6">;</span>
+
+<span style="color:#ff79c6">import</span> java.io.ByteArrayOutputStream<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.FileInputStream<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.InputStream<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_32_UserClassLoader</span> <span style="color:#8be9fd;font-style:italic">extends</span> ClassLoader <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String rootDir<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">_32_UserClassLoader</span><span style="color:#ff79c6">(</span>String rootDir<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">rootDir</span> <span style="color:#ff79c6">=</span> rootDir<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * 编写findClass方法的逻辑
+</span><span style="color:#6272a4">     */</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> findClass<span style="color:#ff79c6">(</span>String name<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> ClassNotFoundException <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 获取类的class文件字节数组
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> classData <span style="color:#ff79c6">=</span> getClassData<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>classData <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> ClassNotFoundException<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//直接生成class对象
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">return</span> defineClass<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">,</span> classData<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> classData<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * 编写获取class文件并转换为字节码流的逻辑 * @param className * @return
+</span><span style="color:#6272a4">     */</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> <span style="color:#50fa7b">getClassData</span><span style="color:#ff79c6">(</span>String className<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 读取类文件的字节
+</span><span style="color:#6272a4"></span>        String path <span style="color:#ff79c6">=</span> classNameToPath<span style="color:#ff79c6">(</span>className<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            InputStream ins <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> FileInputStream<span style="color:#ff79c6">(</span>path<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            ByteArrayOutputStream baos <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ByteArrayOutputStream<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> buffer <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span>1024<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+            <span style="color:#8be9fd">int</span> len <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">// 读取类文件的字节码
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">(</span>len <span style="color:#ff79c6">=</span> ins<span style="color:#ff79c6">.</span><span style="color:#50fa7b">read</span><span style="color:#ff79c6">(</span>buffer<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                baos<span style="color:#ff79c6">.</span><span style="color:#50fa7b">write</span><span style="color:#ff79c6">(</span>buffer<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> len<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">return</span> baos<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toByteArray</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IOException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * 类文件的完全路径
+</span><span style="color:#6272a4">     */</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String <span style="color:#50fa7b">classNameToPath</span><span style="color:#ff79c6">(</span>String className<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> rootDir <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;\\&#34;</span> <span style="color:#ff79c6">+</span> className<span style="color:#ff79c6">.</span><span style="color:#50fa7b">replace</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;.&#39;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#39;\\&#39;</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;.class&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        String rootDir <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;D:\\Code\\Java\\JVMDetail\\src\\&#34;</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//创建自定义的类的加载器1
+</span><span style="color:#6272a4"></span>            _32_UserClassLoader loader1 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> _32_UserClassLoader<span style="color:#ff79c6">(</span>rootDir<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 指定这个加载器的加载路径
+</span><span style="color:#6272a4"></span>            Class clazz1 <span style="color:#ff79c6">=</span> loader1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_12.User&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+            <span style="color:#6272a4">//创建自定义的类的加载器2
+</span><span style="color:#6272a4"></span>            _32_UserClassLoader loader2 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> _32_UserClassLoader<span style="color:#ff79c6">(</span>rootDir<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 指定这个加载器的加载路径
+</span><span style="color:#6272a4"></span>            Class clazz2 <span style="color:#ff79c6">=</span> loader2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_12.User&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+            <span style="color:#6272a4">// 这两个自定义加载器所加载的类得到不同的类模板，这就是应用隔离的原理
+</span><span style="color:#6272a4"></span>            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>clazz1 <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> clazz2<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// false。 clazz1与clazz2对应了不同的类模板结构。
+</span><span style="color:#6272a4"></span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>clazz1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// _12._32_UserClassLoader@677327b6
+</span><span style="color:#6272a4"></span>            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>clazz2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// _12._32_UserClassLoader@7f31245a
+</span><span style="color:#6272a4"></span>
+            <span style="color:#6272a4">// ----------------------------------------------------------------------------
+</span><span style="color:#6272a4"></span>
+            <span style="color:#6272a4">// 一般默认都是系统类加载器或叫应用类加载器（AppClassLoader）
+</span><span style="color:#6272a4"></span>            Class clazz3 <span style="color:#ff79c6">=</span> ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSystemClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_12.User&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 注意系统类加载器路径默认在out或target目录
+</span><span style="color:#6272a4"></span>            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>clazz3<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// sun.misc.Launcher$AppClassLoader@18b4aac2
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>ClassNotFoundException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+
+
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h3 id="类加载机制的基本特征">类加载机制的基本特征</h3>
+<p><strong>通常类加载机制有三个基本特征：</strong></p>
+<ul>
+<li><strong>双亲委派模型。但不是所有类加载都遵守这个模型，有的时候，启动类加载器所加载的类型，是可能要加载用户代码的，比如 JDK 内部的 ServiceProvider/ServiceLoader 机制，用户可以在标准 API 框架上，提供自己的实现，JDK 也需要提供些默认的参考实现。例如，Java 中 JNDI、JDBC、文件系统、Cipher 等很多方面，都是利用的这种机制，这种情况就不会用双亲委派模型去加载，而是利用所谓的上下文加载器。</strong></li>
+<li><strong>可见性。子类加载器可以访问父加载器加载的类型，但是反过来是不允许的。不然，因为缺少必要的隔离，我们就没有办法利用类加载器去实现容器的逻辑。</strong></li>
+<li><strong>单一性。由于父加载器的类型对于子加载器是可见的，所以父加载器中加载过的类型，就不会在子加载器中重复加载。但是注意，类加载器&quot;邻居&quot;间（即应用隔离），同一类型仍然可以被加载多次，因为相互并不可见。</strong></li>
+</ul>
+<h2 id="复习类的加载器分类">复习：类的加载器分类</h2>
+<p><strong>JVM 支持两种类型的类加载器，分别为引导类加载器(Bootstrap ClassLoader)和自定义类加载器(User-Defined ClassLoader)。</strong></p>
+<p><strong>从概念上来讲，自定义类加载器一般指的是程序中由开发人员自定义的一类类加载器，但是 Java 虚拟机规范却没有这么定义，而是将所有派生于抽象类 ClassLoader 的类加载器都划分为自定义类加载器。无论类加载器的类型如何划分，在程序中我们最常见的类加载器结构主要是如下情况：</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68omkxlobj30qg0j1gp3.jpg" alt="image-20210125225228163.png">
+
+</p>
+<ul>
+<li><strong>除了顶层的启动类加载器外，其余的类加载器都应当有自己的&quot;父类&quot;加载器。</strong></li>
+<li><strong>不同类加载器看似是继承(Inheritance)关系，实际上是包含关系。在下层加载器中，包含着上层加载器的引用</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ClassLoader</span> <span style="color:#ff79c6">{</span>
+    ClassLoader parent<span style="color:#ff79c6">;</span> <span style="color:#6272a4">//父类加载器
+</span><span style="color:#6272a4"></span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">ClassLoader</span><span style="color:#ff79c6">(</span>ClassLoader parent<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">parent</span> <span style="color:#ff79c6">=</span> parent<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ParentClassLoader</span> <span style="color:#8be9fd;font-style:italic">extends</span> ClassLoader <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">ParentClassLoader</span><span style="color:#ff79c6">(</span>ClassLoader parent<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">(</span>parent<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ChildClassLoader</span> <span style="color:#8be9fd;font-style:italic">extends</span> ClassLoader <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">ChildClassLoader</span><span style="color:#ff79c6">(</span>ClassLoader parent<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span> <span style="color:#6272a4">//parent = new ParentClassLoader();
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">(</span>parent<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h3 id="引导类加载器">引导类加载器</h3>
+<p><strong><strong>启动类加载器(引导类加载器，Bootstrap ClassLoader)</strong></strong></p>
+<ul>
+<li><strong>这个类加载使用 C/C++ 语言实现的，嵌套在 JVM 内部。</strong></li>
+<li><strong>它用来加载 Java 的核心库(JAVA_HOME/jre/lib/rt.jar 或 sun.boot.class.path 路径下的内容)。用于提供 JVM 自身需要的类。</strong></li>
+<li><strong>并不继承自 java.lang.ClassLoader，没有父加载器。</strong></li>
+<li><strong>出于安全考虑，Bootstrap 启动类加载器之加载包名为 java、javax、sun 等开头的类。</strong></li>
+<li><strong>加载扩展类和应用程序类加载器，并指定为他们的父类加载器。</strong></li>
+</ul>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68onhxdflj30qy0g4tpw.jpg" alt="image-20210125225837712.png">
+
+</p>
+<p><strong>使用 -XX:+TraceClassLoading 参数得到。</strong></p>
+<p><strong>启动类加载器使用 C++ 编写的？Yes！</strong></p>
+<h3 id="扩展类加载器">扩展类加载器</h3>
+<p><strong><strong>扩展类加载器(Extension ClassLoader)</strong></strong></p>
+<ul>
+<li><strong>Java 语言编写，由 sun.misc.Launcher$ExtClassLoader 实现</strong></li>
+<li><strong>继承于 ClassLoader 类</strong></li>
+<li><strong>父类加载器为启动类加载器</strong></li>
+<li><strong>从 java.ext.dirs 系统属性所指定的目录中加载类库，或从 JDK 的安装目录的 jre/lib/ext 子目录下加载类库。如果用户创建的 JAR 放在此目录下，也会自动由扩展类加载器加载</strong></li>
+</ul>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68opcwh9yj30h807g0vu.jpg" alt="image-20210126224353696.png">
+
+</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _12<span style="color:#ff79c6">;</span>
+
+<span style="color:#ff79c6">import</span> java.net.URL<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_33_ClassLoaderTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;**********启动类加载器**************&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//获取BootstrapClassLoader能够加载的api的路径
+</span><span style="color:#6272a4"></span>        URL<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> urLs <span style="color:#ff79c6">=</span> sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">misc</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Launcher</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getBootstrapClassPath</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getURLs</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>URL element <span style="color:#ff79c6">:</span> urLs<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>element<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toExternalForm</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#6272a4">//从上面的路径中随意选择一个类,来看看他的类加载器是什么:引导类加载器
+</span><span style="color:#6272a4"></span>        ClassLoader classLoader <span style="color:#ff79c6">=</span> java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">security</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Provider</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;***********扩展类加载器*************&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        String extDirs <span style="color:#ff79c6">=</span> System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getProperty</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;java.ext.dirs&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>String path <span style="color:#ff79c6">:</span> extDirs<span style="color:#ff79c6">.</span><span style="color:#50fa7b">split</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;;&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>path<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">//        //从上面的路径中随意选择一个类,来看看他的类加载器是什么:扩展类加载器
+</span><span style="color:#6272a4"></span>        ClassLoader classLoader1 <span style="color:#ff79c6">=</span> sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">security</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">ec</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">CurveDB</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//sun.misc.Launcher$ExtClassLoader@1540e19d
+</span><span style="color:#6272a4"></span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p><strong>执行结果</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span>启动类加载器<span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Software<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_211</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>resources<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Software<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_211</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>rt<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Software<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_211</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>sunrsasign<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Software<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_211</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>jsse<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Software<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_211</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>jce<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Software<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_211</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>charsets<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Software<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_211</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>lib<span style="color:#ff79c6">/</span>jfr<span style="color:#ff79c6">.</span><span style="color:#50fa7b">jar</span>
+<span style="color:#8be9fd;font-style:italic">file:</span><span style="color:#ff79c6">/</span>C<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>Software<span style="color:#ff79c6">/</span>Java<span style="color:#ff79c6">/</span>jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_211</span><span style="color:#ff79c6">/</span>jre<span style="color:#ff79c6">/</span>classes
+<span style="color:#ff79c6">null</span>
+<span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span>扩展类加载器<span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span>
+<span style="color:#8be9fd;font-style:italic">C:</span>\Software\Java\jdk1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">0_211</span>\jre\lib\ext
+<span style="color:#8be9fd;font-style:italic">C:</span>\Windows\Sun\Java\lib\ext
+sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">misc</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Launcher$ExtClassLoader</span>@5cad8086
+</code></pre></div><h3 id="系统类加载器">系统类加载器</h3>
+<p><strong><strong>应用程序类加载器(系统类加载器，AppClassLoader)</strong></strong></p>
+<ul>
+<li><strong>Java 语言编写，由 sun.misc.Launcher$AppClassLoader 实现</strong></li>
+<li><strong>继承于 ClassLoader 类</strong></li>
+<li><strong>父类加载器为扩展类加载器</strong></li>
+<li><strong>它负责加载环境变量 classpath 或系统属性 java.class.path 指定路径下的类库</strong></li>
+<li><strong><strong>应用程序中的类加载器默认是系统类加载器</strong></strong></li>
+<li><strong>它是用户自定义类加载器的默认父加载器</strong></li>
+<li><strong>通过 ClassLoader 的 getSystemClassLoader() 方法可以获取到该类加载器</strong></li>
+</ul>
+<h3 id="用户自定义类加载器">用户自定义类加载器</h3>
+<ul>
+<li><strong>在 Java 的日常应用程序开发中，类的加载几乎是由上述3种类加载器相互配合执行的。在必要时，我们还可以自定义类加载器，来定制类的加载方式。</strong></li>
+<li><strong>体现 Java 语言强大生命力和巨大魅力的关键因素之一便是，Java 开发者可以自定义类加载器来实现类库的动态加载，加载源可以是本地的 JAR 包，也可以是网络上的远程资源。</strong></li>
+<li><strong><strong>通过类加载器可以实现非常绝妙的插件机制</strong> ，这方面的实际应用案例不胜枚举。例如，著名的 OSGI 组件框架，再如 Eclipse 的插件机制。类加载器为应用程序提供了一种动态增加新功能的机制，这种机制无需重新打包发布应用程序就能实现。</strong></li>
+<li><strong>同时， <strong>自定义加载器能够实现应用隔离</strong> ，例如 Tomcat、Spring 等中间件和组件框架都在内部实现了自定义的加载器，并通过自定义加载器隔离不同的组件模块。这种机制比 C/C++ 程序要好太多，想不修改 C/C++ 程序就能为其新增功能，几乎是不可能的，仅仅一个兼容性便能阻挡所有美好的设想。</strong></li>
+<li><strong>自定义类加载器通常需要继承于 ClassLoader。</strong></li>
+</ul>
+<h2 id="测试不同的类加载器">测试不同的类加载器</h2>
+<p><strong>每个 Class 对象都会包含一个定义它的 ClassLoader 的一个引用。</strong></p>
+<p><strong>获取 ClassLoader 的途径</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">获取当前类的 ClassLoader
+clazz<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+获得当前线程上下文的 ClassLoader
+Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getContextClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+获得系统的 ClassLoader
+ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSystemClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+</code></pre></div><p><strong><strong>说明：</strong></strong></p>
+<p><strong>站在程序的角度看，引导类加载器与另外两种类加载器(系统类加载器和扩展类加载器)并不是同一个层次意义上的加载器，引导类加载器是使用 C++ 语言编写而成的，而另外两种类加载器则是使用 Java 语言编写的。由于引导类加载器压根儿就不是一个 Java 类，因此在 Java 程序中只能打印出空值。</strong></p>
+<p><strong>数组类的 Class 对象，不是由类加载器去创建的，而是在 Java 运行期 JVM 根据需要自动创建的。对于数组类的类加载器来说，是通过 Class.geetClassLoader() 返回的，与数组当中元素类型的类加载器是一样的：如果数组当中的元素类型是基本数据类型，数组类是没有类加载器的。</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _12<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_34_ClassLoaderTest2</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//获取系统该类加载器
+</span><span style="color:#6272a4"></span>        ClassLoader systemClassLoader <span style="color:#ff79c6">=</span> ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSystemClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>systemClassLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//sun.misc.Launcher$AppClassLoader@18b4aac2
+</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">//获取扩展类加载器
+</span><span style="color:#6272a4"></span>        ClassLoader extClassLoader <span style="color:#ff79c6">=</span> systemClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>extClassLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//sun.misc.Launcher$ExtClassLoader@677327b6
+</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">//试图获取引导类加载器：失败
+</span><span style="color:#6272a4"></span>        ClassLoader bootstrapClassLoader <span style="color:#ff79c6">=</span> extClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>bootstrapClassLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//null
+</span><span style="color:#6272a4"></span>
+        <span style="color:#6272a4">//###########################
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            ClassLoader classLoader <span style="color:#ff79c6">=</span> Class<span style="color:#ff79c6">.</span><span style="color:#50fa7b">forName</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;java.lang.String&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// null
+</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">//自定义的类默认使用系统类加载器
+</span><span style="color:#6272a4"></span>            ClassLoader classLoader1 <span style="color:#ff79c6">=</span> Class<span style="color:#ff79c6">.</span><span style="color:#50fa7b">forName</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_12._34_ClassLoaderTest2&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>classLoader1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// sun.misc.Launcher$AppClassLoader@18b4aac2
+</span><span style="color:#6272a4"></span>
+            <span style="color:#6272a4">//关于数组类型的加载:使用的类的加载器与数组元素的类的加载器相同
+</span><span style="color:#6272a4"></span>            String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> arrStr <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> String<span style="color:#ff79c6">[</span>10<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>arrStr<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//null:表示使用的是引导类加载器
+</span><span style="color:#6272a4"></span>
+            _34_ClassLoaderTest2<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> arr1 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> _34_ClassLoaderTest2<span style="color:#ff79c6">[</span>10<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>arr1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//sun.misc.Launcher$AppClassLoader@18b4aac2
+</span><span style="color:#6272a4"></span>
+            <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> arr2 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[</span>10<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>arr2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//null:不需要类的加载器（基本数据类型虚拟机预先定义了）
+</span><span style="color:#6272a4"></span>
+            <span style="color:#6272a4">// 获得当前线程上下文的 ClassLoader
+</span><span style="color:#6272a4"></span>            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getContextClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// sun.misc.Launcher$AppClassLoader@18b4aac2
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>ClassNotFoundException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h2 id="classloader源码解析">ClassLoader源码解析</h2>
+<p><strong><strong>ClassLoader 与现有类加载的关系：</strong></strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68owef2uwj30j10f2tes.jpg" alt="image-20210127081630642.png">
+
+</p>
+<p><strong>除了以上虚拟机自带的加载器外，用户还可以定制自己的类加载器。Java 提供了抽象类 java.lang.ClassLoader，所有用户自定义的类加载器都应该继承 ClassLoader 类。</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68oxjhs6wj30ui0kb7gf.jpg" alt="image-20210127082244582.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68oy5ubzxj30zi02jtao.jpg" alt="image-20210127081952347.png">
+
+</p>
+<h3 id="classloader的主要方法">ClassLoader的主要方法</h3>
+<p><strong><strong>抽象类 ClassLoader 的主要方法：(内部没有抽象方法)</strong></strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">final</span> ClassLoader <span style="color:#50fa7b">getParent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>
+返回该类加载器的超类加载器
+
+<span style="color:#8be9fd;font-style:italic">public</span> Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> loadClass<span style="color:#ff79c6">(</span>String name<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> ClassNotFoundException
+加载名称为 name 的类，返回结果为 java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Class</span> 类的实例。如果找不到类，则返回 ClassNotFountException 异常。•该方法中的逻辑就是双亲委派模式的实现。•
+
+<span style="color:#8be9fd;font-style:italic">protected</span> Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> findClass<span style="color:#ff79c6">(</span>String name<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> ClassNotFoundException
+查找二进制名称为 name 的类，返回结果为 java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Class</span> 类的实例。这是一个受保护的方法，JVM 鼓励我们重写此方法，需要自定义加载器遵循双亲委派机制，该方法会在检查完父类加载器之后被 <span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法调用。
+  
+在 JDK 1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">2</span> 之前，在自定义类加载时，总会去继承 ClassLoader 类并重写 loadClass 方法，从而实现自定义的类加载类。但是在 JDK 1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">2</span> 之后已不再建议用户去覆盖 <span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法，而是建议把自定义的类加载逻辑写在 <span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法中，从前面的分析可知，findClass<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法是在 <span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法中被调用的，当 <span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法中父加载器加载失败后，则会调用自己的 <span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法来完成类加载，这样就可以保证自定义的类加载器也符合双亲委派模式。
+需要注意的是 ClassLoader 类中并没有实现 <span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法的具体代码逻辑，取而代之的是抛出 ClassNotFoundException 异常，同时应该知道的是 <span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法通常是和 <span style="color:#50fa7b">defineClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法一起使用的。•一般情况下，在自定义类加载器时，会直接覆盖 ClassLoader 的 <span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法并编写加载规则，取得要加载类的字节码后转换成流，然后调用 <span style="color:#50fa7b">defineClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法生成类的 Class 对象。•
+
+<span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd;font-style:italic">final</span> Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> defineClass<span style="color:#ff79c6">(</span>String name<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> b<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> off<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> len<span style="color:#ff79c6">)</span>
+根据给定的字节数组 b 转换为 Class 的实例，off 和 len 参数表示实际 Class 信息在 <span style="color:#8be9fd">byte</span> 数组中的位置和长度，其中 <span style="color:#8be9fd">byte</span> 数组 b 是 ClassLoader 从外部获取的。这是受保护的方法，只有在自定义 ClassLoader 子类中可以使用。
+
+defineClass<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法是用来将 <span style="color:#8be9fd">byte</span> 字节流解析成 JVM 能够识别的 Class <span style="color:#50fa7b">对象</span><span style="color:#ff79c6">(</span>ClassLoader 中已实现该方法逻辑<span style="color:#ff79c6">)</span>，通过这个方法不仅能够通过 Class 文件实例化 Class 对象，也可以通过其它方式实例化 Class 对象，如通过网络中接收一个类的字节码，然后转换为 <span style="color:#8be9fd">byte</span> 字节流创建对应的 Class 对象。
+
+•defineClass<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法通常与 <span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法一起使用，一般情况下，在自定义类加载器时，会直接覆盖 ClassLoader 的 <span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法并编写加载规则，取得要加载类的字节码后转换成流，然后调用 <span style="color:#50fa7b">defineClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> 方法生成类的 Class 对象。•
+
+<span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">resolveClass</span><span style="color:#ff79c6">(</span>Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> c<span style="color:#ff79c6">)</span>
+链接指定的一个 Java 类。使用该方法可以使用类的 Class 对象创建完成的同时也被解析。前面我们说链接阶段主要是对字节码进行验证，为类变量分配内存并设置初始值同时将字节码文件中的符号引用转换为直接引用。
+
+<span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd;font-style:italic">final</span> Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> findLoadedClass<span style="color:#ff79c6">(</span>String name<span style="color:#ff79c6">)</span>
+查找名称为 name 的已经被加载过的类，返回结果为 java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Class</span> 类的实例。这个方法是 <span style="color:#8be9fd;font-style:italic">final</span> 方法，无法被修改
+
+<span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">final</span> ClassLoader parent<span style="color:#ff79c6">;</span>
+它也是一个 ClassLoader 的实例，这个字段所表示的 ClassLoader 也称为这个 ClassLoader 的双亲。在类加载的过程中，ClassLoader 可能会将某些请求交予自己的双亲处理。
+例子：（源码）
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68p2zkhilj30rx0yland.jpg" alt="image-20210130190833434.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68p3ouz3cj30iy0f011l.jpg" alt="image-20210131103034492.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68p3vqgyij30x00v116t.jpg" alt="image-20210131103720913.png">
+
+</p>
+<p><strong>根据class文件返回Class实例（加载一个类的逻辑是在这里完成的）</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68p4gz5vaj30pv03n40r.jpg" alt="image-20210131104200741.png">
+
+</p>
+<p><strong>多次跟踪，可以定位到调用的是一个native本地方法得到一个Class对象的</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68p4x27g7j30ra0cz7br.jpg" alt="image-20210131104029661.png">
+
+</p>
+<h4 id="loadclass的剖析">loadClass()的剖析</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// 测试调用loadClass()
+</span><span style="color:#6272a4"></span>ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSystemClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;com.atguigu.java.User&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// loadClass()源码
+</span><span style="color:#6272a4"></span><span style="color:#6272a4">// resolve:true 加载Class的同时进行解析操作
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">protected</span> Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> loadClass<span style="color:#ff79c6">(</span>String name<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">boolean</span> resolve<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> ClassNotFoundException <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 同步操作，保证只能加载一次
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">synchronized</span> <span style="color:#ff79c6">(</span>getClassLoadingLock<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// First, check if the class has already been loaded
+</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// 首先，在缓存中判断是否已经加载同名的类
+</span><span style="color:#6272a4"></span>        Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> c <span style="color:#ff79c6">=</span> findLoadedClass<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>c <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd">long</span> t0 <span style="color:#ff79c6">=</span> System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">nanoTime</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#6272a4">// 获取当前类加载器的父类加载器
+</span><span style="color:#6272a4"></span>                <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>parent <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    <span style="color:#6272a4">// 如果存在父类加载器，则调用父类加载器进行类的加载（递归，就是双亲委派机制，即有parent就交给parent去加载
+</span><span style="color:#6272a4"></span>                    c <span style="color:#ff79c6">=</span> parent<span style="color:#ff79c6">.</span><span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">false</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+                    <span style="color:#6272a4">// parent为null：父类加载器是引导类加载器
+</span><span style="color:#6272a4"></span>                    c <span style="color:#ff79c6">=</span> findBootstrapClassOrNull<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>ClassNotFoundException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#6272a4">// ClassNotFoundException thrown if class not found
+</span><span style="color:#6272a4"></span>                <span style="color:#6272a4">// from the non-null parent class loader
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">}</span>
+
+            <span style="color:#6272a4">// 当前类的加载器的父类加载器未加载此类 or 当前类加载器未加载此类
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>c <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#8be9fd">long</span> t1 <span style="color:#ff79c6">=</span> System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">nanoTime</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">// 调用当前ClassLoader的findClass() 方法
+</span><span style="color:#6272a4"></span>                c <span style="color:#ff79c6">=</span> findClass<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+                <span style="color:#6272a4">// this is the defining class loader; record the stats
+</span><span style="color:#6272a4"></span>                sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">misc</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">PerfCounter</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParentDelegationTime</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">addTime</span><span style="color:#ff79c6">(</span>t1 <span style="color:#ff79c6">-</span> t0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">misc</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">PerfCounter</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getFindClassTime</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">addElapsedTimeFrom</span><span style="color:#ff79c6">(</span>t1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">misc</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">PerfCounter</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getFindClasses</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">increment</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#6272a4">// 是否进行解析操作
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>resolve<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            resolveClass<span style="color:#ff79c6">(</span>c<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> c<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p><strong>加载一个类的过程</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68p6iyevmj31571c2e81.jpg" alt="image-20210131102503099.png">
+
+</p>
+<p><strong>例子：（前面的一个自定义加载器的例子）</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _12<span style="color:#ff79c6">;</span>
+
+<span style="color:#ff79c6">import</span> java.io.ByteArrayOutputStream<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.FileInputStream<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.InputStream<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_32_UserClassLoader</span> <span style="color:#8be9fd;font-style:italic">extends</span> ClassLoader <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String rootDir<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">_32_UserClassLoader</span><span style="color:#ff79c6">(</span>String rootDir<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">rootDir</span> <span style="color:#ff79c6">=</span> rootDir<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * 编写findClass方法的逻辑
+</span><span style="color:#6272a4">     */</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> findClass<span style="color:#ff79c6">(</span>String name<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> ClassNotFoundException <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 获取类的class文件字节数组
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> classData <span style="color:#ff79c6">=</span> getClassData<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>classData <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> ClassNotFoundException<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//直接生成class对象
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">return</span> defineClass<span style="color:#ff79c6">(</span>name<span style="color:#ff79c6">,</span> classData<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> classData<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * 编写获取class文件并转换为字节码流的逻辑 * @param className * @return
+</span><span style="color:#6272a4">     */</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> <span style="color:#50fa7b">getClassData</span><span style="color:#ff79c6">(</span>String className<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 读取类文件的字节
+</span><span style="color:#6272a4"></span>        String path <span style="color:#ff79c6">=</span> classNameToPath<span style="color:#ff79c6">(</span>className<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            InputStream ins <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> FileInputStream<span style="color:#ff79c6">(</span>path<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            ByteArrayOutputStream baos <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ByteArrayOutputStream<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> buffer <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span>1024<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+            <span style="color:#8be9fd">int</span> len <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">// 读取类文件的字节码
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">(</span>len <span style="color:#ff79c6">=</span> ins<span style="color:#ff79c6">.</span><span style="color:#50fa7b">read</span><span style="color:#ff79c6">(</span>buffer<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                baos<span style="color:#ff79c6">.</span><span style="color:#50fa7b">write</span><span style="color:#ff79c6">(</span>buffer<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> len<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">return</span> baos<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toByteArray</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IOException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * 类文件的完全路径
+</span><span style="color:#6272a4">     */</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String <span style="color:#50fa7b">classNameToPath</span><span style="color:#ff79c6">(</span>String className<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> rootDir <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;\\&#34;</span> <span style="color:#ff79c6">+</span> className<span style="color:#ff79c6">.</span><span style="color:#50fa7b">replace</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;.&#39;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#39;\\&#39;</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;.class&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        String rootDir <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;D:\\Code\\Java\\JVMDetail\\src\\&#34;</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//创建自定义的类的加载器1
+</span><span style="color:#6272a4"></span>            _32_UserClassLoader loader1 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> _32_UserClassLoader<span style="color:#ff79c6">(</span>rootDir<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 指定这个加载器的加载路径
+</span><span style="color:#6272a4"></span>            Class clazz1 <span style="color:#ff79c6">=</span> loader1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_12.User&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+            <span style="color:#6272a4">//创建自定义的类的加载器2
+</span><span style="color:#6272a4"></span>            _32_UserClassLoader loader2 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> _32_UserClassLoader<span style="color:#ff79c6">(</span>rootDir<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 指定这个加载器的加载路径
+</span><span style="color:#6272a4"></span>            Class clazz2 <span style="color:#ff79c6">=</span> loader2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_12.User&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+            <span style="color:#6272a4">// 这两个自定义加载器所加载的类得到不同的类模板，这就是应用隔离的原理
+</span><span style="color:#6272a4"></span>            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>clazz1 <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> clazz2<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// false。 clazz1与clazz2对应了不同的类模板结构。
+</span><span style="color:#6272a4"></span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>clazz1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// _12._32_UserClassLoader@677327b6
+</span><span style="color:#6272a4"></span>            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>clazz2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// _12._32_UserClassLoader@7f31245a
+</span><span style="color:#6272a4"></span>
+            <span style="color:#6272a4">// ----------------------------------------------------------------------------
+</span><span style="color:#6272a4"></span>
+            <span style="color:#6272a4">// 一般默认都是系统类加载器或叫应用类加载器（AppClassLoader）
+</span><span style="color:#6272a4"></span>            Class clazz3 <span style="color:#ff79c6">=</span> ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSystemClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_12.User&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 注意系统类加载器路径默认在out或target目录
+</span><span style="color:#6272a4"></span>            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>clazz3<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// sun.misc.Launcher$AppClassLoader@18b4aac2
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>ClassNotFoundException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p><strong>讲源码的原因是为了更好的自定义类的加载器，包括破坏双亲委派机制、遵循双亲委派机制的实现方式。</strong></p>
+<h3 id="secureclassloader与urlclassloader">SecureClassLoader与URLClassLoader</h3>
+<p><strong>接着 SecureClassLoader 扩展了 ClassLoader，新增了几个与使用相关的代码源(对代码源的位置及其证书的验证)和权限定义类验证(主要针对 class 源码的访问权限)的方法，一般我们不会直接跟这个类打交道，更多的是与它的子类 URLClassLoader 有所关联。</strong></p>
+<p><strong>前面说过，ClassLoader 是一个抽象类，很多方法是空的没有实现，比如 findClass()、findResource() 等。而 URLClassLoader 这个实现类为这些方法提供了具体的实现。并新增了 URLClassPath 类协助取得 Class 字节码流等功能。 <strong>在编写自定义类加载器时，如果没有太过于复杂的需求，可以直接继承 URLClassLoader 类</strong> ，这样就可以避免自己去编写 findClass() 方法及其获取字节码流的方式，使自定义类加载器编写更加简洁。</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68p91q63lj30iy0f0dnt.jpg" alt="image-20210131105254521.png">
+
+</p>
+<h3 id="extclassloader与appclassloader">ExtClassLoader与AppClassLoader</h3>
+<p><strong>ExtClassLoader 并没有重写 loadClass() 方法，这足以说明其遵循双亲委派模式，而 AppClassLoader 重载了 loadClass() 方法，但最终调用的还是父类 loadClass() 方法，因此依然遵循双亲委派模式。</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pbc4bo4j311016iqqc.jpg" alt="image-20210131110510189.png">
+
+</p>
+<h3 id="classforname与classloaderloadclass">Class.forName()与ClassLoader.loadClass()</h3>
+<ul>
+<li><strong>Class.forName()：是一个 <strong>静态方法</strong> ，最常用的是 Class.forName(String className)；根据传入的类的权限定名返回一个 Class 对象。 <strong>该方法在将 Class 文件加载到内存的同时，会执行类的初始化。</strong> 如：Class.forName(&ldquo;com.atguigu.java.HelloWorld&rdquo;);</strong></li>
+<li><strong>ClassLoader.loadClass() 这是一个 <strong>实例方法</strong> ，需要一个 ClassLoader 对象来调用该方法。 <strong>该方法将 Class 文件加载到内存时，并不会执行类的初始化，直到这个类第一次使用时才进行初始化。</strong> 该方法因为需要得到一个 ClassLoader 对象，所以可以根据需要指定使用哪个类加载器，如：ClassLoader c1 = &hellip;..;  c1.loadClass(&ldquo;com.atguigu.java.HelloWorld&rdquo;);</strong></li>
+</ul>
+<p><strong><strong>前面的主动使用 vs 被动使用：</strong></strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pcabxjcj31740i3tub.jpg" alt="image-20210131111023534.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pee2vooj30o5094dk6.jpg" alt="image-20210131111207494.png">
+
+</p>
+<p><strong>实例方法loadClass()解析不做，初始化也不做。</strong></p>
+<h2 id="双亲委派模型">双亲委派模型</h2>
+<h3 id="定义与本质">定义与本质</h3>
+<p><strong>类加载器用来把类加载到 Java 虚拟机中。从 JDK 1.2 版本开始，类的加载过程采用双亲委派机制，这种机制能更好地保证 Java 平台的安全。</strong></p>
+<p><strong>1、定义</strong></p>
+<p><strong>如果一个类加载器在接到加载类的请求时，它首先不会自己尝试去加载这个类，而是把这个请求任务委托给父类加载器去完成，依次递归，如果父类加载器可以完成类加载任务，就成功返回。只有父类加载器无法完成此加载任务时，才自己去加载。</strong></p>
+<p><strong>2、本质</strong></p>
+<p><strong>规定了类加载的顺序是：引导类加载器先加载，若加载不到，由扩展类加载器加载，若还加载不到，才会由系统类加载器或自定义的类加载器进行加载。</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pggy9xaj30jm0g5n4j.jpg" alt="image-20210131115110515.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pgm7fo1j30gv0gjadu.jpg" alt="image-20210131114717413.png">
+
+</p>
+<h3 id="优势与劣势">优势与劣势</h3>
+<p><strong><strong>1、双亲委派机制优势</strong></strong></p>
+<ul>
+<li><strong>避免类的重复加载，确保一个类的全局唯一性（双亲委派可以保证不同命名空间的类只有一个；同一命名空间不能有相同的类，避免重复的意义。）</strong></li>
+<li>** <strong>Java 类随着它的类加载器一起具备了一种带有优先级的层级关系，通过这种层级关系可以避免类的重复加载</strong> ，当父亲已经加载了该类时，就没有必要子 ClassLoader 再加载一次。**</li>
+<li><strong>保护程序安全，防止核心 API 被随意篡改（上篇测试过自定义java.lang.String类的例子，没有双亲委派，自定义String类就会被加载，原有的String就会被替代篡改）</strong></li>
+</ul>
+<p><strong><strong>2、代码支持</strong></strong></p>
+<ul>
+<li><strong>双亲委派机制在 java.lang.ClassLoader.loadClass(String, boolean) 接口中体现。该接口的逻辑如下：</strong>
+<ul>
+<li><strong>1）先在当前加载器的缓存中查找有无目标类，如果有，直接返回。</strong></li>
+<li><strong>2）判断当前加载器的父加载器是否为空，如果不为空，则调用 parent.loadClass(name, false) 接口进行加载。</strong></li>
+<li><strong>3）反之，如果当前加载器的父类加载器为空，则调用 findBootstrapClassOrNull(name) 接口，让引导类加载器进行加载。</strong></li>
+<li><strong>4）如果通过以上3条路径都没能成功加载，则调用 findClass(name) 接口进行加载。该接口最终会调用 java.lang.ClassLoader 接口的 defineClass 系列的 native 接口加载目标 Java 类。</strong></li>
+</ul>
+</li>
+<li><strong>双亲委派的模型就隐藏在第2和第3步中。</strong></li>
+</ul>
+<p><strong><strong>3、举例</strong></strong></p>
+<p><strong>假设当前加载的是 java.lang.Object 这个类，很显然，该类属于 JDK 中核心的不能再核心的一个类，因此一定只能由引导类加载器进行加载。当 JVM 准备加载 java.lang.Object 时，JVM 默认会使用系统类加载器去加载，按照上面4步加载的逻辑，在第1步从系统类的缓存中肯定查找不到该类，于是进入第2步。由于从系统类加载器的父加载器是扩展类加载器，于是扩展类加载器继续从第1步开始重复。由于扩展类加载器的缓存中也一定查找不到该类，因此进入第2步。扩展类的父加载器是 null，因此系统调用 findClass(String)，最终通过引导类加载器进行加载。</strong></p>
+<p><strong><strong>4、思考</strong></strong></p>
+<p><strong>如果在自定义的类加载器中重写 java.lang.ClassLoader.loadClass(String) 或 java.lang.ClassLoader.loadClass(String, boolean) 方法，抹去其中的双亲委派机制，仅保留上面这4步中的第1步和第4步，那么是不是就能够加载核心类库了呢？</strong></p>
+<p><strong>这也不行！因为 JDK 还为核心类库提供了一层保护机制。不管是自定义的类加载器，还是系统类加载器亦或扩展类加载器，最终都必须调用 java.lang.ClassLoader.defineClass(String, byte[], int, int,ProtectionDomain) 方法，而该方法会执行  <strong>preDefineClass() 接口</strong> ，该接口中提供了对 JDK 核心类库的保护。</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pl3vl8mj30w10ij12e.jpg" alt="image-20210131120648006.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68plbxhq1j30rn0sincp.jpg" alt="image-20210131120728296.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68plj945wj30q90auq8r.jpg" alt="image-20210131120747943.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68plormojj30sh0ffthz.jpg" alt="image-20210131120914914.png">
+
+</p>
+<p><strong>由引导类加载器执行</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pmbr5krj30sz0ofqdy.jpg" alt="image-20210131121026621.png">
+
+</p>
+<p><strong><strong>5、双亲委派模式的弊端</strong></strong></p>
+<p><strong>检查类是否加载的委派过程是单向的，这个方式虽然从结构上说比较清晰，使各个 ClassLoader 的职责非常明确，但是同时会带来一个问题，即顶层的 ClassLoader 无法访问底层的 ClassLoader 所加载的类。</strong></p>
+<p><strong>通常情况下，启动类加载器中的类为系统核心类，包括一些重要的系统接口，而在应用类加载器中，为应用类。按照这种模式， <strong>应用类访问系统类自然是没有问题，但是系统类访问应用类就会出现问题。</strong> 比如在系统类中提供了一个接口，该接口需要在应用类中得以实现，该接口还绑定一个工厂方法，用于创建该接口的实例，而接口和工厂方法都在启动类加载器中。这时，就会出现该工厂方法无法创建由应用类加载器加载的应用实例的问题。（上层无法访问下层的实例。）</strong></p>
+<p><strong><strong>6、结论</strong></strong></p>
+<p><strong><strong>由于 Java 虚拟机规范并没有明确要求类加载器的加载机制一定要使用双亲委派模型，只是建议采用这种方式而已。</strong></strong></p>
+<p><strong>比如 Tomcat 中，类加载器所采用的加载机制就和传统的双亲委派模型有一定区别，当缺省的类加载器接收到一个类的加载任务时，首先会由它自行加载，当它加载失败时，才会将类的加载任务委派给它的超类加载器去执行，这同时也是 Servlet 规范推荐的一种做法。</strong></p>
+<h3 id="破坏双亲委派机制">破坏双亲委派机制</h3>
+<h4 id="破坏双亲委派机制1">破坏双亲委派机制1</h4>
+<p><strong>双亲委派模型并不是一个具有强制性约束的模型，而是 Java 设计者推荐给开发者们的类加载器实现方式。</strong></p>
+<p><strong>在 Java 的世界中大部分的类加载器都遵循这个模型，但也有例外情况，直到 Java 模块化出现为止，双亲委派模型主要出现过3次较大规模&quot;被破坏&quot;的情况。</strong></p>
+<p><strong>第一次破坏双亲委派机制：</strong></p>
+<p><strong>双亲委派模型的第一次&quot;被破坏&quot;其实发生在双亲委派模型出现之前 &ndash; 即 JDK 1.2 面世以前的&quot;远古&quot;时代。</strong></p>
+<p><strong>由于双亲委派模型在 JDK 1.2 之后才被引入，但是类加载器的概念和抽象类 java.lang.ClassLoader 则在 Java 的第一个版本中就已经存在，面对已经存在的用户自定义类加载器的代码，Java 设计者们引入双亲委派模型时不得不做出一些妥协， <strong>为了兼容这些已有的代码，无法再以技术手段避免 loadClass() 被子类覆盖的可能性</strong> ，只能在 JDK 1.2 之后的 java.lang.ClassLoader 中添加一个新的 protected 方法 findClass()，并引导用户编写的类加载逻辑时尽可能去重写这个方法，而不是在 loadClass() 中编写代码。上节我们已经分析过 loadClass() 方法，双亲委派的具体逻辑就实现在这里面，按照 loadClass() 方法的逻辑，如果父类加载失败，会自动调用自己的 findClass() 方法来完成加载，这样既不影响用户按照自己的意愿去加载类，又可以保证新写出来的类加载器是符合双亲委派规则的。</strong></p>
+<h4 id="破坏双亲委派机制2">破坏双亲委派机制2</h4>
+<p><strong>第二次破坏双亲委派机制：线程上下文类加载器</strong></p>
+<p><strong>双亲委派模型的第二次&quot;被破坏&quot;是由这个模型自身的缺陷导致的，双亲委派很好地解决了各个类加载器协作时基础类型的一致性问题( <strong>越基础的类由越上层的加载器进行加载)</strong> ，基础类型之所以被称为&quot;基础&rdquo;，是因为它们总是作为被用户代码继承、调用的 API 存在，但程序设计往往没有绝对不变的完美规则，<strong>如果有基础类型又要调用回用户代码，那该怎么办？</strong></strong></p>
+<p><strong>这并非是不可能出现的事情，一个典型的例子便是 JNDI 服务，JNDI 现在已经是 Java 的标准服务，它的代码由启动类加载器来完成加载(在 JDK 1.3 时加入到 rt.jar)，肯定属于 Java 中很基础的类型了。但 JNDI 存在的目的就是对资源进行查找和集中管理，它需要调用由其它厂商实现并部署在应用程序的 ClassPath 下的 JNDI 服务提供者接口(Service Provider Interface，SPI) 的代码，现在问题来了， <strong>启动类加载器时绝对不可能认识、加载这些代码的，那该怎么办？</strong> (SPI：在 Java 平台中，通常把核心类 rt.jar 中提供外部服务、可由应用层自行实现的接口称为 SPI)</strong></p>
+<p><strong>为了解决这个困境，Java 的设计团队只好引入了一个不太优雅的设计： <strong>线程上下文类加载器(Thread Context ClassLoader)。</strong> 这个类加载器可以通过 java.lang.Thread 类的 setContextClassLoader() 方法进行设置，如果创建线程时还未设置，它将会从父线程中继承一个，如果在应用程序的全局范围内都没有设置过的话，那这个类加载器默认就是应用程序类加载器。</strong></p>
+<p><strong>有了线程上下文类加载器，程序就可以做一些&quot;舞弊&quot;的事情了。JNDI 服务使用这个线程上下文类加载器去加载所需的 SPI 服务代码。 <strong>这是一种父类加载器去请求子类加载器完成类加载的行为，这种行为实际上是打通了双亲委派模型的层次结构来逆向使用类加载器，已经违背了双亲委派模型的一般性原则</strong> ，但也是无可奈何的事情。Java 中涉及 SPI 的加载基本上都采用这种方式来完成，例如 JNDI、JDBC、JCE、JAXB 和 JBI 等。不过，当 SPI 的服务提供者多于一个的时候，代码就只能根据具体提供者的类型来硬编码判断，为了消除这种极不优雅的方式，在 JDK 6 时，JDK 提供了 java.util.ServiceLoader 类，以 META-INF/Services 中的配置信息，辅以责任链模式，这才算是给 SPI 的加载提供了一种相对合理的解决方案。</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pnxu27jj30t10j3tmk.jpg" alt="image-20210131162904113.png">
+
+</p>
+<p><strong>默认上下文加载器就是应用类加载器，这样以上下文加载器为中介，使得启动类加载器中的代码也可以访问应用类加载器中的类。</strong></p>
+<p><strong>源码</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68poe9hkrj30zd0l3157.jpg" alt="image-20210131165224194.png">
+
+</p>
+<h4 id="破坏双亲委派机制3">破坏双亲委派机制3</h4>
+<p><strong>第三次破坏双亲委派机制：</strong></p>
+<p><strong>双亲委派模型的第三次&quot;被破坏&quot;是由于用户对程序动态性的追求而导致的。如： <strong>代码热替换(Hot Swap)、模块热部署(Hot Deployment)</strong> 等。（就像电脑外设一样，不用重启，插上就能用。）</strong></p>
+<p><strong>IBM 公司主导的 JSR-291(即 OSGi R4.2)实现模块化热部署的关键是它自定义的类加载器机制的实现，每个程序模块(OSGi 中称为 Bundle)都有一个自己的类加载器，当需要更换一个 Bundle 时，就把 Bundle 连同类加载器一起换掉以实现代码的热替换。在 OSGi 环境下，类加载器不再双亲委派模型推荐的树状结构，而是进一步发展为更加复杂的网状结构。（双亲委派机制本身是树状结构，后面增加了同级的类加载器即横向的，就成了网状。）</strong></p>
+<p><strong>当收到类加载请求时，OSGi 将按照下面的顺序进行类搜索：</strong></p>
+<p><em><strong><em>1）将以 java.</em> 开头的类，委派给父类加载器加载。</strong></em>*</p>
+<p><strong><strong>2）否则，将委派列表名单内的类，委派给父类加载器加载。</strong></strong></p>
+<p><strong>3）否则，将 Import 列表中的类，委派给 Export 这个类的 Bundle 的类加载器加载。</strong></p>
+<p><strong>4）否则，查找当前 Bundle 的 ClassPath，使用自己的类加载器加载。</strong></p>
+<p><strong>5）否则，查找类是否在自己的 Fragment Bundle 中，如果在，则委派给 Fragment Bundle 的类加载器加载。</strong></p>
+<p><strong>6）否则，查找 Dynamic Import 列表的 Bundle，委派给对应 Bundle 的类加载器加载。</strong></p>
+<p><strong>7）否则，类查找失败。</strong></p>
+<p><strong>说明：只有开头两点仍然符合双亲委派模型的原则，其余的类查找都是在平级的类加载器中进行的。</strong></p>
+<p><strong>小结：</strong></p>
+<p><strong>这里，我们使用了&quot;被破坏&quot;这个词来形容上述不符合双亲委派模型原则的行为，但 <strong>这里&quot;被破坏&quot;并不一定是带有贬义的。只要有明确的目的和充分的理由，突破旧有原则无疑是一种创新</strong> 。
+正如：OSGi 中的类加载器的设计不符合传统的双亲委派的类加载器架构，且业界对其为了实现热部署而带来的额外的高复杂度还存在不少争议，但对这方面有了解的技术人员基本还是能达成一个共识，认为  <strong>OSGi 中对类加载器的运用是值得学习的，完全弄懂了 OSGi 的实现，就算是掌握了类加载器的精髓</strong> 。</strong></p>
+<h3 id="热替换的实现">热替换的实现</h3>
+<p><strong>热替换是指在程序运行过程中，不停止服务，只通过替换程序文件来修改程序的行为。 <strong>热替换的关键需求在于服务不能中断，修改必须立即表现正在运行的系统之中。</strong> 基本上大部分脚本语言都是天生支持热替换的，比如：PHP，只要替换了 PHP 源文件，这种改动就会立即生效，而无需重启 Web 服务器。</strong></p>
+<p><strong>但对 Java 来说，热替换并非天生就支持，如果一个类已经加载到系统中，通过修改类文件，并无法让系统再来加载并重定义这个类。因此，在 Java 中实现这一功能的一个可行的方法就是灵活运用 ClassLoader。</strong></p>
+<p><strong>注意：由不同 ClassLoader 加载的同名类属于不同的类型，不能相互转换和兼容。即两个不同的 ClassLoader 加载同一个类，在虚拟机内部，会认为这2个类是完全不同的。</strong></p>
+<p><strong>根据这个特点，可以用来模拟热替换的实现，基本思路如下图所示：</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68ppjyjcnj311j0klaey.jpg" alt="image-20210131171437999.png">
+
+</p>
+<p><strong>需要热替换时，自定义的ClassLoader实例是新创建的，需要热替换的类也是新创建的，需要替换的类的对象也是新创建的，但是方法名还是原来的方法名，主要是对方法的替换。（IDEA部署SSM等项目中的war exploded，仅改动方法体的代码刷新即可实现热替换？）</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _13_hot<span style="color:#ff79c6">;</span>
+
+<span style="color:#ff79c6">import</span> java.io.*<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.nio.ByteBuffer<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.nio.channels.Channels<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.nio.channels.FileChannel<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.nio.channels.WritableByteChannel<span style="color:#ff79c6">;</span>
+
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * 自定义类的加载器
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">MyClassLoader</span> <span style="color:#8be9fd;font-style:italic">extends</span> ClassLoader <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String rootDir<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">MyClassLoader</span><span style="color:#ff79c6">(</span>String rootDir<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">rootDir</span> <span style="color:#ff79c6">=</span> rootDir<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">protected</span> Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> findClass<span style="color:#ff79c6">(</span>String className<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> ClassNotFoundException <span style="color:#ff79c6">{</span>
+        Class clazz <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">findLoadedClass</span><span style="color:#ff79c6">(</span>className<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        FileChannel fileChannel <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+        WritableByteChannel outChannel <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span> <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> clazz<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                String classFile <span style="color:#ff79c6">=</span> getClassFile<span style="color:#ff79c6">(</span>className<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                FileInputStream fis <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> FileInputStream<span style="color:#ff79c6">(</span>classFile<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                fileChannel <span style="color:#ff79c6">=</span> fis<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getChannel</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                ByteArrayOutputStream baos <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ByteArrayOutputStream<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                outChannel <span style="color:#ff79c6">=</span> Channels<span style="color:#ff79c6">.</span><span style="color:#50fa7b">newChannel</span><span style="color:#ff79c6">(</span>baos<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                ByteBuffer buffer <span style="color:#ff79c6">=</span> ByteBuffer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">allocateDirect</span><span style="color:#ff79c6">(</span>1024<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    <span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> fileChannel<span style="color:#ff79c6">.</span><span style="color:#50fa7b">read</span><span style="color:#ff79c6">(</span>buffer<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>i <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> 0 <span style="color:#ff79c6">|</span><span style="color:#ff79c6">|</span> i <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                        <span style="color:#ff79c6">break</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">}</span>
+                    buffer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">flip</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    outChannel<span style="color:#ff79c6">.</span><span style="color:#50fa7b">write</span><span style="color:#ff79c6">(</span>buffer<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    buffer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">clear</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+
+                <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> bytes <span style="color:#ff79c6">=</span> baos<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toByteArray</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                clazz <span style="color:#ff79c6">=</span> defineClass<span style="color:#ff79c6">(</span>className<span style="color:#ff79c6">,</span> bytes<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> bytes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+
+            <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>FileNotFoundException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IOException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>fileChannel <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span>
+                        fileChannel<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IOException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+                <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>outChannel <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span>
+                        outChannel<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IOException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> clazz<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * 类文件的完全路径
+</span><span style="color:#6272a4">     */</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String <span style="color:#50fa7b">getClassFile</span><span style="color:#ff79c6">(</span>String className<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> rootDir <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;\\&#34;</span> <span style="color:#ff79c6">+</span> className<span style="color:#ff79c6">.</span><span style="color:#50fa7b">replace</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;.&#39;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#39;\\&#39;</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;.class&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _13_hot<span style="color:#ff79c6">;</span>
+
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * 需要热替换的类
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Demo1</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">hot</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;OldDemo1&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#6272a4">//        System.out.println(&#34;OldDemo1---&gt; NewDemo1&#34;);
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _13_hot<span style="color:#ff79c6">;</span>
+
+<span style="color:#ff79c6">import</span> java.lang.reflect.Method<span style="color:#ff79c6">;</span>
+
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * 每5秒创建一套类加载的内容
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">LoopRun</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String args<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 循环创建很多套
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">true</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#6272a4">//1. 创建自定义类加载器的实例
+</span><span style="color:#6272a4"></span>                MyClassLoader loader <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> MyClassLoader<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;D:\\Code\\Java\\JVMDetail\\src\\_13_hot\\&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">//2. 加载指定的类
+</span><span style="color:#6272a4"></span>                Class clazz <span style="color:#ff79c6">=</span> loader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">findClass</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_13_hot.Demo1&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">//3. 创建运行时类的实例
+</span><span style="color:#6272a4"></span>                Object demo <span style="color:#ff79c6">=</span> clazz<span style="color:#ff79c6">.</span><span style="color:#50fa7b">newInstance</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">//4. 获取运行时类中指定的方法
+</span><span style="color:#6272a4"></span>                Method m <span style="color:#ff79c6">=</span> clazz<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getMethod</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hot&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// hot是public修饰
+</span><span style="color:#6272a4"></span>                <span style="color:#6272a4">//5. 调用指定的方法
+</span><span style="color:#6272a4"></span>                m<span style="color:#ff79c6">.</span><span style="color:#50fa7b">invoke</span><span style="color:#ff79c6">(</span>demo<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>5000<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>Exception e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;not find&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+                <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                    Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>5000<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>InterruptedException ex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    ex<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p><strong>用命令行编译Demo1类</strong></p>
+<p><strong>执行LoopRun，程序会一直运行，每隔5秒调用一下hot方法输出结果</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68psxt0s2j30t007n416.jpg" alt="image-20210131174825241.png">
+
+</p>
+<p><strong>修改一下hot方法的代码</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68ptcog82j30ig09sq5r.jpg" alt="image-20210131174912949.png">
+
+</p>
+<p><strong>手动编译一下</strong></p>
+<p><strong>然后就能保证LoopRun不停止的情况下，实现热替换</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pu4t9t6j30py0a9jvk.jpg" alt="image-20210131175051036.png">
+
+</p>
+<p><strong>实际没有替换掉原来的类，只是创建了新的一套与该类相关的类，最后通过调用同一个方法名的方法实现热替换。这是利用不同的命名空间（即不同的ClassLoader）可以加载相同的类实现的。</strong></p>
+<h2 id="沙箱安全机制">沙箱安全机制</h2>
+<ul>
+<li><strong>保护程序安全</strong></li>
+<li><strong>保护 Java 原生的 JDK 代码</strong></li>
+</ul>
+<p><strong>Java 安全模型的核心就是 Java 沙箱(Sandbox)</strong> 。什么是沙箱？沙箱就是一个限制程序运行的环境</p>
+<p><strong>沙箱机制就是将 Java 代码 <strong>限定在虚拟机(JVM)特定的运行范围中，并且严格限制代码对本地系统资源访问。</strong> 通过这样的措施来保证对代码的有限隔离，防止对本地系统造成破坏。</strong></p>
+<p><strong>沙箱主要限制系统资源访问，那系统资源包括什么？CPU、内存、文件系统、网络。不同级别的沙箱对这些资源访问的限制也可以不一样。</strong></p>
+<p><strong>所有的 Java 程序运行都可以指定沙箱，可以定制安全策略。</strong></p>
+<h3 id="jdk10时期">JDK1.0时期</h3>
+<p><strong>在 Java 中将执行程序分成本地代码和远程代码两种，本地代码默认视为可信任的，而远程代码则被看作是不受信的。对于授信的本地代码，可以访问一切本地资源。而对于非授信的远程代码在早期的 Java 实现中，安全依赖于沙箱(Sandbox)机制。如下图所示 JDK 1.0 安全模型</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68py8b24rj313j0n2tcl.jpg" alt="image-20210131175851160.png">
+
+</p>
+<h3 id="jdk11时期">JDK1.1时期</h3>
+<p><strong>JDK 1.0 中如此严格的安全机制也给程序的功能扩展带来障碍，比如当用户希望远程代码访问本地系统的文件时候，就无法实现。</strong></p>
+<p><strong>因此在后续的 JDK 1.1 版本中，针对安全机制做了改进，增加了 <strong>安全策略</strong> 。允许用户指定代码对本地资源的访问权限。</strong></p>
+<p><strong>如下图所示 JDK 1.1 安全模型</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pyr5icsj31e00r4tdu.jpg" alt="image-20210131175912059.png">
+
+</p>
+<h3 id="jdk12时期">JDK1.2时期</h3>
+<p><strong>在 JDK 1.2 版本中，再次改进了安全机制，增加了 <strong>代码签名</strong> 。不论本地代码或是远程代码，都会按照用户的安全策略设定，由类加载器加载到虚拟机中权限不同的运行空间，来实现差异化的代码执行权限控制。如下图所示 JDK 1.2 安全模型：</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pzam2iwj31dn17c7bk.jpg" alt="image-20210131175929183.png">
+
+</p>
+<h3 id="jdk16时期">JDK1.6时期</h3>
+<p><strong>当前最新的安全机制实现，则引入了 <strong>域(Domain)</strong> 的概念。</strong></p>
+<p><strong>虚拟机会把所有代码加载到不同的系统域和应用域。 <strong>系统域部分专门负责与关键资源进行交互</strong> （类似于操作系统的内核态和应用态），而各个应用域部分则通过系统域的部分代理来对各种需要的资源进行访问。虚拟机中不同的受保护域(Protected Domain)，对应不一样的权限(Permission)。存在于不同域中的类文件就具有了当前域的全部权限，如下图所示，最新的安全模型(JDK 1.6)</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68pzu4mtzj31d60r6n3s.jpg" alt="image-20210131175949198.png">
+
+</p>
+<h2 id="自定义类的加载器">自定义类的加载器</h2>
+<p><strong><strong>1、为什么要自定义类加载器？</strong></strong></p>
+<ul>
+<li><strong><strong>隔离加载类</strong></strong></li>
+</ul>
+<p><strong>在某些框架内进行中间件与应用的模块隔离，把类加载到不同的环境。比如：阿里内某容器框架通过自定义类加载器确保应用中依赖的 jar 包不会影响到中间件运行时使用的 jar 包（jar版本不同会导致类冲突，隔离可以防止冲突）。再比如：Tomcat 这类 Web 应用服务器，内部自定义了好几种类加载器，用于隔离同一个 Web 应用服务器上的不同应用程序。(类的仲裁 &ndash;&gt; 类冲突)</strong></p>
+<ul>
+<li><strong><strong>修改类加载的方式</strong></strong></li>
+</ul>
+<p><strong>类的加载模型并非强制，除 Bootstrap 外，其他的加载并非一定要引入，或者根据实际情况在某个时间点按需进行动态加载。</strong></p>
+<ul>
+<li><strong><strong>扩展加载源</strong></strong></li>
+</ul>
+<p><strong>比如从数据库、网络、甚至是电视机机顶盒进行加载</strong></p>
+<ul>
+<li><strong><strong>防止源码泄露</strong></strong></li>
+</ul>
+<p><strong>Java 代码容易被编译和篡改，可以进行编译加密。那么类加载也需要自定义，还原加密的字节码</strong></p>
+<p><strong><strong>2、常见的场景</strong></strong></p>
+<ul>
+<li><strong>实现类似进程内隔离，类加载器实际上用作不同的命名空间，以提供类似容器、模块化的效果。例如，两个模块依赖于某个类库的不同版本，如果分别被不同的容器加载，就可以互不干扰。这个方面的集大成者是 Java EE 和 OSGI、JPMS 等框架。</strong></li>
+<li><strong>应用需要从不同的数据源获取类定义信息，例如网络数据源，而不是本地文件系统。或者是需要自己操纵字节码，动态修改或者生成类型。</strong></li>
+</ul>
+<p><strong><strong>3、注意：</strong></strong></p>
+<p><strong>在一般情况下，使用不同的类加载器去加载不同的功能模块，会提高应用程序的安全性。但是，如果涉及 Java 类型转换，则加载器反而容易产生不美好的事情。在做 Java 类型转换时，只有两个类型都是由同一个加载器所加载，才能进行类型转换，否则转换时会发生异常。</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68q15rs59j30wg09y0v1.jpg" alt="image-20210131182201334.png">
+
+</p>
+<h3 id="实现方式">实现方式</h3>
+<p><strong>用户通过定制自己的类加载器，这样可以重新定义类的加载规则，以便实现一些自定义的处理逻辑。</strong></p>
+<p><strong><strong>1、实现方式</strong></strong></p>
+<ul>
+<li><strong>Java 提供了抽象类 java.lang.ClassLoader，所有用户自定义的类加载器都应该继承 ClassLoader 类</strong></li>
+<li><strong>在自定义 ClassLoader 的子类时候，我们常见的会有两种做法：</strong>
+<ul>
+<li><strong>方式一：重写 loadClass() 方法（破坏双亲委派机制）</strong></li>
+<li><strong>方式二：重写 findClass() 方法（遵循双亲委派机制）</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong><strong>2、对比</strong></strong></p>
+<p><strong>这两种方法本质上差不多，毕竟 loadClass() 也会调用 findClass()，但是从逻辑上讲我们最好不要直接修改 loadClass() 的内部逻辑。建议的做法是只在 findClass() 里重写自定义类的加载方法，根据参数指定类的名字，返回对应的 Class 对象的引用。</strong></p>
+<ul>
+<li><strong>loadClass() 这个方法是实现双亲委派模型逻辑的地方，擅自修改这个方法会导致模型被破坏，容易造成问题。 <strong>因此我们最好是在双亲委派模型框架内进行小范围的改动，不破坏原有的稳定结构。</strong> 同时，也避免了自己重写 loadClass() 方法的过程中必须写双亲委托的重复代码，从代码的复用性来看，不直接修改这个方法始终是比较好的选择.</strong></li>
+<li><strong>当编写好自定义类加载器后，便可以在程序中调用 loadClass() 方法来实现类加载操作.</strong></li>
+</ul>
+<p><strong><strong>3、说明</strong></strong></p>
+<ul>
+<li><strong>其父类加载器是系统类加载器</strong></li>
+<li><strong>JVM 中的所有类加载都会使用 java.lang.ClassLoader.loadClass(String) 接口(自定义类加载器并重写java.lang.ClassLoader.loadClass(String) 接口的除外)，连 JDK 的核心类库也不能例外。</strong></li>
+</ul>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68q39457vj30vv121k6s.jpg" alt="image-20210131182951349.png">
+
+</p>
+<p><strong>例子：</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _14<span style="color:#ff79c6">;</span>
+
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Demo2</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">print</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Hello World&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _14<span style="color:#ff79c6">;</span>
+
+<span style="color:#ff79c6">import</span> java.io.BufferedInputStream<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.ByteArrayOutputStream<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.FileInputStream<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">import</span> java.io.IOException<span style="color:#ff79c6">;</span>
+
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * 自定义ClassLoader
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">MyClassLoader2</span> <span style="color:#8be9fd;font-style:italic">extends</span> ClassLoader <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> String byteCodePath<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">MyClassLoader2</span><span style="color:#ff79c6">(</span>String byteCodePath<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">byteCodePath</span> <span style="color:#ff79c6">=</span> byteCodePath<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">MyClassLoader2</span><span style="color:#ff79c6">(</span>ClassLoader parent<span style="color:#ff79c6">,</span> String byteCodePath<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">(</span>parent<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">byteCodePath</span> <span style="color:#ff79c6">=</span> byteCodePath<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">protected</span> Class<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">?</span><span style="color:#ff79c6">&gt;</span> findClass<span style="color:#ff79c6">(</span>String className<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> ClassNotFoundException <span style="color:#ff79c6">{</span>
+        BufferedInputStream bis <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+        ByteArrayOutputStream baos <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//获取字节码文件的完整路径
+</span><span style="color:#6272a4"></span>            String fileName <span style="color:#ff79c6">=</span> byteCodePath <span style="color:#ff79c6">+</span> className <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;.class&#34;</span><span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">//获取一个输入流
+</span><span style="color:#6272a4"></span>            bis <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BufferedInputStream<span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> FileInputStream<span style="color:#ff79c6">(</span>fileName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">//获取一个输出流
+</span><span style="color:#6272a4"></span>            baos <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ByteArrayOutputStream<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">//具体读入数据并写出的过程
+</span><span style="color:#6272a4"></span>            <span style="color:#8be9fd">int</span> len<span style="color:#ff79c6">;</span>
+            <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> data <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span>1024<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">(</span>len <span style="color:#ff79c6">=</span> bis<span style="color:#ff79c6">.</span><span style="color:#50fa7b">read</span><span style="color:#ff79c6">(</span>data<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#6272a4">// 写到字节数组流
+</span><span style="color:#6272a4"></span>                baos<span style="color:#ff79c6">.</span><span style="color:#50fa7b">write</span><span style="color:#ff79c6">(</span>data<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> len<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+            <span style="color:#6272a4">//获取内存中的完整的字节数组的数据
+</span><span style="color:#6272a4"></span>            <span style="color:#8be9fd">byte</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> byteCodes <span style="color:#ff79c6">=</span> baos<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toByteArray</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">//调用defineClass()，将字节数组的数据转换为Class的实例。
+</span><span style="color:#6272a4"></span>            Class clazz <span style="color:#ff79c6">=</span> defineClass<span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span><span style="color:#ff79c6">,</span> byteCodes<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> byteCodes<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">return</span> clazz<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IOException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>baos <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    baos<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+                <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>bis <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    bis<span style="color:#ff79c6">.</span><span style="color:#50fa7b">close</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IOException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span>
+
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _14<span style="color:#ff79c6">;</span>
+
+<span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_36_MyClassLoaderTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        MyClassLoader2 loader <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> MyClassLoader2<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;D:\\Code\\Java\\JVMDetail\\src\\&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            Class clazz <span style="color:#ff79c6">=</span> loader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">loadClass</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;_14.Demo2&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;加载此类的类的加载器为：&#34;</span> <span style="color:#ff79c6">+</span> clazz<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;加载当前Demo1类的类的加载器的父类加载器为：&#34;</span> <span style="color:#ff79c6">+</span> clazz<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>ClassNotFoundException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h2 id="java9新特性">Java9新特性</h2>
+<p>****前<strong>面是针对Java8讲的JVM，Java9的变化对于Java开发来说变化不大，但是对于底层的加载过程的变化还是比较大的。（模块化）</strong></p>
+<p><strong>为了保证兼容性，JDK 9 没有从根本上改变三层类加载器架构和双亲委派模型，但为了模块化系统的顺利运行，仍然发生了一些值得被注意的变动。</strong></p>
+<p><strong>1、扩展机制被移除，扩展类加载器由于向后兼容性的原因被保留，不过被重命名为平台类加载器(Platform Class Loader)。可以通过 ClassLoader 的新方法 getPlatformClassLoader() 来获取。（扩展类的名字不太适合了）</strong></p>
+<p><strong>JDK 9 时基于模块化进行构建(原来的 rt.jar 和 tools.jar 被拆分成数十个 JMOD 文件)，其中的 Java 类库就已天然地满足了可扩展的需求，那自然无需再保留 &lt;JAVA_HOME&gt;\lib\ext 目录，此前使用这个目录或者 java.ext.dirs 系统变量来扩展 JDK 功能的机制已经没有继续存在的价值了。</strong></p>
+<p><strong>2、平台类加载器和应用程序类加载器都不再继承自 java.net.URLClassLoader。</strong></p>
+<p><strong>现在启动类加载器、平台类加载器、应用程序类加载器全都继承于 jdk.internal.loader.BuiltinClassLoader。</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68q4za3j8j30lm0hntd2.jpg" alt="image-20210131212200162.png">
+
+</p>
+<p><strong>如果有程序直接依赖了这种继承关系，或者依赖了 URLClassLoader 类的特定方法，那代码很可能会在 JDK 9 及更高版本的 JDK 中崩溃。</strong></p>
+<p><strong>对比Java8的继承关系</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68p91q63lj30iy0f0dnt.jpg" alt="image-20210131105254521.png">
+
+</p>
+<p><strong>3、在 Java 9 中，类加载器有了名称。该名称在构造方法中指定，可以通过 getName() 方法来获取。平台类加载器的名称是 platform，应用类加载器的名称是 app。 <strong>类加载器的名称在调试与类加载器相关的问题时会非常有用</strong> 。</strong></p>
+<p><strong>4、启动类加载器现在是在 JVM 内部和 Java 类库共同协作实现的类加载器(以前是 C++ 实现)，但为了与之前代码兼容，在获取启动类加载器的场景中仍然会返回 null，而不会得到 BootClassLoader 实例。</strong></p>
+<p><strong>5、类加载的委派关系也发生了变动。</strong></p>
+<p><strong>当平台及应用程序类加载器收到类加载请求，在委派给父加载器加载前，要先判断该类是否能够归属到某一个系统模块中，如果可以找到这样的归属关系，就要优先委派给负责哪个模块的加载器完成加载。</strong></p>
+<p><strong><strong>双亲委派模式示意图</strong></strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68q6vscmjj30wo0m2k4d.jpg" alt="image-20210131212328142.png">
+
+</p>
+<p><strong>附加：</strong></p>
+<p><strong>在 Java 模块化系统明确规定了三个类加载器负责各自加载的模块：</strong></p>
+<ul>
+<li>
+<p><strong>启动类加载器负责加载的模块</strong></p>
+<pre><code>java.base                           java.security.sasl
+java.datatransfer                   java.xml
+java.desktop                        jdk.httpserver
+java.instrument                     jdk.internal.vm.ci
+java.logging                        jdk.management
+java.management                     jdk.management.agent
+java.management.rmi                 jdk.naming.rmi
+java.naming                         jdk.net
+java.prefs                          jdk.sctp
+java.rmi                            jdk.unsupported
+</code></pre></li>
+<li>
+<p><strong>平台类加载器负责加载的模块</strong></p>
+<pre><code>java.activation*                    jdk.accessibility
+java.compiler*                      jdk.charsets
+java.corba*                         jdk.crypto.cryptoki
+java.scripting                      jdk.crypto.ec
+java.se                             jdk.dynalink
+java.se.ee                          jdk.incubator.httpclient
+java.security.jgss                  jdk.internal.vm.compiler*
+java.smartcardio                    jdk.jsobject
+java.sql                            jdk.localedata
+java.sql.rowset                     jdk.naming.dns
+java.transaction*                   jdk.scripting.nashorn
+java.xml.bind*                      jdk.security.auth
+java.xml.crypto                     jdk.security.jgss
+java.xml.ws*                        jdk.xml.dom
+java.xml.ws.annotation*             jdk.zipfs
+</code></pre></li>
+<li>
+<p><strong>应用程序类加载器负责加载的模块</strong></p>
+<pre><code>jdk.aot                             jdk.jdeps
+jdk.attach                          jdk.jdi
+jdk.compiler                        jdk.jdwp.agent
+jdk.editpad                         jdk.jlink
+jdk.hotspot.agent                   jdk.jshell
+jdk.internal.ed                     jdk.jstatd
+jdk.internal.jvmstat                jdk.pack
+jdk.internal.le                     jdk.policytool
+jdk.internal.opt                    jdk.rmic
+jdk.jartool                         jdk.scripting.na
+shorn.shell
+jdk.javadoc                         jdk.xml.bind*
+jdk.jcmd                            jdk.xml.ws*
+</code></pre></li>
+</ul>
+<p><strong>例子1：</strong></p>
+<p><strong>在java9下运行以下代码</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_37_ClassLoaderTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>_37_ClassLoaderTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>_37_ClassLoaderTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>_37_ClassLoaderTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getParent</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p><strong>运行结果</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">jdk<span style="color:#ff79c6">.</span><span style="color:#50fa7b">internal</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">ClassLoaders$AppClassLoader</span>@726f3b58
+jdk<span style="color:#ff79c6">.</span><span style="color:#50fa7b">internal</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">ClassLoaders$PlatformClassLoader</span>@e73f9ac
+<span style="color:#ff79c6">null</span>
+</code></pre></div><p><strong>与Java8结果对比</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68qa56vybj30xz05gteu.jpg" alt="image-20210131211715155.png">
+
+</p>
+<p><strong>例子2：</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_38_ClassLoaderTest2</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//获取系统类加载器
+</span><span style="color:#6272a4"></span>        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getSystemClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//获取平台类加载器
+</span><span style="color:#6272a4"></span>        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>ClassLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getPlatformClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//获取类的加载器的名称
+</span><span style="color:#6272a4"></span>        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>_38_ClassLoaderTest2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClassLoader</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p><strong>执行结果</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">jdk<span style="color:#ff79c6">.</span><span style="color:#50fa7b">internal</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">ClassLoaders$AppClassLoader</span>@726f3b58
+jdk<span style="color:#ff79c6">.</span><span style="color:#50fa7b">internal</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">loader</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">ClassLoaders$PlatformClassLoader</span>@e73f9ac
+app
+</code></pre></div><p><strong>例子3：</strong></p>
+<p><strong>java8</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68qbrgvu7j30d40lgn4t.jpg" alt="image-20210131212649429.png">
+
+</p>
+<p><strong>java9，变成了mod，没有扩展的概念了</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68qc3d3auj30dr0mkk03.jpg" alt="image-20210131212726476.png">
+
+</p>
+<p><strong>例子4：java9的继承关系的源码</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68qcn7tphj30ys0qx7jd.jpg" alt="image-20210131213107554.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68qcsuastj30rm0anaf9.jpg" alt="image-20210131213154810.png">
+
+</p>
+<p><strong>启动类加载器不再由C++实现了，而是由JVM内部和Java类库协作实现</strong></p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68qd8vxu6j31170amdmo.jpg" alt="image-20210131213216804.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68qdtq97gj31080av7aq.jpg" alt="image-20210131213239047.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68qe0bcixj30pd0bvgql.jpg" alt="image-20210131213304618.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h68qe7n2slj30ju07fn0e.jpg" alt="image-20210131213323271.png">
+
+</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1059%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E8%AF%A6%E8%A7%A3/" data-toggle="tooltip" data-placement="top" title="19、类的加载过程详解（JVM）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1061%E6%A6%82%E8%BF%B0%E7%AF%87/" data-toggle="tooltip" data-placement="top" title="21、概述篇（JVM）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/elasticsearch" title="elasticsearch">
+                            elasticsearch
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jvm" title="jvm">
+                            jvm
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/netty" title="netty">
+                            netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    <li>
+                        <a target="_blank" href="/#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+</html>

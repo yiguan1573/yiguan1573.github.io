@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="17、Class文件结构（JVM）" />
+    <meta property="og:title" content="17、Class文件结构（JVM）" />
+    <meta property="twitter:title" content="17、Class文件结构（JVM）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>17、Class文件结构（JVM） | yiguan1573</title>
+
+    <link rel="canonical" href="/post/1057class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive/">档案</a></li>
+                    
+                        <li><a href="/top/about/">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/03.JPG')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                    </div>
+                    <h1>17、Class文件结构（JVM）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                亿观
+                             
+                            on 
+                            Thursday, September 1, 2022
+                            
+                                <span id="/post/1057class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="引言">引言</h2>
+<ul>
+<li><a href="http://www.tolsq.com/Markdown/JVM%E8%AF%A6%E8%A7%A3-%E4%B8%AD%E7%AF%87.html#27160302">笔记来源JVM中篇</a></li>
+</ul>
+<h2 id="概述">概述</h2>
+<h3 id="字节码文件的跨平台性">字节码文件的跨平台性</h3>
+<ul>
+<li><strong>Java 语言：跨平台的语言（write once, run anywhere）</strong>
+<ul>
+<li>当Java源代码成功编译成字节码之后，如果想在不同的平台上运行，不需要再次编译。</li>
+<li>这个优势不是很吸引人了，因为Python、PHP、Perl、Ruby、Lisp等语言都有强大的解释器</li>
+<li>跨平台已经几乎快成为一门语言的必选特性</li>
+</ul>
+</li>
+<li><strong>Java 虚拟机：跨语言的平台</strong>
+<ul>
+<li><strong>Java虚拟机不与包含Java在内的任何语言进行绑定，它只和 &ldquo;Class&rdquo; 文件这种特定的二进制文件格式关联</strong>。无论使用何种语言进行软件开发， 只要能将源文件编译为正确的 Class 文件，那么这种语言就可以在 Java 虚拟机上执行，可以说，统一而强大的 Class 文件结构，就是 Java 虚拟机的基石、桥梁。
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yf0c019ej319d0jrq4q.jpg" alt="QQ截图20220907223439.jpg">
+
+</li>
+<li>JVM规范：https://docs.oracle.com/javase/specs/index.html
+<ul>
+<li>所有的 JVM 全部遵守 Java 虚拟机规范，也就是说所有的 JVM 环境都是一样的， 这样一来字节码文件可以在各种 JVM 上进行。</li>
+<li>想要让一个 Java 程序正确地运行在 JVM 中，Java 源码就是必须要被编译为符合 JVM 规范的字节码。</li>
+<li>前端编译器的主要任务就是负责将符合 Java 语法规范的 Java 代码转换为符合 JVM 规范的字节码文件。</li>
+<li>javac 是一种能够将 Java 源码编译为字节码的前端编译器。</li>
+<li>javac 编译器在将 Java 源码编译为一个有效的字节码文件过程中经历了4个步骤，分别是词法分析、语法分析、语义分析以及生成字节码。
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yf4yqf84j319d0owmxz.jpg" alt="QQ截图20220907223910.jpg">
+
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="java的前端编译器">Java的前端编译器</h3>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yf6hqlbjj318i0o075k.jpg" alt="QQ截图20220907224037.jpg">
+
+</p>
+<ul>
+<li><strong>前端编译器 VS 后端编译器</strong></li>
+<li>java 源代码的编译结果是字节码，那么肯定需要有一种编译器能够将 Java 源码编译为字节码，承担这个重要责任的就是配置在 path 环境变量中的 javac 编译器。javac 是一种能够将 Java 源码编译为字节码的前端编译器。</li>
+<li>HotSpot VM 并没有强制要求前端编译器只能使用 javac 来编译字节码，其实只要编译结果符合 JVM 规范都可以被 JVM 所识别即可。在 Java 的前端编译器领域，除了 javac 之外，还有一种被大家经常用到的前端编译器，那就是内置在 Eclipse 中的 ECJ (Eclipse Compiler for Java)编译器。和 javac 的全量式编译不同，ECJ 是一种增量式编译器。
+<ul>
+<li>在 Eclipse 中，当开发人员编写完代码后，使用&quot;Ctrl + S&quot;快捷键时，ECJ 编译器所采取的编译方案是把未编译部分的源码逐行进行编译，而非每次都全量编译。因此 ECJ 的编译效率会比 javac 更加迅速和高效，当然编译质量和 javac 相比大致还是一样的。</li>
+<li>ECJ 不仅是 Eclipse 的默认内置前端编译器，在 Tomcat 中同样也是使用 ECJ 编译器来编译 jsp 文件。由于 ECJ 编译器是采用 GPLv2 的开源协议进行源代码公开，所以，大家可以登录 Eclipse 官网下载 ECJ 编译器的源码进行二次开发。</li>
+<li>默认情况下，IntelliJ IDEA 使用 javac 编译器（还可以自己设置为 AspectJ 编译器 ajc）</li>
+</ul>
+</li>
+<li>前端编译器并不会直接涉及编译优化等方面的技术，而是将这些具体优化细节移交给 HotSpot 的 JIT 编译器负责。</li>
+</ul>
+<h3 id="透过字节码指令看代码细节">透过字节码指令看代码细节</h3>
+<ul>
+<li>BAT 面试题
+<ul>
+<li>① 类文件结构有几个部分？</li>
+<li>② 知道字节码吗？字节码都有哪些？Integer x = 5; int y = 5; 比较 x == y 都经过哪些步骤？</li>
+</ul>
+</li>
+<li>例子1：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _10<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_01_IntegerTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        Integer x <span style="color:#ff79c6">=</span> 5<span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> y <span style="color:#ff79c6">=</span> 5<span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>x <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> y<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        Integer i1 <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+        Integer i2 <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>i1 <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> i2<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        Integer i3 <span style="color:#ff79c6">=</span> 128<span style="color:#ff79c6">;</span>
+        Integer i4 <span style="color:#ff79c6">=</span> 128<span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>i3 <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> i4<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>运行结果</li>
+</ul>
+<pre><code>x == y：true
+i1 == i2：true
+i3 == i4：false
+</code></pre><ul>
+<li>查看字节码
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfbpsrz3j31am0lwacs.jpg" alt="QQ截图20220907224538.jpg">
+
+</li>
+<li>定义Integer变量就是调用valueOf()方法
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfc8c9k7j319x0g1dhc.jpg" alt="QQ截图20220907224608.jpg">
+
+</li>
+<li>看下Integer.valueOf()的源码
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfdbuqypj314016y0xf.jpg" alt="QQ截图20220907224708.jpg">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfe1xqs6j30pp07raan.jpg" alt="QQ截图20220907224739.jpg">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfe6bgqgj31a70ub43i.jpg" alt="QQ截图20220907224753.jpg">
+
+</li>
+<li>例子2：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _10<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_02_StringTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        String str <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> String<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hello&#34;</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">new</span> String<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;world&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        String str2 <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;helloword&#34;</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>str2 <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> str<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>  <span style="color:#6272a4">// 输出：false
+</span><span style="color:#6272a4"></span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yffftnhgj31230q775z.jpg" alt="QQ截图20220907224914.jpg">
+
+</p>
+<h2 id="虚拟机的基石class文件">虚拟机的基石：Class文件</h2>
+<ul>
+<li>
+<p><strong>字节码文件里是什么？</strong></p>
+<ul>
+<li>源代码经过编译器编译之后便会生成一个字节码文件，字节码是一种二进制的类文件，它的内容是 JVM 的指令，而不像 C、C++ 经由编译器直接生成机器码。</li>
+</ul>
+</li>
+<li>
+<p><strong>什么是字节码指令(byte code)？</strong></p>
+<ul>
+<li>Java 虚拟机的指令由一个字节长度的、代表着某种特定操作含义的操作码(opcode)以及跟随其后的零至多个代表此操作所需参数的操作数(operand)所构成。虚拟机中许多指令并不包含操作数，只有一个操作码。</li>
+<li>比如：操作码（操作数）  -  这两个加在一起就是字节码指令，只是操作数可有可无
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfi1pek2j30d808ajrj.jpg" alt="QQ截图20220907225122.jpg">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfi76xu6j30y10fiwf4.jpg" alt="QQ截图20220907225132.jpg">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfibcwknj30dd097wer.jpg" alt="QQ截图20220907225143.jpg">
+
+</li>
+</ul>
+</li>
+<li>
+<p><strong>如何解读供虚拟机解释执行的二进制字节码？</strong></p>
+<ul>
+<li>方式一：一个一个二进制的看，这里用到的是 Notepad++，需要安装一个 HEX-Editor 插件，或者使用 Binary Viewer
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfjahghqj315g0m176g.jpg" alt="QQ截图20220907225254.jpg">
+
+</li>
+<li>方式二：使用 javap 指令，JDK 自带的反解析工具</li>
+</ul>
+<pre><code>  javap -v Test.class
+</code></pre><ul>
+<li>方式三：使用 IDEA 插件，jclasslib 或 jclasslib bytecode viewer 客户端工具,IDEA的jclasslib就是经常用的这个
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfli2xhcj30ew07swev.jpg" alt="QQ截图20220907225430.jpg">
+
+</li>
+</ul>
+<h2 id="class文件结构">Class文件结构</h2>
+<ul>
+<li><strong><a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html">官方文档位置</a></strong></li>
+<li>Class 类的本质
+<ul>
+<li>任何一个 Class 文件都对应着唯一一个类或接口的定义信息，但反过来说，Class 文件实际上它并不一定以磁盘文件形式存在。Class 文件是一组以8位字节为基础单位的二进制流。</li>
+</ul>
+</li>
+<li>Class 文件格式
+<ul>
+<li>Class 的结构不像 XML 等描述语言，由于它没有任何分隔符号。所以在其中的数据项，无论是字节顺序还是数量，都是被严格限定的，哪个字节代表什么含义，长度是多少，先后顺序如何，都不允许改变。</li>
+<li>Class 文件格式采用一种类似于 C 语言结构体的方式进行数据存储，这种结构中只有两种数据类型：无符号数和表。
+<ul>
+<li><strong>无符号数</strong>属于基本的数据类型，以 u1、u2、u4、u8 来分别代表1个字节、2个字节、4个字节和8个字节的无符号数，无符号数可以用来描述数字、索引引用、数量值或者按照 UTF-8 编码构成字符串值。</li>
+<li><strong>表</strong>（表相当于Java的数组）是由多个无符号数或者其他表作为数据项构成的复合数据类型，所有表都习惯性地以&rdquo;_info&quot;结尾。表用于描述有层次关系的复合结构的数据，整个 Class 文件本质上就是一张表。由于表没有固定长度，所以通常会在其前面加上个数说明（因为没有分隔符）。
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfranwsbj30fe0cigml.jpg" alt="QQ截图20220907225959.jpg">
+
+</li>
+</ul>
+</li>
+<li>表用于描述有层次关系的复合结构的数据
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfrkoejqj318l0ec75v.jpg" alt="QQ截图20220907230014.jpg">
+
+</li>
+<li>整个 Class 文件本质上就是一张表
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfrui4crj30cn09gmxg.jpg" alt="QQ截图20220907230021.jpg">
+
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Class 文件结构概述</strong></p>
+<ul>
+<li>Class 文件的结构并不是一成不变的，随着 Java 虚拟机的不断发展，总是不可避免地会对 Class 文件结构做出一些调整，但是其基本结构和框架是非常稳定的。</li>
+</ul>
+</li>
+<li>
+<p><strong>Class 文件的总体结构如下：</strong></p>
+<ul>
+<li>魔数</li>
+<li>Class 文件版本</li>
+<li>常量池</li>
+<li>访问标志</li>
+<li>类索引、父类索引、接口索引集合</li>
+<li>字段表集合</li>
+<li>方法表集合</li>
+<li>属性表集合
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfvkgviij31ci0l2wgl.jpg" alt="QQ截图20220907230444.jpg">
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="java字节码总的结构表">Java字节码总的结构表</h3>
+<ul>
+<li>整合成一张Java字节码总的结构表，后面对字节码逐一解读会用到
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yfx8qeucj31am0ghtav.jpg" alt="QQ截图20220907230524.jpg">
+
+</li>
+</ul>
+<h3 id="魔数class文件的标志">魔数：Class文件的标志</h3>
+<ul>
+<li><strong>Magic Number(魔数)</strong>
+<ul>
+<li>
+<p>每个 Class 文件开头的4个字节的无符号整数称为魔数(Magic Number)。</p>
+</li>
+<li>
+<p>它的唯一作用是确定这个文件是否为一个能被虚拟机接受的有效合法的 Class 文件。即：魔数是 Class 文件的标识符。</p>
+</li>
+<li>
+<p>魔数值固定为 0xCAFEBABE，不会改变（0x表示16进制，cafebabe是咖啡宝贝）。</p>
+</li>
+<li>
+<p>如果一个 Class 文件不以 0xCAFEBABE 开头，虚拟机在进行文件校验的时候就会直接抛出以下错误：</p>
+<pre><code>Error: A JNI error has occurred, please check your installation and try again
+Exception in thread &quot;main&quot; java.lang.ClassFormatError: Incompatible magic value 1885430635 in class file StringTest
+</code></pre></li>
+<li>
+<p>使用魔数而不是扩展名来进行识别主要是基于安全方面的考虑，因为文件扩展名可以随意地改动</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yg9e14scj31am078759.jpg" alt="QQ截图20220907231747.jpg">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yg9muoepj31980dbjuj.jpg" alt="QQ截图20220907231800.jpg">
+
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="class文件版本号">Class文件版本号</h3>
+<ul>
+<li>
+<p>紧接着魔数的4个字节存储的是 Class 文件的版本号。同样也是4个字节。第5个和第6个字节所代表的含义就是编译的副版本号 minor_version，而第7个和第8个字节就是编译的主版本号 major_version。（下图为Java字节码总的结构表）</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5ygaticzhj319a0akgmr.jpg" alt="QQ截图20220907231923.jpg">
+
+</p>
+</li>
+<li>
+<p>它们共同构成了 Class 文件的格式版本号。譬如某个 Class 文件的主版本号为 M，服版本号为 m，那么这个 Class 文件的格式版本号就确定为 M.m</p>
+</li>
+<li>
+<p>版本号和 Java 编译器的对应关系如下表：（每增加一个JDK版本，主版本就增加一个数值，副版本后面都是0）</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5ygbct1vzj319k0aldg8.jpg" alt="QQ截图20220907231954.jpg">
+
+</p>
+</li>
+<li>
+<p>回到Demo.class文件，主版本的16进制=34，转为十进制就是52，所以编辑器版本就是1.8</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5ygc06hnfj30z9052wet.jpg" alt="QQ截图20220907232031.jpg">
+
+</p>
+</li>
+<li>
+<p>Java 的版本号是从45开始的，JDK 1.1 之后的每个 JDK 大版本发布主版本号向上加1。</p>
+</li>
+<li>
+<p><strong>不同版本的 Java 编译器编译的 Class 文件对应的版本是不一样的。目前，高版本的 Java 虚拟机可以执行由低版本编译器生成的 Class 文件，但是低版本的 Java 虚拟机不能执行由高版本编译器生成的 Class 文件。否则 JVM 会抛出 <code>java.lang.UnsupportedClassVersionError</code> 异常</strong> 。(向下兼容)</p>
+</li>
+<li>
+<p>虚拟机 JDK 版本为 1.k （k &gt;= 2）时，对应的 Class 文件格式版本号的范围为 45.0 - 44 + k.0（含两端）。比如JDK11，那么k = 11，1.k = 1.11，44 + k.0 = 44 + 11 = 55，就是45到55的版本JDK11都支持，最低版本就是45，也就是向下兼容所有的版本。</p>
+</li>
+</ul>
+<h3 id="常量池存放所有常量">常量池：存放所有常量</h3>
+<ul>
+<li>
+<p>常量池是 Class 文件中内容最为丰富的区域之一。常量池对于 Class 文件中的字段和方法解析也有着至关重要的作用。</p>
+</li>
+<li>
+<p>随着 Java 虚拟机的不断发展，常量池的内容也日渐丰富，可以说，常量池是整个 Class 文件的基石。（常量池可以看做class文件的资源仓库，比如汽车修理厂的汽车配件的仓库。）</p>
+</li>
+<li>
+<p>在版本号之后，紧跟着的是常量池的数量，以及若干个常量池表项。</p>
+</li>
+<li>
+<p>常量池中常量的数量是不固定的，所以在常量池的入口需要放置一项 u2 类型的无符号数，代表常量池容量计数值(constant_pool_count)。与 Java 中语言习惯不一样的是，这个容量计数是从1而不是0开始的。</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5ygeiv5t7j31a40aj75h.jpg" alt="QQ截图20220907232257.jpg">
+
+</p>
+</li>
+<li>
+<p>由上表可见，Class 文件使用了一个前置的容量计数器(constant_pool_count)加若干个连续的数据项(constant_pool)的形式来描述常量池内容，我们把这一系列连续常量池数据称为常量池集合</p>
+<ul>
+<li><strong>常量池表项</strong>中，用于存放编译时期生成的各种<strong>字面量</strong>和 <strong>符号引用</strong> ，这部分内容将在类加载后进入方法区的<strong>运行时常量池</strong>中存放。（JDK7把字符串常量池、静态变量放到堆中(注意，变量指向的对象一直在堆中)，其他内容都在方法区的运行时常量池，JDK8的方法区在元空间中。）</li>
+</ul>
+</li>
+</ul>
+<h4 id="常量池计数器">常量池计数器</h4>
+<ul>
+<li>
+<p><strong>constant_pool_count（常量池计数器）</strong></p>
+</li>
+<li>
+<p>由于常量池的数量不固定，时长时短，所以需要放置两个字节来表示常量池容量计数值。</p>
+</li>
+<li>
+<p>常量池容量计数值(u2 类型)： <strong>从1开始</strong> ，表示常量池中有多少项常量。即 constant_pool_count = 1 表示常量池中有0个常量项。（会有相差1的关系）</p>
+</li>
+<li>
+<p>Demo.class 的值为：</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5ygm614epj313c04bjrt.jpg" alt="QQ截图20220907233017.jpg">
+
+</p>
+<ul>
+<li>其值为0x0016，这是16进制，转成10进制就是22。</li>
+<li>需要注意的是，这实际上只有21项常量。索引为范围是1-21。为什么呢？</li>
+<li>通常我们写代码时都是从0开始的，但是这里的常量池却是从1开始，因为它把第0项常量空出来了。这是为了满足后面某些指向常量池的索引值的数据在特定情况下需要表达“不引用任何一个常量池项目”的含义，这种情况可用索引值0来表示。</li>
+</ul>
+</li>
+</ul>
+<h4 id="常量池表">常量池表</h4>
+<ul>
+<li>
+<p>constant_pool 是一种表结构，以 1 ~ constant_pool_count - 1 为索引。表明了后面有多少个常量项。</p>
+</li>
+<li>
+<p>常量池主要存放两大类常量： <strong>字面量(Literal)</strong> 和<strong>符号引用(Symbolic References)</strong></p>
+</li>
+<li>
+<p>它包含了 Class 文件结构及其子结构中引用的所有字符串常量、类或接口名、字段名和其他常量。常量池中的每一项都具备相同的特征。第1个字节作为类型标记，用于确定该项的格式，这个字节称为 tag byte(标记字节、标签字节)。（常量池表中可能是下面表格中的任意一个类型，标志15、16、18是JDK7加进来的。）</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5ygnwgdujj317t0eh3zw.jpg" alt="QQ截图20220907233158.jpg">
+
+</p>
+</li>
+</ul>
+<h5 id="字面量和符号引用">字面量和符号引用</h5>
+<ul>
+<li>
+<p>常量池主要存放两大类常量：字面量(Literal)和符号引用(Symbolic References)。如下表：
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5ygraqyt5j30nt08e3ys.jpg" alt="QQ截图20220907233514.jpg">
+
+</p>
+</li>
+<li>
+<p><strong>字面量</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hello&#34;</span><span style="color:#ff79c6">;</span>  <span style="color:#6272a4">// 文本字符串
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">int</span> NUM <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>   <span style="color:#6272a4">// 声明为final的常量值
+</span><span style="color:#6272a4"></span>
+<span style="color:#6272a4">// 这都是字面量
+</span></code></pre></div></li>
+<li>
+<p><strong>全限定名（符号引用：类和接口的全限定名）</strong></p>
+<p>com/atguigu/test/Demo 这个就是类的全限定名，仅仅是把包的&rdquo;.&ldquo;替换成&rdquo;/&quot;，为了使连续的多个全限定名之间不产生混淆，在使用时最后一般会加入一个&rdquo;;&ldquo;表示全限定名结束</p>
+</li>
+<li>
+<p><strong>简单名称</strong> （符号引用：字段、方法的名称）</p>
+<p>简单名称是指没有类型和参数修饰的方法或者字段名称，例子中的类的 add() 方法和 num 字段的简单名称分别是 add 和 num。</p>
+</li>
+<li>
+<p><strong>描述符</strong> （符号引用：字段、方法的描述符）</p>
+<p><strong>描述符的作用是用来描述字段的数据类型、方法的参数列表(包括数量、类型以及顺序)和返回值。</strong> 根据描述符规则，基本数据类型（byte、char、double、float、int、long、short、boolean）以及代表无返回值的 void 类型都用一个大写字符来表示，而对象类型则用字符 L 加对象的全限定名表示，详见下表：（数据类型：① 基本数据类型 ② 引用数据类型）</p>
+<h5 id="类型描述符">类型描述符</h5>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5ygumy2t0j31670c4jsf.jpg" alt="QQ截图20220907233826.jpg">
+
+</p>
+<ul>
+<li>
+<p>用描述符来描述方法时，按照先参数列表，后返回值的顺序描述，参数列表按照参数的严格顺序放在一组小括号&rdquo;()&ldquo;之内，如方法 <code>java.lang.String toString()</code>的描述符为 <code>() Ljava/lang/String;</code>（java.lang.String是返回值），方法 <code>int abc(int[] x ,int y)</code>描述符为 <code>([II) I</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">package</span> _10<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_05_ArrayTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        Object<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> arr <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Object<span style="color:#ff79c6">[</span>10<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>arr<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>  <span style="color:#6272a4">// [Ljava.lang.Object;@677327b6
+</span><span style="color:#6272a4"></span>
+        String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> arr1 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> String<span style="color:#ff79c6">[</span>10<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>arr1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>  <span style="color:#6272a4">// [Ljava.lang.String;@14ae5a5
+</span><span style="color:#6272a4"></span>
+        <span style="color:#8be9fd">long</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> arr2 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">long</span><span style="color:#ff79c6">[</span>10<span style="color:#ff79c6">]</span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>arr2<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>  <span style="color:#6272a4">// [[J@7f31245a 
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">//结果
+</span><span style="color:#6272a4"></span><span style="color:#ff79c6">[</span>Ljava<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Object</span><span style="color:#ff79c6">;</span>@677327b6    <span style="color:#6272a4">// 表示一维引用类型的数组。[是以为数组、L是对象类型、java.lang.Object;是全限定名，分号结束
+</span><span style="color:#6272a4"></span><span style="color:#ff79c6">[</span>Ljava<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">String</span><span style="color:#ff79c6">;</span>@14ae5a5    <span style="color:#6272a4">// 
+</span><span style="color:#6272a4"></span><span style="color:#ff79c6">[</span><span style="color:#ff79c6">[</span>J@7f31245a    <span style="color:#6272a4">// J是long类型
+</span></code></pre></div></li>
+<li>
+<p>虚拟机在加载 Class 文件时才会进行动态链接，也就是说，Class 文件中不会保存各个方法和字段的最终内存布局信息，因此，这些字段和方法的符号引用不经过转换是无法直接被虚拟机使用的。 <strong>当虚拟机运行时，需要从常量池中获得对应的符号引用，再在类加载过程中的解析阶段将其替换为直接引用，并翻译到具体的内存地址中。</strong> （加载的时候才知道数据真正存放的地址在哪里，class文件中存放的只是符号引用，真正的地址要加载到内存才能知道。）</p>
+</li>
+<li>
+<p>这里说明下符号引用和直接引用的区别与关联：</p>
+<ul>
+<li>符号引用：符号引用以<strong>一组符号</strong>来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可。 <strong>符号引用与虚拟机实现的内存布局无关</strong> ，引用的目标并不一定已经加载到内存中</li>
+<li>直接引用：直接引用可以是直接指 <strong>向目标的指针、相对偏移量或是一个能间接定位到目标的句柄。直接引用是与虚拟机实现的内存布局相关的，</strong> 同一个符号引用在不同虚拟机实例上翻译出来的直接引用一般不会相同。如果有了直接引用，那说明引用的目标必定已经存在于内存之中了。（之前上篇理解错了，以为直接引用是在字节码层面上最后定位到的目标，原来是在虚拟机层面的）</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<p>动态链接一定是加载class文件到内存了,加载class的过程</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5ygy9kuvbj311v0og414.jpg" alt="QQ截图20220907234139.jpg">
+
+</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>符号引用</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5ygykgei8j30t00pq0ud.jpg" alt="QQ截图20220907234148.jpg">
+
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="常量类型和结构">常量类型和结构</h5>
+<ul>
+<li>
+<p>常量池中每一项常量都是一个表，JDK 1.7 之后共14种不同的表结构数据。如下表格所示：</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yh87ucjzj317018wkjl.jpg" alt="image-20201206212808528.png">
+
+</p>
+</li>
+<li>
+<p>根据上图每个类型的描述我们也可以知道每个类型是用来描述常量池中那些内容（主要是字面量、符号引用）的。比如： CONSTANT_Integer_info 是用来描述常量池中字面量信息的，而且只是整型字面量信息。</p>
+</li>
+<li>
+<p>标志为15、16、18的常量项类型是用来支持动态语言调用的（JDK 1.7时才加入）。</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h5yh98fnmvj31by0gfgov.jpg" alt="QQ截图20220907235227.jpg">
+
+</p>
+</li>
+</ul>
+<h4 id="总结">总结</h4>
+<ul>
+<li>
+<p>常量池：可以理解为 Class 文件之中的资源仓库，它是 Class 文件结构中与其他项目关联最多的数据类型(后面的很多数据类型都会指向此处)，也是占用 Class 文件空间最大的数据项目之一。</p>
+</li>
+<li></li>
+<li>
+<p>常量池中为什么包含这些内容？</p>
+<p>Java 代码在进行 javac 编译的时候，并不像 C 和 C++ 那样有“连接”这一步骤，而是在虚拟机加载 Class 文件的时候进行动态链接。也就是说， <strong>在 Class 文件中不会保存各个方法、字段的最终内存布局信息，因此这些字段、方法的符号引用不经过运行期转换的话无法得到真正的内存入口地址，也就无法直接被虚拟机使用。</strong> 当虚拟机运行时，需要从常量池获得对应的符号引用，再在类创建时或运行时解析、翻译到具体的内存地址之中。关于类的创建和动态链接内容，在虚拟机类加载过程中再进行详细解释。</p>
+</li>
+</ul>
+<h3 id="访问标识">访问标识</h3>
+<ul>
+<li>
+<p>访问标识（access_flag）又叫访问标志、访问标记。</p>
+</li>
+<li>
+<p>在常量池后，紧跟着访问标记。 <strong>该标记使用两个字节表示</strong> ，用于识别一些类或者接口层次的访问信息，包括：这个 Class 是类还是接口；是否定义为 public 类型；是否定义为 abstract 类型；如果是类的话，是否被声明为 final 等。各种访问标记如下所示（官网翻译过来的）</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h6567l92jqj31bd09bjt1.jpg" alt="QQ截图20220913184913.jpg">
+
+</p>
+</li>
+<li>
+<p>类的访问权限通常为 ACC_ 开头的常量</p>
+</li>
+<li>
+<p>每一个种类型的表示都是通过设置访问标记的32位中的特定位来实现的。比如，若是 public final 的类，则该标记为 ACC_PUBLIC | ACC_FINAL。</p>
+</li>
+<li>
+<p>使用 ACC_SUPER 可以让类更准确地定位到父类的方法 super.method()，现代编译器都会设置并且使用这个标记</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h656afo06rj31c80cuadl.jpg" alt="QQ截图20220913185156.jpg">
+
+</p>
+</li>
+</ul>
+<h3 id="类索引父类索引接口索引集合">类索引、父类索引、接口索引集合</h3>
+<ul>
+<li>
+<p>在访问标记后，会指定该类的类别、父类类别以及实现的接口，格式如下</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h656bh4e3vj30n304uaad.jpg" alt="QQ截图20220913185259.jpg">
+
+</p>
+</li>
+<li>
+<p>这三项数据来确定这个类的继承关系：</p>
+<ul>
+<li>类索引用于确定这个类的全限定名</li>
+<li>父类索引用于确定这个类的父类的全限定名。由于 Java 语言不允许多重继承，所以父类索引只有一个，除了 java.lang.Object 之外，所有的 Java 类都有父类，因此除了 java.lang.Object 外，所有 Java 类的父类索引都不为0</li>
+<li>接口索引集合就用来描述这个类实现了哪些接口，这些被实现的接口将按 implements 语句(如果这个类本身是一个接口，则应当是 extends 语句)后的接口顺序从左到右排列在接口索引集合中。</li>
+</ul>
+</li>
+<li>
+<p>this_class （类索引）</p>
+<ul>
+<li>2个字节无符号整数，指向常量池的索引。它提供了类的全限定名，如 com/atguigu/java/Demo。this_class 的值必须是对常量池中的某项的一个有效的索引值。常量池在这个索引处的成员必须是 CONSTANT_Class_info 类结构体，该结构体表示这个class文件所定义的类或者接口。</li>
+</ul>
+</li>
+<li>
+<p>super_class (父类索引)</p>
+<ul>
+<li>2个字节无符号整数，指向常量池的索引，它提供了当前类的父类全限定名。如果没有继承任何类，其默认继承的就是java/lang/Object 类，同时，由于Java不支持多继承，所以其父类只有一个。</li>
+</ul>
+<ul>
+<li>super_class 指向的父类不能为final。（final修饰的类是不可以被继承的）</li>
+<li>如果当前类是Object类，那么父类索引就是0000，因为Object没有父类</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>interfaces
+<ul>
+<li>指向常量池索引集合，它提供了一个符号引用到所有已经实现的接口</li>
+<li>由于一个类可以实现多个接口，因此需要以数组形式保存多个接口的索引，表示接口的每个索引也是一个指向常量池的CONSTANT_Class （当然这里就必须是接口，不能是类）</li>
+<li>interfaces_count （接口计数器）
+<ul>
+<li>interfaces_count 项的值表示当前类或者接口的直接接口的数量</li>
+</ul>
+</li>
+<li>interfaces[interfaces_count]（接口索引集合）
+<ul>
+<li>interfaces [] 中每个成员的值必须是常量池表中某项有效的索引值，它的长度为 interfaces_count。每个成员interfaces[i] 必须为CONSTANT_Class_info 结构，其中 0&lt;=i &lt; interfaces_count</li>
+<li>在interfaces[] 中，各个成员所表示的接口顺序和对应的源代码中给定的接口顺序是一致的（从左到右），也就是说 interfaces[0] 对应的是源代码中最左边的接口</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="字段表集合fields">字段表集合(Fields)</h3>
+<ul>
+<li>平常所说的属性(成员变量)就是字段，严格来说，叫字段，而不是叫属性，因为属性在字节码中有其他含义</li>
+<li>用于描述接口或类中声明的变量。字段(field)包括 <strong>类级变量以及实例级变量</strong> （即成员变量，静态的或非静态的），但是不包括方法内部、代码块内部声明的局部变量。</li>
+<li>字段叫什么名字、字段被定义为什么数据类型，这些都是无法固定的，只能引用常量池中的常量来描述</li>
+<li>它指向常量池索引集合，它描述了每个字段的完整信息。比如 <strong>字段的标识符、访问修饰符(public、private 或 protected)、是类变量还是实例变量(static 修饰符)、是否是常量(final 修饰符)</strong> 等</li>
+<li><strong>注意事项：</strong>
+<ul>
+<li><strong>字段表集合中不会列出从父类或者实现的接口中继承而来的字段</strong> ，但有可能列出原 Java 代码中不存在的字段。譬如在内部类中为了保持对外部类的访问性，会自动添加指向外部类实例的字段。</li>
+<li>在 Java 语言中字段是无法重载的，两个字段的数据类型、修饰符不管是否相同，都必须使用不一样的名称，但是对于字节码来讲，如果两个字段的描述符不一致，那字段重名就是合法的</li>
+</ul>
+</li>
+</ul>
+<h4 id="字段计数器">字段计数器</h4>
+<ul>
+<li><strong>fields_count （字段计数器）</strong></li>
+<li>fields_count 的值表示当前class文件fields表的成员个数。使用2个字节表示</li>
+<li>fields表中的每一个成员都是一个 field_info 结构，用于表示该类或者接口所声明的所有类或者实例字段，不包括方法内部声明的变量，也不包括从父类或者父接口继承的那些字段</li>
+</ul>
+<h4 id="字段表">字段表</h4>
+<ul>
+<li><strong>fields[] 字段表</strong></li>
+</ul>
+<ul>
+<li>
+<p>fields 表中的每个成员都必须是一个 fields_info 结构的数据项，用于表示当前类或者接口中某个字段的完整描述。</p>
+</li>
+<li>
+<p>一个字段的信息包括如下这些信息。在这些信息中，<strong>各个修饰符都是布尔值，要么有，要么没有</strong></p>
+<ul>
+<li>作用域（public、private、proteced修饰符）</li>
+<li>是实例变量还是类变量（static修饰符）</li>
+<li>可变性（final）</li>
+<li>并发可见性（volatile修饰符，是否强制从主内存读写）</li>
+<li>可否序列化（transient 修饰符）</li>
+<li>字段数据类型（基本数据类型、对象、数组）</li>
+<li>字段名称</li>
+</ul>
+</li>
+<li>
+<p>字段表结构</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65ce3od8xj318t05yt93.jpg" alt="QQ截图20220913222305.jpg">
+
+</p>
+</li>
+</ul>
+<ul>
+<li>字段表访问标识
+<ul>
+<li>
+<p>我们知道，一个字段可以被各种关键字去修饰，比如：作用域修饰符(public、private、protected)、static 修饰符、final 修饰符、volatile 修饰符等等。因此，其可像类的访问标志那样，使用一些标志来标记字段。字段的访问标志有如下这些：</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65cfjeeshj315a09o0tu.jpg" alt="QQ截图20220913222427.jpg">
+
+</p>
+</li>
+</ul>
+</li>
+<li>字段名索引</li>
+<li>字段名描述符索引
+<ul>
+<li>
+<p>描述符的作用是用来描述字段的数据类型、方法的参数列表(包括数量、类型以及顺序)和返回值。根据描述符规则，基本数据类型(byte、char、double、float、int、long、short、boolean)及代表无返回值的 void 类型都用一个大写字符来表示，而对象则用字符L加对象的全限定名来表示，如下所示：（与类型描述符的区别是没有void）</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65ch00kftj312r0aqt9m.jpg" alt="QQ截图20220913222554.jpg">
+
+</p>
+</li>
+</ul>
+</li>
+<li>属性表集合
+<ul>
+<li>
+<p>一个字段还可能拥有一些属性，用于存储更多的额外信息。比如初始化值（常量才有初始化值这个属性，变量没有）、一些注释信息等。属性个数存放在 attribute_count 中，属性具体内容存放在 attributes 数组中</p>
+</li>
+<li>
+<p>以常量属性为例，结构为：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ConstantValue_attribute <span style="color:#ff79c6">{</span>
+    u2 attribute_name_index<span style="color:#ff79c6">;</span>
+    u4 attribute_length<span style="color:#ff79c6">;</span>
+    u2 constantvalue_index<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div></li>
+<li>
+<p>说明：对于常量属性而言， <strong>attribute_length 值固定为2</strong> 。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="方法表集合">方法表集合</h3>
+<ul>
+<li>methods:  指向常量池索引集合，它完整描述了每个方法的签名。
+<ul>
+<li>在字节码文件中， <strong>每一个 method_info 项都对应着一个类或者接口中的方法信息。</strong> 比如方法的访问修饰符(public、private 或 protected)，方法的返回值类型以及方法的参数信息等。</li>
+<li>如果这个方法不是抽象的或者不是 native 的，那么字节码中会体现出来。</li>
+<li>一方面，methods 表只描述当前类或接口中声明的方法，不包括从父类或父接口继承的方法。另一方面，methods 表有可能会出现由编译器自动添加的方法，最典型的便是编译器产生的方法信息（比如：类(接口)初始化方法() 和实例初始化方法 ()）</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>使用注意事项：</strong>
+<ul>
+<li>
+<p>在 Java 语言中，要重载(Overload)一个方法，除了要与原方法具有相同的简单名称之外，还要求必须拥有一个与原方法不同的特征签名，特征签名就是一个方法中各个参数在常量池中的字段符号引用的集合，也就是因为返回值不会包含在特征签名之中，因此 Java 语言里无法仅仅依靠返回值的不同来对一个已有方法进行重载。但在 Class 文件格式中，特征签名的范围更大一些，只要描述符不是完全一致的两个方法就可以共存。也就是说， <strong>如果两个方法有相同的名称和特征签名，但返回值不同，那么也是可以合法共存于同一个 Class 文件中</strong> 。</p>
+</li>
+<li>
+<p>也就是说，尽管 Java 语法规范并不允许在一个类或者接口中声明多个方法签名相同的方法，但是和 Java 语法规范相反，字节码文件中却恰恰允许存放多个方法签名相同的方法，唯一的条件就是这些方法之间的返回值不能相同。</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65clirapjj30im0axt96.jpg" alt="QQ截图20220913223013.jpg">
+
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="方法计数器">方法计数器</h4>
+<ul>
+<li><strong>methods_count(方法计数器)</strong></li>
+<li>methods_count 的值表示当前 class 文件 methods 表的成员个数，使用两个字节来表示。</li>
+<li>methods 表中每个成员都是一个 method_info 结构。</li>
+</ul>
+<h4 id="方法表">方法表</h4>
+<ul>
+<li><strong>methods[] （方法表）</strong>
+<ul>
+<li>
+<p>methods 表中的每个成员都必须是一个 method_info 结构，用于表示当前类或接口中某个方法的完整描述。如果某个 method_info 结构的 access_flags 项既没有设置 ACC_NATIVE 标志也没有设置 ACC_ABSTRACT 标志，那么该结构中也应包含实现这个方法所有的 Java 虚拟机指令。（native、abstract修饰的方法都没有方法体）</p>
+</li>
+<li>
+<p>method_info 结构可以表示类和接口中定义的所有方法，包括实例方法、类方法、实例初始化方法和类或接口初始化方法。</p>
+</li>
+<li>
+<p>方法表的结构实际跟字段表是一样的，方法表结构如下：</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65co36ly8j318a05t74m.jpg" alt="QQ截图20220913223237.jpg">
+
+</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>方法表访问标识
+<ul>
+<li>
+<p>跟字段表一样，方法表也有访问标志，而且他们的标志有部分相同，部分则不同，方法表的具体访问标志如下：</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65cprofmrj31680ch75v.jpg" alt="QQ截图20220913223419.jpg">
+
+</p>
+</li>
+</ul>
+</li>
+<li>方法名索引</li>
+<li>方法描述符索引</li>
+<li>方法的属性计数器</li>
+</ul>
+<h3 id="属性表集合">属性表集合</h3>
+<ul>
+<li><strong>属性表集合（attributes）</strong></li>
+<li>方法表集合之后的属性表集合（注意，这里属性表集合不是方法表中的Code属性，但属性类型介绍包括Code属性）， <strong>指的是 class 文件所携带的辅助信息</strong> ，比如该 class 文件的源文件的名称。以及任何带有 RetentionPolicy.CLASS 或者 RetentionPolicy.RUNTIME 的注解。这类信息通常被用于 Java 虚拟机的验证和运行，以及 Java 程序的调试， <strong>一般无需深入了解</strong> 。</li>
+<li>此外，字段表、方法表都可以有自己的属性表。用于描述某些场景专有的信息</li>
+<li>属性表集合的限制没有那么严格，不再要求各个属性表具有严格的顺序，并且只要不与已有的属性名重复，任何人实现的编译器都可以向属性表中写入自己定义的属性信息，但 Java 虚拟机运行时会忽略掉它不认识的属性</li>
+</ul>
+<h4 id="属性计数器">属性计数器</h4>
+<ul>
+<li><strong>attributes_count(属性计数器)</strong></li>
+<li>attributes_count 的值表示当前 class 文件属性表的成员个数。属性表中每一项都是一个 attribute_info 结构。</li>
+</ul>
+<h4 id="属性表">属性表</h4>
+<ul>
+<li>
+<p><strong>attributes[] (属性表)</strong></p>
+</li>
+<li>
+<p>属性表的每个项的值必须是 attribute_info 结构。属性表的结构比较灵活，各种不同的属性只要满足以下结构即可</p>
+</li>
+<li>
+<p>属性表的通用格式</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65cukr2epj315d03t0sv.jpg" alt="QQ截图20220913223851.jpg">
+
+</p>
+</li>
+<li>
+<p>即只需说明属性的名称以及占用位数的长度即可，属性表具体的结构可以去自定义</p>
+</li>
+</ul>
+<h4 id="属性类型">属性类型</h4>
+<ul>
+<li>
+<p>属性表实际上可以有很多类型，上面看到的 Code 属性只是其中一种， Java 8 里面定义了23种属性</p>
+</li>
+<li>
+<p>下面这些是虚拟机中预定义的属性：</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65cw9xsg9j311x1kmhcv.jpg" alt="image-20201220162717153.png">
+
+</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>使用位置</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code</td>
+<td>方法表中</td>
+<td>Java代码编译成的字节码指令(即：具体的方法逻辑字节码指令)</td>
+</tr>
+<tr>
+<td>ConstantValue</td>
+<td>字段表中</td>
+<td>final关键字定义的常量值</td>
+</tr>
+<tr>
+<td>Deprecated</td>
+<td>类中、方法表中、字段表中</td>
+<td>被声明为deprecated的方法和字段</td>
+</tr>
+<tr>
+<td>Exceptions</td>
+<td>方法表中</td>
+<td>方法声明的异常</td>
+</tr>
+<tr>
+<td>LocalVariableTable</td>
+<td>Code属性中</td>
+<td>方法的局部变量描述</td>
+</tr>
+<tr>
+<td>LocalVariableTypeTable</td>
+<td>类中</td>
+<td>JDK1.5中新增的属性，它使用特征签名代替描述符，是为了引入泛型语法之后能描述泛型参数化类型而添加</td>
+</tr>
+<tr>
+<td>InnerClasses</td>
+<td>类中</td>
+<td>内部类列表</td>
+</tr>
+<tr>
+<td>EnclosingMethod</td>
+<td>类中</td>
+<td>仅当一个类为局部类或者匿名类时，才能拥有这个属性，这个属性用于表示这个类所在的外围方法</td>
+</tr>
+<tr>
+<td>LineNumberTable</td>
+<td>Code属性中</td>
+<td>Java源码的行号与字节码指令的对应关系</td>
+</tr>
+<tr>
+<td>StackMapTable</td>
+<td>Code属性中</td>
+<td>JDK1.6中新增的属性，供新的类型检查验证器(Type Checker)检查和处理目标方法的局部变量和操作数栈所需要的类型是否匹配</td>
+</tr>
+<tr>
+<td>Signature</td>
+<td>类中、方法表中、字段表中</td>
+<td>JDK1.5新增的属性，这个属性用于支持泛型情况下的方法签名，在Java语言中，任何类、接口、初始化方法或成员的泛型签名如果包含了类型变量(Type Variables)或参数类型(Parameterized Types),则Signature属性会为它记录泛型签名信息。由于Java的泛型采用擦除法实现，在为了避免类型信息被擦除后导致签名混乱，需要这个属性记录泛型中的相关信息</td>
+</tr>
+<tr>
+<td>SourceFile</td>
+<td>类中</td>
+<td>记录源文件名称</td>
+</tr>
+<tr>
+<td>SourceDebugExtension</td>
+<td>类中</td>
+<td>JDK1.6中新增的属性，SourceDebugExtension用于存储额外的调试信息。如在进行JSP文件调试时，无法通过Java堆栈来定位到JSP文件的行号，JSR-45规范为这些非Java语言编写，却需要编译成字节码运行在Java虚拟机汇中的程序提供了一个进行调试的标准机制，使用SourceDebugExtension就可以存储这些调试信息。</td>
+</tr>
+<tr>
+<td>Synthetic</td>
+<td>类中、方法表中、字段表中</td>
+<td>标识方法或字段为编译器自动产生的</td>
+</tr>
+<tr>
+<td>RuntimeVisibleAnnotations</td>
+<td>类中、方法表中、字段表中</td>
+<td>JDK1.5中新增的属性，为动态注解提供支持。RuntimeVisibleAnnotations属性，用于指明哪些注解是运行时(实际上运行时就是进行反射调用)可见的。</td>
+</tr>
+<tr>
+<td>RuntimeInvisibleAnnotations</td>
+<td>类中、方法表中、字段表中</td>
+<td>JDK1.5中新增的属性，作用与RuntimeVisibleAnnotations相反用于指明哪些注解是运行时不可见的。</td>
+</tr>
+<tr>
+<td>RuntimeVisibleParameterAnnotations</td>
+<td>方法表中</td>
+<td>JDK1.5中新增的属性，作用与RuntimeVisibleAnnotations类似，只不过作用对象为方法的参数。</td>
+</tr>
+<tr>
+<td>RuntimeInvisibleParameterAnnotations</td>
+<td>方法表中</td>
+<td>JDK1.5中新增的属性，作用与RuntimeInvisibleAnnotations类似，只不过作用对象为方法的参数。</td>
+</tr>
+<tr>
+<td>AnnotationDefault</td>
+<td>方法表中</td>
+<td>JDK1.5中新增的属性，用于记录注解类元素的默认值</td>
+</tr>
+<tr>
+<td>BootstrapMethods</td>
+<td>类中</td>
+<td>JDK1.7新增的属性，用于保存invokedynamic指令引用的引导方法限定符</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>ConstantValue 属性</p>
+<ul>
+<li>
+<p>ConstantValue 属性表示一个常量字段的值。位于 field_info 结构的属性表中。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ConstantValue_attribute <span style="color:#ff79c6">{</span>
+    u2 attribute_name_index<span style="color:#ff79c6">;</span>
+    u4 attribute_length<span style="color:#ff79c6">;</span>
+    u2 constantvalue_index<span style="color:#ff79c6">;</span> <span style="color:#6272a4">//字段值在常量池中的索引，常量池在该索引处的项给出该属性表示的常量值。(例如，值是long型的，在常量池中便是CONSTANT_Long)
+</span><span style="color:#6272a4"></span><span style="color:#ff79c6">}</span>
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>Deprecated 属性</p>
+<ul>
+<li>
+<p>Deprecated属性是在JDK1.1为了支持注解中的关键词@Deprecated而引入的</p>
+<pre><code>java
+Deprecated_attribute {
+    u2 attribute_name_index;
+    u4 attribute_length;
+}
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Code 属性</p>
+<ul>
+<li>
+<p>Code 属性就是存放方法体里面的代码，但是，并非所有方法表都有 Code 属性，像接口或者抽象方法，他们没有具体的方法体，因此也就不会有 Code 属性了。</p>
+</li>
+<li>
+<p>Code 属性表的结构，如下</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65d051soxj319o0ak75d.jpg" alt="QQ截图20220913224417.jpg">
+
+</p>
+</li>
+<li>
+<p>可以看到：Code 属性表的前两项跟属性表是一致的，即 Code 属性表遵循属性表的结构，后面那些则是他自定义的结构</p>
+</li>
+</ul>
+</li>
+<li>
+<p>InnerClasses 属性</p>
+<ul>
+<li>为了方便说明特别定义一个表示类或接口的 Class 格式为 C。如果 C 的常量池中包含某个 CONSTANT_Class_info 成员，且这个成员所表示的类或接口不属于任何一个包，那么 C 的 ClassFile 结构的属性表中就必须含有对应的 InnerClasses 属性。InnerClasses 属性是在 JDK 1.1 中为了支持内部类和内部接口而引入的，位于 ClassFile 结构的属性表。</li>
+</ul>
+</li>
+<li>
+<p>LineNumberTable 属性</p>
+<ul>
+<li>
+<p>LineNumberTable 属性是可选变长属性，位于 Code 结构的属性表</p>
+</li>
+<li>
+<p>LineNumberTable 属性是 <strong>用来描述 Java 源码行号与字节码行号之间的对应关系</strong> 。这个属性可以用来在调试的时候定位代码执行的行数</p>
+</li>
+<li>
+<p><strong>start_pc，即字节码行号；line_number，即 Java 源代码行号</strong></p>
+</li>
+<li>
+<p>在 Code 属性的属性表中，LineNumberTable 属性可以按照任意顺序出现，此外，多个 LineNumberTable 属性可以共同表示一个行号在源文件中表示的内容，即 LineNumberTable 属性不需要与源文件的行一一对应</p>
+</li>
+<li>
+<p>LineNumberTable 属性表结构:</p>
+<pre><code>java
+LineNumberTable_attribute {
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u2 line_number_table_length;
+    {
+        u2 start_pc;
+        u2 line_number;
+    } line_number_table[line_number_table_length];
+}
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>LocalVariableTable 属性</p>
+<ul>
+<li>LocalVariableTable 是可选变长属性，位于 Code 属性的属性表中。它被调试器 <strong>用于确定方法在执行过程中局部变量的信息。</strong> 在 Code 属性的属性中，LocalVariableTable 属性可以按照任意顺序出现。Code 属性中的每个局部变量最多只能有一个 LocalVariableTable 属性
+<ul>
+<li><strong>start_pc + length 表示这个变量在字节码中的生命周期起始和结束的偏移位置</strong></li>
+<li><strong>index 就是这个变量在局部变量表中的槽位(槽位可复用)</strong></li>
+<li><strong>name 就是变量名称</strong></li>
+<li><strong>Descriptor 表示局部变量类型描述</strong></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<p>LocalVariableTable 属性表结构：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">LocalVariableTable_attribute <span style="color:#ff79c6">{</span>
+    u2 attribute_name_index<span style="color:#ff79c6">;</span>
+    u4 attribute_length<span style="color:#ff79c6">;</span>
+    u2 local_variable_table_length<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">{</span>
+        u2 start_pc<span style="color:#ff79c6">;</span>
+        u2 length<span style="color:#ff79c6">;</span>
+        u2 name_index<span style="color:#ff79c6">;</span>
+        u2 descriptor_index<span style="color:#ff79c6">;</span>
+        u2 index<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> local_variable_table<span style="color:#ff79c6">[</span>local_variable_table_length<span style="color:#ff79c6">]</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Signature 属性
+<ul>
+<li>Signature 属性是可选的定长属性，位于 ClassFile，field_info 或 method_info 结构的属性表中。在 Java 语言中，任何类、接口、初始化方法或成员的泛型签名如果包含了类型变量(Type Variables)或参数化类型(Parameterized Types)，则 Signature 属性会为它记录泛型签名信息</li>
+</ul>
+</li>
+<li>SourceFile 属性
+<ul>
+<li>
+<p>SourceFile 属性结构</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SourceFile_attribute <span style="color:#ff79c6">{</span>
+    u2 attribute_name_index<span style="color:#ff79c6">;</span>
+    u4 attribute_length<span style="color:#ff79c6">;</span>  <span style="color:#6272a4">// 该属性长度必须为2
+</span><span style="color:#6272a4"></span>    u2 sourcefile_index<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65d5xlyuaj312303pwel.jpg" alt="QQ截图20220913224952.jpg">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65d6vgwxwj314w0zoe81.jpg" alt="image-20201221081852220.png">
+
+</p>
+<h2 id="使用javap指令解析class文件">使用javap指令解析Class文件</h2>
+<h3 id="解析字节码的作用">解析字节码的作用</h3>
+<ul>
+<li>通过反编译生成的字节码文件，我们可以深入的了解 Java 代码的工作机制。但是，自己分析类文件结构太麻烦了，除了使用第三方的 jclasslib 工具之外，Oracle 官方也提供了工具：javap。</li>
+<li>javap 是 JDK 自带的反解析工具。它的作用就是根据 Class 字节码文件，反解析出当前类对应的 Code 区(字节码指令)、局部变量表、异常表和代码行偏移量映射表、常量池等信息。</li>
+<li>通过局部变量表，我们可以查看局部变量的作用域范围、所在槽位等信息，甚至可以看到槽位复用等信息。</li>
+</ul>
+<h3 id="javac--g操作">javac -g操作</h3>
+<ul>
+<li>
+<p>解析字节码文件得到的信息中，有些信息(如局部变量表、指令和代码行偏移量映射表、常量池中方法的参数名称等等)需要在使用 javac 编译成 Class 文件时，指定参数才能输出。</p>
+</li>
+<li>
+<p>比如，直接 javac xx.java，就不会生成对应的 <strong>局部变量表等信息</strong> ，如果使用 javac -g xx.java 就可以生成所有相关信息。如果使用的 Eclipse 或 IDEA，则默认情况下，Eclipse、IDEA 在编译时会生成局部变量表、指令和代码行偏移量映射表等信息。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#ff79c6">package</span> _10<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">_06_JavapTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">int</span> num<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd">boolean</span> flag<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">char</span> gender<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> String info<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">int</span> COUNTS <span style="color:#ff79c6">=</span> 1<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">static</span><span style="color:#ff79c6">{</span>
+        String url <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;www.atguigu.com&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">{</span>
+        info <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;java&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">_06_JavapTest</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#50fa7b">_06_JavapTest</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">boolean</span> flag<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">flag</span> <span style="color:#ff79c6">=</span> flag<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">methodPrivate</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">getNum</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> num <span style="color:#ff79c6">+</span> i<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">char</span> <span style="color:#50fa7b">showGender</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> gender<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">showInfo</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>info <span style="color:#ff79c6">+</span> i<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div></li>
+</ul>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65d9luxgdj30wm09jq3z.jpg" alt="QQ截图20220913225322.jpg">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65dbhd6kwj319g0jdgo9.jpg" alt="QQ截图20220913225506.jpg">
+
+</p>
+<ul>
+<li>-g主要就是多了局部变量表</li>
+</ul>
+<h3 id="javap的用法">javap的用法</h3>
+<ul>
+<li>
+<p><strong>javap 的用法格式: javap</strong></p>
+</li>
+<li>
+<p>其中，classes 就是要反编译的 class 文件</p>
+</li>
+<li>
+<p>在命令行中直接输入 javap 或 javap -help 可以看到 javap 的 options 有如下选项：</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65dd97ovbj30ms0d2jst.jpg" alt="QQ截图20220913225652.jpg">
+
+</p>
+</li>
+</ul>
+<pre><code>-help  --help  -?        输出此用法消息
+  -version                 版本信息
+  
+  // -p常用
+  -public                  仅显示公共类和成员
+  -protected               显示受保护的/公共类和成员
+  -p  -private             显示所有类和成员
+  -package                 显示程序包/受保护的/公共类和成员 (默认)
+  -sysinfo                 显示正在处理的类的系统信息 (路径, 大小, 日期, MD5 散列)
+  -constants               显示最终常量
+
+  // 常用
+  -s                       输出内部类型签名
+  -l                       输出行号和本地变量表
+  -c                       对代码进行反汇编
+  -v  -verbose             输出附加信息
+  
+  
+  -classpath &lt;path&gt;        指定查找用户类文件的位置
+  -cp &lt;path&gt;               指定查找用户类文件的位置
+  -bootclasspath &lt;path&gt;    覆盖引导类文件的位置
+  
+  最全的输出用法是：javap -v -p  _06_JavapTest.class
+</code></pre><ul>
+<li>
+<p>比较-c、-v的区别</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65dgii9cmj30pu04c3yt.jpg" alt="QQ截图20220913230001.jpg">
+
+</p>
+</li>
+<li>
+<p>-v有版本信息、常量池、描述符、局部变量等</p>
+</li>
+<li>
+<p>-c主要是Code属性，-v也有Code属性</p>
+</li>
+<li>
+<p>所以最全的输出用法是：javap -v -p  JavapTest.class</p>
+</li>
+</ul>
+<h3 id="总结-1">总结</h3>
+<ul>
+<li>
+<p>通过 javap 命令可以查看一个 Java 类反汇编得到的 Class 文件版本号、常量池、访问标识、变量表、指令代码行号表等信息。不显式类索引、父类索引、接口索引集合、()、()等结构</p>
+</li>
+<li>
+<p>通过对前面的例子代码反汇编文件的简单分析，可以发现，一个方法的执行通常会涉及下面几块内存的操作：</p>
+<ul>
+<li>
+<p>Java 栈中：局部变量表、操作数栈。</p>
+</li>
+<li>
+<p>Java 堆： 通过对象的地址引用去操作。</p>
+</li>
+<li>
+<p>常量池。</p>
+</li>
+<li>
+<p>其他如帧数据区、方法区的剩余部分等情况，测试中没有显示出来，这里说明一下</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h65dju3ziij30vo0ebq3e.jpg" alt="QQ截图20220913230312.jpg">
+
+</p>
+</li>
+<li>
+<p><a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html">官方指定文档</a></p>
+</li>
+</ul>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1056%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="16、垃圾回收器（JVM）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1058%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E9%9B%86%E4%B8%8E%E8%A7%A3%E6%9E%90%E4%B8%BE%E4%BE%8B/" data-toggle="tooltip" data-placement="top" title="18、字节码指令集与解析举例（JVM）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/elasticsearch" title="elasticsearch">
+                            elasticsearch
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jvm" title="jvm">
+                            jvm
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/netty" title="netty">
+                            netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    <li>
+                        <a target="_blank" href="/#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+</html>

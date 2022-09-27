@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="5、虚拟机栈（JVM）" />
+    <meta property="og:title" content="5、虚拟机栈（JVM）" />
+    <meta property="twitter:title" content="5、虚拟机栈（JVM）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>5、虚拟机栈（JVM） | yiguan1573</title>
+
+    <link rel="canonical" href="/post/1045%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive/">档案</a></li>
+                    
+                        <li><a href="/top/about/">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/03.JPG')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                    </div>
+                    <h1>5、虚拟机栈（JVM）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                亿观
+                             
+                            on 
+                            Friday, June 24, 2022
+                            
+                                <span id="/post/1045%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="简介">简介</h2>
+<h3 id="虚拟机栈的出现背景">虚拟机栈的出现背景</h3>
+<ol>
+<li>由于跨平台性的设计，Java的指令都是根据栈来设计的。不同平台CPU架构不同，所以不能设计为基于寄存器的【如果设计成基于寄存器的，耦合度高，性能会有所提升，因为可以对具体的CPU架构进行优化，但是跨平台性大大降低】。</li>
+<li>优点是跨平台，指令集小，编译器容易实现，缺点是性能下降，实现同样的功能需要更多的指令。</li>
+</ol>
+<h3 id="内存中的栈与堆">内存中的栈与堆</h3>
+<ol>
+<li>首先栈是运行时的单位，而堆是存储的单位。</li>
+<li>即：栈解决程序的运行问题，即程序如何执行，或者说如何处理数据。堆解决的是数据存储的问题，即数据怎么放，放哪里</li>
+</ol>
+<!-- raw HTML omitted -->
+<h3 id="虚拟机栈基本内容">虚拟机栈基本内容</h3>
+<ul>
+<li>
+<p>Java虚拟机栈是什么？</p>
+<ul>
+<li>Java虚拟机栈（Java Virtual Machine Stack），早期也叫Java栈。每个线程在创建时都会创建一个虚拟机栈，其内部保存一个个的栈帧（Stack Frame），<strong>对应着一次次的Java方法调用</strong>，栈是线程私有的</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StackTest</span> <span style="color:#ff79c6">{</span>
+  
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        StackTest test <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StackTest<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        test<span style="color:#ff79c6">.</span><span style="color:#50fa7b">methodA</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+  
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">methodA</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> j <span style="color:#ff79c6">=</span> 20<span style="color:#ff79c6">;</span>
+  
+        methodB<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+  
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">methodB</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd">int</span> k <span style="color:#ff79c6">=</span> 30<span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> m <span style="color:#ff79c6">=</span> 40<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+  
+</code></pre></div></li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>
+<p>虚拟机栈的生命周期</p>
+<ul>
+<li>生命周期和线程一致，也就是线程结束了，该虚拟机栈也销毁了</li>
+</ul>
+</li>
+<li>
+<p>虚拟机栈的作用</p>
+<ul>
+<li>主管Java程序的运行，它保存方法的局部变量（8 种基本数据类型、对象的引用地址）、部分结果，并参与方法的调用和返回。</li>
+<li>局部变量，它是相比于成员变量来说的（或属性）</li>
+<li>基本数据类型变量 VS 引用类型变量（类、数组、接口）</li>
+</ul>
+</li>
+</ul>
+<h3 id="虚拟机栈的特点">虚拟机栈的特点</h3>
+<ul>
+<li>
+<p>栈是一种快速有效的分配存储方式，访问速度仅次于程序计数器。</p>
+</li>
+<li>
+<p>JVM直接对Java栈的操作只有两个：</p>
+<ul>
+<li>每个方法执行，伴随着<strong>进栈</strong>（入栈、压栈）</li>
+<li>执行结束后的<strong>出栈</strong>工作</li>
+</ul>
+</li>
+<li>
+<p>对于栈来说不存在垃圾回收问题</p>
+<ul>
+<li>栈不需要GC，但是可能存在OOM</li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<h3 id="虚拟机栈的异常">虚拟机栈的异常</h3>
+<p><strong>面试题：栈中可能出现的异常？</strong></p>
+<ul>
+<li>
+<p>Java 虚拟机规范允许Java栈的大小是动态的或者是固定不变的。</p>
+<ul>
+<li>
+<p>如果采用固定大小的Java虚拟机栈，那每一个线程的Java虚拟机栈容量可以在线程创建的时候独立选定。如果线程请求分配的栈容量超过Java虚拟机栈允许的最大容量，Java虚拟机将会抛出一个<strong>StackoverflowError</strong> 异常。</p>
+</li>
+<li>
+<p>如果Java虚拟机栈可以动态扩展，并且在尝试扩展的时候无法申请到足够的内存，或者在创建新的线程时没有足够的内存去创建对应的虚拟机栈，那Java虚拟机将会抛出一个 <strong>OutofMemoryError</strong> 异常。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="设置栈内存大小">设置栈内存大小</h3>
+<h4 id="概念">概念</h4>
+<blockquote>
+<p>多去官方文档看看：https://docs.oracle.com/en/java/javase/11/tools/java.html#GUID-3B1CE181-CD30-4178-9602-230B800D4FAE</p>
+<p>地址经常变</p>
+</blockquote>
+<p>我们可以使用参数 <strong>-Xss</strong> 选项来设置线程的最大栈空间，栈的大小直接决定了函数调用的最大可达深度。</p>
+<blockquote>
+<p>Sets the thread stack size (in bytes). Append the letter <code>k</code> or <code>K</code> to indicate KB, <code>m</code> or <code>M</code> to indicate MB, and <code>g</code> or <code>G</code> to indicate GB. The default value depends on the platform:</p>
+<ul>
+<li>Linux/x64 (64-bit): 1024 KB</li>
+<li>macOS (64-bit): 1024 KB</li>
+<li>Oracle Solaris/x64 (64-bit): 1024 KB</li>
+<li>Windows: The default value depends on virtual memory</li>
+</ul>
+</blockquote>
+<p>The following examples set the thread stack size to 1024 KB in different units:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">-</span>Xss1m
+<span style="color:#ff79c6">-</span>Xss1024k
+<span style="color:#ff79c6">-</span>Xss1048576
+</code></pre></div><h4 id="举例">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StackErrorTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">int</span> count <span style="color:#ff79c6">=</span> 1<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>count<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        count<span style="color:#ff79c6">+</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">;</span>
+        main<span style="color:#ff79c6">(</span>args<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p><strong>没设置参数前</strong></p>
+<p>部分输出结果：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">11404
+11405
+11406
+Exception in thread <span style="color:#f1fa8c">&#34;main&#34;</span> java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">StackOverflowError</span>
+	at sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">nio</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">cs</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">UTF_8$Encoder</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">encodeLoop</span><span style="color:#ff79c6">(</span>UTF_8<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>691<span style="color:#ff79c6">)</span>
+</code></pre></div><p>说明栈在11406这个深度溢出了</p>
+<p><strong>设置栈参数之后</strong></p>
+<!-- raw HTML omitted -->
+<p>部分输出结果</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">2474
+2475
+2476
+Exception in thread <span style="color:#f1fa8c">&#34;main&#34;</span> java<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lang</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">StackOverflowError</span>
+	at sun<span style="color:#ff79c6">.</span><span style="color:#50fa7b">nio</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">cs</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">UTF_8</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">updatePositions</span><span style="color:#ff79c6">(</span>UTF_8<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span><span style="color:#ff79c6">:</span>77<span style="color:#ff79c6">)</span>
+</code></pre></div><p>说明参数起作用了</p>
+<h2 id="栈的存储单位">栈的存储单位</h2>
+<h3 id="栈中存储什么">栈中存储什么？</h3>
+<ol>
+<li>每个线程都有自己的栈，栈中的数据都是以<strong>栈帧</strong>（Stack Frame）的格式存在</li>
+<li>在这个线程上正在执行的每个方法都各自对应一个栈帧（Stack Frame）。</li>
+<li>栈帧是一个内存区块，是一个数据集，维系着方法执行过程中的各种数据信息。</li>
+</ol>
+<h3 id="栈运行原理">栈运行原理</h3>
+<ol>
+<li>
+<p>JVM直接对Java栈的操作只有两个，就是对栈帧的<strong>压栈和出栈</strong>，遵循先进后出（后进先出）原则</p>
+</li>
+<li>
+<p>在一条活动线程中，一个时间点上，只会有一个活动的栈帧。即只有当前正在执行的方法的栈帧（栈顶栈帧）是有效的。这个栈帧被称为<strong>当前栈帧（Current Frame）</strong>，与当前栈帧相对应的方法就是<strong>当前方法（Current Method）</strong>，定义这个方法的类就是<strong>当前类（Current Class）</strong></p>
+</li>
+<li>
+<p>执行引擎运行的所有字节码指令只针对当前栈帧进行操作。</p>
+</li>
+<li>
+<p>如果在该方法中调用了其他方法，对应的新的栈帧会被创建出来，放在栈的顶端，成为新的当前帧。</p>
+</li>
+</ol>
+<!-- raw HTML omitted -->
+<ol>
+<li><strong>不同线程中所包含的栈帧是不允许存在相互引用的</strong>，即不可能在一个栈帧之中引用另外一个线程的栈帧。</li>
+<li>如果当前方法调用了其他方法，方法返回之际，当前栈帧会传回此方法的执行结果给前一个栈帧，接着，虚拟机会丢弃当前栈帧，使得前一个栈帧重新成为当前栈帧。</li>
+<li>Java方法有两种返回函数的方式。
+<ul>
+<li>一种是正常的函数返回，使用return指令。</li>
+<li>另一种是方法执行中出现未捕获处理的异常，以抛出异常的方式结束。</li>
+<li>但不管使用哪种方式，都会导致栈帧被弹出。</li>
+</ul>
+</li>
+</ol>
+<h3 id="栈帧的内部结构">栈帧的内部结构</h3>
+<p>每个栈帧中存储着：</p>
+<ul>
+<li>
+<p>局部变量表（Local Variables）</p>
+</li>
+<li>
+<p>操作数栈（Operand Stack）（或表达式栈）</p>
+</li>
+<li>
+<p>动态链接（Dynamic Linking）（或指向运行时常量池的方法引用）</p>
+</li>
+<li>
+<p>方法返回地址（Return Address）（或方法正常退出或者异常退出的定义）</p>
+</li>
+<li>
+<p>一些附加信息</p>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<p>并行每个线程下的栈都是私有的，因此每个线程都有自己各自的栈，并且每个栈里面都有很多栈帧，栈帧的大小主要由局部变量表 和 操作数栈决定的</p>
+<!-- raw HTML omitted -->
+<h2 id="局部变量表">局部变量表</h2>
+<h3 id="认识局部变量表">认识局部变量表</h3>
+<h4 id="概念-1">概念</h4>
+<ol>
+<li>局部变量表也被称之为局部变量数组或本地变量表</li>
+<li><strong>定义为一个数字数组，主要用于存储方法参数和定义在方法体内的局部变量</strong>，这些数据类型包括各类基本数据类型、对象引用（reference），以及returnAddress返回值类型。</li>
+<li>由于局部变量表是建立在线程的栈上，是线程的私有数据，因此<strong>不存在数据安全问题</strong></li>
+<li><strong>局部变量表所需的容量大小是在编译期确定下来的</strong>，并保存在方法的Code属性的<strong>maximum local variables</strong>数据项中。在方法运行期间是不会改变局部变量表的大小的。</li>
+<li>方法嵌套调用的次数由栈的大小决定。一般来说，栈越大，方法嵌套调用次数越多。
+<ul>
+<li>对一个函数而言，它的参数和局部变量越多，使得局部变量表膨胀，它的栈帧就越大，以满足方法调用所需传递的信息增大的需求。</li>
+<li>进而函数调用就会占用更多的栈空间，导致其嵌套调用次数就会减少。</li>
+</ul>
+</li>
+<li>局部变量表中的变量只在当前方法调用中有效。
+<ul>
+<li>在方法执行时，虚拟机通过使用局部变量表完成参数值到参数变量列表的传递过程。</li>
+<li>当方法调用结束后，随着方法栈帧的销毁，局部变量表也会随之销毁。</li>
+</ul>
+</li>
+</ol>
+<h4 id="举例-1">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">LocalVariablesTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">int</span> count <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        LocalVariablesTest test <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> LocalVariablesTest<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> num <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+        test<span style="color:#ff79c6">.</span><span style="color:#50fa7b">test1</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">//练习：
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testStatic</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        LocalVariablesTest test <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> LocalVariablesTest<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Date date <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Date<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> count <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>count<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//因为this变量不存在于当前方法的局部变量表中！！
+</span><span style="color:#6272a4"></span><span style="color:#6272a4">//        System.out.println(this.count);
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">//关于Slot的使用的理解
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">LocalVariablesTest</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">count</span> <span style="color:#ff79c6">=</span> 1<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">test1</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        Date date <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Date<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        String name1 <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;atguigu.com&#34;</span><span style="color:#ff79c6">;</span>
+        test2<span style="color:#ff79c6">(</span>date<span style="color:#ff79c6">,</span> name1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>date <span style="color:#ff79c6">+</span> name1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">test2</span><span style="color:#ff79c6">(</span>Date dateP<span style="color:#ff79c6">,</span> String name2<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        dateP <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+        name2 <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;songhongkang&#34;</span><span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">double</span> weight <span style="color:#ff79c6">=</span> 130<span style="color:#ff79c6">.</span><span style="color:#50fa7b">5</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//占据两个slot
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd">char</span> gender <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;男&#39;</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> dateP <span style="color:#ff79c6">+</span> name2<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">test3</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">count</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">test4</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd">int</span> a <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd">int</span> b <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+            b <span style="color:#ff79c6">=</span> a <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#6272a4">//变量c使用之前已经销毁的变量b占据的slot的位置
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd">int</span> c <span style="color:#ff79c6">=</span> a <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><!-- raw HTML omitted -->
+<p>看完字节码后，可得结论：所以局部变量表所需的容量大小是在编译期确定下来的。</p>
+<h4 id="部分详解">部分详解</h4>
+<p>为了更好讲解，我们直接用jclasslib来看字节码，以main方法为例来讲解。一些一目了然的就不讲了</p>
+<p>1、0-15  也就是有16行字节码</p>
+<!-- raw HTML omitted -->
+<p>2、方法异常信息表</p>
+<!-- raw HTML omitted -->
+<p>3、Misc</p>
+<!-- raw HTML omitted -->
+<p>4、行号表</p>
+<p>Java代码的行号和字节码指令行号的对应关系</p>
+<!-- raw HTML omitted -->
+<p>5、注意：生效行数和剩余有效行数都是针对于字节码文件的行数</p>
+<!-- raw HTML omitted -->
+<p>1、图中圈的东西表示该局部变量的作用域</p>
+<p>2、Start PC==11表示在字节码的11行开始生效，也就是Java代码对应的第15行。而声明int num在java代码的是第14行，说明是从声明的下一行开始生效</p>
+<p>3、Length== 5表示局部变量剩余有效行数，main方法字节码指令总共有16行，从11行开始生效，那么剩下就是16-11 ==5。</p>
+<p>4、<code>Ljava/lang/String</code>   前面的L表示引用类型</p>
+<h3 id="关于slot的理解">关于Slot的理解</h3>
+<ol>
+<li>参数值的存放总是从局部变量数组索引 0 的位置开始，到数组长度-1的索引结束。</li>
+<li>局部变量表，<strong>最基本的存储单元是Slot（变量槽）</strong>，局部变量表中存放编译期可知的各种基本数据类型（8种），引用类型（reference），returnAddress类型的变量。</li>
+<li>在局部变量表里，<strong>32位以内的类型只占用一个slot</strong>（包括returnAddress类型），<strong>64位的类型占用两个slot</strong>（1ong和double）。
+<ul>
+<li>byte、short、char在储存前被转换为int，boolean也被转换为int，0表示false，非0表示true</li>
+<li>long和double则占据两个slot</li>
+</ul>
+</li>
+<li>JVM会为局部变量表中的每一个Slot都分配一个访问索引，通过这个索引即可成功访问到局部变量表中指定的局部变量值</li>
+<li>当一个实例方法被调用的时候，它的方法参数和方法体内部定义的局部变量将会<strong>按照顺序被复制</strong>到局部变量表中的每一个slot上</li>
+<li>如果需要访问局部变量表中一个64bit的局部变量值时，只需要使用前一个索引即可。（比如：访问long或double类型变量）</li>
+<li>如果当前帧是由构造方法或者实例方法创建的，那么<strong>该对象引用this将会存放在index为0的slot处</strong>，其余的参数按照参数表顺序继续排列。（this也相当于一个变量）</li>
+</ol>
+<!-- raw HTML omitted -->
+<h3 id="slot代码示例">Slot代码示例</h3>
+<p><strong>this 存放在 index = 0 的位置：</strong></p>
+<p>代码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">test3</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">count</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>局部变量表：this 存放在 index = 0 的位置</p>
+<!-- raw HTML omitted -->
+<p><strong>64位的类型（1ong和double）占用两个slot</strong></p>
+<p>代码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> 	<span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">test2</span><span style="color:#ff79c6">(</span>Date dateP<span style="color:#ff79c6">,</span> String name2<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        dateP <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+        name2 <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;songhongkang&#34;</span><span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">double</span> weight <span style="color:#ff79c6">=</span> 130<span style="color:#ff79c6">.</span><span style="color:#50fa7b">5</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//占据两个slot
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd">char</span> gender <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;男&#39;</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> dateP <span style="color:#ff79c6">+</span> name2<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>weight 为 double 类型，index 直接从 3 蹦到了 5</p>
+<!-- raw HTML omitted -->
+<p><strong>static 无法调用 this</strong></p>
+<p>this 不存在与 static 方法的局部变量表中，所以无法调用</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testStatic</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        LocalVariablesTest test <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> LocalVariablesTest<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        Date date <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Date<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> count <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>count<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//因为this变量不存在于当前方法的局部变量表中！！
+</span><span style="color:#6272a4"></span><span style="color:#6272a4">//        System.out.println(this.count);
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+</code></pre></div><h3 id="slot的重复利用">Slot的重复利用</h3>
+<p>栈帧中的局部变量表中的槽位是可以重用的，如果一个局部变量过了其作用域，那么在其作用域之后申明新的局部变量变就很有可能会复用过期局部变量的槽位，从而达到节省资源的目的。</p>
+<p>代码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">test4</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd">int</span> a <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd">int</span> b <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+            b <span style="color:#ff79c6">=</span> a <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#6272a4">//变量c使用之前已经销毁的变量b占据的slot的位置
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd">int</span> c <span style="color:#ff79c6">=</span> a <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>局部变量 c 重用了局部变量 b 的 slot 位置</p>
+<!-- raw HTML omitted -->
+<h3 id="静态变量与局部变量的对比">静态变量与局部变量的对比</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">变量的分类：
+1、按照数据类型分：① 基本数据类型  ② 引用数据类型
+2、按照在类中声明的位置分：
+  2<span style="color:#ff79c6">-</span>1、成员变量：在使用前，都经历过默认初始化赋值
+       2<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">-</span>1、类变量<span style="color:#ff79c6">:</span> linking的prepare阶段：给类变量默认赋值
+              <span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">&gt;</span> initial阶段：给类变量显式赋值即静态代码块赋值
+       2<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">-</span>2、实例变量：随着对象的创建，会在堆空间中分配实例变量空间，并进行默认赋值
+  2<span style="color:#ff79c6">-</span>2、局部变量：在使用前，必须要进行显式赋值的！否则，编译不通过。
+</code></pre></div><ol>
+<li>参数表分配完毕之后，再根据方法体内定义的变量的顺序和作用域分配。</li>
+<li>我们知道成员变量有两次初始化的机会**，**第一次是在“准备阶段”，执行系统初始化，对类变量设置零值，另一次则是在“初始化”阶段，赋予程序员在代码中定义的初始值。</li>
+<li>和类变量初始化不同的是，<strong>局部变量表不存在系统初始化的过程</strong>，这意味着一旦定义了局部变量则必须人为的初始化，否则无法使用。</li>
+</ol>
+<h3 id="补充说明">补充说明</h3>
+<ol>
+<li>
+<p>在栈帧中，与性能调优关系最为密切的部分就是前面提到的局部变量表。在方法执行时，虚拟机使用局部变量表完成方法的传递。</p>
+</li>
+<li>
+<p>局部变量表中的变量也是重要的垃圾回收根节点，只要被局部变量表中直接或间接引用的对象都不会被回收。</p>
+</li>
+</ol>
+<h2 id="操作数栈">操作数栈</h2>
+<h3 id="操作数栈的特点">操作数栈的特点</h3>
+<ol>
+<li>
+<p>每一个独立的栈帧除了包含局部变量表以外，还包含一个后进先出（Last - In - First -Out）的 操作数栈，也可以称之为<strong>表达式栈</strong>（Expression Stack）</p>
+</li>
+<li>
+<p>操作数栈，在方法执行过程中，<strong>根据字节码指令，往栈中写入数据或提取数据</strong>，即入栈（push）和 出栈（pop）</p>
+</li>
+</ol>
+<ul>
+<li>某些字节码指令将值压入操作数栈，其余的字节码指令将操作数取出栈。使用它们后再把结果压入栈，</li>
+<li>比如：执行复制、交换、求和等操作</li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h3 id="操作数栈的作用">操作数栈的作用</h3>
+<ol>
+<li>
+<p>操作数栈，<strong>主要用于保存计算过程的中间结果，同时作为计算过程中变量临时的存储空间</strong>。</p>
+</li>
+<li>
+<p>操作数栈就是JVM执行引擎的一个工作区，当一个方法刚开始执行的时候，一个新的栈帧也会随之被创建出来，这时方法的操作数栈是空的。</p>
+</li>
+<li>
+<p>每一个操作数栈都会拥有一个明确的栈深度用于存储数值，其所需的最大深度在编译期就定义好了，保存在方法的Code属性中，为<strong>maxstack</strong>的值。</p>
+</li>
+<li>
+<p>栈中的任何一个元素都是可以任意的Java数据类型</p>
+<ul>
+<li>32bit的类型占用一个栈单位深度</li>
+<li>64bit的类型占用两个栈单位深度</li>
+</ul>
+</li>
+<li>
+<p>操作数栈并非采用访问索引的方式来进行数据访问的，而是只能通过标准的入栈和出栈操作来完成一次数据访问。<strong>只不过操作数栈是用数组这个结构来实现的而已</strong></p>
+</li>
+<li>
+<p>如果被调用的方法带有返回值的话，其返回值将会被压入当前栈帧的操作数栈中，并更新PC寄存器中下一条需要执行的字节码指令。</p>
+</li>
+<li>
+<p>操作数栈中元素的数据类型必须与字节码指令的序列严格匹配，这由编译器在编译器期间进行验证，同时在类加载过程中的类检验阶段的数据流分析阶段要再次验证。</p>
+</li>
+<li>
+<p>另外，<strong>我们说Java虚拟机的解释引擎是基于栈的执行引擎，其中的栈指的就是操作数栈</strong>。</p>
+</li>
+</ol>
+<!-- raw HTML omitted -->
+<p>局部变量表就相当于食材</p>
+<p>操作数栈就相当于做法步骤</p>
+<h2 id="操作数栈代码追踪">操作数栈代码追踪</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testAddOperation</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//byte、short、char、boolean：都以int型来保存
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd">byte</span> i <span style="color:#ff79c6">=</span> 15<span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> j <span style="color:#ff79c6">=</span> 8<span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> k <span style="color:#ff79c6">=</span> i <span style="color:#ff79c6">+</span> j<span style="color:#ff79c6">;</span>
+
+       <span style="color:#6272a4">// int m = 800;
+</span><span style="color:#6272a4"></span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>对应字节码指令</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> 0 bipush 15
+ 2 istore_1
+ 3 bipush 8
+ 5 istore_2
+ 6 iload_1
+ 7 iload_2
+ 8 iadd
+ 9 istore_3
+10 <span style="color:#ff79c6">return</span>
+</code></pre></div><!-- raw HTML omitted -->
+<h3 id="一步一步看流程">一步一步看流程</h3>
+<p>1、首先执行第一条语句，PC寄存器指向的是0，也就是指令地址为0，然后使用bipush让操作数15入操作数栈。</p>
+<!-- raw HTML omitted -->
+<p>2、执行完后，PC寄存器往下移，指向下一行代码，下一行代码就是将操作数栈的元素存储到局部变量表1的位置（istore_1），我们可以看到局部变量表的已经增加了一个元素。并且操作数栈为空了</p>
+<ul>
+<li>解释为什么局部变量表索引从 1 开始，因为该方法为实例方法，局部变量表索引为 0 的位置存放的是 this</li>
+</ul>
+<!-- raw HTML omitted -->
+<p>3、然后PC下移，指向的是下一行。让操作数8也入栈，同时执行store操作，存入局部变量表中</p>
+<!-- raw HTML omitted -->
+<p>4、然后从局部变量表中，依次将数据放在操作数栈中，等待执行 add 操作</p>
+<p>iload_1：取出局部变量表中索引为1的数据入操作数栈</p>
+<!-- raw HTML omitted -->
+<p>5、然后将操作数栈中的两个元素执行相加操作，并存储在局部变量表3的位置</p>
+<!-- raw HTML omitted -->
+<h3 id="小问题">小问题</h3>
+<p><strong>关于类型转换的说明</strong></p>
+<!-- raw HTML omitted -->
+<ul>
+<li>因为 8 可以存放在 byte 类型中，所以压入操作数栈的类型为 byte ，而不是 int ，所以执行的字节码指令为 bipush 8</li>
+<li>但是存储在局部变量的时候，会转成 int 类型的变量：istore_4</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>m改成800之后，byte存储不了，就成了short型，sipush 800</li>
+</ul>
+<p><strong>如果被调用的方法带有返回值，返回值入操作数栈</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">getSum</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd">int</span> m <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> n <span style="color:#ff79c6">=</span> 20<span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> k <span style="color:#ff79c6">=</span> m <span style="color:#ff79c6">+</span> n<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> k<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">testGetSum</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//获取上一个栈桢返回的结果，并保存在操作数栈中
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> getSum<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#8be9fd">int</span> j <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+</code></pre></div><p>getSum() 方法字节码指令：最后带着个 ireturn</p>
+<!-- raw HTML omitted -->
+<p>testGetSum() 方法字节码指令：一上来就加载 getSum() 方法的返回值()</p>
+<!-- raw HTML omitted -->
+<h3 id="栈顶缓存技术">栈顶缓存技术</h3>
+<p><strong>栈顶缓存技术：Top Of Stack Cashing</strong></p>
+<ol>
+<li>
+<p>前面提过，基于栈式架构的虚拟机所使用的零地址指令更加紧凑，但完成一项操作的时候必然需要使用更多的入栈和出栈指令，这同时也就意味着将需要更多的指令分派（instruction dispatch）次数（也就是你会发现指令很多）和导致内存读/写次数多，效率不高。</p>
+</li>
+<li>
+<p>由于操作数是存储在内存中的，因此频繁地执行内存读/写操作必然会影响执行速度。为了解决这个问题，HotSpot JVM的设计者们提出了栈顶缓存（Tos，Top-of-Stack Cashing）技术，<strong>将栈顶元素全部缓存在物理CPU的寄存器中，以此降低对内存的读/写次数，提升执行引擎的执行效率。</strong></p>
+</li>
+<li>
+<p>寄存器的主要优点：指令更少，执行速度快，但是指令集（也就是指令种类）很多</p>
+</li>
+</ol>
+<h2 id="动态链接">动态链接</h2>
+<p><strong>动态链接（或指向运行时常量池的方法引用）</strong></p>
+<ol>
+<li>
+<p>每一个栈帧内部都包含<strong>一个指向运行时常量池中该栈帧所属方法的引用</strong>。包含这个引用的目的就是<strong>为了支持当前方法的代码能够实现动态链接</strong>（Dynamic Linking），比如：invokedynamic指令</p>
+</li>
+<li>
+<p>在Java源文件被编译到字节码文件中时，所有的变量和方法引用都作为符号引用（Symbolic Reference）保存在class文件的常量池里。比如：描述一个方法调用了另外的其他方法时，就是通过常量池中指向方法的符号引用来表示的，那么<strong>动态链接的作用就是为了将这些符号引用转换为调用方法的直接引用</strong></p>
+</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DynamicLinkingTest</span> <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd">int</span> num <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">methodA</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;methodA()....&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">methodB</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;methodB()....&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        methodA<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        num<span style="color:#ff79c6">+</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>对应字节码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Classfile <span style="color:#ff79c6">/</span>F<span style="color:#ff79c6">:</span><span style="color:#ff79c6">/</span>IDEAWorkSpaceSourceCode<span style="color:#ff79c6">/</span>JVMDemo<span style="color:#ff79c6">/</span>out<span style="color:#ff79c6">/</span>production<span style="color:#ff79c6">/</span>chapter05<span style="color:#ff79c6">/</span>com<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java1<span style="color:#ff79c6">/</span>DynamicLinkingTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span>
+  Last modified 2020<span style="color:#ff79c6">-</span>11<span style="color:#ff79c6">-</span>10<span style="color:#ff79c6">;</span> size 712 bytes
+  MD5 checksum e56913c945f897c7ee6c0a608629bca8
+  Compiled from <span style="color:#f1fa8c">&#34;DynamicLinkingTest.java&#34;</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">com</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">atguigu</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">java1</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">DynamicLinkingTest</span>
+  minor version<span style="color:#ff79c6">:</span> 0
+  major version<span style="color:#ff79c6">:</span> 52
+  flags<span style="color:#ff79c6">:</span> ACC_PUBLIC<span style="color:#ff79c6">,</span> ACC_SUPER
+Constant pool<span style="color:#ff79c6">:</span>
+   #1 <span style="color:#ff79c6">=</span> Methodref          #9<span style="color:#ff79c6">.</span>#23         <span style="color:#6272a4">// java/lang/Object.&#34;&lt;init&gt;&#34;:()V
+</span><span style="color:#6272a4"></span>   #2 <span style="color:#ff79c6">=</span> Fieldref           #8<span style="color:#ff79c6">.</span>#24         <span style="color:#6272a4">// com/atguigu/java1/DynamicLinkingTest.num:I
+</span><span style="color:#6272a4"></span>   #3 <span style="color:#ff79c6">=</span> Fieldref           #25<span style="color:#ff79c6">.</span>#26        <span style="color:#6272a4">// java/lang/System.out:Ljava/io/PrintStream;
+</span><span style="color:#6272a4"></span>   #4 <span style="color:#ff79c6">=</span> String             #27            <span style="color:#6272a4">// methodA()....
+</span><span style="color:#6272a4"></span>   #5 <span style="color:#ff79c6">=</span> Methodref          #28<span style="color:#ff79c6">.</span>#29        <span style="color:#6272a4">// java/io/PrintStream.println:(Ljava/lang/String;)V
+</span><span style="color:#6272a4"></span>   #6 <span style="color:#ff79c6">=</span> String             #30            <span style="color:#6272a4">// methodB()....
+</span><span style="color:#6272a4"></span>   #7 <span style="color:#ff79c6">=</span> Methodref          #8<span style="color:#ff79c6">.</span>#31         <span style="color:#6272a4">// com/atguigu/java1/DynamicLinkingTest.methodA:()V
+</span><span style="color:#6272a4"></span>   #8 <span style="color:#ff79c6">=</span> Class              #32            <span style="color:#6272a4">// com/atguigu/java1/DynamicLinkingTest
+</span><span style="color:#6272a4"></span>   #9 <span style="color:#ff79c6">=</span> Class              #33            <span style="color:#6272a4">// java/lang/Object
+</span><span style="color:#6272a4"></span>  #10 <span style="color:#ff79c6">=</span> Utf8               num
+  #11 <span style="color:#ff79c6">=</span> Utf8               I
+  #12 <span style="color:#ff79c6">=</span> Utf8               <span style="color:#ff79c6">&lt;</span>init<span style="color:#ff79c6">&gt;</span>
+  #13 <span style="color:#ff79c6">=</span> Utf8               <span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>V
+  #14 <span style="color:#ff79c6">=</span> Utf8               Code
+  #15 <span style="color:#ff79c6">=</span> Utf8               LineNumberTable
+  #16 <span style="color:#ff79c6">=</span> Utf8               LocalVariableTable
+  #17 <span style="color:#ff79c6">=</span> Utf8               <span style="color:#ff79c6">this</span>
+  #18 <span style="color:#ff79c6">=</span> Utf8               Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java1<span style="color:#ff79c6">/</span>DynamicLinkingTest<span style="color:#ff79c6">;</span>
+  #19 <span style="color:#ff79c6">=</span> Utf8               methodA
+  #20 <span style="color:#ff79c6">=</span> Utf8               methodB
+  #21 <span style="color:#ff79c6">=</span> Utf8               SourceFile
+  #22 <span style="color:#ff79c6">=</span> Utf8               DynamicLinkingTest<span style="color:#ff79c6">.</span><span style="color:#50fa7b">java</span>
+  #23 <span style="color:#ff79c6">=</span> NameAndType        #12<span style="color:#ff79c6">:</span>#13        <span style="color:#6272a4">// &#34;&lt;init&gt;&#34;:()V
+</span><span style="color:#6272a4"></span>  #24 <span style="color:#ff79c6">=</span> NameAndType        #10<span style="color:#ff79c6">:</span>#11        <span style="color:#6272a4">// num:I
+</span><span style="color:#6272a4"></span>  #25 <span style="color:#ff79c6">=</span> Class              #34            <span style="color:#6272a4">// java/lang/System
+</span><span style="color:#6272a4"></span>  #26 <span style="color:#ff79c6">=</span> NameAndType        #35<span style="color:#ff79c6">:</span>#36        <span style="color:#6272a4">// out:Ljava/io/PrintStream;
+</span><span style="color:#6272a4"></span>  #27 <span style="color:#ff79c6">=</span> Utf8               <span style="color:#50fa7b">methodA</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#ff79c6">.</span><span style="color:#ff79c6">.</span><span style="color:#ff79c6">.</span>
+  #28 <span style="color:#ff79c6">=</span> Class              #37            <span style="color:#6272a4">// java/io/PrintStream
+</span><span style="color:#6272a4"></span>  #29 <span style="color:#ff79c6">=</span> NameAndType        #38<span style="color:#ff79c6">:</span>#39        <span style="color:#6272a4">// println:(Ljava/lang/String;)V
+</span><span style="color:#6272a4"></span>  #30 <span style="color:#ff79c6">=</span> Utf8               <span style="color:#50fa7b">methodB</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#ff79c6">.</span><span style="color:#ff79c6">.</span><span style="color:#ff79c6">.</span>
+  #31 <span style="color:#ff79c6">=</span> NameAndType        #19<span style="color:#ff79c6">:</span>#13        <span style="color:#6272a4">// methodA:()V
+</span><span style="color:#6272a4"></span>  #32 <span style="color:#ff79c6">=</span> Utf8               com<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java1<span style="color:#ff79c6">/</span>DynamicLinkingTest
+  #33 <span style="color:#ff79c6">=</span> Utf8               java<span style="color:#ff79c6">/</span>lang<span style="color:#ff79c6">/</span>Object
+  #34 <span style="color:#ff79c6">=</span> Utf8               java<span style="color:#ff79c6">/</span>lang<span style="color:#ff79c6">/</span>System
+  #35 <span style="color:#ff79c6">=</span> Utf8               out
+  #36 <span style="color:#ff79c6">=</span> Utf8               Ljava<span style="color:#ff79c6">/</span>io<span style="color:#ff79c6">/</span>PrintStream<span style="color:#ff79c6">;</span>
+  #37 <span style="color:#ff79c6">=</span> Utf8               java<span style="color:#ff79c6">/</span>io<span style="color:#ff79c6">/</span>PrintStream
+  #38 <span style="color:#ff79c6">=</span> Utf8               println
+  #39 <span style="color:#ff79c6">=</span> Utf8               <span style="color:#ff79c6">(</span>Ljava<span style="color:#ff79c6">/</span>lang<span style="color:#ff79c6">/</span>String<span style="color:#ff79c6">;</span><span style="color:#ff79c6">)</span>V
+<span style="color:#ff79c6">{</span>
+  <span style="color:#8be9fd">int</span> num<span style="color:#ff79c6">;</span>
+    descriptor<span style="color:#ff79c6">:</span> I
+    flags<span style="color:#ff79c6">:</span>
+
+  <span style="color:#8be9fd;font-style:italic">public</span> com<span style="color:#ff79c6">.</span><span style="color:#50fa7b">atguigu</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">java1</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">DynamicLinkingTest</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    descriptor<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>V
+    flags<span style="color:#ff79c6">:</span> ACC_PUBLIC
+    Code<span style="color:#ff79c6">:</span>
+      stack<span style="color:#ff79c6">=</span>2<span style="color:#ff79c6">,</span> locals<span style="color:#ff79c6">=</span>1<span style="color:#ff79c6">,</span> args_size<span style="color:#ff79c6">=</span>1
+         0<span style="color:#ff79c6">:</span> aload_0
+         1<span style="color:#ff79c6">:</span> invokespecial #1                  <span style="color:#6272a4">// Method java/lang/Object.&#34;&lt;init&gt;&#34;:()V
+</span><span style="color:#6272a4"></span>         4<span style="color:#ff79c6">:</span> aload_0
+         5<span style="color:#ff79c6">:</span> bipush        10
+         7<span style="color:#ff79c6">:</span> putfield      #2                  <span style="color:#6272a4">// Field num:I
+</span><span style="color:#6272a4"></span>        10<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">return</span>
+      LineNumberTable<span style="color:#ff79c6">:</span>
+        line 7<span style="color:#ff79c6">:</span> 0
+        line 9<span style="color:#ff79c6">:</span> 4
+      LocalVariableTable<span style="color:#ff79c6">:</span>
+        Start  Length  Slot  Name   Signature
+            0      11     0  <span style="color:#ff79c6">this</span>   Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java1<span style="color:#ff79c6">/</span>DynamicLinkingTest<span style="color:#ff79c6">;</span>
+
+  <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">methodA</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    descriptor<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>V
+    flags<span style="color:#ff79c6">:</span> ACC_PUBLIC
+    Code<span style="color:#ff79c6">:</span>
+      stack<span style="color:#ff79c6">=</span>2<span style="color:#ff79c6">,</span> locals<span style="color:#ff79c6">=</span>1<span style="color:#ff79c6">,</span> args_size<span style="color:#ff79c6">=</span>1
+         0<span style="color:#ff79c6">:</span> getstatic     #3                  <span style="color:#6272a4">// Field java/lang/System.out:Ljava/io/PrintStream;
+</span><span style="color:#6272a4"></span>         3<span style="color:#ff79c6">:</span> ldc           #4                  <span style="color:#6272a4">// String methodA()....
+</span><span style="color:#6272a4"></span>         5<span style="color:#ff79c6">:</span> invokevirtual #5                  <span style="color:#6272a4">// Method java/io/PrintStream.println:(Ljava/lang/String;)V
+</span><span style="color:#6272a4"></span>         8<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">return</span>
+      LineNumberTable<span style="color:#ff79c6">:</span>
+        line 12<span style="color:#ff79c6">:</span> 0
+        line 13<span style="color:#ff79c6">:</span> 8
+      LocalVariableTable<span style="color:#ff79c6">:</span>
+        Start  Length  Slot  Name   Signature
+            0       9     0  <span style="color:#ff79c6">this</span>   Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java1<span style="color:#ff79c6">/</span>DynamicLinkingTest<span style="color:#ff79c6">;</span>
+
+  <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">methodB</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    descriptor<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>V
+    flags<span style="color:#ff79c6">:</span> ACC_PUBLIC
+    Code<span style="color:#ff79c6">:</span>
+      stack<span style="color:#ff79c6">=</span>3<span style="color:#ff79c6">,</span> locals<span style="color:#ff79c6">=</span>1<span style="color:#ff79c6">,</span> args_size<span style="color:#ff79c6">=</span>1
+         0<span style="color:#ff79c6">:</span> getstatic     #3                  <span style="color:#6272a4">// Field java/lang/System.out:Ljava/io/PrintStream;
+</span><span style="color:#6272a4"></span>         3<span style="color:#ff79c6">:</span> ldc           #6                  <span style="color:#6272a4">// String methodB()....
+</span><span style="color:#6272a4"></span>         5<span style="color:#ff79c6">:</span> invokevirtual #5                  <span style="color:#6272a4">// Method java/io/PrintStream.println:(Ljava/lang/String;)V
+</span><span style="color:#6272a4"></span>         8<span style="color:#ff79c6">:</span> aload_0
+         9<span style="color:#ff79c6">:</span> invokevirtual #7                  <span style="color:#6272a4">// Method methodA:()V
+</span><span style="color:#6272a4"></span>        12<span style="color:#ff79c6">:</span> aload_0
+        13<span style="color:#ff79c6">:</span> dup
+        14<span style="color:#ff79c6">:</span> getfield      #2                  <span style="color:#6272a4">// Field num:I
+</span><span style="color:#6272a4"></span>        17<span style="color:#ff79c6">:</span> iconst_1
+        18<span style="color:#ff79c6">:</span> iadd
+        19<span style="color:#ff79c6">:</span> putfield      #2                  <span style="color:#6272a4">// Field num:I
+</span><span style="color:#6272a4"></span>        22<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">return</span>
+      LineNumberTable<span style="color:#ff79c6">:</span>
+        line 16<span style="color:#ff79c6">:</span> 0
+        line 18<span style="color:#ff79c6">:</span> 8
+        line 20<span style="color:#ff79c6">:</span> 12
+        line 21<span style="color:#ff79c6">:</span> 22
+      LocalVariableTable<span style="color:#ff79c6">:</span>
+        Start  Length  Slot  Name   Signature
+            0      23     0  <span style="color:#ff79c6">this</span>   Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java1<span style="color:#ff79c6">/</span>DynamicLinkingTest<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+<span style="color:#8be9fd;font-style:italic">SourceFile:</span> <span style="color:#f1fa8c">&#34;DynamicLinkingTest.java&#34;</span>
+</code></pre></div><p>1、在字节码指令中，methodB() 方法中通过 invokevirtual #7 指令调用了方法 A ，那么 #7 是个啥呢？</p>
+<p>2、往上面翻，找到常量池的定义：<code>#7 = Methodref #8.#31</code></p>
+<ul>
+<li>先找 #8 ：
+<ul>
+<li><code>#8 = Class #32</code> ：去找 #32</li>
+<li><code>#32 = Utf8 com/atguigu/java1/DynamicLinkingTest</code></li>
+<li>结论：通过 #8 我们找到了 <code>DynamicLinkingTest</code> 这个类</li>
+</ul>
+</li>
+<li>再来找 #31：
+<ul>
+<li><code>#31 = NameAndType #19:#13</code> ：去找 #19 和 #13</li>
+<li><code>#19 = Utf8 methodA</code> ：方法名为 methodA</li>
+<li><code>#13 = Utf8 ()V</code> ：方法没有形参，返回值为 void</li>
+</ul>
+</li>
+</ul>
+<p>3、结论：通过 #7 我们就能找到需要调用的 methodA() 方法，并进行调用</p>
+<p>4、在上面，其实还有很多符号引用，比如 Object、System、PrintStream 等等</p>
+<!-- raw HTML omitted -->
+<p><strong>为什么要用常量池呢？</strong></p>
+<ol>
+<li>
+<p>因为在不同的方法，都可能调用常量或者方法，所以只需要存储一份即可，然后记录其引用即可，节省了空间。</p>
+</li>
+<li>
+<p>常量池的作用：就是为了提供一些符号和常量，便于指令的识别</p>
+</li>
+</ol>
+<h2 id="方法返回地址">方法返回地址</h2>
+<h3 id="静态链接与动态链接">静态链接与动态链接</h3>
+<p>在JVM中，将符号引用转换为调用方法的直接引用与方法的绑定机制相关</p>
+<ul>
+<li><strong>静态链接</strong>：</li>
+</ul>
+<p>当一个字节码文件被装载进JVM内部时，如果被调用的目标方法在编译期确定，且运行期保持不变时，这种情况下将调用方法的符号引用转换为直接引用的过程称之为静态链接</p>
+<ul>
+<li><strong>动态链接</strong>：</li>
+</ul>
+<p>如果被调用的方法在编译期无法被确定下来，也就是说，只能够在程序运行期将调用的方法的符号转换为直接引用，由于这种引用转换过程具备动态性，因此也被称之为动态链接。</p>
+<h3 id="早期绑定与晚期绑定">早期绑定与晚期绑定</h3>
+<blockquote>
+<p>静态链接与动态链接针对的是方法。早期绑定和晚期绑定范围更广。早期绑定涵盖了静态链接，晚期绑定涵盖了动态链接。</p>
+</blockquote>
+<p>静态链接和动态链接对应的方法的绑定机制为：早期绑定（Early Binding）和晚期绑定（Late Binding）。<strong>绑定是一个字段、方法或者类在符号引用被替换为直接引用的过程</strong>，这仅仅发生一次。</p>
+<ul>
+<li><strong>早期绑定</strong></li>
+</ul>
+<p>早期绑定就是指被调用的目标方法如果在编译期可知，且运行期保持不变时，即可将这个方法与所属的类型进行绑定，这样一来，由于明确了被调用的目标方法究竟是哪一个，因此也就<strong>可以使用静态链接的方式将符号引用转换为直接引用</strong>。</p>
+<ul>
+<li><strong>晚期绑定</strong></li>
+</ul>
+<p>如果被调用的方法在编译期无法被确定下来，<strong>只能够在程序运行期根据实际的类型绑定相关的方法</strong>，这种绑定方式也就被称之为晚期绑定。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Animal</span> <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">eat</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;动物进食&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">interface</span> <span style="color:#50fa7b">Huntable</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">hunt</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Dog</span> <span style="color:#8be9fd;font-style:italic">extends</span> Animal <span style="color:#8be9fd;font-style:italic">implements</span> Huntable <span style="color:#ff79c6">{</span>
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">eat</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;狗吃骨头&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">hunt</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;捕食耗子，多管闲事&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Cat</span> <span style="color:#8be9fd;font-style:italic">extends</span> Animal <span style="color:#8be9fd;font-style:italic">implements</span> Huntable <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">Cat</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//表现为：早期绑定
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">Cat</span><span style="color:#ff79c6">(</span>String name<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//表现为：早期绑定
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">eat</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">eat</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//表现为：早期绑定
+</span><span style="color:#6272a4"></span>        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;猫吃鱼&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">hunt</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;捕食耗子，天经地义&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">AnimalTest</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">showAnimal</span><span style="color:#ff79c6">(</span>Animal animal<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        animal<span style="color:#ff79c6">.</span><span style="color:#50fa7b">eat</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//表现为：晚期绑定
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">showHunt</span><span style="color:#ff79c6">(</span>Huntable h<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        h<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hunt</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//表现为：晚期绑定
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+</code></pre></div><p>部分字节码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#ff79c6">{</span>
+  <span style="color:#8be9fd;font-style:italic">public</span> com<span style="color:#ff79c6">.</span><span style="color:#50fa7b">atguigu</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">java2</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">AnimalTest</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    descriptor<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span>V
+    flags<span style="color:#ff79c6">:</span> ACC_PUBLIC
+    Code<span style="color:#ff79c6">:</span>
+      stack<span style="color:#ff79c6">=</span>1<span style="color:#ff79c6">,</span> locals<span style="color:#ff79c6">=</span>1<span style="color:#ff79c6">,</span> args_size<span style="color:#ff79c6">=</span>1
+         0<span style="color:#ff79c6">:</span> aload_0
+         1<span style="color:#ff79c6">:</span> invokespecial #1                  <span style="color:#6272a4">// Method java/lang/Object.&#34;&lt;init&gt;&#34;:()V
+</span><span style="color:#6272a4"></span>         4<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">return</span>
+      LineNumberTable<span style="color:#ff79c6">:</span>
+        line 54<span style="color:#ff79c6">:</span> 0
+      LocalVariableTable<span style="color:#ff79c6">:</span>
+        Start  Length  Slot  Name   Signature
+            0       5     0  <span style="color:#ff79c6">this</span>   Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java2<span style="color:#ff79c6">/</span>AnimalTest<span style="color:#ff79c6">;</span>
+
+  <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">showAnimal</span><span style="color:#ff79c6">(</span>com<span style="color:#ff79c6">.</span><span style="color:#50fa7b">atguigu</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">java2</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Animal</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    descriptor<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">(</span>Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java2<span style="color:#ff79c6">/</span>Animal<span style="color:#ff79c6">;</span><span style="color:#ff79c6">)</span>V
+    flags<span style="color:#ff79c6">:</span> ACC_PUBLIC
+    Code<span style="color:#ff79c6">:</span>
+      stack<span style="color:#ff79c6">=</span>1<span style="color:#ff79c6">,</span> locals<span style="color:#ff79c6">=</span>2<span style="color:#ff79c6">,</span> args_size<span style="color:#ff79c6">=</span>2
+         0<span style="color:#ff79c6">:</span> aload_1
+         1<span style="color:#ff79c6">:</span> invokevirtual #2                  <span style="color:#6272a4">// Method com/atguigu/java2/Animal.eat:()V
+</span><span style="color:#6272a4"></span>         4<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">return</span>
+      LineNumberTable<span style="color:#ff79c6">:</span>
+        line 56<span style="color:#ff79c6">:</span> 0
+        line 57<span style="color:#ff79c6">:</span> 4
+      LocalVariableTable<span style="color:#ff79c6">:</span>
+        Start  Length  Slot  Name   Signature
+            0       5     0  <span style="color:#ff79c6">this</span>   Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java2<span style="color:#ff79c6">/</span>AnimalTest<span style="color:#ff79c6">;</span>
+            0       5     1 animal   Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java2<span style="color:#ff79c6">/</span>Animal<span style="color:#ff79c6">;</span>
+
+  <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">showHunt</span><span style="color:#ff79c6">(</span>com<span style="color:#ff79c6">.</span><span style="color:#50fa7b">atguigu</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">java2</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">Huntable</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    descriptor<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">(</span>Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java2<span style="color:#ff79c6">/</span>Huntable<span style="color:#ff79c6">;</span><span style="color:#ff79c6">)</span>V
+    flags<span style="color:#ff79c6">:</span> ACC_PUBLIC
+    Code<span style="color:#ff79c6">:</span>
+      stack<span style="color:#ff79c6">=</span>1<span style="color:#ff79c6">,</span> locals<span style="color:#ff79c6">=</span>2<span style="color:#ff79c6">,</span> args_size<span style="color:#ff79c6">=</span>2
+         0<span style="color:#ff79c6">:</span> aload_1
+         1<span style="color:#ff79c6">:</span> invokeinterface #3<span style="color:#ff79c6">,</span>  1            <span style="color:#6272a4">// InterfaceMethod com/atguigu/java2/Huntable.hunt:()V
+</span><span style="color:#6272a4"></span>         6<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">return</span>
+      LineNumberTable<span style="color:#ff79c6">:</span>
+        line 60<span style="color:#ff79c6">:</span> 0
+        line 61<span style="color:#ff79c6">:</span> 6
+      LocalVariableTable<span style="color:#ff79c6">:</span>
+        Start  Length  Slot  Name   Signature
+            0       7     0  <span style="color:#ff79c6">this</span>   Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java2<span style="color:#ff79c6">/</span>AnimalTest<span style="color:#ff79c6">;</span>
+            0       7     1     h   Lcom<span style="color:#ff79c6">/</span>atguigu<span style="color:#ff79c6">/</span>java2<span style="color:#ff79c6">/</span>Huntable<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+<span style="color:#8be9fd;font-style:italic">SourceFile:</span> <span style="color:#f1fa8c">&#34;AnimalTest.java&#34;</span>
+</code></pre></div><p>invokevirtual 体现为晚期绑定</p>
+<p>invokeinterface 也体现为晚期绑定</p>
+<p>invokespecial 体现为早期绑定</p>
+<h3 id="多态与绑定">多态与绑定</h3>
+<ol>
+<li>
+<p>随着高级语言的横空出世，类似于Java一样的基于面向对象的编程语言如今越来越多，尽管这类编程语言在语法风格上存在一定的差别，但是它们彼此之间始终保持着一个共性，那就是都支持封装、继承和多态等面向对象特性，既然这一类的编程语言具备多态特性，那么自然也就具备早期绑定和晚期绑定两种绑定方式。</p>
+</li>
+<li>
+<p>Java中任何一个普通的方法其实都具备虚函数的特征，它们相当于C++语言中的虚函数（C++中则需要使用关键字virtual来显式定义）。如果在Java程序中不希望某个方法拥有虚函数的特征时，则可以使用关键字final来标记这个方法。</p>
+</li>
+</ol>
+<h4 id="虚方法与非虚方法">虚方法与非虚方法</h4>
+<p><strong>虚方法与非虚方法的区别</strong></p>
+<ol>
+<li>如果方法在编译期就确定了具体的调用版本，这个版本在运行时是不可变的。这样的方法称为非虚方法。</li>
+<li>静态方法、私有方法、final方法、实例构造器、父类方法都是非虚方法。</li>
+<li>其他方法称为虚方法。</li>
+</ol>
+<p><strong>子类对象的多态的使用前提：</strong></p>
+<ol>
+<li>类的继承关系</li>
+<li>方法的重写</li>
+</ol>
+<p><strong>虚拟机中调用方法的指令</strong></p>
+<ul>
+<li><strong>普通指令：</strong></li>
+</ul>
+<ol>
+<li>invokestatic：调用静态方法，解析阶段确定唯一方法版本</li>
+<li>invokespecial：调用<code>&lt;init&gt;</code>方法、私有及父类方法，解析阶段确定唯一方法版本</li>
+<li>invokevirtual：调用所有虚方法</li>
+<li>invokeinterface：调用接口方法</li>
+</ol>
+<ul>
+<li><strong>动态调用指令</strong></li>
+</ul>
+<p>invokedynamic：动态解析出需要调用的方法，然后执行</p>
+<p>前四条指令固化在虚拟机内部，方法的调用执行不可人为干预。而invokedynamic指令则支持由用户确定方法版本。其中invokestatic指令和invokespecial指令调用的方法称为非虚方法，其余的（final修饰的除外）称为虚方法。</p>
+<h4 id="举例-2">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Father</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">Father</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;father的构造器&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">showStatic</span><span style="color:#ff79c6">(</span>String str<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;father &#34;</span> <span style="color:#ff79c6">+</span> str<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">showFinal</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;father show final&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">showCommon</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;father 普通方法&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Son</span> <span style="color:#8be9fd;font-style:italic">extends</span> Father <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">Son</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//invokespecial
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">Son</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> age<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//invokespecial
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">//不是重写的父类的静态方法，因为静态方法不能被重写！
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">showStatic</span><span style="color:#ff79c6">(</span>String str<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;son &#34;</span> <span style="color:#ff79c6">+</span> str<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">showPrivate</span><span style="color:#ff79c6">(</span>String str<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;son private&#34;</span> <span style="color:#ff79c6">+</span> str<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">show</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//invokestatic
+</span><span style="color:#6272a4"></span>        showStatic<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;atguigu.com&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//invokestatic
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">showStatic</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;good!&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//invokespecial
+</span><span style="color:#6272a4"></span>        showPrivate<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hello!&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//invokespecial
+</span><span style="color:#6272a4"></span>        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">showCommon</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#6272a4">//invokevirtual
+</span><span style="color:#6272a4"></span>        showFinal<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#6272a4">//因为此方法声明有final，不能被子类重写，所以也认为此方法是非虚方法。
+</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">//虚方法如下：
+</span><span style="color:#6272a4"></span>        
+        <span style="color:#6272a4">/*
+</span><span style="color:#6272a4">        invokevirtual  你没有显示的加super.，编译器认为你可能调用子类的showCommon(即使son子类没有重写，也		  会认为)，所以编译期间确定不下来，就是虚方法。
+</span><span style="color:#6272a4">        */</span>
+        showCommon<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        info<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        MethodInterface in <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//invokeinterface
+</span><span style="color:#6272a4"></span>        in<span style="color:#ff79c6">.</span><span style="color:#50fa7b">methodA</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">info</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">display</span><span style="color:#ff79c6">(</span>Father f<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        f<span style="color:#ff79c6">.</span><span style="color:#50fa7b">showCommon</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        Son so <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Son<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        so<span style="color:#ff79c6">.</span><span style="color:#50fa7b">show</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">interface</span> <span style="color:#50fa7b">MethodInterface</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">methodA</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>Son 类中 show() 方法的字节码指令如下</p>
+<!-- raw HTML omitted -->
+<h4 id="关于-invokedynamic-指令">关于 invokedynamic 指令</h4>
+<ol>
+<li>
+<p>JVM字节码指令集一直比较稳定，一直到Java7中才增加了一个invokedynamic指令，这是Java为了实现【动态类型语言】支持而做的一种改进。</p>
+</li>
+<li>
+<p>但是在Java7中并没有提供直接生成invokedynamic指令的方法，需要借助ASM这种底层字节码工具来产生invokedynamic指令。直到Java8的Lambda表达式的出现，invokedynamic指令的生成，在Java中才有了直接的生成方式。</p>
+</li>
+<li>
+<p>Java7中增加的动态语言类型支持的本质是对Java虚拟机规范的修改，而不是对Java语言规则的修改，这一块相对来讲比较复杂，增加了虚拟机中的方法调用，最直接的受益者就是运行在Java平台的动态语言的编译器。</p>
+</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@FunctionalInterface
+<span style="color:#8be9fd;font-style:italic">interface</span> <span style="color:#50fa7b">Func</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">func</span><span style="color:#ff79c6">(</span>String str<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Lambda</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">lambda</span><span style="color:#ff79c6">(</span>Func func<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        Lambda lambda <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Lambda<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        Func func <span style="color:#ff79c6">=</span> s <span style="color:#ff79c6">-</span><span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">;</span>
+
+        lambda<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lambda</span><span style="color:#ff79c6">(</span>func<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        lambda<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lambda</span><span style="color:#ff79c6">(</span>s <span style="color:#ff79c6">-</span><span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><!-- raw HTML omitted -->
+<h3 id="动态语言和静态语言">动态语言和静态语言</h3>
+<ol>
+<li>
+<p>动态类型语言和静态类型语言两者的区别就在于<strong>对类型的检查是在编译期还是在运行期</strong>，满足前者就是静态类型语言，反之是动态类型语言。</p>
+</li>
+<li>
+<p>说的再直白一点就是，静态类型语言是判断变量自身的类型信息；动态类型语言是判断变量值的类型信息，变量没有类型信息，变量值才有类型信息，这是动态语言的一个重要特征。</p>
+</li>
+</ol>
+<p>Java：String info = &ldquo;mogu blog&rdquo;;     		(Java是静态类型语言的，会先编译就进行类型检查)
+JS：var name = &ldquo;shkstart&rdquo;;    var name = 10;	（运行时才进行检查）</p>
+<pre><code>Python: info = 130.5 (运行时才检查)
+</code></pre>
+<h3 id="java语言中方法重写的本质">Java语言中方法重写的本质</h3>
+<ol>
+<li>找到操作数栈顶的第一个元素所执行的对象的实际类型，记作C。</li>
+<li>如果在类型C中找到与常量中的描述符合简单名称都相符的方法，则进行访问权限校验。
+<ul>
+<li>如果通过则返回这个方法的直接引用，查找过程结束</li>
+<li>如果不通过，则返回java.lang.IllegalAccessError 异常</li>
+</ul>
+</li>
+<li>否则，按照继承关系从下往上依次对C的各个父类进行第2步的搜索和验证过程。</li>
+<li>如果始终没有找到合适的方法，则抛出java.lang.AbstractMethodError异常。</li>
+</ol>
+<blockquote>
+<p>上面这个过程称为<strong>动态分派</strong></p>
+</blockquote>
+<p><strong>IllegalAccessError介绍</strong></p>
+<ol>
+<li>程序试图访问或修改一个属性或调用一个方法，这个属性或方法，你没有权限访问。一般的，这个会引起编译器异常。这个错误如果发生在运行时，就说明一个类发生了不兼容的改变。</li>
+<li>比如，你把应该有的jar包放从工程中拿走了，或者Maven中存在jar包冲突</li>
+</ol>
+<h3 id="虚方法表">虚方法表</h3>
+<ol>
+<li>
+<p>在面向对象的编程中，会很频繁的使用到<strong>动态分派</strong>，如果在每次动态分派的过程中都要重新在类的方法元数据中搜索合适的目标的话就可能影响到执行效率。因此，为了提高性能，<strong>JVM采用在类的方法区建立一个虚方法表（virtual method table）来实现</strong>，非虚方法不会出现在表中。使用索引表来代替查找。【上面动态分派的过程，我们可以看到如果子类找不到，还要从下往上找其父类，非常耗时】</p>
+</li>
+<li>
+<p>每个类中都有一个虚方法表，表中存放着各个方法的实际入口。</p>
+</li>
+<li>
+<p>虚方法表是什么时候被创建的呢？虚方法表会在类加载的链接阶段被创建并开始初始化，类的变量初始值准备完成之后，JVM会把该类的虚方法表也初始化完毕。</p>
+</li>
+</ol>
+<p><strong>例子1</strong></p>
+<p>如图所示：如果类中重写了方法，那么调用的时候，就会直接在该类的虚方法表中查找</p>
+<!-- raw HTML omitted -->
+<p>1、比如说son在调用toString的时候，Son没有重写过，Son的父类Father也没有重写过，那就直接调用Object类的toString。那么就直接在虚方法表里指明toString直接指向Object类。</p>
+<p>2、下次Son对象再调用toString就直接去找Object，不用先找Son&ndash;&gt;再找Father&ndash;&gt;最后才到Object的这样的一个过程。</p>
+<p><strong>例子2</strong></p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="方法返回地址-1">方法返回地址</h2>
+<!-- raw HTML omitted -->
+<blockquote>
+<p>在一些帖子里，方法返回地址、动态链接、一些附加信息  也叫做帧数据区</p>
+</blockquote>
+<ol>
+<li>
+<p>存放调用该方法的pc寄存器的值。一个方法的结束，有两种方式：</p>
+<ul>
+<li>正常执行完成</li>
+<li>出现未处理的异常，非正常退出</li>
+</ul>
+</li>
+<li>
+<p>无论通过哪种方式退出，在方法退出后都返回到该方法被调用的位置。方法正常退出时，<strong>调用者的pc计数器的值作为返回地址，即调用该方法的指令的下一条指令的地址</strong>。而通过异常退出的，返回地址是要通过异常表来确定，栈帧中一般不会保存这部分信息。</p>
+</li>
+<li>
+<p>本质上，方法的退出就是当前栈帧出栈的过程。此时，需要恢复上层方法的局部变量表、操作数栈、将返回值压入调用者栈帧的操作数栈、设置PC寄存器值等，让调用者方法继续执行下去。</p>
+</li>
+<li>
+<p>正常完成出口和异常完成出口的区别在于：通过异常完成出口退出的不会给他的上层调用者产生任何的返回值。</p>
+</li>
+</ol>
+<p><strong>方法退出的两种方式</strong></p>
+<p>当一个方法开始执行后，只有两种方式可以退出这个方法，</p>
+<p><strong>正常退出：</strong></p>
+<ol>
+<li>执行引擎遇到任意一个方法返回的字节码指令（return），会有返回值传递给上层的方法调用者，简称<strong>正常完成出口</strong>；</li>
+<li>一个方法在正常调用完成之后，究竟需要使用哪一个返回指令，还需要根据方法返回值的实际数据类型而定。</li>
+<li>在字节码指令中，返回指令包含：
+<ul>
+<li>
+<p>ireturn：当返回值是boolean，byte，char，short和int类型时使用</p>
+</li>
+<li>
+<p>lreturn：Long类型</p>
+</li>
+<li>
+<p>freturn：Float类型</p>
+</li>
+<li>
+<p>dreturn：Double类型</p>
+</li>
+<li>
+<p>areturn：引用类型</p>
+</li>
+<li>
+<p>return：返回值类型为void的方法、实例初始化方法、类和接口的初始化方法</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>异常退出：</strong></p>
+<ol>
+<li>
+<p>在方法执行过程中遇到异常（Exception），并且这个异常没有在方法内进行处理，也就是只要在本方法的异常表中没有搜索到匹配的异常处理器，就会导致方法退出，简称<strong>异常完成出口</strong>。</p>
+</li>
+<li>
+<p>方法执行过程中，抛出异常时的异常处理，存储在一个异常处理表，方便在发生异常的时候找到处理异常的代码</p>
+</li>
+</ol>
+<!-- raw HTML omitted -->
+<p>异常处理表：</p>
+<ul>
+<li>反编译字节码文件，可得到 Exception table</li>
+<li>from ：字节码指令起始地址</li>
+<li>to ：字节码指令结束地址</li>
+<li>target ：出现异常跳转至地址为 11 的指令执行</li>
+<li>type ：捕获异常的类型</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="一些附加信息">一些附加信息</h2>
+<p>栈帧中还允许携带与Java虚拟机实现相关的一些附加信息。例如：对程序调试提供支持的信息。</p>
+<h2 id="栈相关面试题">栈相关面试题</h2>
+<h3 id="举例栈溢出的情况">举例栈溢出的情况？</h3>
+<p>SOF（StackOverflowError），栈大小分为固定的，和动态变化。如果是固定的就可能出现StackOverflowError。如果是动态变化的，内存不足时就可能出现OOM</p>
+<h3 id="调整栈大小就能保证不出现溢出么">调整栈大小，就能保证不出现溢出么？</h3>
+<p>不能保证不溢出，只能保证SOF出现的几率小</p>
+<h3 id="分配的栈内存越大越好么">分配的栈内存越大越好么？</h3>
+<p>不是，一定时间内降低了OOM概率，但是会挤占其它的线程空间，因为整个虚拟机的内存空间是有限的</p>
+<h3 id="垃圾回收是否涉及到虚拟机栈">垃圾回收是否涉及到虚拟机栈？</h3>
+<p>不会</p>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>是否有Error</th>
+<th>是否存在GC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PC计数器</td>
+<td>无</td>
+<td>不存在</td>
+</tr>
+<tr>
+<td>虚拟机栈</td>
+<td>有，SOF</td>
+<td>不存在</td>
+</tr>
+<tr>
+<td>本地方法栈(在HotSpot的实现中和虚拟机栈一样)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>堆</td>
+<td>有，OOM</td>
+<td>存在</td>
+</tr>
+<tr>
+<td>方法区</td>
+<td>有</td>
+<td>存在</td>
+</tr>
+</tbody>
+</table>
+<h3 id="方法中定义的局部变量是否线程安全">方法中定义的局部变量是否线程安全？</h3>
+<p>具体问题具体分析</p>
+<ol>
+<li>如果只有一个线程才可以操作此数据，则必是线程安全的。</li>
+<li>如果有多个线程操作此数据，则此数据是共享数据。如果不考虑同步机制的话，会存在线程安全问题。</li>
+</ol>
+<p><strong>具体问题具体分析：</strong></p>
+<ul>
+<li>如果对象是在内部产生，并在内部消亡，没有返回到外部，那么它就是线程安全的，反之则是线程不安全的。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">/**
+</span><span style="color:#6272a4"> * 面试题：
+</span><span style="color:#6272a4"> * 方法中定义的局部变量是否线程安全？具体情况具体分析
+</span><span style="color:#6272a4"> *
+</span><span style="color:#6272a4"> *   何为线程安全？
+</span><span style="color:#6272a4"> *      如果只有一个线程才可以操作此数据，则必是线程安全的。
+</span><span style="color:#6272a4"> *      如果有多个线程操作此数据，则此数据是共享数据。如果不考虑同步机制的话，会存在线程安全问题。
+</span><span style="color:#6272a4"> */</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StringBuilderTest</span> <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd">int</span> num <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+
+    <span style="color:#6272a4">//s1的声明方式是线程安全的（只在方法内部用了）
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">method1</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//StringBuilder:线程不安全
+</span><span style="color:#6272a4"></span>        StringBuilder s1 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringBuilder<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        s1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;a&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        s1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;b&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//...
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">//sBuilder的操作过程：是线程不安全的（作为参数传进来，可能被其它线程操作）
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">method2</span><span style="color:#ff79c6">(</span>StringBuilder sBuilder<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        sBuilder<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;a&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        sBuilder<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;b&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//...
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">//s1的操作：是线程不安全的（有返回值，可能被其它线程操作）
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> StringBuilder <span style="color:#50fa7b">method3</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        StringBuilder s1 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringBuilder<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        s1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;a&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        s1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;b&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> s1<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">//s1的操作：是线程安全的（s1自己消亡了，最后返回的只是s1.toString的一个新对象）
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> String <span style="color:#50fa7b">method4</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        StringBuilder s1 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringBuilder<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        s1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;a&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        s1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;b&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> s1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        StringBuilder s <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringBuilder<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+
+        <span style="color:#ff79c6">new</span> Thread<span style="color:#ff79c6">(</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">-</span><span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+            s<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;a&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            s<span style="color:#ff79c6">.</span><span style="color:#50fa7b">append</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;b&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        method2<span style="color:#ff79c6">(</span>s<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+
+</code></pre></div>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1044%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="4、程序计数器（JVM）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1046%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%8E%A5%E5%8F%A3/" data-toggle="tooltip" data-placement="top" title="6、本地方法接口（JVM）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/elasticsearch" title="elasticsearch">
+                            elasticsearch
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jvm" title="jvm">
+                            jvm
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/netty" title="netty">
+                            netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    <li>
+                        <a target="_blank" href="/#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+</html>
