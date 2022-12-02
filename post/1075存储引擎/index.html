@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="5、存储引擎（MySQL架构篇）" />
+    <meta property="og:title" content="5、存储引擎（MySQL架构篇）" />
+    <meta property="twitter:title" content="5、存储引擎（MySQL架构篇）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>5、存储引擎（MySQL架构篇） | yiguan1573</title>
+
+    <link rel="canonical" href="/post/1075%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive/">档案</a></li>
+                    
+                        <li><a href="/top/about/">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/04.JPG')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                    </div>
+                    <h1>5、存储引擎（MySQL架构篇）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                亿观
+                             
+                            on 
+                            Sunday, September 18, 2022
+                            
+                                <span id="/post/1075%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="1-查看存储引擎">1. 查看存储引擎</h2>
+<ul>
+<li>查看mysql提供什么存储引擎</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#ff79c6">show</span> engines;
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h6pxony9djj30vu07rtgr.jpg" alt="image-20220615223831995.png">
+
+</p>
+<h2 id="2-设置系统默认的存储引擎">2. 设置系统默认的存储引擎</h2>
+<ul>
+<li>查看默认的存储引擎</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#ff79c6">show</span> variables <span style="color:#ff79c6">like</span> <span style="color:#f1fa8c"></span><span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">%storage_engine%</span><span style="color:#f1fa8c">&#39;</span>;
+<span style="color:#6272a4">#或
+</span><span style="color:#6272a4"></span><span style="color:#ff79c6">SELECT</span> <span style="color:#ff79c6">@</span><span style="color:#ff79c6">@</span>default_storage_engine;
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h6pxouodf1j30n90aq0yw.jpg" alt="image-20220615224249491.png">
+
+</p>
+<ul>
+<li>修改默认的存储引擎</li>
+</ul>
+<p>如果在创建表的语句中没有显式指定表的存储引擎的话，那就会默认使用 InnoDB 作为表的存储引擎。 如果我们想改变表的默认存储引擎的话，可以这样写启动服务器的命令行：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#8be9fd">SET</span> DEFAULT_STORAGE_ENGINE<span style="color:#ff79c6">=</span>MyISAM;
+</code></pre></div><p>或者修改 my.cnf 文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#ff79c6">default</span><span style="color:#ff79c6">-</span>storage<span style="color:#ff79c6">-</span><span style="color:#ff79c6">engine</span><span style="color:#ff79c6">=</span>MyISAM
+<span style="color:#6272a4"># 重启服务
+</span><span style="color:#6272a4"></span>systemctl restart mysqld.service
+</code></pre></div><h2 id="3-设置表的存储引擎">3. 设置表的存储引擎</h2>
+<p>存储引擎是负责对表中的数据进行提取和写入工作的，我们可以为 不同的表设置不同的存储引擎 ，也就是 说不同的表可以有不同的物理存储结构，不同的提取和写入方式。</p>
+<h3 id="31-创建表时指定存储引擎">3.1 创建表时指定存储引擎</h3>
+<p>我们之前创建表的语句都没有指定表的存储引擎，那就会使用默认的存储引擎 InnoDB 。如果我们想显 式的指定一下表的存储引擎，那可以这么写：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#ff79c6">CREATE</span> <span style="color:#ff79c6">TABLE</span> 表名(
+建表语句;
+) <span style="color:#ff79c6">ENGINE</span> <span style="color:#ff79c6">=</span> 存储引擎名称;
+</code></pre></div><h3 id="32-修改表的存储引擎">3.2 修改表的存储引擎</h3>
+<p>如果表已经建好了，我们也可以使用下边这个语句来修改表的存储引擎：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#ff79c6">ALTER</span> <span style="color:#ff79c6">TABLE</span> 表名 <span style="color:#ff79c6">ENGINE</span> <span style="color:#ff79c6">=</span> 存储引擎名称;
+</code></pre></div><p>比如我们修改一下 engine_demo_table 表的存储引擎：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">ALTER</span> <span style="color:#ff79c6">TABLE</span> engine_demo_table <span style="color:#ff79c6">ENGINE</span> <span style="color:#ff79c6">=</span> InnoDB;
+</code></pre></div><p>这时我们再查看一下 engine_demo_table 的表结构：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">SHOW</span> <span style="color:#ff79c6">CREATE</span> <span style="color:#ff79c6">TABLE</span> engine_demo_table\G
+<span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span> <span style="color:#bd93f9">1</span>. row <span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span><span style="color:#ff79c6">*</span>
+<span style="color:#ff79c6">Table</span>: engine_demo_table
+<span style="color:#ff79c6">Create</span> <span style="color:#ff79c6">Table</span>: <span style="color:#ff79c6">CREATE</span> <span style="color:#ff79c6">TABLE</span> <span style="color:#ff79c6">`</span>engine_demo_table<span style="color:#ff79c6">`</span> (
+<span style="color:#ff79c6">`</span>i<span style="color:#ff79c6">`</span> <span style="color:#8be9fd">int</span>(<span style="color:#bd93f9">11</span>) <span style="color:#ff79c6">DEFAULT</span> NULL
+) <span style="color:#ff79c6">ENGINE</span><span style="color:#ff79c6">=</span>InnoDB <span style="color:#ff79c6">DEFAULT</span> <span style="color:#ff79c6">CHARSET</span><span style="color:#ff79c6">=</span>utf8
+<span style="color:#bd93f9">1</span> row <span style="color:#ff79c6">in</span> <span style="color:#8be9fd">set</span> (<span style="color:#bd93f9">0</span>.<span style="color:#bd93f9">01</span> sec)
+</code></pre></div><h2 id="4-引擎介绍">4. 引擎介绍</h2>
+<h3 id="41-innodb-引擎具备外键支持功能的事务存储引擎">4.1 InnoDB 引擎：具备外键支持功能的事务存储引擎</h3>
+<ul>
+<li>MySQL从3.23.34a开始就包含InnoDB存储引擎。 <code>大于等于5.5之后，默认采用InnoDB引擎</code> 。</li>
+<li>InnoDB是MySQL的 默认事务型引擎 ，它被设计用来处理大量的短期(short-lived)事务。可以确保事务的完整提交(Commit)和回滚(Rollback)。</li>
+<li>除了增加和查询外，还需要更新、删除操作，那么，应优先选择InnoDB存储引擎。 除非有非常特别的原因需要使用其他的存储引擎，否则应该优先考虑InnoDB引擎。</li>
+<li>数据文件结构：（在《第02章_MySQL数据目录》章节已讲）
+<ul>
+<li>表名.frm 存储表结构（MySQL8.0时，合并在表名.ibd中）</li>
+<li>表名.ibd 存储数据和索引</li>
+</ul>
+</li>
+<li>InnoDB是 为处理巨大数据量的最大性能设计 。
+<ul>
+<li>在以前的版本中，字典数据以元数据文件、非事务表等来存储。现在这些元数据文件被删除 了。比如： .frm ， .par ， .trn ， .isl ， .db.opt 等都在MySQL8.0中不存在了。</li>
+</ul>
+</li>
+<li>对比MyISAM的存储引擎， InnoDB写的处理效率差一些 ，并且会占用更多的磁盘空间以保存数据和索引。</li>
+<li>MyISAM只缓存索引，不缓存真实数据；InnoDB不仅缓存索引还要缓存真实数据， 对内存要求较 高 ，而且内存大小对性能有决定性的影响。</li>
+</ul>
+<h3 id="42-myisam-引擎主要的非事务处理存储引擎">4.2 MyISAM 引擎：主要的非事务处理存储引擎</h3>
+<ul>
+<li>MyISAM提供了大量的特性，包括全文索引、压缩、空间函数(GIS)等，但MyISAM不支持事务、行级 锁、外键 ，有一个毫无疑问的缺陷就是崩溃后无法安全恢复 。</li>
+<li>5.5之前默认的存储引擎</li>
+<li>优势是访问的速度快 ，对事务完整性没有要求或者以SELECT、INSERT为主的应用</li>
+<li>针对数据统计有额外的常数存储。故而 count(*) 的查询效率很高 数据文件结构：（在《第02章_MySQL数据目录》章节已讲）
+<ul>
+<li>表名.frm 存储表结构</li>
+<li>表名.MYD 存储数据 (MYData)</li>
+<li>表名.MYI 存储索引 (MYIndex)</li>
+</ul>
+</li>
+<li>应用场景：只读应用或者以读为主的业务</li>
+</ul>
+<h3 id="43-archive-引擎用于数据存档">4.3 Archive 引擎：用于数据存档</h3>
+<ul>
+<li>下表展示了ARCHIVE 存储引擎功能</li>
+</ul>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h6pxp57aiij30lj0mz453.jpg" alt="image-20220616124743732.png">
+
+</p>
+<h3 id="44-blackhole-引擎丢弃写操作读操作会返回空内容">4.4 Blackhole 引擎：丢弃写操作，读操作会返回空内容</h3>
+<h3 id="45-csv-引擎存储数据时以逗号分隔各个数据项">4.5 CSV 引擎：存储数据时，以逗号分隔各个数据项</h3>
+<p>使用案例如下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">CREATE</span> <span style="color:#ff79c6">TABLE</span> <span style="color:#50fa7b">test</span> (i <span style="color:#8be9fd">INT</span> <span style="color:#ff79c6">NOT</span> NULL, c <span style="color:#8be9fd">CHAR</span>(<span style="color:#bd93f9">10</span>) <span style="color:#ff79c6">NOT</span> NULL) <span style="color:#ff79c6">ENGINE</span> <span style="color:#ff79c6">=</span> CSV;
+Query OK, <span style="color:#bd93f9">0</span> rows <span style="color:#50fa7b">affected</span> (<span style="color:#bd93f9">0</span>.<span style="color:#bd93f9">06</span> sec)
+mysql<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">INSERT</span> <span style="color:#ff79c6">INTO</span> test <span style="color:#ff79c6">VALUES</span>(<span style="color:#bd93f9">1</span>,<span style="color:#f1fa8c"></span><span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">record one</span><span style="color:#f1fa8c">&#39;</span>),(<span style="color:#bd93f9">2</span>,<span style="color:#f1fa8c"></span><span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">record two</span><span style="color:#f1fa8c">&#39;</span>);
+Query OK, <span style="color:#bd93f9">2</span> rows <span style="color:#50fa7b">affected</span> (<span style="color:#bd93f9">0</span>.<span style="color:#bd93f9">05</span> sec)
+Records: <span style="color:#bd93f9">2</span> Duplicates: <span style="color:#bd93f9">0</span> Warnings: <span style="color:#bd93f9">0</span>
+mysql<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">SELECT</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">FROM</span> test;
+<span style="color:#ff79c6">+</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">+</span>
+<span style="color:#ff79c6">|</span> i <span style="color:#ff79c6">|</span>      c     <span style="color:#ff79c6">|</span>
+<span style="color:#ff79c6">+</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">+</span>
+<span style="color:#ff79c6">|</span> <span style="color:#bd93f9">1</span> <span style="color:#ff79c6">|</span> record one <span style="color:#ff79c6">|</span>
+<span style="color:#ff79c6">|</span> <span style="color:#bd93f9">2</span> <span style="color:#ff79c6">|</span> record two <span style="color:#ff79c6">|</span>
+<span style="color:#ff79c6">+</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">+</span>
+<span style="color:#bd93f9">2</span> rows <span style="color:#ff79c6">in</span> <span style="color:#8be9fd">set</span> (<span style="color:#bd93f9">0</span>.<span style="color:#bd93f9">00</span> sec)
+</code></pre></div><p>创建CSV表还会创建相应的元文件 ，用于 存储表的状态 和 表中存在的行数 。此文件的名称与表的名称相 同，后缀为 CSM 。如图所示</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h6pxpcp0wnj30l903tadp.jpg" alt="image-20220616125342599.png">
+
+</p>
+<p>如果检查 test.CSV 通过执行上述语句创建的数据库目录中的文件，其内容使用Notepad++打开如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#f1fa8c"></span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">1</span><span style="color:#f1fa8c">&#34;</span>,<span style="color:#f1fa8c"></span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">record one</span><span style="color:#f1fa8c">&#34;</span>
+<span style="color:#f1fa8c"></span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">2</span><span style="color:#f1fa8c">&#34;</span>,<span style="color:#f1fa8c"></span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">record two</span><span style="color:#f1fa8c">&#34;</span>
+</code></pre></div><p>这种格式可以被 Microsoft Excel 等电子表格应用程序读取，甚至写入。使用Microsoft Excel打开如图所示</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h6pxpif01cj30l505dgn8.jpg" alt="image-20220616125448555.png">
+
+</p>
+<h3 id="46-memory-引擎置于内存的表">4.6 Memory 引擎：置于内存的表</h3>
+<p><strong>概述：</strong></p>
+<p>Memory采用的逻辑介质是内存 ，响应速度很快 ，但是当mysqld守护进程崩溃的时候数据会丢失 。另外，要求存储的数据是数据长度不变的格式，比如，Blob和Text类型的数据不可用(长度不固定的)。</p>
+<p><strong>主要特征：</strong></p>
+<ul>
+<li>Memory同时 支持哈希（HASH）索引 和 B+树索引 。</li>
+<li>Memory表至少比MyISAM表要快一个数量级 。</li>
+<li>MEMORY 表的大小是受到限制 的。表的大小主要取决于两个参数，分别是 max_rows 和 max_heap_table_size 。其中，max_rows可以在创建表时指定；max_heap_table_size的大小默 认为16MB，可以按需要进行扩大。</li>
+<li>数据文件与索引文件分开存储。</li>
+<li>缺点：其数据易丢失，生命周期短。基于这个缺陷，选择MEMORY存储引擎时需要特别小心。</li>
+</ul>
+<p><strong>使用Memory存储引擎的场景：</strong></p>
+<ol>
+<li>目标数据比较小 ，而且非常频繁的进行访问 ，在内存中存放数据，如果太大的数据会造成内存溢出 。可以通过参数 max_heap_table_size 控制Memory表的大小，限制Memory表的最大的大小。</li>
+<li>如果数据是临时的 ，而且必须立即可用得到，那么就可以放在内存中。</li>
+<li>存储在Memory表中的数据如果突然间丢失的话也没有太大的关系 。</li>
+</ol>
+<h3 id="47-federated-引擎访问远程表">4.7 Federated 引擎：访问远程表</h3>
+<p><strong>Federated引擎是访问其他MySQL服务器的一个 代理 ，尽管该引擎看起来提供了一种很好的 跨服务 器的灵活性 ，但也经常带来问题，因此 默认是禁用的 。</strong></p>
+<h3 id="48-merge引擎管理多个myisam表构成的表集合">4.8 Merge引擎：管理多个MyISAM表构成的表集合</h3>
+<h3 id="49-ndb引擎mysql集群专用存储引擎">4.9 NDB引擎：MySQL集群专用存储引擎</h3>
+<p>也叫做 NDB Cluster 存储引擎，主要用于 MySQL Cluster 分布式集群 环境，类似于 Oracle 的 RAC 集 群。</p>
+<h3 id="410-引擎对比">4.10 引擎对比</h3>
+<p>MySQL中同一个数据库，不同的表可以选择不同的存储引擎。如下表对常用存储引擎做出了对比。</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h6pxppyebjj30fu0ruaf7.jpg" alt="image-20220616125928861.png">
+
+</p>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h6pxpvmsn1j30fy0a7dgy.jpg" alt="image-20220616125945304.png">
+
+</p>
+<p>其实这些东西大家没必要立即就给记住，列出来的目的就是想让大家明白不同的存储引擎支持不同的功能。</p>
+<p>其实我们最常用的就是 InnoDB 和 MyISAM ，有时会提一下 Memory 。其中 InnoDB 是 MySQL 默认的存储引擎。</p>
+<h2 id="5-myisam和innodb">5. MyISAM和InnoDB</h2>
+<p>很多人对 InnoDB 和 MyISAM 的取舍存在疑问，到底选择哪个比较好呢？</p>
+<p>MySQL5.5之前的默认存储引擎是MyISAM，5.5之后改为了InnoDB。</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1074%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84/" data-toggle="tooltip" data-placement="top" title="4、逻辑架构（MySQL架构篇）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1076%E7%B4%A2%E5%BC%95%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" data-toggle="tooltip" data-placement="top" title="6、索引的数据结构（索引与调优篇）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/dubbo" title="dubbo">
+                            dubbo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/elasticsearch" title="elasticsearch">
+                            elasticsearch
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jvm" title="jvm">
+                            jvm
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/netty" title="netty">
+                            netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" title="分布式锁">
+                            分布式锁
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    <li>
+                        <a target="_blank" href="/#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+</html>

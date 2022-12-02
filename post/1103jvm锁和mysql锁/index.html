@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="1、JVM锁和MySQL锁（分布式锁）" />
+    <meta property="og:title" content="1、JVM锁和MySQL锁（分布式锁）" />
+    <meta property="twitter:title" content="1、JVM锁和MySQL锁（分布式锁）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>1、JVM锁和MySQL锁（分布式锁） | yiguan1573</title>
+
+    <link rel="canonical" href="/post/1103jvm%E9%94%81%E5%92%8Cmysql%E9%94%81/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive/">档案</a></li>
+                    
+                        <li><a href="/top/about/">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/03.JPG')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" title="分布式锁">
+                            分布式锁
+                        </a>
+                        
+                    </div>
+                    <h1>1、JVM锁和MySQL锁（分布式锁）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                亿观
+                             
+                            on 
+                            Tuesday, November 29, 2022
+                            
+                                <span id="/post/1103jvm%E9%94%81%E5%92%8Cmysql%E9%94%81/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbb8syidj30i809xjt5.jpg" alt="Snipaste_2022-11-29_20-39-48.png">
+
+</p>
+<h2 id="搭建简单的库存项目">搭建简单的库存项目</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Data
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Stock</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> Integer stock <span style="color:#ff79c6">=</span> 5000<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">//StockService为单例对象，所以里面创建的stock对象也为单例
+</span><span style="color:#6272a4"></span>@Service
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StockService</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> Stock stock <span style="color:#ff79c6">=</span>  <span style="color:#ff79c6">new</span> Stock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setStock</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getStock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;库存余量&#34;</span><span style="color:#ff79c6">+</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getStock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+@RestController
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StockController</span> <span style="color:#ff79c6">{</span>
+    @Autowired
+    StockService stockService<span style="color:#ff79c6">;</span>
+
+    @GetMapping<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;/reduce&#34;</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        stockService<span style="color:#ff79c6">.</span><span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#f1fa8c">&#34;请求成功&#34;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>
+<p>调用接口一切正常
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbcei94cj30bu01yaao.jpg" alt="Snipaste_2022-11-29_21-22-09.png">
+
+</p>
+</li>
+<li>
+<p><strong>使用jmeter搭建高并发环境</strong></p>
+<ul>
+<li>创建线程组
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbioky91j30k209mn0n.jpg" alt="Snipaste_2022-11-29_21-28-10.png">
+
+</li>
+<li>100个用户，每个用户50个请求，一共5000个请求
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbj9lke9j30ip0dzmzu.jpg" alt="Snipaste_2022-11-29_21-28-43.png">
+
+</li>
+<li>创建http请求
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbjznqglj30la07g0vx.jpg" alt="Snipaste_2022-11-29_21-29-25.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbkorsaqj30ig0aqacu.jpg" alt="Snipaste_2022-11-29_21-30-01.png">
+
+</li>
+<li>添加监控报表
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbmfukdvj30m60fx43y.jpg" alt="Snipaste_2022-11-29_21-31-11.png">
+
+</li>
+<li>运行
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbnex5mwj30kr02sq42.jpg" alt="Snipaste_2022-11-29_21-32-43.png">
+
+</li>
+<li>运行完成
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbnex5mwj30kr02sq42.jpg" alt="Snipaste_2022-11-29_21-32-43.png">
+
+</li>
+</ul>
+</li>
+<li>
+<p><strong>最终库存还有一百多，导致超卖</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbyihm8jj30j402twfq.jpg" alt="Snipaste_2022-11-29_21-33-32.png">
+
+</p>
+</li>
+<li>
+<p><strong>加入synchronized关键字</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Service
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StockService</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> Stock stock <span style="color:#ff79c6">=</span>  <span style="color:#ff79c6">new</span> Stock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">synchronized</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setStock</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getStock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;库存余量&#34;</span><span style="color:#ff79c6">+</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getStock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>
+<p>清除报表信息
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mc1i5rsvj30q5070dji.jpg" alt="Snipaste_2022-11-29_21-46-10.png">
+
+</p>
+</li>
+<li>
+<p>这里为-1是因为我本地浏览器先请求了一次
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mby4jyplj309j06udh9.jpg" alt="Snipaste_2022-11-29_21-42-51.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mbyt2cxxj30j201wab4.jpg" alt="Snipaste_2022-11-29_21-43-40.png">
+
+</p>
+</li>
+<li>
+<p><strong>使用ReentrantLock</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Service
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StockService</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> Stock stock <span style="color:#ff79c6">=</span>  <span style="color:#ff79c6">new</span> Stock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> ReentrantLock lock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ReentrantLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        lock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setStock</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getStock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;库存余量&#34;</span><span style="color:#ff79c6">+</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getStock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+            lock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mc60gcylj30f80810uy.jpg" alt="Snipaste_2022-11-29_21-50-28.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8mc65fbwij30j00210tr.jpg" alt="Snipaste_2022-11-29_21-50-36.png">
+
+</p>
+<h2 id="改造代码减mysql中的库存">改造代码减mysql中的库存</h2>
+<ul>
+<li><strong>建表</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n4502j5vj30g80fwtap.jpg" alt="Snipaste_2022-11-30_13-58-15.png">
+
+</li>
+<li><strong>插入一条数据</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n467pokgj30ew01jwex.jpg" alt="Snipaste_2022-11-30_13-59-32.png">
+
+</li>
+<li><strong>加入mysql连接和mybatisplus依赖</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Service
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StockService</span> <span style="color:#ff79c6">{</span>
+    @Autowired
+    StockMapper stockMapper<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> ReentrantLock lock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ReentrantLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+<span style="color:#6272a4">//        lock.lock();
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            Stock stock <span style="color:#ff79c6">=</span> stockMapper<span style="color:#ff79c6">.</span><span style="color:#50fa7b">selectOne</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> QueryWrapper<span style="color:#ff79c6">&lt;</span>Stock<span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">eq</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;product_code&#34;</span><span style="color:#ff79c6">,</span> 1001<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCount</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">&gt;</span>0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+                stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setCount</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCount</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                stockMapper<span style="color:#ff79c6">.</span><span style="color:#50fa7b">updateById</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;库存余量&#34;</span><span style="color:#ff79c6">+</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCount</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+<span style="color:#6272a4">//            lock.unlock();
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">}</span>
+
+    <span style="color:#ff79c6">}</span>
+    
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>
+<p>压力测试
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n5bk5x39j30vt039abq.jpg" alt="Snipaste_2022-11-30_14-39-18.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n5butpqdj30g103ct9f.jpg" alt="Snipaste_2022-11-30_14-39-34.png">
+
+</p>
+</li>
+<li>
+<p><strong>使用ReentrantLock</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n5gx7p3vj30vj0293zx.jpg" alt="Snipaste_2022-11-30_14-44-18.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n5h1z4pkj30go02274q.jpg" alt="Snipaste_2022-11-30_14-44-24.png">
+
+</p>
+</li>
+</ul>
+<h2 id="jvm本地锁三种情况导致锁时效">JVM本地锁：三种情况导致锁时效</h2>
+<h3 id="多例模式">多例模式</h3>
+<ul>
+<li>多例模式上锁的对象不相同，导致失效</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Service
+@Scope<span style="color:#ff79c6">(</span>value <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;prototype&#34;</span><span style="color:#ff79c6">,</span>proxyMode <span style="color:#ff79c6">=</span> ScopedProxyMode<span style="color:#ff79c6">.</span><span style="color:#50fa7b">TARGET_CLASS</span><span style="color:#ff79c6">)</span><span style="color:#6272a4">//多例模式，CGLIB代理
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StockService</span> <span style="color:#ff79c6">{</span>
+    @Autowired
+    StockMapper stockMapper<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> ReentrantLock lock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ReentrantLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        lock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            Stock stock <span style="color:#ff79c6">=</span> stockMapper<span style="color:#ff79c6">.</span><span style="color:#50fa7b">selectOne</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> QueryWrapper<span style="color:#ff79c6">&lt;</span>Stock<span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">eq</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;product_code&#34;</span><span style="color:#ff79c6">,</span> 1001<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCount</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">&gt;</span>0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+                stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setCount</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCount</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                stockMapper<span style="color:#ff79c6">.</span><span style="color:#50fa7b">updateById</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;库存余量&#34;</span><span style="color:#ff79c6">+</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCount</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+            lock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n5unaex1j30w302m75s.jpg" alt="Snipaste_2022-11-30_14-57-32.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n5uuelswj30ga0223yy.jpg" alt="Snipaste_2022-11-30_14-57-38.png">
+
+</p>
+<h3 id="事务">事务</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Service
+<span style="color:#6272a4">//@Scope(value = &#34;prototype&#34;,proxyMode = ScopedProxyMode.TARGET_CLASS)//多例模式，CGLIB代理
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StockService</span> <span style="color:#ff79c6">{</span>
+    @Autowired
+    StockMapper stockMapper<span style="color:#ff79c6">;</span>
+    
+    <span style="color:#8be9fd;font-style:italic">private</span> ReentrantLock lock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ReentrantLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+    @Transactional
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        lock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            Stock stock <span style="color:#ff79c6">=</span> stockMapper<span style="color:#ff79c6">.</span><span style="color:#50fa7b">selectOne</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> QueryWrapper<span style="color:#ff79c6">&lt;</span>Stock<span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">eq</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;product_code&#34;</span><span style="color:#ff79c6">,</span> 1001<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCount</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">&gt;</span>0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+                stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setCount</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCount</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                stockMapper<span style="color:#ff79c6">.</span><span style="color:#50fa7b">updateById</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;库存余量&#34;</span><span style="color:#ff79c6">+</span>stock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getCount</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+            lock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n60kbvruj30vk026gn2.jpg" alt="Snipaste_2022-11-30_15-02-31.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n60oi2uoj30fo01uglz.jpg" alt="Snipaste_2022-11-30_15-02-40.png">
+
+</p>
+<ul>
+<li>
+<p>@Transactional注解利用AOP在进入方法前开启事务，方法结束后提交或回滚事务</p>
+</li>
+<li>
+<p>在一个锁释放后事务提交前，另一个事务获取到锁查询到未来得及更新的库存
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n703mmhpj307r0acjs6.jpg" alt="Snipaste_2022-11-30_15-37-25.png">
+
+</p>
+</li>
+<li>
+<p>隔离级别使用读未提交,再次压测，发现库存变为0了，但是实际生产中不能使用该事务隔离级别</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Transactional<span style="color:#ff79c6">(</span>isolation <span style="color:#ff79c6">=</span> Isolation<span style="color:#ff79c6">.</span><span style="color:#50fa7b">READ_UNCOMMITTED</span><span style="color:#ff79c6">)</span>
+</code></pre></div><h3 id="集群部署">集群部署</h3>
+<ul>
+<li><strong>复制运行实例，修改端口号</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n7aga3blj30vu0poteq.jpg" alt="Snipaste_2022-11-30_15-46-46.png">
+
+</li>
+<li><strong>nginx负载均衡</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n8efmkj5j30co08rgo1.jpg" alt="Snipaste_2022-11-30_16-25-50.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n8s9j3v6j30vf01v0ua.jpg" alt="Snipaste_2022-11-30_16-38-56.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n8seo3ybj30fp01f3yr.jpg" alt="Snipaste_2022-11-30_16-39-05.png">
+
+</li>
+</ul>
+<h2 id="mysql锁">MySQL锁</h2>
+<h3 id="一条sql语句完成上述操作">一条SQL语句完成上述操作</h3>
+<ul>
+<li>解决三种JVM锁失效的情况
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n90o9da2j30mg01cwf6.jpg" alt="Snipaste_2022-11-30_16-44-35.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n90k7fvbj30vq087q6r.jpg" alt="Snipaste_2022-11-30_16-45-36.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n90u7hjzj30dw024t8x.jpg" alt="Snipaste_2022-11-30_16-46-30.png">
+
+</li>
+<li>问题
+<ul>
+<li>锁范围问题(innodb是行锁)</li>
+<li>同一商品有多条库存记录</li>
+<li>无法记录库存变化前后的状态
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8n9m2lcxrj30gi03hgmc.jpg" alt="Snipaste_2022-11-30_17-07-46.png">
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="mysql悲观锁">MySQL悲观锁</h3>
+<ul>
+<li><strong>满足以下条件才是行锁</strong>
+<ul>
+<li>锁的查询或者更新条件必须是索引字段</li>
+<li>查询或者更新条件必须是具体值</li>
+</ul>
+</li>
+<li><strong>使用悲观锁减库存</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nauzomkrj30w0027405.jpg" alt="Snipaste_2022-11-30_17-44-44.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nav59v6ij30t50c1wiq.jpg" alt="Snipaste_2022-11-30_17-47-17.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nav9vbajj30es052ab0.jpg" alt="Snipaste_2022-11-30_17-50-51.png">
+
+</li>
+<li><strong>问题</strong>
+<ul>
+<li>性能问题（吞吐量与JVM锁差不多，600/s）</li>
+<li>死锁问题：对多条数据加锁时，加锁顺序要一致</li>
+</ul>
+</li>
+</ul>
+<h3 id="mysql乐观锁">MySQL乐观锁</h3>
+<ul>
+<li>依赖时间戳、版本号、CAS机制
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nbluwtdwj30g304dq3v.jpg" alt="Snipaste_2022-11-30_18-07-06.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nbm09y72j31cc0g6ahr.jpg" alt="Snipaste_2022-11-30_18-13-25.png">
+
+</li>
+<li>使用jmeter发现吞吐量非常小，程序报错栈溢出和连接超时，因为更新操作默认会加锁，后续代码就会一直重试，事务也一直未提交
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nbnvd1ruj30ng03e40p.jpg" alt="Snipaste_2022-11-30_18-18-42.png">
+
+</li>
+<li><strong>修改</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nbrk5sv5j31c80km7d6.jpg" alt="Snipaste_2022-11-30_18-22-13.png">
+
+</li>
+<li><strong>问题</strong>
+<ul>
+<li>性能很低</li>
+<li>ABA问题</li>
+<li>读写分离下导致乐观锁不可靠</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结">总结</h2>
+<ul>
+<li>性能:一个sql &gt;悲观锁&gt;jvm锁&gt;乐观锁</li>
+<li>如果追求极致性能、业务场景简单并单不需要记录数据前后变化的情况下。<strong>优先选择:一个sql</strong></li>
+<li>如果写并发量较低（多读)，争抢不是很激烈的情况下。<strong>优先选择:乐观锁</strong></li>
+<li>如果写并发虽较高，一般会经常冲突，此时选择乐观锁的话，会导致业务代码不间断的主试。<strong>优先选择: mysql悲观锁</strong></li>
+<li>不推荐jvm本地锁。</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1102dubbo%E6%96%B0%E7%89%88%E5%92%8C%E8%A1%A5%E5%85%85/" data-toggle="tooltip" data-placement="top" title="2、dubbo新版和补充（dubbo）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1104%E5%9F%BA%E4%BA%8Eredis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-toggle="tooltip" data-placement="top" title="2、基于redis实现分布式锁（分布式锁）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/dubbo" title="dubbo">
+                            dubbo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/elasticsearch" title="elasticsearch">
+                            elasticsearch
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jvm" title="jvm">
+                            jvm
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/netty" title="netty">
+                            netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" title="分布式锁">
+                            分布式锁
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    <li>
+                        <a target="_blank" href="/#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="never">
+
+    
+    <meta property="og:site_name" content="亿观的博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
+    
+
+    
+    <meta name="title" content="2、基于redis实现分布式锁（分布式锁）" />
+    <meta property="og:title" content="2、基于redis实现分布式锁（分布式锁）" />
+    <meta property="twitter:title" content="2、基于redis实现分布式锁（分布式锁）" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>2、基于redis实现分布式锁（分布式锁） | yiguan1573</title>
+
+    <link rel="canonical" href="/post/1104%E5%9F%BA%E4%BA%8Eredis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">亿观的博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0">学习</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/archive/">档案</a></li>
+                    
+                        <li><a href="/top/about/">关于</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/03.JPG')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" title="分布式锁">
+                            分布式锁
+                        </a>
+                        
+                    </div>
+                    <h1>2、基于redis实现分布式锁（分布式锁）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                亿观
+                             
+                            on 
+                            Wednesday, November 30, 2022
+                            
+                                <span id="/post/1104%E5%9F%BA%E4%BA%8Eredis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="redis中的超卖现象">redis中的超卖现象</h2>
+<ul>
+<li>设置库存5000
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8ncigut77j307d01vdfy.jpg" alt="Snipaste_2022-11-30_18-48-06.png">
+
+</li>
+<li>修改代码</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Service
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">StockService</span> <span style="color:#ff79c6">{</span>
+    @Autowired
+    StockMapper stockMapper<span style="color:#ff79c6">;</span>
+    @Autowired
+    RedisTemplate redisTemplate<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> ReentrantLock lock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> ReentrantLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+    <span style="color:#6272a4">//    @Transactional
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//1.查询库存
+</span><span style="color:#6272a4"></span>        Integer stock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Integer<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#6272a4">//2.判断库存是否充足
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> stock<span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;当前库存:&#34;</span><span style="color:#ff79c6">+</span>stock<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">//3.扣减库存
+</span><span style="color:#6272a4"></span>            redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">,</span>stock<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>压测
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8ncz7qbm0j30vj020abe.jpg" alt="Snipaste_2022-11-30_19-04-05.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nczdoewhj30ca086wf0.jpg" alt="Snipaste_2022-11-30_19-03-57.png">
+
+</li>
+<li><strong>解决方法</strong>
+<ul>
+<li>jvm本地锁</li>
+<li>redis乐观锁：watch multi exec</li>
+<li>分布式锁</li>
+</ul>
+</li>
+</ul>
+<h2 id="redis乐观锁">redis乐观锁</h2>
+<ul>
+<li>
+<p>相关命令</p>
+<ul>
+<li>watch:可以监控一个或者多个key的值，如果在事务(exec)执行之前，key的值发生变化则取消事务执行</li>
+<li>multi:开启事务</li>
+<li>exec:执行事务
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nd4mccghj30jz0i5442.jpg" alt="Snipaste_2022-11-30_19-09-23.png">
+
+</li>
+</ul>
+</li>
+<li>
+<p>修改代码，运行后报错</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//watch
+</span><span style="color:#6272a4"></span>    redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">watch</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+    <span style="color:#6272a4">//1.查询库存
+</span><span style="color:#6272a4"></span>    Integer stock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Integer<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+    <span style="color:#6272a4">//2.判断库存是否充足
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> stock<span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//multi
+</span><span style="color:#6272a4"></span>        redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">multi</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;当前库存:&#34;</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//3.扣减库存
+</span><span style="color:#6272a4"></span>        redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">,</span>stock<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#6272a4">//exec
+</span><span style="color:#6272a4"></span>        redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">exec</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nde42hjlj30m504cjxm.jpg" alt="Snipaste_2022-11-30_19-18-31.png">
+
+</p>
+<ul>
+<li>代码层面上不能简单的使用redis命令的逻辑，再次修改</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">execute</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> SessionCallback<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        @Override
+        <span style="color:#8be9fd;font-style:italic">public</span> Object <span style="color:#50fa7b">execute</span><span style="color:#ff79c6">(</span>RedisOperations redisOperations<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> DataAccessException <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//watch
+</span><span style="color:#6272a4"></span>            redisOperations<span style="color:#ff79c6">.</span><span style="color:#50fa7b">watch</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+            <span style="color:#6272a4">//1.查询库存
+</span><span style="color:#6272a4"></span>            Integer stock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Integer<span style="color:#ff79c6">)</span> redisOperations<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+            <span style="color:#6272a4">//2.判断库存是否充足
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> stock<span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+                <span style="color:#6272a4">//multi
+</span><span style="color:#6272a4"></span>                redisOperations<span style="color:#ff79c6">.</span><span style="color:#50fa7b">multi</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;当前库存:&#34;</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">(</span>stock<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">//3.扣减库存
+</span><span style="color:#6272a4"></span>                redisOperations<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">,</span>stock<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">//exec
+</span><span style="color:#6272a4"></span>                List exec <span style="color:#ff79c6">=</span> redisOperations<span style="color:#ff79c6">.</span><span style="color:#50fa7b">exec</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">//如果执行任务返回结果为空，则代表减库失败
+</span><span style="color:#6272a4"></span>                <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>exec <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">|</span><span style="color:#ff79c6">|</span> exec<span style="color:#ff79c6">.</span><span style="color:#50fa7b">size</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+                    <span style="color:#6272a4">//防止栈溢出
+</span><span style="color:#6272a4"></span>                    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                        Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>40<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>InterruptedException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                        e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                    <span style="color:#ff79c6">}</span>
+                    reduce<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+                <span style="color:#ff79c6">return</span> exec<span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8ndpov75pj30va02375t.jpg" alt="Snipaste_2022-11-30_19-29-28.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8ndpt5mh2j30c608uq3j.jpg" alt="Snipaste_2022-11-30_19-29-37.png">
+
+</p>
+<ul>
+<li>问题
+<ul>
+<li>性能下降非常大</li>
+</ul>
+</li>
+</ul>
+<h2 id="redis实现分布式锁">redis实现分布式锁</h2>
+<ul>
+<li><strong>场景</strong>
+<ul>
+<li>超卖现象</li>
+<li>缓存击穿</li>
+</ul>
+</li>
+<li><strong>分布式锁的实现方式</strong>
+<ul>
+<li>基于redis实现</li>
+<li>基于zookeeper/etcd实现</li>
+<li>基于mysql实现</li>
+</ul>
+</li>
+<li><strong>特征</strong>
+<ul>
+<li>独占排它锁使用setnx</li>
+</ul>
+</li>
+<li><strong>操作</strong>
+<ul>
+<li>加锁:setnx</li>
+<li>解锁:del</li>
+<li>重试:递归、循环</li>
+</ul>
+</li>
+</ul>
+<h3 id="基于redis实现简单的分布式锁">基于redis实现简单的分布式锁</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//加锁setnx
+</span><span style="color:#6272a4"></span>    Boolean lock <span style="color:#ff79c6">=</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setIfAbsent</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;1&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//重试：递归调用
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">!</span>lock<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//避免栈溢出
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>20<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>InterruptedException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        reduce<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span><span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//1.查询库存
+</span><span style="color:#6272a4"></span>            Integer stock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Integer<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+            <span style="color:#6272a4">//2.判断库存是否充足
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> stock<span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;当前库存:&#34;</span> <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">-</span> 1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#6272a4">//3.扣减库存
+</span><span style="color:#6272a4"></span>                redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">,</span> stock <span style="color:#ff79c6">-</span> 1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//解锁
+</span><span style="color:#6272a4"></span>            redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">delete</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nkmtdvbuj30ua02uabn.jpg" alt="Snipaste_2022-11-30_23-29-01.png">
+
+</p>
+<ul>
+<li>为了避免获取锁失败递归调用导致栈溢出，改为循环重试</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//加锁setnx
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">while</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">!</span>redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setIfAbsent</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;1&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//重试：循环
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//降低锁的竞争，和网络io，提高性能
+</span><span style="color:#6272a4"></span>            Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>50<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>InterruptedException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//1.查询库存
+</span><span style="color:#6272a4"></span>        Integer stock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Integer<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#6272a4">//2.判断库存是否充足
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> stock<span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;当前库存:&#34;</span> <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">-</span> 1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">//3.扣减库存
+</span><span style="color:#6272a4"></span>            redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">,</span> stock <span style="color:#ff79c6">-</span> 1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//解锁
+</span><span style="color:#6272a4"></span>        redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">delete</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>压测发现吞吐量提高了
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8nkqrqvurj30u502tabi.jpg" alt="Snipaste_2022-11-30_23-32-51.png">
+
+</li>
+</ul>
+<h3 id="防止死锁">防止死锁</h3>
+<ul>
+<li>程序还未释放锁的时候，服务器宕机了，就会导致死锁</li>
+<li><strong>解决：设置过期时间</strong></li>
+<li>set lock 111 ex 20 nx(nx就是如果不存在才能设置，xx如果存在才能设置)</li>
+<li>将代码改为如下即可防止死锁</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//加锁setnx
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">while</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">!</span>redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setIfAbsent</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">,</span> <span style="color:#f1fa8c">&#34;1&#34;</span><span style="color:#ff79c6">,</span>3<span style="color:#ff79c6">,</span> TimeUnit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">SECONDS</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span>
+</code></pre></div><h3 id="防止误删">防止误删</h3>
+<ul>
+<li>过期时间太短，程序运行时间太长，导致锁已经过期删除了，程序还没有运行完，这时候其他请求就能获取到锁，还在执行过程中，第一个请求执行完了并删除锁。最终结果就是第一个请求删除了第二个请求的锁</li>
+<li><strong>先判断，再删除，使用uuid表示不同请求的锁</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//防误删
+</span><span style="color:#6272a4"></span>    String uuid <span style="color:#ff79c6">=</span> UUID<span style="color:#ff79c6">.</span><span style="color:#50fa7b">randomUUID</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">//加锁setnx
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">while</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">!</span>redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setIfAbsent</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">,</span> uuid<span style="color:#ff79c6">,</span>3<span style="color:#ff79c6">,</span> TimeUnit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">SECONDS</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//重试：循环
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>50<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>InterruptedException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//1.查询库存
+</span><span style="color:#6272a4"></span>        Integer stock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Integer<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#6272a4">//2.判断库存是否充足
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> stock<span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;当前库存:&#34;</span> <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">-</span> 1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+            <span style="color:#6272a4">//3.扣减库存
+</span><span style="color:#6272a4"></span>            redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">,</span> stock <span style="color:#ff79c6">-</span> 1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//解锁
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>StringUtils<span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">+</span><span style="color:#f1fa8c">&#34;&#34;</span><span style="color:#ff79c6">,</span>uuid<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">delete</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>问题
+<ul>
+<li>在解锁判断的瞬间，锁过期释放掉，又会导致误删问题，需要保证判断和解锁的原子性</li>
+</ul>
+</li>
+</ul>
+<h2 id="lua脚本入门">Lua脚本入门</h2>
+<ul>
+<li>Lua脚本可以保证原子性，可以一次性发送多个指令给redis</li>
+<li><a href="https://www.runoob.com/lua/lua-tutorial.html">菜鸟教程</a>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8odygrkg1j30ts0ehjy3.jpg" alt="Snipaste_2022-12-01_16-23-28.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8odzdczy9j30mn0ehjvr.jpg" alt="Snipaste_2022-12-01_16-24-31.png">
+
+</li>
+<li>使用lua脚本解决防误删的原子性问题
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8oe7h9govj30ow0370tm.jpg" alt="Snipaste_2022-12-01_16-32-19.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8oeh6t83pj30lm0ctgo2.jpg" alt="Snipaste_2022-12-01_16-34-33.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8oeh11ysdj310w07f427.jpg" alt="Snipaste_2022-12-01_16-41-26.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8oehdf6ygj30qn02gab3.jpg" alt="Snipaste_2022-12-01_16-40-07.png">
+
+</li>
+</ul>
+<h2 id="reentrantlock底层原理">ReentrantLock底层原理</h2>
+<ul>
+<li>juc种包括ReentrantLock、CountDownLatch、Semaphore等都是基于AQS（AbstractQueuedSynchronizer）</li>
+<li>AbstractQueuedSynchronizer底层有一个volatile int state和一个先进先出队列，如果抢到锁就cas操作，修改state，否则就进入队列中等待
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8ofiooi6dj317r06r43g.jpg" alt="Snipaste_2022-12-01_17-17-41.png">
+
+</li>
+</ul>
+<h2 id="实现分布式可重入锁">实现分布式可重入锁</h2>
+<ul>
+<li><strong>加锁</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8ofy6ie1fj30yz0catdk.jpg" alt="Snipaste_2022-12-01_17-32-34.png">
+
+</li>
+<li><strong>解锁</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8og1xmnupj30zk0d6420.jpg" alt="Snipaste_2022-12-01_17-36-11.png">
+
+</li>
+<li>新建工厂类，获取锁</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Component
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DistributedLockClient</span> <span style="color:#ff79c6">{</span>
+    @Autowired
+    RedisTemplate redisTemplate<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> DistributedRedisLock <span style="color:#50fa7b">getRedisLock</span><span style="color:#ff79c6">(</span>String lockName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> DistributedRedisLock<span style="color:#ff79c6">(</span>redisTemplate<span style="color:#ff79c6">,</span>lockName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>新建基于redis的可重入的分布式锁</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DistributedRedisLock</span> <span style="color:#8be9fd;font-style:italic">implements</span> Lock <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> RedisTemplate redisTemplate<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> String lockName<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">long</span> expire <span style="color:#ff79c6">=</span> 30<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> String uuid<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">DistributedRedisLock</span><span style="color:#ff79c6">(</span>RedisTemplate redisTemplate<span style="color:#ff79c6">,</span> String lockName<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">redisTemplate</span> <span style="color:#ff79c6">=</span> redisTemplate<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">lockName</span> <span style="color:#ff79c6">=</span> lockName<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">uuid</span> <span style="color:#ff79c6">=</span> UUID<span style="color:#ff79c6">.</span><span style="color:#50fa7b">randomUUID</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        tryLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">lockInterruptibly</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> InterruptedException <span style="color:#ff79c6">{</span>
+
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">tryLock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">return</span> tryLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">-</span>1L<span style="color:#ff79c6">,</span>TimeUnit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">SECONDS</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>InterruptedException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">//加锁方法
+</span><span style="color:#6272a4"></span>    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">tryLock</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">long</span> time<span style="color:#ff79c6">,</span> TimeUnit unit<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> InterruptedException <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>time <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            expire <span style="color:#ff79c6">=</span> unit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toSeconds</span><span style="color:#ff79c6">(</span>time<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        String script <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;if redis.call(&#39;exists&#39;,KEYS[1]) == 0 or redis.call(&#39;hexists&#39;,KEYS[1],ARGV[1]) == 1 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;then &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;   redis.call(&#39;hincrby&#39;,KEYS[1],ARGV[1],1)&#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;  redis.call(&#39;expire&#39;,KEYS[1],ARGV[2])&#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;  return 1 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;else &#34;</span><span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;   return 0 &#34;</span><span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;end&#34;</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">!</span><span style="color:#ff79c6">(</span>Boolean<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">execute</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> DefaultRedisScript<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span>script<span style="color:#ff79c6">,</span>Boolean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">asList</span><span style="color:#ff79c6">(</span>lockName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span>uuid<span style="color:#ff79c6">,</span>expire<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            TimeUnit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">MILLISECONDS</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>30<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">//解锁方法
+</span><span style="color:#6272a4"></span>    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        String script <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;if redis.call(&#39;hexists&#39;,KEYS[1],ARGV[1]) == 0 &#34;</span><span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;then return nil &#34;</span><span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;elseif redis.call(&#39;hincrby&#39;,KEYS[1],ARGV[1],-1) == 0 &#34;</span><span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;then return redis.call(&#39;del&#39;,KEYS[1]) &#34;</span><span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;else return 0 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;end&#34;</span><span style="color:#ff79c6">;</span>
+        Long flag <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Long<span style="color:#ff79c6">)</span>redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">execute</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> DefaultRedisScript<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span>script<span style="color:#ff79c6">,</span> Long<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">asList</span><span style="color:#ff79c6">(</span>lockName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> uuid<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>flag <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IllegalMonitorStateException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;this lock doesn&#39;t belong to you!&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> Condition <span style="color:#50fa7b">newCondition</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>业务代码</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Autowired
+DistributedLockClient distributedLockClient<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    DistributedRedisLock redisLock <span style="color:#ff79c6">=</span> distributedLockClient<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRedisLock</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    redisLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//1.查询库存
+</span><span style="color:#6272a4"></span>        Integer stock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Integer<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#6272a4">//2.判断库存是否充足
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> stock<span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//3.扣减库存
+</span><span style="color:#6272a4"></span>            redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">,</span>stock<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span><span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+        redisLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8ohokxbfwj30vu02aq4h.jpg" alt="Snipaste_2022-12-01_18-32-33.png">
+
+</p>
+<ul>
+<li><strong>测试可重入</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    DistributedRedisLock redisLock <span style="color:#ff79c6">=</span> distributedLockClient<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRedisLock</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    redisLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//1.查询库存
+</span><span style="color:#6272a4"></span>        Integer stock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Integer<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#6272a4">//2.判断库存是否充足
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> stock<span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//3.扣减库存
+</span><span style="color:#6272a4"></span>            redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">,</span>stock<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        test<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span><span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+        redisLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">test</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    DistributedRedisLock redisLock <span style="color:#ff79c6">=</span> distributedLockClient<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRedisLock</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    redisLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;测试可重入锁&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    redisLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li><strong>结果不可重入</strong>，因为两个方法生成了两个uuid,uuid不同就不能获取到之前的锁</li>
+<li><strong>解决：每个服务设置一个uuid再加上当前请求的线程id。完整代码如下</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Component
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DistributedLockClient</span> <span style="color:#ff79c6">{</span>
+    @Autowired
+    RedisTemplate redisTemplate<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> String uuid<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">DistributedLockClient</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">uuid</span> <span style="color:#ff79c6">=</span> UUID<span style="color:#ff79c6">.</span><span style="color:#50fa7b">randomUUID</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">toString</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> DistributedRedisLock <span style="color:#50fa7b">getRedisLock</span><span style="color:#ff79c6">(</span>String lockName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> DistributedRedisLock<span style="color:#ff79c6">(</span>redisTemplate<span style="color:#ff79c6">,</span>lockName<span style="color:#ff79c6">,</span>uuid<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DistributedRedisLock</span> <span style="color:#8be9fd;font-style:italic">implements</span> Lock <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> RedisTemplate redisTemplate<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> String lockName<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">long</span> expire <span style="color:#ff79c6">=</span> 30<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> String uuid<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">DistributedRedisLock</span><span style="color:#ff79c6">(</span>RedisTemplate redisTemplate<span style="color:#ff79c6">,</span> String lockName<span style="color:#ff79c6">,</span> String uuid<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">redisTemplate</span> <span style="color:#ff79c6">=</span> redisTemplate<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">lockName</span> <span style="color:#ff79c6">=</span> lockName<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">uuid</span> <span style="color:#ff79c6">=</span> uuid<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        tryLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">lockInterruptibly</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> InterruptedException <span style="color:#ff79c6">{</span>
+
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">tryLock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">return</span> tryLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">-</span>1L<span style="color:#ff79c6">,</span> TimeUnit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">SECONDS</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>InterruptedException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">//加锁方法
+</span><span style="color:#6272a4"></span>    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">tryLock</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">long</span> time<span style="color:#ff79c6">,</span> TimeUnit unit<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> InterruptedException <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>time <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            expire <span style="color:#ff79c6">=</span> unit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toSeconds</span><span style="color:#ff79c6">(</span>time<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        String script <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;if redis.call(&#39;exists&#39;,KEYS[1]) == 0 or redis.call(&#39;hexists&#39;,KEYS[1],ARGV[1]) == 1 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;then &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;   redis.call(&#39;hincrby&#39;,KEYS[1],ARGV[1],1)&#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;  redis.call(&#39;expire&#39;,KEYS[1],ARGV[2])&#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;  return 1 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;else &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;   return 0 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;end&#34;</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">!</span><span style="color:#ff79c6">(</span>Boolean<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">execute</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> DefaultRedisScript<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span>script<span style="color:#ff79c6">,</span> Boolean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">asList</span><span style="color:#ff79c6">(</span>lockName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> getId<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> expire<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            TimeUnit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">MILLISECONDS</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>30<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">//解锁方法
+</span><span style="color:#6272a4"></span>    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        String script <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;if redis.call(&#39;hexists&#39;,KEYS[1],ARGV[1]) == 0 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;then return nil &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;elseif redis.call(&#39;hincrby&#39;,KEYS[1],ARGV[1],-1) == 0 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;then return redis.call(&#39;del&#39;,KEYS[1]) &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;else return 0 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;end&#34;</span><span style="color:#ff79c6">;</span>
+        Long flag <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Long<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">execute</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> DefaultRedisScript<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span>script<span style="color:#ff79c6">,</span> Long<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">asList</span><span style="color:#ff79c6">(</span>lockName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> getId<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>flag <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IllegalMonitorStateException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;this lock doesn&#39;t belong to you!&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> Condition <span style="color:#50fa7b">newCondition</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">/**
+</span><span style="color:#6272a4">     * @author: lw
+</span><span style="color:#6272a4">     * @date: 2022/12/1 18:43
+</span><span style="color:#6272a4">     * @param:
+</span><span style="color:#6272a4">     * @return: String
+</span><span style="color:#6272a4">     * @description: 给线程拼接唯一标识
+</span><span style="color:#6272a4">     **/</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> String <span style="color:#50fa7b">getId</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> uuid <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;:&#34;</span> <span style="color:#ff79c6">+</span> Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getId</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Autowired
+DistributedLockClient distributedLockClient<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    DistributedRedisLock redisLock <span style="color:#ff79c6">=</span> distributedLockClient<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRedisLock</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    redisLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//1.查询库存
+</span><span style="color:#6272a4"></span>        Integer stock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Integer<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#6272a4">//2.判断库存是否充足
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> stock<span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//3.扣减库存
+</span><span style="color:#6272a4"></span>            redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">,</span>stock<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        test<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span><span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+        redisLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">test</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    DistributedRedisLock redisLock <span style="color:#ff79c6">=</span> distributedLockClient<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getRedisLock</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    redisLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;测试可重入锁&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    redisLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h2 id="自动续期">自动续期</h2>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8oinsub49j30ng09h0uv.jpg" alt="Snipaste_2022-12-01_19-05-29.png">
+
+</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">DistributedRedisLock</span> <span style="color:#8be9fd;font-style:italic">implements</span> Lock <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> RedisTemplate redisTemplate<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> String lockName<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">long</span> expire <span style="color:#ff79c6">=</span> 30<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> String uuid<span style="color:#ff79c6">;</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">DistributedRedisLock</span><span style="color:#ff79c6">(</span>RedisTemplate redisTemplate<span style="color:#ff79c6">,</span> String lockName<span style="color:#ff79c6">,</span> String uuid<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">redisTemplate</span> <span style="color:#ff79c6">=</span> redisTemplate<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">lockName</span> <span style="color:#ff79c6">=</span> lockName<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">uuid</span> <span style="color:#ff79c6">=</span> uuid <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;:&#34;</span> <span style="color:#ff79c6">+</span> Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getId</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        tryLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">lockInterruptibly</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> InterruptedException <span style="color:#ff79c6">{</span>
+
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">tryLock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">return</span> tryLock<span style="color:#ff79c6">(</span><span style="color:#ff79c6">-</span>1L<span style="color:#ff79c6">,</span> TimeUnit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">SECONDS</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>InterruptedException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">//加锁方法
+</span><span style="color:#6272a4"></span>    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">tryLock</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">long</span> time<span style="color:#ff79c6">,</span> TimeUnit unit<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> InterruptedException <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>time <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            expire <span style="color:#ff79c6">=</span> unit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toSeconds</span><span style="color:#ff79c6">(</span>time<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        String script <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;if redis.call(&#39;exists&#39;,KEYS[1]) == 0 or redis.call(&#39;hexists&#39;,KEYS[1],ARGV[1]) == 1 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;then &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;   redis.call(&#39;hincrby&#39;,KEYS[1],ARGV[1],1)&#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;  redis.call(&#39;expire&#39;,KEYS[1],ARGV[2])&#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;  return 1 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;else &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;   return 0 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;end&#34;</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">!</span><span style="color:#ff79c6">(</span>Boolean<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">execute</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> DefaultRedisScript<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span>script<span style="color:#ff79c6">,</span> Boolean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">asList</span><span style="color:#ff79c6">(</span>lockName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> uuid<span style="color:#ff79c6">,</span> expire<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            TimeUnit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">MILLISECONDS</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span>30<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+        <span style="color:#6272a4">//加锁成功，启动自动续期定时任务
+</span><span style="color:#6272a4"></span>        resetExpire<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">//解锁方法
+</span><span style="color:#6272a4"></span>    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        String script <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;if redis.call(&#39;hexists&#39;,KEYS[1],ARGV[1]) == 0 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;then return nil &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;elseif redis.call(&#39;hincrby&#39;,KEYS[1],ARGV[1],-1) == 0 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;then return redis.call(&#39;del&#39;,KEYS[1]) &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;else return 0 &#34;</span> <span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;end&#34;</span><span style="color:#ff79c6">;</span>
+        Long flag <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Long<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">execute</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> DefaultRedisScript<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span>script<span style="color:#ff79c6">,</span> Long<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">asList</span><span style="color:#ff79c6">(</span>lockName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span> uuid<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>flag <span style="color:#ff79c6">=</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IllegalMonitorStateException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;this lock doesn&#39;t belong to you!&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+
+    @Override
+    <span style="color:#8be9fd;font-style:italic">public</span> Condition <span style="color:#50fa7b">newCondition</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">//自动续期
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">resetExpire</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        String script <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;if redis.call(&#39;hexists&#39;,KEYS[1],ARGV[1]) == 1 &#34;</span><span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;then return redis.call(&#39;expire&#39;,KEYS[1],ARGV[2]) &#34;</span><span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;else return 0 &#34;</span><span style="color:#ff79c6">+</span>
+                <span style="color:#f1fa8c">&#34;end&#34;</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">new</span> Timer<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">schedule</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> TimerTask<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            @Override
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">run</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">(</span>Boolean<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">execute</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> DefaultRedisScript<span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">(</span>script<span style="color:#ff79c6">,</span> Boolean<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span>Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">asList</span><span style="color:#ff79c6">(</span>lockName<span style="color:#ff79c6">)</span><span style="color:#ff79c6">,</span>uuid<span style="color:#ff79c6">,</span>expire<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+                    resetExpire<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">}</span><span style="color:#ff79c6">,</span>expire<span style="color:#ff79c6">*</span>1000<span style="color:#ff79c6">/</span>3<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h2 id="手写分布式锁小结">手写分布式锁小结</h2>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8oj7ww0q3j30m70gywgu.jpg" alt="Snipaste_2022-12-01_19-23-33.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8oj81l34nj30uz0ofwk1.jpg" alt="Snipaste_2022-12-01_19-23-55.png">
+
+</p>
+<h2 id="红锁算法介绍">红锁算法介绍</h2>
+<ul>
+<li>
+<p><strong>在集群情况下，导致锁机制失效</strong></p>
+<ul>
+<li>客户端程序10010，从主机中获取到锁</li>
+<li>从机还没来得及同步数据，主机挂了</li>
+<li>于是从机升级为主机</li>
+<li>客户端程序10085就从新主机中获取到锁，导致锁机制失效</li>
+</ul>
+</li>
+<li>
+<p>在算法的分布式版本中，我们假设有N个Redis服务器。这些节点是完全独立的，因此我们不使用复制或任何其他隐式协调系统。前几节已经描述了如何在单个实例中安全地获取和释放锁，在分布式锁算法中，将使用相同的方法在单个实例中获取和释放锁。将N设置为5是一个合理的值，因此需要在不同的计算机或虚拟机上运行5个Redis主服务器，确保它们以独立的方式发生故障。</p>
+</li>
+<li>
+<p><strong>为了获取锁，客户端执行以下操作:</strong></p>
+<ul>
+<li>1.客户端以毫秒为单位获取当前时间的时间戳，作为起始时间。</li>
+<li>⒉客户端尝试在所有N个实例中顺序使用相同的键名、相同的随机值来获取锁定。每个实例尝试获取锁都需要时间，客户端应该设置一个远小于总锁定时间的超时时间。例如，如果自动释放时间为10秒，则尝试获取锁的超时时间可能在5到50毫秒之间。这样可以防止客户端长时间与处于故障状态的Redis节点进行通信:如果某个实例不可用，尽快尝试与下一个实例进行通信。</li>
+<li>3.客户端获取当前时间减去在步骤1中获得的起始时间，来计算获取锁所花费的时间。当且仅当客户端能够在大多数实例（至少3个）中获取锁时，并且获取锁所花费的总时间小于锁有效时间，则认为已获取锁。</li>
+<li>4.如果获取了锁，则将锁有效时间减去获取锁所花费的时间，如步骤3中所计算。</li>
+<li>5.如果客户端由于某种原因（无法锁定N /2+1个实例或有效时间为负）而未能获得该锁，它将尝试解锁所有实例(即使没有锁定成功的实例)。</li>
+</ul>
+</li>
+<li>
+<p>每台计算机都有一个本地时钟，我们通常可以依靠不同的计算机来产生很小的时钟漂移。只有在拥有锁的客户端将在锁有效时间内(如步骤3中获得的）减去一段时间（仅几毫秒）的情况下终止工作，才能保证这一点。以补偿进程之间的时钟漂移
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8omz7wj5jj30z30hj11t.jpg" alt="Snipaste_2022-12-01_21-35-24.png">
+
+</p>
+</li>
+</ul>
+<h2 id="redisson中的分布式锁">redisson中的分布式锁</h2>
+<ul>
+<li>**Redisson是一个在Redis的基础土实现的java驻内存数据网格。**它不仅提供了一系列的分布式的Java常用对象，还提供了许多分布式服务。其中包括(BitSet, Set, Multimap, SortedSet, Map, List,Queue, BlockingQueue,Deque,BlockingDeque, Semaphore, Lock, AtomicLong, CountDownLatch, Publish Subscribe, Bloom filter, Remote service, Spring cache,Executor service, Live Object service, Schedulerservice)Redisson提供了使用Redis的最简单和最便捷的方法。Redisson的宗旨是促进使用者对Redis的关注分离，从而让使用者能够将精力更集中地放在处理业务逻辑上。</li>
+<li><a href="https://github.com/redisson/redisson/wiki/%E7%9B%AE%E5%BD%95">官方文档</a></li>
+</ul>
+<h3 id="简单使用">简单使用</h3>
+<ul>
+<li><strong>引入依赖</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;dependency</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;groupId</span><span style="color:#ff79c6">&gt;</span>org.redisson<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+    <span style="color:#ff79c6">&lt;artifactId</span><span style="color:#ff79c6">&gt;</span>redisson<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+    <span style="color:#ff79c6">&lt;version</span><span style="color:#ff79c6">&gt;</span>3.18.0<span style="color:#ff79c6">&lt;/version&gt;</span>
+<span style="color:#ff79c6">&lt;/dependency&gt;</span>
+</code></pre></div><ul>
+<li><strong>配置</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Configuration
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">RedissonConfig</span> <span style="color:#ff79c6">{</span>
+
+    @Bean
+    <span style="color:#8be9fd;font-style:italic">public</span> RedissonClient <span style="color:#50fa7b">redissonClient</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        Config config <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Config<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        config<span style="color:#ff79c6">.</span><span style="color:#50fa7b">useSingleServer</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">setAddress</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;redis://192.168.10.103:6379&#34;</span><span style="color:#ff79c6">)</span>
+                <span style="color:#ff79c6">.</span><span style="color:#50fa7b">setDatabase</span><span style="color:#ff79c6">(</span>0<span style="color:#ff79c6">)</span>
+                <span style="color:#ff79c6">.</span><span style="color:#50fa7b">setPassword</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;13594859505LW&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> Redisson<span style="color:#ff79c6">.</span><span style="color:#50fa7b">create</span><span style="color:#ff79c6">(</span>config<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li><strong>代码</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@Autowired
+RedissonClient redissonClient<span style="color:#ff79c6">;</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">reduce</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    RLock rLock <span style="color:#ff79c6">=</span> redissonClient<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getLock</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;lock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    rLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">lock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//1.查询库存
+</span><span style="color:#6272a4"></span>        Integer stock <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>Integer<span style="color:#ff79c6">)</span> redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#6272a4">//2.判断库存是否充足
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>stock <span style="color:#ff79c6">!</span><span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">&amp;</span> stock<span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+            <span style="color:#6272a4">//3.扣减库存
+</span><span style="color:#6272a4"></span>            redisTemplate<span style="color:#ff79c6">.</span><span style="color:#50fa7b">opsForValue</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;stock&#34;</span><span style="color:#ff79c6">,</span>stock<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+        rLock<span style="color:#ff79c6">.</span><span style="color:#50fa7b">unlock</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li><strong>压测</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8onqrgshcj30vm025dha.jpg" alt="Snipaste_2022-12-01_22-02-04.png">
+
+</li>
+</ul>
+<h3 id="常用配置">常用配置</h3>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8onxhdr5yj30s30a2afk.jpg" alt="Snipaste_2022-12-01_22-08-40.png">
+
+</p>
+<h3 id="自动续期即可重用">自动续期即可重用</h3>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8ooayt0gyj30pw0hnajn.jpg" alt="Snipaste_2022-12-01_22-21-39.png">
+
+</p>
+<h3 id="fairlock公平锁">FairLock公平锁</h3>
+<ul>
+<li>之前的抢锁拼的是运气，公平锁拼的是网速，维护了一个请求队列
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8oojxxousj30qu0kzqh4.jpg" alt="QQ截图20221201223015.png">
+
+</li>
+</ul>
+<h3 id="读写锁">读写锁</h3>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8ooxknrjmj30sa0jcqfd.jpg" alt="Snipaste_2022-12-01_22-43-04.png">
+
+</p>
+<h3 id="信号量">信号量</h3>
+<ul>
+<li><strong>JUC中的信号量，适合在有限的资源下限流</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">//6辆汽车，停3个车位
+</span><span style="color:#6272a4"></span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">SemaphoreDemo</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">//创建Semaphore，设置许可数量
+</span><span style="color:#6272a4"></span>        
+        Semaphore semaphore <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Semaphore<span style="color:#ff79c6">(</span>3<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#6272a4">//模拟6辆汽车
+</span><span style="color:#6272a4"></span>        
+        <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 1<span style="color:#ff79c6">;</span> i <span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">=</span>6<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">+</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">new</span> Thread<span style="color:#ff79c6">(</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+                    <span style="color:#6272a4">//抢占
+</span><span style="color:#6272a4"></span>                    
+                    semaphore<span style="color:#ff79c6">.</span><span style="color:#50fa7b">acquire</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+                    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">+</span><span style="color:#f1fa8c">&#34; 抢到了车位&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+                    <span style="color:#6272a4">//设置随机停车时间
+</span><span style="color:#6272a4"></span>                    
+                    TimeUnit<span style="color:#ff79c6">.</span><span style="color:#50fa7b">SECONDS</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">sleep</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">new</span> Random<span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">nextInt</span><span style="color:#ff79c6">(</span>5<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+                    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">+</span><span style="color:#f1fa8c">&#34; ------离开了车位&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>InterruptedException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                    e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">printStackTrace</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">finally</span> <span style="color:#ff79c6">{</span>
+                    <span style="color:#6272a4">//释放
+</span><span style="color:#6272a4"></span>                    
+                    semaphore<span style="color:#ff79c6">.</span><span style="color:#50fa7b">release</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+                <span style="color:#ff79c6">}</span>
+            <span style="color:#ff79c6">}</span><span style="color:#ff79c6">,</span>String<span style="color:#ff79c6">.</span><span style="color:#50fa7b">valueOf</span><span style="color:#ff79c6">(</span>i<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li><strong>redisson中的信号量</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8op8uqo71j30pw0c6tdw.jpg" alt="Snipaste_2022-12-01_22-54-12.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8opeld32fj31300abwiy.jpg" alt="Snipaste_2022-12-01_22-59-45.png">
+
+</li>
+<li>当修改信号量时需要删除掉redis中的键值对才能生效</li>
+</ul>
+<h3 id="countdownlatch">CountDownLatch</h3>
+<ul>
+<li><strong>JUC中的CountDownLatch</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">//演示 CountDownLatch
+</span><span style="color:#6272a4"></span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">CountDownLatchDemo</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">//6个同学陆续离开教室之后，班长锁门
+</span><span style="color:#6272a4"></span>    
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span><span style="color:#ff79c6">(</span>String<span style="color:#ff79c6">[</span><span style="color:#ff79c6">]</span> args<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">throws</span> InterruptedException <span style="color:#ff79c6">{</span>
+
+        <span style="color:#6272a4">//创建CountDownLatch对象，设置初始值
+</span><span style="color:#6272a4"></span>        
+        CountDownLatch countDownLatch <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> CountDownLatch<span style="color:#ff79c6">(</span>6<span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        <span style="color:#6272a4">//6个同学陆续离开教室之后
+</span><span style="color:#6272a4"></span>        
+        <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 1<span style="color:#ff79c6">;</span> i <span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">=</span>6<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">+</span><span style="color:#ff79c6">+</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">new</span> Thread<span style="color:#ff79c6">(</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">-</span><span style="color:#ff79c6">&gt;</span><span style="color:#ff79c6">{</span>
+                System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">+</span><span style="color:#f1fa8c">&#34; 号同学离开了教室&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+                <span style="color:#6272a4">//计数  -1
+</span><span style="color:#6272a4"></span>                
+                countDownLatch<span style="color:#ff79c6">.</span><span style="color:#50fa7b">countDown</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+            <span style="color:#ff79c6">}</span><span style="color:#ff79c6">,</span>String<span style="color:#ff79c6">.</span><span style="color:#50fa7b">valueOf</span><span style="color:#ff79c6">(</span>i<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">start</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span>
+
+        <span style="color:#6272a4">//等待
+</span><span style="color:#6272a4"></span>        
+        countDownLatch<span style="color:#ff79c6">.</span><span style="color:#50fa7b">await</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">out</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">println</span><span style="color:#ff79c6">(</span>Thread<span style="color:#ff79c6">.</span><span style="color:#50fa7b">currentThread</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">getName</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">+</span><span style="color:#f1fa8c">&#34; 班长锁门走人了&#34;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li><strong>redisson中的CountDownLatch</strong>
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8opyd30vyj30q1089q6g.jpg" alt="Snipaste_2022-12-01_23-18-42.png">
+
+</li>
+</ul>
+<h3 id="redisson总结">redisson总结</h3>
+<p>
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8oq6q2bcrj30o20c7dku.jpg" alt="Snipaste_2022-12-01_23-26-29.png">
+
+
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h8oq6wumc5j30pv0bhdka.jpg" alt="Snipaste_2022-12-01_23-26-46.png">
+
+</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/1103jvm%E9%94%81%E5%92%8Cmysql%E9%94%81/" data-toggle="tooltip" data-placement="top" title="1、JVM锁和MySQL锁（分布式锁）">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/1105%E5%9F%BA%E4%BA%8Ezookeeper%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-toggle="tooltip" data-placement="top" title="3、基于zookeeper实现分布式锁（分布式锁）">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/activemq" title="activemq">
+                            activemq
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ajax" title="ajax">
+                            ajax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/cookie" title="cookie">
+                            cookie
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/datax" title="datax">
+                            datax
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/dubbo" title="dubbo">
+                            dubbo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/elasticsearch" title="elasticsearch">
+                            elasticsearch
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/filter" title="filter">
+                            filter
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hadoop" title="hadoop">
+                            hadoop
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hbase" title="hbase">
+                            hbase
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hive" title="hive">
+                            hive
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javascript" title="javascript">
+                            javascript
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/javaweb" title="javaweb">
+                            javaweb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jdbc" title="jdbc">
+                            jdbc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jquery" title="jquery">
+                            jquery
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/jsp" title="jsp">
+                            jsp
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/juc" title="juc">
+                            juc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jvm" title="jvm">
+                            jvm
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/jwt" title="jwt">
+                            jwt
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                            linux
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/maven" title="maven">
+                            maven
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/minio" title="minio">
+                            minio
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mybatis" title="mybatis">
+                            mybatis
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                            mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/netty" title="netty">
+                            netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/react" title="react">
+                            react
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/scala" title="scala">
+                            scala
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/servlet" title="servlet">
+                            servlet
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/session" title="session">
+                            session
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/shiro" title="shiro">
+                            shiro
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spark" title="spark">
+                            spark
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/spring" title="spring">
+                            spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springboot" title="springboot">
+                            springboot
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springcloud" title="springcloud">
+                            springcloud
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springsecurity" title="springsecurity">
+                            springsecurity
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/vue" title="vue">
+                            vue
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml" title="xml">
+                            xml
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/zookeeper" title="zookeeper">
+                            zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" title="分布式锁">
+                            分布式锁
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" title="数据结构与算法">
+                            数据结构与算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:1424197205@qq.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    <li>
+                        <a target="_blank" href="/#">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/yiguan1573">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="亿观的博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 亿观的博客 2022
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -11,8 +11,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://yiguan1573.github.io//img/01.jpg">
-    <meta property="twitter:image" content="https://yiguan1573.github.io//img/01.jpg" />
+    <meta property="og:image" content="https://yiguan1573.gitee.io//img/01.jpg">
+    <meta property="twitter:image" content="https://yiguan1573.gitee.io//img/01.jpg" />
     
 
     
@@ -169,6 +169,10 @@
                         
                         <a class="tag" href="/tags/springcloud" title="SpringCloud">
                             SpringCloud
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E9%A1%B9%E7%9B%AE" title="项目">
+                            项目
                         </a>
                         
                     </div>
@@ -341,7 +345,114 @@ $(function() {
                 post-container">
 
                 
-                
+                <h2 id="引入openfeign启动项目报错">引入OpenFeign启动项目报错</h2>
+<blockquote>
+<p>Error creating bean with name &lsquo;com.yiguan.service.users.TestService&rsquo;: FactoryBean threw exception on object creation; nested exception is java.lang.IllegalStateException: Method has too many Body parameters: public abstract java.lang.String com.yiguan.service.users.TestService.getConfig(java.lang.String,java.lang.String)</p>
+</blockquote>
+<p>原来是在@FeignClient()接口类中，使用@RequestParam时必须指定value，Spring 在这方面有很好的封装特性并严格校验</p>
+<h2 id="sentinel没有监控数据">sentinel没有监控数据</h2>
+<ul>
+<li>第一种解决方法很简单，只需要client端和server端部署到同一个服务器上就可以了</li>
+<li>第二种解决方案，就是在我们client端的配置文件中加入client端的ip地址进行配置</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">server:
+  <span style="color:#ff79c6">port</span>: <span style="color:#bd93f9">8500</span>
+
+spring:
+  application:
+    <span style="color:#ff79c6">name</span>: animation-consumer
+  cloud:
+    sentinel:
+      transport:
+        <span style="color:#ff79c6">dashboard</span>: <span style="color:#bd93f9">192.168</span><span style="color:#bd93f9">.10</span><span style="color:#bd93f9">.102</span>:<span style="color:#bd93f9">8080</span> <span style="color:#6272a4">#配置Sentinel dashboard地址</span>
+        <span style="color:#ff79c6">port</span>: <span style="color:#bd93f9">8719</span> <span style="color:#6272a4">#启动一个 Http Server,该 Server 会与 Sentinel 控制台做交互</span>
+        <span style="color:#ff79c6">clientIp</span>: <span style="color:#bd93f9">192.168</span><span style="color:#bd93f9">.31</span><span style="color:#bd93f9">.169</span> <span style="color:#6272a4">#指定客户端地址</span>
+    nacos:
+      discovery:
+        <span style="color:#ff79c6">server-addr</span>: <span style="color:#bd93f9">192.168</span><span style="color:#bd93f9">.10</span><span style="color:#bd93f9">.101</span>:<span style="color:#bd93f9">3737</span> <span style="color:#6272a4">#配置Nacos地址</span>
+        <span style="color:#ff79c6">namespace</span>: f4d705e4-4a68-48ff-b073-0974b0c9db36
+      config:
+        <span style="color:#ff79c6">server-addr</span>: <span style="color:#bd93f9">192.168</span><span style="color:#bd93f9">.10</span><span style="color:#bd93f9">.101</span>:<span style="color:#bd93f9">3737</span> <span style="color:#6272a4">#Nacos作为配置中心地址</span>
+        <span style="color:#ff79c6">file-extension</span>: yaml <span style="color:#6272a4">#指定yaml格式的配置</span>
+        <span style="color:#ff79c6">group</span>: DEFAULT_GROUP
+        <span style="color:#ff79c6">namespace</span>: f4d705e4-4a68-48ff-b073-0974b0c9db36
+management:
+  endpoints:
+    web:
+      exposure:
+        <span style="color:#ff79c6">include</span>: <span style="color:#f1fa8c">&#39;*&#39;</span>
+service-url:
+    <span style="color:#ff79c6">users-service</span>: http://animation-users
+feign:
+  sentinel:
+    <span style="color:#ff79c6">enabled</span>: <span style="color:#ff79c6">true</span> <span style="color:#6272a4"># 激活Sentinel对Feign的支持</span>
+logging:
+  level:
+    <span style="color:#6272a4"># feign日志以什么级别监控哪个接口</span>
+    <span style="color:#ff79c6">com.yiguan.controller.users.testController</span>: debug
+<span style="color:#6272a4">#设置feign客户端超时时间(OpenFeign默认支持ribbon)(单位：毫秒)</span>
+ribbon:
+  <span style="color:#6272a4">#指的是建立连接所用的时间，适用于网络状况正常的情况下,两端连接所用的时间</span>
+  <span style="color:#ff79c6">ReadTimeout</span>: <span style="color:#bd93f9">5000</span>
+  <span style="color:#6272a4">#指的是建立连接后从服务器读取到可用资源所用的时间</span>
+  <span style="color:#ff79c6">ConnectTimeout</span>: <span style="color:#bd93f9">5000</span>
+</code></pre></div><h2 id="sentinelresource没有调用fallback和blockback指定的方法">@SentinelResource没有调用fallback和blockback指定的方法</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">@GetMapping<span style="color:#ff79c6">(</span>value <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;/getConfig&#34;</span><span style="color:#ff79c6">)</span>
+@SentinelResource<span style="color:#ff79c6">(</span>value <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;getConfig&#34;</span><span style="color:#ff79c6">,</span>
+        fallbackClass <span style="color:#ff79c6">=</span> FallbackHandler<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span>
+        fallback <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;globalFallbackHandler&#34;</span><span style="color:#ff79c6">,</span>
+        blockHandlerClass <span style="color:#ff79c6">=</span> BlockHandler<span style="color:#ff79c6">.</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">,</span>
+        blockHandler <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;globalBlockHandler&#34;</span><span style="color:#ff79c6">)</span>
+<span style="color:#8be9fd;font-style:italic">public</span> DataResult <span style="color:#50fa7b">getConfig</span><span style="color:#ff79c6">(</span>String id<span style="color:#ff79c6">,</span>String name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">/</span>0<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">return</span> DataResult<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createBySuccess</span><span style="color:#ff79c6">(</span>testService<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getConfig</span><span style="color:#ff79c6">(</span>id<span style="color:#ff79c6">,</span>name<span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><ul>
+<li>首先要保证返回值类型必须与原函数返回值类型一致</li>
+<li>其次blockHandler 函数访问范围需要是 public</li>
+<li>然后fallback和blockback对应的函数必需为 static 函数，否则无法解析</li>
+<li>请求参数可以不加可不加</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">BlockHandler</span> <span style="color:#ff79c6">{</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> DataResult <span style="color:#50fa7b">globalBlockHandler</span><span style="color:#ff79c6">(</span>String id<span style="color:#ff79c6">,</span> String name<span style="color:#ff79c6">,</span> BlockException exception<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> DataResult<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createByError</span><span style="color:#ff79c6">(</span>Constant<span style="color:#ff79c6">.</span><span style="color:#50fa7b">FORBIDDEN</span><span style="color:#ff79c6">,</span>exception<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getMessage</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">FallbackHandler</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> DataResult <span style="color:#50fa7b">globalFallbackHandler</span><span style="color:#ff79c6">(</span>String id<span style="color:#ff79c6">,</span>String name<span style="color:#ff79c6">,</span> Throwable  exception<span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> DataResult<span style="color:#ff79c6">.</span><span style="color:#50fa7b">createByError</span><span style="color:#ff79c6">(</span>Constant<span style="color:#ff79c6">.</span><span style="color:#50fa7b">FORBIDDEN</span><span style="color:#ff79c6">,</span>exception<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getMessage</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h2 id="sentinel持久化与nacos双向同步">Sentinel持久化，与nacos双向同步</h2>
+<ul>
+<li>默认情况下只能nacos向Sentinel同步</li>
+<li>Sentinel向nacos同步比较复杂，详情见下方博客
+<ul>
+<li><a href="https://blog.csdn.net/weixin_42270645/article/details/123399569?spm=1001.2101.3001.6661.1&amp;utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-123399569-blog-110921456.pc_relevant_layerdownloadsortv1&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-123399569-blog-110921456.pc_relevant_layerdownloadsortv1&amp;utm_relevant_index=1">Sentinel配置规则持久化至Nacos</a></li>
+</ul>
+</li>
+<li><a href="https://blog.csdn.net/zhangchaoyang/article/details/124159139">Sentinel 控制台实时监控持久化到MySQL</a></li>
+</ul>
+<h2 id="集成seata启动失败">集成Seata启动失败</h2>
+<blockquote>
+<p>Failed to instantiate [io.seata.spring.annotation.GlobalTransactionScanner]: Factory method &lsquo;globalTransactionScanner&rsquo; threw exception; nested exception is io.seata.common.exception.NotSupportYetException</p>
+</blockquote>
+<p>需要在资源目录文件夹加上file.conf和registry.conf文件
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h6vqqp18zjj306m0330tb.jpg" alt="QQ截图20221006182403.png">
+
+</p>
+<h2 id="can-not-connect-to-192168101038091-causecan-not-register-rmerrcan-not-connect-to-services-server">can not connect to 192.168.10.103:8091 cause:can not register RM,err:can not connect to services-server</h2>
+<ul>
+<li>原来是前面的报错nested exception is java.io.FileNotFoundException: class path [mapper/]导致连接seata server的通道被强制关闭，实际上我加了mapper文件夹，发现是编译后的文件没有加上，需要手动添加
+
+  <img src="http://tva1.sinaimg.cn/large/006QQPIfly1h6vui4feebj3091042t9p.jpg" alt="QQ截图20221006203425.png">
+
+</li>
+</ul>
+
 
                 
 
@@ -422,6 +533,12 @@ $(function() {
                         
                         <a href="/tags/docker" title="docker">
                             docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/dubbo" title="dubbo">
+                            dubbo
                         </a>
                         
                         
@@ -664,6 +781,12 @@ $(function() {
                         
                         <a href="/tags/zookeeper" title="zookeeper">
                             zookeeper
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" title="分布式锁">
+                            分布式锁
                         </a>
                         
                         
